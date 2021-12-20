@@ -1,0 +1,852 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fine-mapping with SuSiE RSS model &#8212; ADSP-FG Workflows</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ADSP-FG Workflows</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   xQTL analysis pipeline
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Complete Pipelines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
+   eQTL analysis complete workflow
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/apa_calling.html">
+   APA Calling
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
+   Genotype and covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
+     GWAS data QC workflow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/plink_to_vcf.html">
+     Genotype data reformatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
+   Genotype and covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/normalization.html">
+     Molecular phenotype normalization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/remove_covariates.html">
+     Molecular phenotype residuals
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
+   Genotype and covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/GRM.html">
+     Leave one chromosome out GRM
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/PEER_factor.html">
+     Factor analysis using both PEER and APEX factor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using both PEER and APEX factor
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../multivariate/MASH.html">
+   Meta analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../multivariate/METAL.html">
+   Meta analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_merger.html">
+   Summary statistics formatting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH/NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/workflow/fine_mapping/SuSiE/SuSiE_RSS.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fworkflow/fine_mapping/SuSiE/SuSiE_RSS.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/workflow/fine_mapping/SuSiE/SuSiE_RSS.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input">
+   Input
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examples">
+   examples
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#univariate-susie-rss">
+   Univariate SuSiE RSS
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="fine-mapping-with-susie-rss-model">
+<h1>Fine-mapping with SuSiE RSS model<a class="headerlink" href="#fine-mapping-with-susie-rss-model" title="Permalink to this headline">¶</a></h1>
+<p>This notebook mainly responsible for a matrixs of RSS using both mvsusie and a loop of uni_susie</p>
+<ol class="simple">
+<li><p>GWAS summary statistics input <code class="docutils literal notranslate"><span class="pre">z</span></code> and <code class="docutils literal notranslate"><span class="pre">R</span></code>. We assume <code class="docutils literal notranslate"><span class="pre">z</span></code> scores have been computed after removal of covariates <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p></li>
+</ol>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>A recipe file documenting the path to</p></li>
+</ol>
+<p>1.1. A list of analysis_unit_list generated from Meta_Analysis step for each gene.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Each line of the index record the name of 1 RDS file, containing a list with bhat and sbhat object matrixs, with dimension = (number of snps*number of theme) 
+</pre></div>
+</div>
+<p>1.2.The path to a residual corr file from meta_analysis step [FIXME: Specified resid_corr for each gene to be added in the future]</p>
+<p>1.3. 3 col each record the path to a prior file from meta_analysis step.</p>
+<ol class="simple">
+<li><p>LD Recipe: a three colnums table with Theme as each of the Theme_prefix and other columns =  ld_file_prefix,   ld_file_surfix</p></li>
+</ol>
+<p>Only SNPS presented in both the LD matrixs and the sumstat rds will be analysis.
+In unisusie_rss, each of theme will use the corresponding ld file
+In mvsusie_rss, the last row will be used.</p>
+<p>The ld_prefix and ld_surfix are such that paste0(ld_file_prefix,gene_ID,ld_file_surfix) generate the path to each ld         matrix for each genes</p>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>For each analysis unit we output:</p>
+<ol class="simple">
+<li><p>Analysis results in RDS format: A mvsusie Model</p></li>
+<li><p>A vcf file with selected snps
+ES:PIP:CS</p></li>
+</ol>
+</div>
+<div class="section" id="examples">
+<h2>examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Reciepe</span>
+<span class="kn">parameter:</span> <span class="n">recipe</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">file_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">recipe</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">merged_analysis_unit</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="n">file_inv</span><span class="p">[</span><span class="s2">&quot;merged_analysis_unit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="kn">parameter:</span> <span class="n">resid_cor</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="n">file_inv</span><span class="p">[</span><span class="s2">&quot;resid_corr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="kn">parameter:</span> <span class="n">Theme_prefix</span> <span class="o">=</span> <span class="n">file_inv</span><span class="p">[</span><span class="s2">&quot;Theme_prefix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">## LD Recipe: a three colnums table with n_themes rows, as only 1 LD is required for each gene and each theme for uni_susie_RSS, columns =  ld_file_prefix, ld_file_surfix, Theme</span>
+<span class="kn">parameter:</span> <span class="n">LD_Recipe</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1">## The snp with pip &gt; criterior will be reported</span>
+<span class="kn">parameter:</span> <span class="n">pip_criterior</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="n">file_inv</span><span class="p">[</span><span class="s2">&quot;prior&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1">## data file suffix</span>
+<span class="kn">parameter:</span> <span class="n">data_suffix</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1">#</span>
+<span class="c1">## An identifier for your run of analysis</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="n">Theme_prefix</span>
+<span class="c1">#</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">merged_analysis_unit</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
+<span class="n">genes</span> <span class="o">=</span> <span class="n">regions</span>
+<span class="c1">## Path to work directory where output locates</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./output&quot;</span><span class="p">)</span>
+<span class="c1">## Containers that contains the necessary packages</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/twas_latest.sif&quot;</span>
+<span class="c1">## Only 1 LD for each gene is required for each analysis</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Fine_mapping_1</span><span class="p">,</span><span class="n">summary_stats_preprocessing</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">ld_type</span> <span class="o">=</span> <span class="s1">&#39;original&#39;</span>
+<span class="kn">parameter:</span> <span class="n">bhat</span> <span class="o">=</span> <span class="s2">&quot;bhat&quot;</span>
+<span class="kn">parameter:</span> <span class="n">sbhat</span> <span class="o">=</span> <span class="s2">&quot;sbhat&quot;</span>
+<span class="kn">input:</span> <span class="n">genes</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">output:</span> <span class="n">processed</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/preprocessed/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">b</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;2h&#39;</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;55G&#39;</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+    <span class="n">dat</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+    <span class="k">if</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">)){</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">Z</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$$</span><span class="p">{</span><span class="n">bhat</span><span class="p">}</span><span class="o">/</span><span class="n">dat</span><span class="err">$$</span><span class="p">{</span><span class="n">sbhat</span><span class="p">}</span>
+      <span class="p">}</span>
+    <span class="n">gene_id</span> <span class="o">=</span> <span class="s2">&quot;${_input:bnn}&quot;</span>
+    <span class="n">ld</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{LD_Recipe}</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="n">ld_file_prefix</span><span class="p">,</span> <span class="n">gene_id</span> <span class="p">,</span><span class="n">ld_file_surfix</span> <span class="p">))</span> 
+    <span class="n">rownames</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">table</span><span class="p">)</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">table</span><span class="err">$</span><span class="n">Theme</span>
+    <span class="n">ld</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">table</span><span class="p">[</span><span class="n">nrow</span><span class="p">(</span><span class="n">ld</span><span class="o">.</span><span class="n">table</span><span class="p">),]</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">ld</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">file</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">ld</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">ld</span><span class="o">.</span><span class="n">table</span>
+    <span class="n">saveRDS</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Fine_mapping_2</span><span class="p">,</span><span class="n">MvSuSiE_summary_stats_analysis_1</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">max_L</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">ld_type</span> <span class="o">=</span> <span class="s1">&#39;original&#39;</span>
+<span class="kn">parameter:</span> <span class="n">bhat</span> <span class="o">=</span> <span class="s2">&quot;bhat&quot;</span>
+<span class="kn">parameter:</span> <span class="n">sbhat</span> <span class="o">=</span> <span class="s2">&quot;sbhat&quot;</span>
+<span class="c1">## Dont changed the default, havent found a way to compute the specific_resid_corr yet</span>
+<span class="kn">parameter:</span> <span class="n">specicific_resid_corr</span> <span class="o">=</span> <span class="s2">&quot;FALSE&quot;</span>
+<span class="kn">parameter:</span> <span class="n">specicific_resid_corr_dir</span> <span class="o">=</span> <span class="s2">&quot;/mnt/mfs/statgen/neuro-twas/TWAS_sumstat/residcor_2/&quot;</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;summary_stats_preprocessing&quot;</span><span class="p">)</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.LD</span><span class="si">{</span><span class="n">ld_type</span><span class="si">}{</span><span class="n">resid_cor</span><span class="si">:</span><span class="s1">bnx</span><span class="si">}</span><span class="s1">.mvsusierss.model.rds&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;2h&#39;</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;55G&#39;</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">get_prior_indices</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1"># make sure the prior col/rows match the colnames of the Y matrix</span>
+      <span class="n">z_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+      <span class="n">u_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">z_names</span><span class="p">)</span> <span class="o">||</span> <span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">u_names</span><span class="p">))</span> <span class="p">{</span>
+          <span class="k">return</span><span class="p">(</span><span class="n">NULL</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">identical</span><span class="p">(</span><span class="n">z_names</span><span class="p">,</span> <span class="n">u_names</span><span class="p">))</span> <span class="p">{</span>
+          <span class="k">return</span><span class="p">(</span><span class="n">NULL</span><span class="p">)</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">return</span><span class="p">(</span><span class="n">match</span><span class="p">(</span><span class="n">z_names</span><span class="p">,</span> <span class="n">u_names</span><span class="p">))</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">library</span><span class="p">(</span><span class="n">mvsusieR</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyr&quot;</span><span class="p">)</span>
+    <span class="n">dat</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+    <span class="n">gene_id</span> <span class="o">=</span> <span class="s2">&quot;${_input:bnn}&quot;</span>
+  
+    
+    
+  
+    <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">specicific_resid_corr</span><span class="p">}</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">){</span>
+      <span class="n">resid_cor</span> <span class="o">=</span> <span class="n">paste</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{specicific_resid_corr_dir}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">gene_id</span><span class="p">),</span><span class="n">collapse</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+      <span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">resid_cor</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">resid_cor</span><span class="p">:</span><span class="n">r</span><span class="p">}}</span>
+    
+  
+  
+    <span class="n">V</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">resid_cor</span><span class="p">)</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">prior</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Number of components in the mixture prior:&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">prior</span><span class="err">$</span><span class="n">U</span><span class="p">)))</span>
+    <span class="n">prior</span> <span class="o">=</span> <span class="n">mvsusieR</span><span class="p">::</span><span class="n">create_mash_prior</span><span class="p">(</span><span class="n">mixture_prior</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">prior</span><span class="err">$</span><span class="n">w</span><span class="p">,</span> <span class="n">matrices</span><span class="o">=</span><span class="n">prior</span><span class="err">$</span><span class="n">U</span><span class="p">),</span> 
+                                        <span class="n">include_indices</span> <span class="o">=</span> <span class="n">get_prior_indices</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">,</span> <span class="n">prior</span><span class="err">$</span><span class="n">U</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]),</span> 
+                                        <span class="n">max_mixture_len</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{ld_type}</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;original&#39;</span><span class="p">){</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">ld</span><span class="o">.</span><span class="n">file</span><span class="err">$</span><span class="n">ld</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{ld_type}</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s1">&#39;remove_cov&#39;</span><span class="p">){</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">LD</span>
+    <span class="p">}</span>
+  
+    <span class="c1">## Remove the NA SNPs in R, assuming all NA = 0</span>
+    <span class="n">R</span><span class="p">[</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">R</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1">## Remove duplicated in Z</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">Z</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">),]</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">snps</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">)]</span>
+    
+    <span class="c1"># Retaining only the overlapping snps</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">),</span><span class="n">which</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">)]</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">Z</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">rownames</span><span class="p">(</span><span class="n">R</span><span class="p">)),]</span>
+    <span class="n">dat</span><span class="err">$</span><span class="n">snps</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">snp</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">rownames</span><span class="p">(</span><span class="n">R</span><span class="p">))]</span>
+
+
+    <span class="c1">## Initiate the computation  </span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">mv_res</span> <span class="o">=</span> <span class="n">mvsusieR</span><span class="p">::</span><span class="n">mvsusie_rss</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">max_L</span><span class="p">},</span> 
+                                   <span class="n">prior_variance</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span> <span class="n">residual_variance</span><span class="o">=</span><span class="n">V</span><span class="p">,</span> 
+                                   <span class="n">precompute_covariances</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">compute_objective</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> 
+                                   <span class="n">estimate_prior_variance</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">estimate_prior_method</span><span class="o">=</span><span class="s1">&#39;EM&#39;</span><span class="p">,</span>
+                                   <span class="n">max_iter</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">max_iter</span><span class="p">},</span> <span class="n">n_thread</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mv_res</span><span class="err">$</span><span class="n">time</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">st</span>
+    <span class="c1">#if(mv_res$convergence$converged == FALSE){</span>
+    <span class="c1">#    stop(&#39;Fail to converge.&#39;)</span>
+    <span class="c1">#}</span>
+    <span class="n">mv_res</span><span class="err">$</span><span class="n">cs_corr</span> <span class="o">=</span> <span class="n">susieR</span><span class="p">:::</span><span class="n">get_cs_correlation</span><span class="p">(</span><span class="n">mv_res</span><span class="p">,</span> <span class="n">Xcorr</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+  
+    <span class="c1"># Get list of cs snps</span>
+    <span class="n">mv_output</span> <span class="o">=</span> <span class="n">mv_res</span>
+  
+    <span class="n">saveRDS</span><span class="p">(</span><span class="n">mv_res</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Fine_mapping_3</span><span class="p">,</span><span class="n">MvSuSiE_summary_stats_analysis_2</span><span class="p">]</span>
+<span class="kn">input:</span>  <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">output:</span>    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.result.vcf.bgz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;2h&#39;</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;55G&#39;</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyr&quot;</span><span class="p">)</span>
+    <span class="n">mv_res</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+    <span class="c1">## Define create_vcf function</span>
+           <span class="n">create_vcf</span> <span class="o">=</span> <span class="n">function</span> <span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nea</span><span class="p">,</span> <span class="n">ea</span><span class="p">,</span> <span class="n">snp</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">ea_af</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">effect</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> 
+        <span class="n">se</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">pval</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="kp">name</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span><span class="n">cs</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">pip</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">chrom</span><span class="p">)</span> <span class="o">==</span> <span class="n">length</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">snp</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">snp</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">snp</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">nsnp</span> <span class="o">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">chrom</span><span class="p">)</span>
+        <span class="n">gen</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="c1">## Setupt data content for each sample column</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">ea_af</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;AF&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">ea_af</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">effect</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;ES&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">se</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;SE&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">se</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">pval</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;LP&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="o">-</span><span class="n">log10</span><span class="p">(</span><span class="n">pval</span><span class="p">),</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">cs</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;CS&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">pip</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;PIP&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">pip</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="n">gen</span> <span class="o">&lt;-</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">SimpleList</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+        
+      <span class="c1">## Setup snps info for the fix columns</span>
+        <span class="n">gr</span> <span class="o">&lt;-</span> <span class="n">GenomicRanges</span><span class="p">::</span><span class="n">GRanges</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">IRanges</span><span class="p">::</span><span class="n">IRanges</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">pos</span><span class="p">,</span> 
+            <span class="n">end</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">pmax</span><span class="p">(</span><span class="n">nchar</span><span class="p">(</span><span class="n">nea</span><span class="p">),</span> <span class="n">nchar</span><span class="p">(</span><span class="n">ea</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">snp</span><span class="p">))</span>
+         <span class="n">coldata</span> <span class="o">&lt;-</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Studies</span> <span class="o">=</span> <span class="kp">name</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="kp">name</span><span class="p">)</span>
+    <span class="c1">## Setup header informations</span>
+        <span class="n">hdr</span> <span class="o">&lt;-</span> <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">VCFHeader</span><span class="p">(</span><span class="n">header</span> <span class="o">=</span> <span class="n">IRanges</span><span class="p">::</span><span class="n">DataFrameList</span><span class="p">(</span><span class="n">fileformat</span> <span class="o">=</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Value</span> <span class="o">=</span> <span class="s2">&quot;VCFv4.2&quot;</span><span class="p">,</span> 
+            <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;fileformat&quot;</span><span class="p">)),</span> <span class="n">sample</span> <span class="o">=</span> <span class="kp">name</span><span class="p">)</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Number</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">),</span> <span class="n">Description</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;Effect size estimate relative to the alternative allele&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Standard error of effect size estimate&quot;</span><span class="p">,</span> <span class="s2">&quot;-log10 p-value for effect estimate&quot;</span><span class="p">,</span>  
+            <span class="s2">&quot;Alternate allele frequency in the association study&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;The CS this variate are captured, 0 indicates not in any cs&quot;</span><span class="p">,</span> <span class="s2">&quot;The posterior inclusion probability to a CS&quot;</span><span class="p">),</span> 
+            <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;ES&quot;</span><span class="p">,</span> <span class="s2">&quot;SE&quot;</span><span class="p">,</span> <span class="s2">&quot;LP&quot;</span><span class="p">,</span> <span class="s2">&quot;AF&quot;</span><span class="p">,</span> <span class="s2">&quot;CS&quot;</span><span class="p">,</span> <span class="s2">&quot;PIP&quot;</span><span class="p">))</span>
+      <span class="c1">## Save only the meta information in the sample columns </span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">subset</span><span class="p">(</span><span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">),</span> 
+            <span class="n">rownames</span><span class="p">(</span><span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">))</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
+      <span class="c1">## Save VCF </span>
+        <span class="n">vcf</span> <span class="o">&lt;-</span> <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">VCF</span><span class="p">(</span><span class="n">rowRanges</span> <span class="o">=</span> <span class="n">gr</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">coldata</span><span class="p">,</span> 
+            <span class="n">exptData</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">header</span> <span class="o">=</span> <span class="n">hdr</span><span class="p">),</span> <span class="n">geno</span> <span class="o">=</span> <span class="n">gen</span><span class="p">)</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">alt</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">Biostrings</span><span class="p">::</span><span class="n">DNAStringSetList</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">ea</span><span class="p">))</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">ref</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">Biostrings</span><span class="p">::</span><span class="n">DNAStringSet</span><span class="p">(</span><span class="n">nea</span><span class="p">)</span>
+      <span class="c1">## Add fixed values</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">fixed</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span><span class="err">$</span><span class="n">FILTER</span> <span class="o">&lt;-</span> <span class="s2">&quot;PASS&quot;</span>
+          <span class="k">return</span><span class="p">(</span><span class="n">sort</span><span class="p">(</span><span class="n">vcf</span><span class="p">))</span>
+        <span class="p">}</span>
+    
+    <span class="c1"># Get list of cs snps</span>
+    <span class="n">mv_output_snps</span> <span class="o">=</span> <span class="n">tibble</span><span class="p">(</span> <span class="n">snps</span> <span class="o">=</span>  <span class="n">mv_res</span><span class="err">$</span><span class="n">variable_names</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">mv_res</span><span class="err">$</span><span class="n">pip</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)],</span> <span class="n">snps_index</span> <span class="o">=</span> <span class="n">which</span><span class="p">((</span><span class="n">mv_res</span><span class="err">$</span><span class="n">pip</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">))</span>  <span class="p">)</span>
+    <span class="n">mv_output_snps</span> <span class="o">=</span> <span class="n">mv_output_snps</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span> <span class="n">cs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">snps_index</span><span class="p">,</span><span class="o">~</span><span class="n">which</span><span class="p">(</span><span class="n">mv_res</span><span class="err">$</span><span class="n">sets</span><span class="err">$</span><span class="n">cs</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="o">.</span><span class="n">x</span><span class="p">))</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="o">%&gt;%</span><span class="n">replace_na</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                             <span class="n">pip</span> <span class="o">=</span> <span class="n">map_dbl</span><span class="p">(</span><span class="n">snps_index</span><span class="p">,</span><span class="o">~</span><span class="p">(</span><span class="n">mv_res</span><span class="err">$</span><span class="n">pip</span><span class="p">[</span><span class="o">.</span><span class="n">x</span><span class="p">])),</span>
+                     <span class="nb">chr</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">snps</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">T</span><span class="p">)</span><span class="err">$</span><span class="n">V1</span><span class="p">),</span>
+                     <span class="n">pos_alt_ref</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">snps</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span><span class="err">$</span><span class="n">V2</span><span class="p">),</span>
+                     <span class="n">pos</span> <span class="o">=</span> <span class="n">map_dbl</span><span class="p">(</span><span class="n">pos_alt_ref</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span><span class="err">$</span><span class="n">V1</span><span class="p">),</span>
+                     <span class="n">alt</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">pos_alt_ref</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">colClass</span> <span class="o">=</span> <span class="s2">&quot;character&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">V2</span><span class="p">),</span>
+                     <span class="n">ref</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">pos_alt_ref</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">colClass</span> <span class="o">=</span> <span class="s2">&quot;character&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">V3</span><span class="p">))</span>
+    
+    <span class="n">effect_mtr</span> <span class="o">=</span> <span class="n">mv_res</span><span class="err">$</span><span class="n">coef</span><span class="p">[</span><span class="n">mv_output_snps</span><span class="err">$</span><span class="n">snps_index</span><span class="o">+</span><span class="mi">1</span><span class="p">,]</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">effect_mtr</span><span class="p">)</span> <span class="o">=</span> <span class="n">mv_res</span><span class="err">$</span><span class="n">condition_names</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">effect_mtr</span><span class="p">)</span> <span class="o">=</span> <span class="n">mv_output_snps</span><span class="err">$</span><span class="n">snps</span>
+    <span class="n">cs_mtr</span> <span class="o">=</span> <span class="n">effect_mtr</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">cs_mtr</span><span class="p">))</span> <span class="n">cs_mtr</span><span class="p">[</span><span class="n">i</span><span class="p">,]</span> <span class="o">=</span>  <span class="n">mv_output_snps</span><span class="err">$</span><span class="n">cs</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span>  
+    <span class="n">pip_mtr</span> <span class="o">=</span> <span class="n">effect_mtr</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">pip_mtr</span><span class="p">))</span> <span class="n">pip_mtr</span><span class="p">[</span><span class="n">i</span><span class="p">,]</span> <span class="o">=</span>  <span class="n">mv_output_snps</span><span class="err">$</span><span class="n">pip</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span>  
+
+    <span class="n">output_vcf</span> <span class="o">=</span> <span class="n">create_vcf</span><span class="p">(</span>
+           <span class="n">chrom</span> <span class="o">=</span> <span class="n">mv_output_snps</span><span class="err">$</span><span class="nb">chr</span><span class="p">,</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">mv_output_snps</span><span class="err">$</span><span class="n">pos</span><span class="p">,</span>
+            <span class="n">ea</span> <span class="o">=</span> <span class="n">mv_output_snps</span><span class="err">$</span><span class="n">alt</span><span class="p">,</span>
+            <span class="n">nea</span> <span class="o">=</span> <span class="n">mv_output_snps</span><span class="err">$</span><span class="n">ref</span><span class="p">,</span>
+            <span class="n">effect</span> <span class="o">=</span> <span class="n">effect_mtr</span> <span class="p">,</span>
+            <span class="n">pip</span> <span class="o">=</span> <span class="n">pip_mtr</span><span class="p">,</span>
+            <span class="n">cs</span> <span class="o">=</span> <span class="n">cs_mtr</span><span class="p">,</span>
+            <span class="kp">name</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">effect_mtr</span><span class="p">)</span>
+              <span class="p">)</span>
+  
+    <span class="n">saveRDS</span><span class="p">(</span><span class="n">mv_output_snps</span><span class="p">,</span> <span class="s2">&quot;${_output[0]:nn}.rds&quot;</span><span class="p">)</span>
+    <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">writeVcf</span><span class="p">(</span><span class="n">output_vcf</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">nr</span><span class="p">},</span><span class="n">index</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Fine_mapping_4</span><span class="p">,</span><span class="n">MvSuSiE_summary_stats_analysis_3</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s1">.mvsusie_rss.output_list.txt&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;output_vcf&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">ar</span><span class="p">,]]})</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;t&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="univariate-susie-rss">
+<h2>Univariate SuSiE RSS<a class="headerlink" href="#univariate-susie-rss" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Fine_mapping_5</span><span class="p">,</span><span class="n">UniSuSiE_summary_stats_analysis_1</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">max_L</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">ld_type</span> <span class="o">=</span> <span class="s1">&#39;original&#39;</span>
+<span class="kn">parameter:</span> <span class="n">bhat</span> <span class="o">=</span> <span class="s2">&quot;bhat&quot;</span>
+<span class="kn">parameter:</span> <span class="n">sbhat</span> <span class="o">=</span> <span class="s2">&quot;sbhat&quot;</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;summary_stats_preprocessing&quot;</span><span class="p">)[</span><span class="s2">&quot;processed&quot;</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.LD</span><span class="si">{</span><span class="n">ld_type</span><span class="si">}{</span><span class="n">resid_cor</span><span class="si">:</span><span class="s1">bnx</span><span class="si">}</span><span class="s1">.unisusierss.model.rds&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.LD</span><span class="si">{</span><span class="n">ld_type</span><span class="si">}{</span><span class="n">resid_cor</span><span class="si">:</span><span class="s1">bnx</span><span class="si">}</span><span class="s1">.unisusierss.vcf.bgz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;2h&#39;</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;55G&#39;</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;susieR&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyr&quot;</span><span class="p">)</span>
+  
+     <span class="c1">## Define create_vcf function</span>
+           <span class="n">create_vcf</span> <span class="o">=</span> <span class="n">function</span> <span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">nea</span><span class="p">,</span> <span class="n">ea</span><span class="p">,</span> <span class="n">snp</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">ea_af</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">effect</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> 
+        <span class="n">se</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">pval</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="kp">name</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span><span class="n">cs</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">pip</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">chrom</span><span class="p">)</span> <span class="o">==</span> <span class="n">length</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">snp</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">snp</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">snp</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">nsnp</span> <span class="o">&lt;-</span> <span class="n">length</span><span class="p">(</span><span class="n">chrom</span><span class="p">)</span>
+        <span class="n">gen</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="c1">## Setupt data content for each sample column</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">ea_af</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;AF&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">ea_af</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">effect</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;ES&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">se</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;SE&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">se</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">pval</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;LP&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="o">-</span><span class="n">log10</span><span class="p">(</span><span class="n">pval</span><span class="p">),</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">cs</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;CS&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">pip</span><span class="p">))</span> 
+            <span class="n">gen</span><span class="p">[[</span><span class="s2">&quot;PIP&quot;</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">matrix</span><span class="p">(</span><span class="n">pip</span><span class="p">,</span> <span class="n">nsnp</span><span class="p">)</span>
+        <span class="n">gen</span> <span class="o">&lt;-</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">SimpleList</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+        
+      <span class="c1">## Setup snps info for the fix columns</span>
+        <span class="n">gr</span> <span class="o">&lt;-</span> <span class="n">GenomicRanges</span><span class="p">::</span><span class="n">GRanges</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">IRanges</span><span class="p">::</span><span class="n">IRanges</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="n">pos</span><span class="p">,</span> 
+            <span class="n">end</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">pmax</span><span class="p">(</span><span class="n">nchar</span><span class="p">(</span><span class="n">nea</span><span class="p">),</span> <span class="n">nchar</span><span class="p">(</span><span class="n">ea</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">snp</span><span class="p">))</span>
+         <span class="n">coldata</span> <span class="o">&lt;-</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Studies</span> <span class="o">=</span> <span class="kp">name</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="kp">name</span><span class="p">)</span>
+    <span class="c1">## Setup header informations</span>
+        <span class="n">hdr</span> <span class="o">&lt;-</span> <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">VCFHeader</span><span class="p">(</span><span class="n">header</span> <span class="o">=</span> <span class="n">IRanges</span><span class="p">::</span><span class="n">DataFrameList</span><span class="p">(</span><span class="n">fileformat</span> <span class="o">=</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Value</span> <span class="o">=</span> <span class="s2">&quot;VCFv4.2&quot;</span><span class="p">,</span> 
+            <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;fileformat&quot;</span><span class="p">)),</span> <span class="n">sample</span> <span class="o">=</span> <span class="kp">name</span><span class="p">)</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">S4Vectors</span><span class="p">::</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Number</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">),</span> <span class="n">Type</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="s2">&quot;Float&quot;</span><span class="p">),</span> <span class="n">Description</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;Effect size estimate relative to the alternative allele&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Standard error of effect size estimate&quot;</span><span class="p">,</span> <span class="s2">&quot;-log10 p-value for effect estimate&quot;</span><span class="p">,</span>  
+            <span class="s2">&quot;Alternate allele frequency in the association study&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;The CS this variate are captured, 0 indicates not in any cs&quot;</span><span class="p">,</span> <span class="s2">&quot;The posterior inclusion probability to a CS&quot;</span><span class="p">),</span> 
+            <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;ES&quot;</span><span class="p">,</span> <span class="s2">&quot;SE&quot;</span><span class="p">,</span> <span class="s2">&quot;LP&quot;</span><span class="p">,</span> <span class="s2">&quot;AF&quot;</span><span class="p">,</span> <span class="s2">&quot;CS&quot;</span><span class="p">,</span> <span class="s2">&quot;PIP&quot;</span><span class="p">))</span>
+      <span class="c1">## Save only the meta information in the sample columns </span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">subset</span><span class="p">(</span><span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">),</span> 
+            <span class="n">rownames</span><span class="p">(</span><span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">geno</span><span class="p">(</span><span class="n">hdr</span><span class="p">))</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
+      <span class="c1">## Save VCF </span>
+        <span class="n">vcf</span> <span class="o">&lt;-</span> <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">VCF</span><span class="p">(</span><span class="n">rowRanges</span> <span class="o">=</span> <span class="n">gr</span><span class="p">,</span> <span class="n">colData</span> <span class="o">=</span> <span class="n">coldata</span><span class="p">,</span> 
+            <span class="n">exptData</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">header</span> <span class="o">=</span> <span class="n">hdr</span><span class="p">),</span> <span class="n">geno</span> <span class="o">=</span> <span class="n">gen</span><span class="p">)</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">alt</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">Biostrings</span><span class="p">::</span><span class="n">DNAStringSetList</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">ea</span><span class="p">))</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">ref</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">Biostrings</span><span class="p">::</span><span class="n">DNAStringSet</span><span class="p">(</span><span class="n">nea</span><span class="p">)</span>
+      <span class="c1">## Add fixed values</span>
+        <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">fixed</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span><span class="err">$</span><span class="n">FILTER</span> <span class="o">&lt;-</span> <span class="s2">&quot;PASS&quot;</span>
+          <span class="k">return</span><span class="p">(</span><span class="n">sort</span><span class="p">(</span><span class="n">vcf</span><span class="p">))</span>
+        <span class="p">}</span>
+  
+    <span class="n">dat</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+    <span class="n">gene_id</span> <span class="o">=</span> <span class="s2">&quot;${_input:bnn}&quot;</span>
+
+    <span class="c1">## Initiate the computation  </span>
+    <span class="n">st</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">susie_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">))</span> <span class="p">{</span>
+          <span class="c1">## Retaining only the overlapping snps</span>
+    <span class="n">ld</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">ld</span><span class="o">.</span><span class="n">table</span><span class="p">[</span><span class="n">colnames</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">)[</span><span class="n">i</span><span class="p">],]</span><span class="err">$</span><span class="n">ld</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">int_snps</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">ld</span><span class="p">),</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">)</span>
+    <span class="n">ld</span> <span class="o">=</span> <span class="n">ld</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">ld</span><span class="p">)</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">int_snps</span><span class="p">),</span><span class="n">which</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">ld</span><span class="p">)</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">int_snps</span><span class="p">)]</span>
+    <span class="n">ld</span><span class="p">[</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">ld</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">int_snps</span><span class="p">),</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">snps</span> <span class="o">=</span> <span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">snps</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">int_snps</span><span class="p">)]</span>
+      <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">susie_rss</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">ld</span><span class="p">)</span>
+      <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">conditions_name</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">)[[</span><span class="n">i</span><span class="p">]]</span>
+      <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">variable_name</span> <span class="o">=</span> <span class="n">snps</span>
+      <span class="p">}</span>
+
+  
+      <span class="n">susie_tb_ls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">susie_list</span><span class="p">)){</span>
+        <span class="n">susie_tb</span> <span class="o">=</span> <span class="n">tibble</span><span class="p">(</span> <span class="n">snps</span> <span class="o">=</span>  <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">variable_name</span><span class="p">[</span><span class="n">which</span><span class="p">(</span> <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">pip</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)],</span> <span class="n">snps_index</span> <span class="o">=</span> <span class="n">which</span><span class="p">((</span> <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">pip</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">))</span>  <span class="p">)</span>
+        <span class="n">susie_tb_ls</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">=</span> <span class="n">susie_tb</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span> <span class="n">cs</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">snps_index</span><span class="p">,</span><span class="o">~</span><span class="n">which</span><span class="p">(</span> <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">sets</span><span class="err">$</span><span class="n">cs</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="o">.</span><span class="n">x</span><span class="p">))</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="o">%&gt;%</span><span class="n">replace_na</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                 <span class="n">pip</span> <span class="o">=</span> <span class="n">map_dbl</span><span class="p">(</span><span class="n">snps_index</span><span class="p">,</span><span class="o">~</span><span class="p">(</span> <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="err">$</span><span class="n">pip</span><span class="p">[</span><span class="o">.</span><span class="n">x</span><span class="p">])),</span>
+                                 <span class="n">coef</span> <span class="o">=</span> <span class="n">map_dbl</span><span class="p">(</span><span class="n">snps_index</span><span class="p">,</span><span class="o">~</span><span class="p">(</span><span class="n">coef</span><span class="o">.</span><span class="n">susie</span><span class="p">(</span> <span class="n">susie_list</span><span class="p">[[</span><span class="n">i</span><span class="p">]])[</span><span class="o">.</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">])))</span>
+        <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">2</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">susie_tb_ls</span><span class="p">)){</span><span class="n">susie_tb_ls</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">full_join</span><span class="p">(</span><span class="n">susie_tb_ls</span><span class="p">[[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span><span class="n">susie_tb_ls</span><span class="p">[[</span><span class="n">i</span><span class="p">]],</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;snps&quot;</span><span class="p">)</span> <span class="p">}</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;cs&quot;</span><span class="p">,</span><span class="s2">&quot;pip&quot;</span><span class="p">,</span><span class="s2">&quot;coef&quot;</span><span class="p">)</span>    
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="p">){</span>
+    <span class="n">output</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">susie_tb_ls</span><span class="p">[[</span><span class="n">length</span><span class="p">(</span><span class="n">susie_tb_ls</span><span class="p">)]]</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span>
+    <span class="p">}</span>
+    <span class="n">snps_tb</span> <span class="o">=</span> <span class="n">susie_tb_ls</span><span class="p">[[</span><span class="n">length</span><span class="p">(</span><span class="n">susie_tb_ls</span><span class="p">)]]</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span>
+                         <span class="nb">chr</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">snps</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">T</span><span class="p">)</span><span class="err">$</span><span class="n">V1</span><span class="p">),</span>
+                         <span class="n">pos_alt_ref</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">snps</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span><span class="err">$</span><span class="n">V2</span><span class="p">),</span>
+                         <span class="n">pos</span> <span class="o">=</span> <span class="n">map_dbl</span><span class="p">(</span><span class="n">pos_alt_ref</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span><span class="err">$</span><span class="n">V1</span><span class="p">),</span>
+                         <span class="n">alt</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">pos_alt_ref</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">colClass</span> <span class="o">=</span> <span class="s2">&quot;character&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">V2</span><span class="p">),</span>
+                         <span class="n">ref</span> <span class="o">=</span> <span class="n">map_chr</span><span class="p">(</span><span class="n">pos_alt_ref</span><span class="p">,</span><span class="o">~</span><span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span><span class="k">as</span><span class="o">.</span><span class="ow">is</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">colClass</span> <span class="o">=</span> <span class="s2">&quot;character&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">V3</span><span class="p">))</span>
+  
+    <span class="n">output_vcf</span> <span class="o">=</span> <span class="n">create_vcf</span><span class="p">(</span>
+               <span class="n">chrom</span> <span class="o">=</span> <span class="n">snps_tb</span><span class="err">$</span><span class="nb">chr</span><span class="p">,</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">snps_tb</span><span class="err">$</span><span class="n">pos</span><span class="p">,</span>
+                <span class="n">ea</span> <span class="o">=</span> <span class="n">snps_tb</span><span class="err">$</span><span class="n">alt</span><span class="p">,</span>
+                <span class="n">nea</span> <span class="o">=</span> <span class="n">snps_tb</span><span class="err">$</span><span class="n">ref</span><span class="p">,</span>
+                <span class="n">effect</span> <span class="o">=</span> <span class="n">output</span><span class="err">$</span><span class="n">coef</span> <span class="p">,</span>
+                <span class="n">pip</span> <span class="o">=</span> <span class="n">output</span><span class="err">$</span><span class="n">pip</span><span class="p">,</span>
+                <span class="n">cs</span> <span class="o">=</span> <span class="n">output</span><span class="err">$</span><span class="n">cs</span><span class="p">,</span>
+                <span class="kp">name</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">dat</span><span class="err">$</span><span class="n">Z</span><span class="p">)</span>
+                  <span class="p">)</span>
+  
+      
+    <span class="n">saveRDS</span><span class="p">(</span><span class="n">susie_list</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">})</span>
+    <span class="n">VariantAnnotation</span><span class="p">::</span><span class="n">writeVcf</span><span class="p">(</span><span class="n">output_vcf</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">nr</span><span class="p">},</span><span class="n">index</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Fine_mapping_6</span><span class="p">,</span><span class="n">UniSuSiE_summary_stats_analysis_2</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;UniSuSiE_summary_stats_analysis_1&quot;</span><span class="p">),</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s1">.unisusie_rss.output_list.txt&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;output_vcf&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">ar</span><span class="p">,]]})</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;t&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            kernelName: "sos",
+            path: "./workflow/fine_mapping/SuSiE"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+        
+            &copy; Copyright 2021, ADSP-FG xQTL methods and data integration subgroup.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

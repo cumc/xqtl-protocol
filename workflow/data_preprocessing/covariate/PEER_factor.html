@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factor analysis using both PEER and APEX factor &#8212; ADSP-FG Workflows</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Factor analysis using both PEER and APEX factor" href="BiCV_factor.html" />
+    <link rel="prev" title="Leave one chromosome out GRM" href="GRM.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ADSP-FG Workflows</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   xQTL analysis pipeline
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Complete Pipelines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
+   eQTL analysis complete workflow
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/apa_calling.html">
+   APA Calling
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../genotype_preprocessing.html">
+   Genotype and covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/GWAS_QC.html">
+     GWAS data QC workflow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/plink_to_vcf.html">
+     Genotype data reformatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../phenotype_preprocessing.html">
+   Genotype and covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../phenotype/normalization.html">
+     Molecular phenotype normalization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../phenotype/remove_covariates.html">
+     Molecular phenotype residuals
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../covariate_preprocessing.html">
+   Genotype and covariate data preprocessing
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GRM.html">
+     Leave one chromosome out GRM
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Factor analysis using both PEER and APEX factor
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="BiCV_factor.html">
+     Factor analysis using both PEER and APEX factor
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../multivariate/MASH.html">
+   Meta analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../multivariate/METAL.html">
+   Meta analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_merger.html">
+   Summary statistics formatting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH/NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/workflow/data_preprocessing/covariate/PEER_factor.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fworkflow/data_preprocessing/covariate/PEER_factor.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/workflow/data_preprocessing/covariate/PEER_factor.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#peer">
+   PEER
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#overview">
+     Overview:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-and-output">
+     Input and output:
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#input">
+       Input:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output">
+     Output
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#useage">
+   Useage:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup-and-global-parameters">
+   Setup and global parameters:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#main-code-for-the-pipeline-apex">
+   Main code for the pipeline: APEX
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reference">
+   Reference:
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="factor-analysis-using-both-peer-and-apex-factor">
+<h1>Factor analysis using both PEER and APEX factor<a class="headerlink" href="#factor-analysis-using-both-peer-and-apex-factor" title="Permalink to this headline">¶</a></h1>
+<p><strong>FIXME: there is a file <code class="docutils literal notranslate"><span class="pre">Get_default_sets.R</span></code> in this directory. Please eliminate if it is not necessary</strong></p>
+<div class="section" id="peer">
+<h2>PEER<a class="headerlink" href="#peer" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="overview">
+<h3>Overview:<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Baseline docker image is from: rticode/peer:1.3_8f2237f (will be update to our own)</p></li>
+<li><p>An Rscript for get the default value of priors and tolerance is in  Run_peer.R</p></li>
+</ul>
+</div>
+<div class="section" id="input-and-output">
+<h3>Input and output:<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h3>
+<p><strong>The PEER R code was modified such that it takes the same input and output as those of the APEX</strong></p>
+<div class="section" id="input">
+<h4>Input:<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>–expression_file: The expression matrix: G+1 rows, each row is a gene, N + 1 columns, each column is a sample. This can be obtained easily from the Dapars ressult file.</p>
+<ul>
+<li><p>This input need to be illustrated. For PEER, the matrix is assumed to have <strong>N rows and G columns</strong>, where N is the number of samples, and G is the number of genes. For us, the input is supposed to be here. Modification to PEER format have been done in <code class="docutils literal notranslate"><span class="pre">Run_peer_simple_version.R</span></code></p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;Peer_example_data/Peer_example_data.txt&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 5 × 5</caption>
+<thead>
+	<tr><th></th><th scope=col>Sample1</th><th scope=col>Sample2</th><th scope=col>Sample3</th><th scope=col>Sample4</th><th scope=col>Sample5</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>Gene1</th><td> -1.627455</td><td> 1.684725</td><td> -0.0807924</td><td> 1.510522</td><td> 0.5804513</td></tr>
+	<tr><th scope=row>Gene2</th><td>-12.626715</td><td>17.746163</td><td>-14.2519447</td><td> 5.254536</td><td>14.8258933</td></tr>
+	<tr><th scope=row>Gene3</th><td>  3.337390</td><td>-7.259074</td><td>  6.2643526</td><td>-1.375911</td><td>-4.7039364</td></tr>
+	<tr><th scope=row>Gene4</th><td>  4.468973</td><td>-4.179250</td><td>  6.2956787</td><td> 1.316271</td><td>-3.5877553</td></tr>
+	<tr><th scope=row>Gene5</th><td> -4.945527</td><td> 8.378774</td><td> -4.0786989</td><td> 4.729963</td><td> 6.0079090</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<ul class="simple">
+<li><p>–covariate_file: a file with C + 1 rows and N + 1 columns. N is the number of sample and C is the number of covariate. Note that the order of sample must be the same.</p></li>
+<li><p>–N: Number of PEER factor used. If set N = 0, recommanded PEER factors will be generated based on the suggestion of <a class="reference external" href="https://gtexportal.org/home/documentationPage">GTEX</a> automatically. To obtain the N used, see the <code class="docutils literal notranslate"><span class="pre">.stdout</span></code> file for detail.</p></li>
+<li><p>Other values of priors and tolerance.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
+<p>4 files and a diagnosis plot.</p>
+</div>
+</div>
+<div class="section" id="useage">
+<h2>Useage:<a class="headerlink" href="#useage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>    <span class="n">sos</span> <span class="n">run</span> <span class="n">Call_PEER</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">call_peer</span> \
+        <span class="o">--</span><span class="n">expression_file</span> <span class="n">Peer_example_data</span><span class="o">/</span><span class="n">Peer_example_data</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">covariate</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Lab</span><span class="o">/</span><span class="n">Pipelines</span><span class="o">/</span><span class="n">Call_PEER</span><span class="o">/</span><span class="n">Output</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">N</span> <span class="mi">10</span>
+        <span class="o">..</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup-and-global-parameters">
+<h2>Setup and global parameters:<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">wd</span>
+<span class="c1"># For cluster jobs, number commands to run per job</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Wall clock time expected</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
+<span class="c1"># Memory expected</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16384&quot;</span>
+<span class="c1"># Number of threads</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># Software container option</span>
+<span class="kn">parameter:</span> <span class="n">container_apex</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="c1"># N PEER factors, If do not specify or specified as 0, default values suggested by </span>
+<span class="c1"># UCSC (based on different sample size) Will be used</span>
+<span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">n_of_factor</span> <span class="o">=</span> <span class="n">N</span>
+
+<span class="c1"># Default values from PEER:</span>
+<span class="c1">## The number of max iteration</span>
+
+<span class="kn">parameter:</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">iteration</span> <span class="o">=</span> <span class="n">max_iter</span>
+<span class="c1">## Prior parameters</span>
+<span class="kn">parameter:</span> <span class="n">Alpha_a</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="kn">parameter:</span> <span class="n">Alpha_b</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="kn">parameter:</span> <span class="n">Eps_a</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="kn">parameter:</span> <span class="n">Eps_b</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="c1">## Tolarance parameters</span>
+<span class="kn">parameter:</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="kn">parameter:</span> <span class="n">var_tol</span> <span class="o">=</span> <span class="mf">1e-08</span>
+<span class="c1"># The molecular phenotype matrix</span>
+<span class="kn">parameter:</span> <span class="n">molecular_pheno</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">expression_file</span> <span class="o">=</span> <span class="n">molecular_pheno</span>
+<span class="c1"># The covariate file</span>
+<span class="kn">parameter:</span> <span class="n">covariate</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
+
+<span class="c1"># vcf Genotypy list, so that apex factor can run with covariate file input, requirment: vcf shall have the same sample as the cov and molecular phenotype</span>
+<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">vcf_file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="s2">&quot;dir&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">Call_PEER</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run Call_PEER.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  call_peer
+
+Global Workflow Options:
+  --cwd VAL (as path, required)
+                        The output directory for generated files. MUST BE FULL
+                        PATH
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16384
+                        Memory expected
+  --numThreads 8 (as int)
+                        Number of threads
+  --container-PEER &#39;rticode/peer:1.3_8f2237f&#39;
+                        Software container option
+
+Sections
+  call_peer:
+    Workflow Options:
+      --expression-file VAL (as path, required)
+                        The expression matrix
+      --covariate-file  path(f&#39;{cwd}&#39;)
+
+                        The covariate file
+      --N 0 (as int)
+                        N PEER factors, If do not specify or specified as 0,
+                        default values suggested by UCSC (based on different
+                        sample size) Will be used
+      --max-iter 1000 (as int)
+      --Alpha-a 0.001 (as float)
+                        Prior parameters
+      --Alpha-b 0.1 (as float)
+      --Eps-a 0.1 (as float)
+      --Eps-b 10.0 (as float)
+      --tol 0.001 (as float)
+                        Tolarance parameters
+      --var-tol 1e-08 (as float)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PEER</span><span class="p">]</span>
+
+<span class="kn">input:</span> <span class="n">expression_file</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_diagnosis_plot.jpeg&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER.cov&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_apex</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    
+    <span class="n">library</span><span class="p">(</span><span class="n">peer</span><span class="p">)</span>
+  
+    <span class="c1">#### FUNCTIONS: ####  </span>
+      
+    <span class="c1">## Adapted from the source code of package</span>
+    <span class="n">PEER_plotModel_adapted</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">model</span><span class="p">){</span>
+        <span class="n">par</span><span class="p">(</span><span class="n">mfrow</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">PEER_getBounds</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="n">PEER_getResidualVars</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">plot</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">lwd</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">xlab</span><span class="o">=</span><span class="s2">&quot;Iterations&quot;</span><span class="p">,</span> <span class="n">ylab</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">)</span>
+        <span class="n">par</span><span class="p">(</span><span class="n">new</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
+        <span class="n">plot</span><span class="p">(</span><span class="nb">vars</span><span class="p">,,</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="n">xaxt</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span><span class="n">yaxt</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span><span class="n">xlab</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">ylab</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">mtext</span><span class="p">(</span><span class="s2">&quot;Residual variance&quot;</span><span class="p">,</span><span class="n">side</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">line</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">legend</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="s2">&quot;blue&quot;</span><span class="p">),</span><span class="n">lty</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">legend</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span><span class="s2">&quot;Residual variance&quot;</span><span class="p">))</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">PEER_getAlpha</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">xlab</span><span class="o">=</span><span class="s2">&quot;Factors&quot;</span><span class="p">,</span><span class="n">ylab</span><span class="o">=</span><span class="s2">&quot;Inverse variance of factor weights&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">lwd</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">xaxp</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">length</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="p">}</span>
+    
+    <span class="n">WriteTable</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="kp">name</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">datafile</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">open</span> <span class="o">=</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span>
+      <span class="n">on</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">close</span><span class="p">(</span><span class="n">datafile</span><span class="p">))</span>
+      <span class="n">header</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="kp">name</span><span class="p">,</span> <span class="n">colnames</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+      <span class="n">writeLines</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">),</span> <span class="n">con</span> <span class="o">=</span> <span class="n">datafile</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">datafile</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+    <span class="p">}</span>
+  
+    <span class="c1">#### MAIN ####</span>
+  
+    <span class="c1"># Start analysis:</span>
+    <span class="n">model</span> <span class="o">&lt;-</span> <span class="n">PEER</span><span class="p">()</span>
+    <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;PEER: loading expression data ... &quot;</span><span class="p">)</span>
+    <span class="c1">#pe &lt;- file.path(${_input:r})</span>
+    <span class="c1">#df &lt;- read.table(pe, header = T, row.names = 1)</span>
+    <span class="n">df</span> <span class="o">&lt;-</span> <span class="n">readr</span><span class="p">::</span><span class="n">read_delim</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">},</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">mtx</span> <span class="o">=</span> <span class="n">df</span><span class="p">[,</span><span class="mi">5</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span> <span class="o">=</span> <span class="n">df</span><span class="err">$</span><span class="n">gene_ID</span>
+    <span class="c1"># Input: each column is a sample each row is a gene</span>
+    <span class="c1"># PEER require each row is a sample each column is a gene</span>
+    <span class="n">M</span> <span class="o">&lt;-</span> <span class="n">t</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mtx</span><span class="p">,</span> <span class="n">rownames</span> <span class="o">=</span> <span class="n">T</span><span class="p">))</span>
+    <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;done!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Load covariate file:</span>
+    <span class="n">pc</span> <span class="o">&lt;-</span> <span class="s2">&quot;$</span><span class="si">{covariate_file}</span><span class="s2">&quot;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pc</span> <span class="o">!=</span>  <span class="s2">&quot;None&quot;</span><span class="p">)</span>
+        <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;PEER: loading covariate file ...&quot;</span><span class="p">)</span>
+        <span class="n">pc</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">covariate_file</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
+        <span class="n">cov</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">cov</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">t</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">cov</span><span class="o">.</span><span class="n">mat</span><span class="p">))</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">dim</span><span class="p">(</span><span class="n">cov</span><span class="o">.</span><span class="n">mat</span><span class="p">)[</span><span class="mi">1</span><span class="p">]){</span>
+            <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">stop</span><span class="p">(</span><span class="s2">&quot;Expression file and covariate file do not have identical number of samples!&quot;</span><span class="p">)}</span>
+        <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;done!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;PEER: Input summary:&quot;</span><span class="p">,</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;samples with&quot;</span><span class="p">,</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;genes and&quot;</span><span class="p">,</span> <span class="n">dim</span><span class="p">(</span><span class="n">cov</span><span class="o">.</span><span class="n">mat</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span><span class="s2">&quot;covariates </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setCovariates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">cov</span><span class="o">.</span><span class="n">mat</span><span class="p">))</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+        <span class="n">cov</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">NULL</span>
+        <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;PEER: Input summary:&quot;</span><span class="p">,</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;samples with&quot;</span><span class="p">,</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;genes </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+       
+    <span class="c1"># Suggest the number of factors to use if no input value</span>
+      
+    <span class="k">if</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">N</span><span class="p">}</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+      <span class="c1"># Use suggestion</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">150</span><span class="p">){</span>
+          <span class="n">num_factor</span> <span class="o">=</span> <span class="mi">15</span><span class="p">}</span><span class="k">else</span><span class="p">{</span>
+              <span class="k">if</span><span class="p">(</span><span class="n">dim</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">250</span><span class="p">){</span><span class="n">num_factor</span> <span class="o">=</span> <span class="mi">30</span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">num_factor</span> <span class="o">=</span> <span class="mi">35</span><span class="p">}</span>
+          <span class="p">}</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">num_factor</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">N</span><span class="p">}}</span>
+      
+    <span class="c1"># run PEER</span>
+    <span class="n">cat</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;Setting initialization parameters ...&quot;</span><span class="p">))</span>
+    
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setNk</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">num_factor</span><span class="p">))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setPhenoMean</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setPriorAlpha</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">Alpha_a</span><span class="p">},</span><span class="err">$</span><span class="p">{</span><span class="n">Alpha_b</span><span class="p">}))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setPriorEps</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">Eps_a</span><span class="p">},</span> <span class="err">$</span><span class="p">{</span><span class="n">Eps_b</span><span class="p">}))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setTolerance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">tol</span><span class="p">}))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setVarTolerance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">var_tol</span><span class="p">}))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setNmax_iterations</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">max_iter</span><span class="p">}))</span>
+    <span class="k">if</span><span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">cov</span><span class="o">.</span><span class="n">mat</span><span class="p">)){</span>
+        <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_setCovariates</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">cov</span><span class="o">.</span><span class="n">mat</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;Done.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+  
+    
+    <span class="n">cat</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;PEER: estimating hidden confounders (&quot;</span><span class="p">,</span> <span class="n">num_factor</span><span class="p">,</span> <span class="s2">&quot;)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+    <span class="n">time</span> <span class="o">&lt;-</span> <span class="n">system</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="n">PEER_update</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+    <span class="c1"># add relevant row/column names</span>
+    
+    <span class="n">factor</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">PEER_getX</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># samples x PEER factors</span>
+    <span class="n">weight</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">PEER_getW</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># omic features x PEER factors</span>
+    <span class="n">precision</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">PEER_getAlpha</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># PEER factors x 1</span>
+    <span class="n">resid</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">t</span><span class="p">(</span><span class="n">PEER_getResiduals</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>  <span class="c1"># omic features x samples</span>
+    
+    <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;peer.factor_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">))</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">rownames</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">colnames</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="s2">&quot;alpha&quot;</span>
+    <span class="n">precision</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>
+    <span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="err">$</span><span class="n">relevance</span> <span class="o">&lt;-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="err">$</span><span class="n">alpha</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">colnames</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">rownames</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    
+    <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;Exporting results ... &quot;</span><span class="p">)</span>
+      
+    <span class="c1"># Diagnosis plot:</span>
+    <span class="n">output_path</span> <span class="o">&lt;-</span> <span class="n">paste</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">r</span><span class="p">},</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">bnr</span><span class="p">},</span><span class="s2">&quot;_diagnosis_plot.jpeg&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">jpeg</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_plotModel_adapted</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+    <span class="n">invisible</span><span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">off</span><span class="p">())</span>
+    
+    <span class="c1"># Write 4 numeric results</span>
+    <span class="n">WriteTable</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[1]:d}</span><span class="s2">&quot;</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">b</span><span class="p">}),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>  
+    <span class="n">WriteTable</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="s2">&quot;peer_weights.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
+    <span class="n">WriteTable</span><span class="p">(</span><span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="s2">&quot;peer_precisions.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
+    <span class="n">WriteTable</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="s2">&quot;peer_residuals.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
+    <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;Done.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="main-code-for-the-pipeline-apex">
+<h2>Main code for the pipeline: APEX<a class="headerlink" href="#main-code-for-the-pipeline-apex" title="Permalink to this headline">¶</a></h2>
+<p>Input:</p>
+<ol class="simple">
+<li><p>a bed file for molecular phenotype
+if covariate file is required:</p></li>
+<li><p>A cov file with colnames as samples and covariates/pca/factor named as #id columns on the side.</p></li>
+<li><p>A vcf file documenting the genotype of the samples for any genetics regions.
+Output:</p></li>
+<li><p>A covariate file with colnames as samples and covariates/pca/factor named as #id columns on the side.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX</span><span class="p">]</span>
+<span class="kn">input:</span>  <span class="n">molecular_pheno</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.APEX.cov.gz&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.APEX.cov&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container_apex</span><span class="p">,</span><span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="n">apex</span> <span class="n">factor</span> \
+    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">nn</span><span class="p">]</span> \
+    <span class="o">--</span><span class="nb">iter</span> <span class="err">$</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> \
+    <span class="o">--</span><span class="n">factors</span> <span class="err">$</span><span class="p">[</span><span class="n">n_of_factor</span><span class="p">]</span> \
+    <span class="o">--</span><span class="n">bed</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+    <span class="o">--</span><span class="n">vcf</span> <span class="err">$</span><span class="p">[</span><span class="n">vcf_file</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--cov </span><span class="si">{</span><span class="n">covariate</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">covariate</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+
+    <span class="n">gunzip</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="n">k</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>Reference:<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Codes are adapted from <a class="reference external" href="https://github.com/RTIInternational/biocloud_docker_tools/blob/master/peer/v1.3/run_peer.R">here</a></p></li>
+<li><p>GTEX recommandation of PEER factors is <a class="reference external" href="https://gtexportal.org/home/documentationPage">here</a></p></li>
+<li><p>Examples by PEER is at <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">github</a></p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            kernelName: "sos",
+            path: "./workflow/data_preprocessing/covariate"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="GRM.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Leave one chromosome out GRM</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="BiCV_factor.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Factor analysis using both PEER and APEX factor</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+        
+            &copy; Copyright 2021, ADSP-FG xQTL methods and data integration subgroup.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

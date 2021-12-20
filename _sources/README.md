@@ -2,6 +2,8 @@
 
 Developed for reproducible QTL analysis for the NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium
 
+https://cumc.github.io/xqtl-pipeline
+
 ## Overall xQTL workflow schema
 
 ![QTL Diagram](https://user-images.githubusercontent.com/54919134/140530539-460b7ada-1ce0-4d55-beb7-72e73fc6e568.jpeg)

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Molecular phenotype normalization &#8212; ADSP-FG Workflows</title>
+    <title>Phenotype data reformat &#8212; ADSP-FG Workflows</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,8 +51,8 @@
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Phenotype data reformat" href="phenotype_formatting.html" />
-    <link rel="prev" title="Phenotype data preprocessing" href="../phenotype_preprocessing.html" />
+    <link rel="next" title="Covariate data preprocessing" href="../covariate_preprocessing.html" />
+    <link rel="prev" title="Molecular phenotype normalization" href="normalization.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -163,13 +163,13 @@
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="normalization.html">
      Molecular phenotype normalization
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="phenotype_formatting.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Phenotype data reformat
     </a>
    </li>
@@ -345,7 +345,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../../_sources/workflow/data_preprocessing/phenotype/normalization.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="../../../_sources/workflow/data_preprocessing/phenotype/phenotype_formatting.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
@@ -362,10 +362,10 @@
     <div class="dropdown-buttons sourcebuttons">
         
         <a class="issues-button"
-            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fworkflow/data_preprocessing/phenotype/normalization.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fworkflow/data_preprocessing/phenotype/phenotype_formatting.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/workflow/data_preprocessing/phenotype/normalization.ipynb"><button
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/workflow/data_preprocessing/phenotype/phenotype_formatting.ipynb"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -416,8 +416,8 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="molecular-phenotype-normalization">
-<h1>Molecular phenotype normalization<a class="headerlink" href="#molecular-phenotype-normalization" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="phenotype-data-reformat">
+<h1>Phenotype data reformat<a class="headerlink" href="#phenotype-data-reformat" title="Permalink to this headline">¶</a></h1>
 <p>This is the region extraction step for data processing pipeline for xqtl workflow, containing the generation of:</p>
 <ol class="simple">
 <li><p>Molecular_phenotype per chrom within selected regions in the format APEX and tensorQTL takes</p></li>
@@ -435,10 +435,6 @@
 <p>For each collection, the output is 23 sets of :</p>
 <ol class="simple">
 <li><p>Sets of EXP file for selected region, suitable to be fed into both apex and tensorQTL</p></li>
-</ol>
-<p>1 sets of</p>
-<ol class="simple">
-<li><p>PCA + Factor + Covariate file</p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -496,16 +492,62 @@
 This workflow also produce a vcf+tabix for each chromosome for downstream QTL association analysis</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Normalization</span><span class="p">]</span>
-<span class="c1"># Path to the input molecular phenotype data, should be a processd and indexed bed.gz file, with tabix index.</span>
-
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">region_extraction_1</span><span class="p">]</span>
+<span class="c1"># Path to the input molecular phenotype data.</span>
 <span class="kn">parameter:</span> <span class="n">molecular_pheno_whole</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">input:</span> <span class="n">molecular_pheno_whole</span>
+<span class="kn">input:</span> <span class="n">molecular_pheno_whole</span><span class="p">,</span><span class="n">region_list</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Prefix</span><span class="si">}</span><span class="s1">.mol_phe.bed.gz&#39;</span><span class="p">,</span>  <span class="c1"># For factor</span>
-
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>  
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Prefix</span><span class="si">}</span><span class="s1">.mol_phe.tmp.bed&#39;</span> <span class="c1"># For next step</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;modelr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[0]]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[1]]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">inner_join</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">pheno</span> <span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;gene_ID&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">arrange</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr`,start)</span>
+    <span class="n">output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output[0]:n]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output[1]]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+  
 <span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-        
+    <span class="k">if</span> <span class="n">test</span> <span class="o">-</span><span class="n">f</span> <span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">;</span> <span class="n">then</span>
+    <span class="n">echo</span> <span class="s2">&quot;$[_output[0]] exists.&quot;</span>
+    <span class="k">else</span>
+    <span class="n">bgzip</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">fi</span>
+    <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">bed</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span><span class="n">f</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">region_extraction_2</span><span class="p">]</span>
+<span class="c1"># Path to the input molecular phenotype data.</span>
+<span class="kn">parameter:</span> <span class="n">molecular_pheno_whole</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s1">&#39;region_extraction_1&#39;</span><span class="p">),</span><span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;chrom&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">Prefix</span><span class="si">}</span><span class="s1">.chr</span><span class="si">{</span><span class="n">_chrom</span><span class="si">}</span><span class="s1">.mol_phe.bed.gz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;modelr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[1]]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">pheno</span><span class="p">)[</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="n">pheno</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nb">filter</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr` %in% $[_chrom])</span>
+    <span class="n">pheno</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output[0]:n]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+  
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="k">if</span> <span class="n">test</span> <span class="o">-</span><span class="n">f</span> <span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">;</span> <span class="n">then</span>
+    <span class="n">echo</span> <span class="s2">&quot;$[_output[0]] exists.&quot;</span>
+    <span class="k">else</span>
+    <span class="n">bgzip</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">fi</span>
+    <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">bed</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span><span class="n">f</span>
 </pre></div>
 </div>
 </div>
@@ -538,17 +580,17 @@ This workflow also produce a vcf+tabix for each chromosome for downstream QTL as
         
             <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../phenotype_preprocessing.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="normalization.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Phenotype data preprocessing</p>
+            <p class="prev-next-title">Molecular phenotype normalization</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="phenotype_formatting.html" title="next page">
+    <a class='right-next' id="next-link" href="../covariate_preprocessing.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Phenotype data reformat</p>
+        <p class="prev-next-title">Covariate data preprocessing</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

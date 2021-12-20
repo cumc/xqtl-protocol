@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meta analysis &#8212; ADSP-FG Workflows</title>
+    <title>METAL workflow &#8212; ADSP-FG Workflows</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,7 +51,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="cis/trans QTL analysis workflows" href="../fine_mapping/univariate_fine_mapping.html" />
+    <link rel="next" title="Univariate fine-mapping workflows" href="../fine_mapping/univariate_fine_mapping.html" />
     <link rel="prev" title="MASH analysis pipeline with data-driven prior matrices" href="MASH/mashr_workflow.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -128,7 +128,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">
-   Genotype and covariate data preprocessing
+   Genotype data preprocessing
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -142,15 +142,20 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/genotype/plink_to_vcf.html">
-     Genotype data reformatting
+    <a class="reference internal" href="../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data reformat
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">
-   Genotype and covariate data preprocessing
+   Phenotype data preprocessing
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -164,15 +169,15 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/phenotype/remove_covariates.html">
-     Molecular phenotype residuals
+    <a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data reformat
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">
-   Genotype and covariate data preprocessing
+   Covariate data preprocessing
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -186,18 +191,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/covariate/GRM.html">
-     Leave one chromosome out GRM
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../data_preprocessing/covariate/PEER_factor.html">
-     Factor analysis using both PEER and APEX factor
+     Factor analysis using PEER
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../data_preprocessing/covariate/BiCV_factor.html">
-     Factor analysis using both PEER and APEX factor
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/covariate/remove_covariates.html">
+     Computing covariate residuals
     </a>
    </li>
   </ul>
@@ -211,7 +216,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../association_scan/cisQTL_scan.html">
-   cis/trans QTL analysis workflows
+   cisQTL analysis workflows
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
@@ -233,7 +238,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../association_scan/transQTL_scan.html">
-   cis/trans QTL analysis workflows
+   transQTL analysis workflows
   </a>
  </li>
 </ul>
@@ -245,12 +250,12 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="MASH.html">
-   Meta analysis
+   MASH analysis workflow
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Meta analysis
+   METAL workflow
   </a>
  </li>
 </ul>
@@ -262,7 +267,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../fine_mapping/univariate_fine_mapping.html">
-   cis/trans QTL analysis workflows
+   Univariate fine-mapping workflows
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
   <label for="toctree-checkbox-5">
@@ -279,7 +284,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../fine_mapping/multivariate_fine_mapping.html">
-   cis/trans QTL analysis workflows
+   Multivariate fine-mapping workflows
   </a>
  </li>
 </ul>
@@ -385,59 +390,25 @@
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Meta analysis
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#metal">
+   METAL
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#metal">
-     METAL
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#partitioning">
-     Partitioning
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#merging">
-     Merging
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#extract-effect">
-     Extract effect
-    </a>
-   </li>
-  </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#factor-analysis-and-mash-model">
-   Factor analysis and MASH Model
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#partitioning">
+   Partitioning
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mash-posterior">
-     MASH Posterior
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mixture-prior">
-     Mixture Prior
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#recipe-for-next-step">
-     Recipe for next step
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rds-to-vcf">
-     RDS to VCF
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#merging">
+   Merging
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rds-to-vcf">
+   RDS to VCF
+  </a>
  </li>
 </ul>
 
@@ -450,8 +421,8 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="meta-analysis">
-<h1>Meta analysis<a class="headerlink" href="#meta-analysis" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="metal-workflow">
+<h1>METAL workflow<a class="headerlink" href="#metal-workflow" title="Permalink to this headline">¶</a></h1>
 <p>This note book document the process of meta analysis.</p>
 <p>The output of QTL association will firstly be grouped based on whether they could be conducted meta analysis according to a METAL_theme_str input.</p>
 <p>Those that were grouped together will be fed into METAL and generate 1 sumstat for each chromosome. These sumstat will then be treated as the sumstat of a new theme, connected by -.</p>
@@ -594,126 +565,6 @@ Input is n*p matrix where n is number of chr and p is number of theme not went t
 </div>
 </div>
 </div>
-<div class="section" id="extract-effect">
-<h2>Extract effect<a class="headerlink" href="#extract-effect" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">extract_effects</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;merge_and_alleleQC&quot;</span><span class="p">)[</span><span class="s2">&quot;merged_analysis_unit&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">extracted_effect</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/sumstat/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s1">.rds&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-            <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Meta_Analysis</span><span class="o">/</span><span class="n">Reformatting</span><span class="o">/</span><span class="n">Signal_Extraction</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">extract_effects</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">sumstat</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">Theme_prefix</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">analysis_units</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="factor-analysis-and-mash-model">
-<h1>Factor analysis and MASH Model<a class="headerlink" href="#factor-analysis-and-mash-model" title="Permalink to this headline">¶</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">MASH_FLASH</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">effect_model</span> <span class="o">=</span> <span class="s1">&#39;EZ&#39;</span>
-<span class="kn">parameter:</span> <span class="n">mixture_components</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;flash&#39;</span><span class="p">,</span> <span class="s1">&#39;flash_nonneg&#39;</span><span class="p">,</span> <span class="s1">&#39;pca&#39;</span><span class="p">,</span><span class="s2">&quot;canonical&quot;</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;extract_effects&quot;</span><span class="p">)[</span><span class="s2">&quot;extracted_effect&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">MASH_model</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/sumstat/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">effect_model</span><span class="si">}</span><span class="s2">.V_</span><span class="si">{</span><span class="n">vhat</span><span class="si">}</span><span class="s2">.mash_model.rds&quot;</span><span class="p">,</span>
-        <span class="n">resid_corr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/sumstat/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">effect_model</span><span class="si">}</span><span class="s2">.V_</span><span class="si">{</span><span class="n">vhat</span><span class="si">}</span><span class="s2">.rds&quot;</span><span class="p">,</span>
-        <span class="n">flash_output</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/sumstat/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">.rds&quot;</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mixture_components</span><span class="p">]</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-            <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Meta_Analysis</span><span class="o">/</span><span class="n">MASH</span><span class="o">/</span><span class="n">mashr_flashr_workflow</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">mash</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">sumstat</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">effect_model</span> <span class="err">$</span><span class="p">[</span><span class="n">effect_model</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">vhat</span> <span class="err">$</span><span class="p">[</span><span class="n">vhat</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">output_prefix</span> <span class="err">$</span><span class="p">[</span><span class="n">Theme_prefix</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">data</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="mash-posterior">
-<h2>MASH Posterior<a class="headerlink" href="#mash-posterior" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">MASH_posterior</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">effect_model</span> <span class="o">=</span> <span class="s1">&#39;EZ&#39;</span>
-<span class="kn">parameter:</span> <span class="n">mixture_components</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;flash&#39;</span><span class="p">,</span> <span class="s1">&#39;flash_nonneg&#39;</span><span class="p">,</span> <span class="s1">&#39;pca&#39;</span><span class="p">,</span><span class="s2">&quot;canonical&quot;</span><span class="p">]</span>
-<span class="n">analysis_units</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/sumstat/merged_analysis_unit.txt&#39;</span>
-<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">analysis_units</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
-<span class="n">gene</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;MASH_FLASH&quot;</span><span class="p">)[</span><span class="s2">&quot;MASH_model&quot;</span><span class="p">],</span> <span class="n">regions</span>
-<span class="kn">output:</span> <span class="n">mash_output_list</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/sumstat/mash_output_list&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-            <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Meta_Analysis</span><span class="o">/</span><span class="n">MASH</span><span class="o">/</span><span class="n">mash_posterior</span><span class="o">.</span><span class="n">ipynb</span>  <span class="n">posterior</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">sumstat</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">mash_model</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="n">vhat</span> <span class="err">$</span><span class="p">[</span><span class="n">vhat</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">output_prefix</span> <span class="err">$</span><span class="p">[</span><span class="n">Theme_prefix</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">posterior_input</span>  <span class="err">$</span><span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gene</span><span class="p">)]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="mixture-prior">
-<h2>Mixture Prior<a class="headerlink" href="#mixture-prior" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Mixture_prior</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">effect_model</span> <span class="o">=</span> <span class="s1">&#39;EZ&#39;</span>
-<span class="kn">parameter:</span> <span class="n">mixture_components</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;flash&#39;</span><span class="p">,</span> <span class="s1">&#39;flash_nonneg&#39;</span><span class="p">,</span> <span class="s1">&#39;pca&#39;</span><span class="p">,</span><span class="s2">&quot;canonical&quot;</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">mixture_prior_method</span> <span class="o">=</span> <span class="s2">&quot;ed_bovy&quot;</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;MASH_FLASH&quot;</span><span class="p">)[</span><span class="s2">&quot;MASH_model&quot;</span><span class="p">],</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;extract_effects&quot;</span><span class="p">)[</span><span class="s2">&quot;extracted_effect&quot;</span><span class="p">]</span>
-<span class="n">analysis_units</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/sumstat/merged_analysis_unit.txt&#39;</span>
-<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">analysis_units</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
-<span class="kn">output:</span> <span class="n">mixture_prior</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/../Fine_Mapping/Mixture_Prior/</span><span class="si">{</span><span class="n">Theme_prefix</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">mixture_prior_method</span><span class="si">}</span><span class="s1">.V_</span><span class="si">{</span><span class="n">vhat</span><span class="si">}</span><span class="s1">.rds&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-            <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Meta_Analysis</span><span class="o">/</span><span class="n">MASH</span><span class="o">/</span><span class="n">mixture_prior</span><span class="o">.</span><span class="n">ipynb</span> <span class="err">$</span><span class="p">[</span><span class="n">mixture_prior_method</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">Theme_prefix</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">vhat</span> <span class="err">$</span><span class="p">[</span><span class="n">vhat</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">data</span>  <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">Theme_prefix</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="recipe-for-next-step">
-<h2>Recipe for next step<a class="headerlink" href="#recipe-for-next-step" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Recipe</span><span class="p">]</span>
-<span class="kn">depends:</span> <span class="n">sos_step</span><span class="p">(</span><span class="s2">&quot;RDS2VCF&quot;</span><span class="p">)</span>
-<span class="kn">parameter:</span> <span class="n">mixture_prior_method</span> <span class="o">=</span> <span class="s2">&quot;ed_bovy&quot;</span>
-<span class="kn">input:</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;merge_and_alleleQC&quot;</span><span class="p">)[</span><span class="s2">&quot;merged_analysis_unit&quot;</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;MASH_FLASH&quot;</span><span class="p">)[</span><span class="s2">&quot;resid_corr&quot;</span><span class="p">],</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Mixture_prior&quot;</span><span class="p">)[</span><span class="s2">&quot;mixture_prior&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Fine_mapping_recipe.txt&#39;</span>
-<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="n">mixture_prior</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;mixture_prior_list&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">r</span><span class="p">,]]})</span>
-    <span class="n">prior</span> <span class="o">=</span> <span class="n">mixture_prior</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;mixture_prior_list.str.contains(&quot;$[mixture_prior_method]&quot;)&#39;</span><span class="p">,</span><span class="n">engine</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span><span class="p">)[</span><span class="s2">&quot;mixture_prior_list&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">output_pd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;merged_analysis_unit&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;$[_input[0]]&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;resid_corr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;$[_input[1]]&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;prior&quot;</span> <span class="p">:</span> <span class="n">prior</span><span class="p">,</span>
-    <span class="s2">&quot;Theme_prefix&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="s2">&quot;$[Theme_prefix]&quot;</span><span class="p">]})</span>
-    <span class="n">output_pd</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;$[_output]&#39;</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 <div class="section" id="rds-to-vcf">
 <h2>RDS to VCF<a class="headerlink" href="#rds-to-vcf" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
@@ -772,7 +623,7 @@ Input is n*p matrix where n is number of chr and p is number of theme not went t
     <a class='right-next' id="next-link" href="../fine_mapping/univariate_fine_mapping.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">cis/trans QTL analysis workflows</p>
+        <p class="prev-next-title">Univariate fine-mapping workflows</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

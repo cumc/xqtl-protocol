@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Genotype and covariate data preprocessing &#8212; ADSP-FG Workflows</title>
+    <title>Genotype data preprocessing &#8212; ADSP-FG Workflows</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -128,7 +128,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
-   Genotype and covariate data preprocessing
+   Genotype data preprocessing
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -142,15 +142,20 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="genotype/plink_to_vcf.html">
-     Genotype data reformatting
+    <a class="reference internal" href="genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="genotype/genotype_formatting.html">
+     Genotype data reformat
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="phenotype_preprocessing.html">
-   Genotype and covariate data preprocessing
+   Phenotype data preprocessing
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -164,15 +169,15 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="phenotype/remove_covariates.html">
-     Molecular phenotype residuals
+    <a class="reference internal" href="phenotype/phenotype_formatting.html">
+     Phenotype data reformat
     </a>
    </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="covariate_preprocessing.html">
-   Genotype and covariate data preprocessing
+   Covariate data preprocessing
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -186,18 +191,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="covariate/GRM.html">
-     Leave one chromosome out GRM
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="covariate/PEER_factor.html">
-     Factor analysis using both PEER and APEX factor
+     Factor analysis using PEER
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="covariate/BiCV_factor.html">
-     Factor analysis using both PEER and APEX factor
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="covariate/remove_covariates.html">
+     Computing covariate residuals
     </a>
    </li>
   </ul>
@@ -211,7 +216,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../association_scan/cisQTL_scan.html">
-   cis/trans QTL analysis workflows
+   cisQTL analysis workflows
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
@@ -233,7 +238,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../association_scan/transQTL_scan.html">
-   cis/trans QTL analysis workflows
+   transQTL analysis workflows
   </a>
  </li>
 </ul>
@@ -245,12 +250,12 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../multivariate/MASH.html">
-   Meta analysis
+   MASH analysis workflow
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../multivariate/METAL.html">
-   Meta analysis
+   METAL workflow
   </a>
  </li>
 </ul>
@@ -262,7 +267,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../fine_mapping/univariate_fine_mapping.html">
-   cis/trans QTL analysis workflows
+   Univariate fine-mapping workflows
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
   <label for="toctree-checkbox-5">
@@ -279,7 +284,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../fine_mapping/multivariate_fine_mapping.html">
-   cis/trans QTL analysis workflows
+   Multivariate fine-mapping workflows
   </a>
  </li>
 </ul>
@@ -401,11 +406,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#process-of-molecular-phenotype-file">
-   Process of molecular phenotype file
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#process-of-genotype-data">
    Process of Genotype data
   </a>
@@ -430,22 +430,7 @@
      LOCO GRM by GCTA
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#whole-genome-qc-for-pca">
-     Whole genome QC for PCA
-    </a>
-   </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#process-of-factor-analysis">
-   Process of Factor analysis
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#output-recipe-generation">
-   Output Recipe Generation
-  </a>
  </li>
 </ul>
 
@@ -458,8 +443,10 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-and-covariate-data-preprocessing">
-<h1>Genotype and covariate data preprocessing<a class="headerlink" href="#genotype-and-covariate-data-preprocessing" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-preprocessing">
+<h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
+<p><strong>FIXME: a general comment – I am thinking this kind of notebook (that sits outside these folders) should be of a tutorial nature. It should only contain <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span></code> commands interactively with enough text explanations. For those who want to run the default analysis they should work with <code class="docutils literal notranslate"><span class="pre">master_control.ipynb</span></code> and generate the commands to run as is. For those who want to customize the analysis, they should refer to each of these “recipe” and change the parameters here. That should cover 95% user cases. People will read the module notebooks only for learning purpose. For those who want to edit the module notebooks we will consider them developers or at least power users and I expect few of them.</strong></p>
+<p><strong>FIXME: specific comment – this pipeline should contain GWAS QC, genotype formatting, GRM and LD calculations</strong></p>
 <p>This is the data processing pipeline for xqtl workflow, containing the generation of:</p>
 <ol class="simple">
 <li><p>Factor from expression</p></li>
@@ -468,7 +455,6 @@
 <li><p>LD from genotype, filtered by grm [TBD]</p></li>
 <li><p>Molecular_phenotype per chrom within selected regions in the format APEX and tensorQTL takes</p></li>
 </ol>
-<p><strong>FIXME: Hao, I am thinking this kind of notebook (that sits outside these folders) should be of a tutorial nature. It should only contain <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span></code> commands interactively with enough text explanations. For those who want to run the default analysis they should work with <code class="docutils literal notranslate"><span class="pre">master_control.ipynb</span></code> and generate the commands to run as is. For those who want to customize the analysis, they should refer to each of these “recipe” and change the parameters here. That should cover 95% user cases. People will read the module notebooks only for learning purpose. For those who want to edit the module notebooks we will consider them developers or at least power users and I expect few of them.</strong></p>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>The input for this workflow is 1 row of the input recipe file, documenting the path to</p>
@@ -494,111 +480,12 @@
 <div class="section" id="excutable">
 <h2>Excutable:<a class="headerlink" href="#excutable" title="Permalink to this headline">¶</a></h2>
 <p>This notebook depends on the scripts of multiple other notebook, the directory those are specify by exe_dir</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">region_extraction</span> \
-            <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">yml</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">queue</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">exe_dir</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span> <span class="o">-</span><span class="n">s</span> <span class="n">build</span> <span class="o">&amp;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="c1"># Work directory &amp; output directory</span>
-<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># The filename name for output data</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;gaow/twas&#39;</span>
-<span class="c1"># name for the analysis output</span>
-<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="nb">str</span>
-<span class="c1"># For cluster jobs, number commands to run per job</span>
-<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c1"># Wall clock time expected</span>
-<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;24h&quot;</span>
-<span class="c1"># Memory expected</span>
-<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;60G&quot;</span>
-<span class="c1"># Number of threads</span>
-<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="c1"># Diretory to the executable</span>
-<span class="kn">parameter:</span> <span class="n">exe_dir</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;~/GIT/ADSPFG-xQTL/workflow&quot;</span><span class="p">)</span>
-<span class="c1"># yml template</span>
-<span class="kn">parameter:</span> <span class="n">yml</span> <span class="o">=</span> <span class="s1">&#39;/home/hs3163/GIT/ADSPFG-xQTL/code/csg.yml&#39;</span>
-<span class="c1"># queue for analysis</span>
-<span class="kn">parameter:</span> <span class="kp">queue</span> <span class="o">=</span> <span class="s2">&quot;csg&quot;</span>
-<span class="c1"># Number of submission</span>
-<span class="kn">parameter:</span> <span class="n">J</span> <span class="o">=</span> <span class="mi">200</span>
-<span class="c1"># Factor Options</span>
-<span class="kn">parameter:</span> <span class="n">factor_option</span><span class="p">:</span> <span class="s2">&quot;APEX&quot;</span>
-
-<span class="c1">## Temp   </span>
-<span class="kn">parameter:</span> <span class="n">container_lmm</span> <span class="o">=</span> <span class="nb">str</span>
-<span class="kn">parameter:</span> <span class="n">container_apex</span> <span class="o">=</span> <span class="nb">str</span>
-
-<span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">region_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
-<span class="c1"># Get the unique chormosome that have regions to be analyzed.</span>
-<span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
-<span class="n">chrom</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="n">regions</span><span class="p">)))</span>
-<span class="n">chrom</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="process-of-molecular-phenotype-file">
-<h2>Process of molecular phenotype file<a class="headerlink" href="#process-of-molecular-phenotype-file" title="Permalink to this headline">¶</a></h2>
-<p>This workflow produce a bed.gz+tabix file for all the molecular pheno data that are included in the region list to feed into APEX factor analysis</p>
-<p>This workflow also produce a bed.gz+tabix for each chromosome for downstream QTL association analysis(bed.gz+tabiz for Apex and bed.gz for tensorQTL)</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Region_extraction_1</span><span class="p">]</span>
-<span class="c1"># Path to the input molecular phenotype data.</span>
-<span class="kn">parameter:</span> <span class="n">molecular_pheno_whole</span> <span class="o">=</span> <span class="n">path</span>
-
-<span class="kn">input:</span> <span class="n">molecular_pheno_whole</span><span class="p">,</span><span class="n">region_list</span>
-<span class="kn">output:</span> <span class="n">molecular_pheno_whole_bed</span><span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Phenotype/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.mol_phe.bed.gz&#39;</span><span class="p">,</span>
-        <span class="n">molecular_pheno_chr</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Phenotype/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.chr</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.mol_phe.bed.gz&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrom</span><span class="p">]</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Phenotype</span><span class="o">/</span><span class="n">Region_extraction</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">region_extraction</span> \
-            <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Phenotype</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">molecular_pheno_whole</span> <span class="err">$</span><span class="p">[</span><span class="n">molecular_pheno_whole</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">region_list</span> <span class="err">$</span><span class="p">[</span><span class="n">region_list</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Region_extraction_2</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">named_output</span><span class="p">(</span><span class="s2">&quot;molecular_pheno_chr&quot;</span><span class="p">)</span>
-<span class="kn">output:</span> <span class="n">molecular_pheno_chr_list</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Phenotype/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.mol_phe.chr_list&#39;</span>
-<span class="kn">python:</span><span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> <span class="s2">&quot;molecular_pheno_chr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]})</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 </div>
 <div class="section" id="process-of-genotype-data">
 <h2>Process of Genotype data<a class="headerlink" href="#process-of-genotype-data" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="qc-for-missingness-and-maf">
 <h3>QC for Missingness and MAF<a class="headerlink" href="#qc-for-missingness-and-maf" title="Permalink to this headline">¶</a></h3>
+<p><strong>FIXME: here you should improve GWAS_QC.ipynb so that it takes a list of genotypes. You only call <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span> <span class="pre">GWAS_QC.ipynb</span></code> without having to do any preprocessing here.</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">genotype_qc_1</span><span class="p">]</span>
@@ -850,37 +737,6 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">phenoFile_mod</span><span class="p">]</span>
-<span class="c1"># The phenotypic file, in bed</span>
-<span class="c1"># Population lable: 2 column: IID + RACE</span>
-<span class="kn">parameter:</span> <span class="n">pop_file</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Region_extraction_1&quot;</span><span class="p">)[</span><span class="s2">&quot;molecular_pheno_whole_bed&quot;</span><span class="p">]</span>
-<span class="kn">output:</span>  <span class="n">phenoFile_mod</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Genotype/PCA/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.exp&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span> 
-        <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">mtx</span> <span class="o">=</span> <span class="n">phenoFile</span><span class="p">[,</span><span class="mi">5</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">)]</span>
-        <span class="n">rownames</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span> <span class="o">=</span> <span class="n">phenoFile</span><span class="err">$</span><span class="n">gene_ID</span>
-        <span class="c1"># each row is a sample each column is a gene</span>
-        <span class="n">mtx</span> <span class="o">&lt;-</span> <span class="n">t</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">mtx</span><span class="p">,</span> <span class="n">rownames</span> <span class="o">=</span> <span class="n">T</span><span class="p">))</span>
-        <span class="n">mtx</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s2">&quot;IID&quot;</span><span class="p">)</span> 
-        <span class="n">phenoMtr</span> <span class="o">=</span> <span class="n">phenoFile</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
-        <span class="k">if</span><span class="p">(</span><span class="s2">&quot;$[pop_file]&quot;</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">){</span>
-        <span class="c1"># Make artificial pop lable</span>
-          <span class="n">output</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">RACE</span> <span class="o">=</span> <span class="s2">&quot;RACE_1&quot;</span><span class="p">)</span>
-          <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-          <span class="n">pop</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[pop_file]&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-          <span class="n">output</span> <span class="o">=</span> <span class="n">inner_join</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span><span class="n">mtx</span><span class="p">,</span><span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;IID&quot;</span><span class="p">)</span>
-          <span class="p">}</span>
-          <span class="n">output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_model</span><span class="p">]</span>
 <span class="c1"># Plink binary file</span>
 <span class="c1">## The phenotypic file</span>
@@ -996,77 +852,6 @@
             <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="whole-genome-qc-for-pca">
-<h3>Whole genome QC for PCA<a class="headerlink" href="#whole-genome-qc-for-pca" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="process-of-factor-analysis">
-<h2>Process of Factor analysis<a class="headerlink" href="#process-of-factor-analysis" title="Permalink to this headline">¶</a></h2>
-<p>Based on the selection of method, PEER vs APEX, for factor analysis, the input file will be different. For apex, the input file is a bed.gz file, with tbi index. For peer, the molecular pheno file itself shall suffice</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Factor_analysis</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">covariate</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="c1"># N PEER factors, If do not specify or specified as 0, default values suggested by </span>
-<span class="c1"># UCSC (based on different sample size) Will be used</span>
-<span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="c1"># Default values from PEER:</span>
-<span class="c1">## The number of iteration</span>
-<span class="kn">parameter:</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="c1">## Prior parameters</span>
-<span class="kn">parameter:</span> <span class="n">Alpha_a</span> <span class="o">=</span> <span class="mf">0.001</span>
-<span class="kn">parameter:</span> <span class="n">Alpha_b</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="kn">parameter:</span> <span class="n">Eps_a</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="kn">parameter:</span> <span class="n">Eps_b</span> <span class="o">=</span> <span class="mf">10.</span>
-<span class="c1">## Tolarance parameters</span>
-<span class="kn">parameter:</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.001</span>
-<span class="kn">parameter:</span> <span class="n">var_tol</span> <span class="o">=</span> <span class="mf">1e-08</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Region_extraction_1&quot;</span><span class="p">)[</span><span class="s2">&quot;molecular_pheno_whole_bed&quot;</span><span class="p">],</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;plink2vcf&quot;</span><span class="p">)[</span><span class="s2">&quot;qced_vcf_genotype_list&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">Factor_analysis</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/Factor_and_Covariate/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">factor_option</span><span class="si">}</span><span class="s1">.cov&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Factor_and_Covariate</span><span class="o">/</span><span class="n">factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="err">$</span><span class="p">[</span><span class="n">factor_option</span><span class="p">]</span>  \
-            <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Factor_and_Covariate</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_apex</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">molecular_pheno</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="n">N</span> <span class="err">$</span><span class="p">[</span><span class="n">N</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">Alpha_a</span> <span class="err">$</span><span class="p">[</span><span class="n">Alpha_a</span><span class="p">]</span>  \
-            <span class="o">--</span><span class="n">Alpha_b</span> <span class="err">$</span><span class="p">[</span><span class="n">Alpha_b</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">Eps_a</span>  <span class="err">$</span><span class="p">[</span><span class="n">Eps_a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">Eps_b</span>  <span class="err">$</span><span class="p">[</span><span class="n">Eps_b</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">tol</span>  <span class="err">$</span><span class="p">[</span><span class="n">tol</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">var_tol</span> <span class="err">$</span><span class="p">[</span><span class="n">var_tol</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--covariate </span><span class="si">{</span><span class="n">covariate</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">covariate</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="output-recipe-generation">
-<h2>Output Recipe Generation<a class="headerlink" href="#output-recipe-generation" title="Permalink to this headline">¶</a></h2>
-<p>This step generate a list to document all the output of this step, so that they could be easily accessible by the next step</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Recipe</span><span class="p">]</span>
-<span class="c1"># Molecular_pheno</span>
-<span class="kn">input:</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Region_extraction_2&quot;</span><span class="p">)[</span><span class="s2">&quot;molecular_pheno_chr_list&quot;</span><span class="p">],</span>
-        <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;GRM&quot;</span><span class="p">)[</span><span class="s2">&quot;GRM&quot;</span><span class="p">],</span>
-        <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_qc_2&quot;</span><span class="p">)[</span><span class="s2">&quot;qced_plink_genotype_list&quot;</span><span class="p">],</span>
-        <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;plink2vcf&quot;</span><span class="p">)[</span><span class="s2">&quot;qced_vcf_genotype_list&quot;</span><span class="p">],</span>
-        <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca_factor&quot;</span><span class="p">)</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.data_proc_output_recipe.tsv&#39;</span>
-<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]]</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;molecular_pheno_chr_list&quot;</span><span class="p">,</span><span class="s2">&quot;grm_list&quot;</span><span class="p">,</span>
-                                        <span class="s2">&quot;qced_plink_genotype_list&quot;</span><span class="p">,</span><span class="s2">&quot;qced_vcf_genotype_list&quot;</span><span class="p">,</span><span class="s2">&quot;covariate_factor_pca&quot;</span><span class="p">]</span>  <span class="p">)</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;$[name]&quot;</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
-</pre></div>
 </div>
 </div>
 </div>

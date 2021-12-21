@@ -428,16 +428,31 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#data-processing">
-   Data Processing
+  <a class="reference internal nav-link" href="#molecular-phenotype-calling">
+   Molecular Phenotype Calling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preprocessing">
+   Data Preprocessing
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example">
-     Example:
+    <a class="reference internal nav-link" href="#molecular-phenotype-processing">
+     Molecular Phenotype Processing
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#genotype-processing">
+     Genotype Processing
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#factor-analysis">
+   Factor analysis
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#qtl-associations">
@@ -445,7 +460,7 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
+    <a class="reference internal nav-link" href="#example">
      Example:
     </a>
    </li>
@@ -457,7 +472,7 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
+    <a class="reference internal nav-link" href="#id1">
      Example
     </a>
    </li>
@@ -469,7 +484,7 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id3">
+    <a class="reference internal nav-link" href="#id2">
      Example
     </a>
    </li>
@@ -641,45 +656,180 @@ Conditions:
 </div>
 </div>
 </div>
-<div class="section" id="data-processing">
-<h2>Data Processing<a class="headerlink" href="#data-processing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="molecular-phenotype-calling">
+<h2>Molecular Phenotype Calling<a class="headerlink" href="#molecular-phenotype-calling" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="data-preprocessing">
+<h2>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="molecular-phenotype-processing">
+<h3>Molecular Phenotype Processing<a class="headerlink" href="#molecular-phenotype-processing" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="genotype-processing">
+<h3>Genotype Processing<a class="headerlink" href="#genotype-processing" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">data_proc</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">genotype_QC</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Data_Processing/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.data_proc_output_recipe.tsv&#39;</span>
+<span class="kn">output:</span> <span class="n">per_chrom_plink_list</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/qc/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.processed_genotype.plink_per_chrom.recipe&#39;</span><span class="p">,</span>
+        <span class="n">merged_plink</span> <span class="o">=</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/qc/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.mergrd.bed&#39;</span><span class="p">,</span>
+        <span class="n">unrelated</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/qc/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.mergrd.unrelated.bed&#39;</span><span class="p">,</span>
+        <span class="n">related</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/qc/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.mergrd.related.bed&#39;</span>
 <span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
 <span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Recipe</span> \
-        <span class="o">--</span><span class="n">molecular_pheno_whole</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;molecular_pheno&quot;</span><span class="p">]]</span> \
-        <span class="o">--</span><span class="n">region_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;region_list&quot;</span><span class="p">]]</span> \
+    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">output</span> \
         <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;genotype_list&quot;</span><span class="p">]]</span> \
-        <span class="o">--</span><span class="n">covariate</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;covariate_file&quot;</span><span class="p">]]</span> \
         <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
         <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-        <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-        <span class="o">--</span><span class="n">container_apex</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> \
-        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span> \
-        <span class="o">--</span><span class="n">factor_option</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;factor_analysis_opt&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">qc</span><span class="o">/</span> \
         <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="example">
-<h3>Example:<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
-<p>sos run /home/hs3163/GIT/ADSPFG-xQTL/workflow/Data_Processing/Data_Processing.ipynb Recipe <br />
-–molecular_pheno_whole /home/hs3163/Project/Rosmap/data/gene_exp/PCC/geneTpmResidualsAgeGenderAdj_rename.txt <br />
-–region_list ~/GIT/ADSPFG-xQTL/MWE/mwe_region_long <br />
-–genotype_list /home/hs3163/GIT/ADSPFG-xQTL/MWE/mwe_genotype_list <br />
-–covariate None <br />
-–name PCC <br />
-–container_lmm /mnt/mfs/statgen/containers/lmm.sif <br />
-–container /mnt/mfs/statgen/containers/twas_latest.sif <br />
-–container_apex /mnt/mfs/statgen/containers/apex.sif <br />
-–wd /mnt/mfs/statgen/xqtl_workflow_testing/testing_no_cov/Data_Processing/ <br />
-–factor_option APEX <br />
--J 200 -q csg -c /home/hs3163/GIT/ADSPFG-xQTL/code/csg.yml</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">genotype_reformatting</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_QC&quot;</span><span class="p">)[</span><span class="s2">&quot;per_chrom_plink_list&quot;</span><span class="p">],</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="n">vcf_list</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/vcf/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.vcf.recipe&#39;</span><span class="p">,</span>
+        <span class="n">per_gene_plink</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/per_gene/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.per_gene_plink.recipe&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
+<span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink2vcf</span> \
+        <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+        <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">vcf</span><span class="o">/</span> \
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
+
+     <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_gene</span> \
+        <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+        <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">region_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;region_list&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span> \
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">LD</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_reformatting&quot;</span><span class="p">)[</span><span class="s2">&quot;per_gene_plink&quot;</span><span class="p">],</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/LD/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">._LD_recipe&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
+<span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+     <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">LD</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">LD</span> \
+        <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+        <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">region_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;region_list&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">LD</span><span class="o">/</span> \
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">LD_Recipe</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;LD&quot;</span><span class="p">),</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/LD/sumstat_list&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">input_list</span> <span class="o">=</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]</span>
+    <span class="n">ld_recipe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">input_list</span><span class="p">)):</span>
+        <span class="n">ld_recipe</span> <span class="o">=</span> <span class="n">ld_recipe</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">input_list</span><span class="p">[</span><span class="n">x</span><span class="p">],</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">))</span>
+    <span class="n">ld_recipe</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">GRM</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_QC&quot;</span><span class="p">)[</span><span class="s2">&quot;per_chrom_plink_list&quot;</span><span class="p">],</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/data_preprocessing/genotype/grm/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.grm_list.txt&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
+<span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+     <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">GRM</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">GRM</span> \
+        <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+        <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">grm</span><span class="o">/</span> \
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="factor-analysis">
+<h2>Factor analysis<a class="headerlink" href="#factor-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">factor</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_reformatting&quot;</span><span class="p">)[</span><span class="s2">&quot;vcf_list&quot;</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;phenotype_reformating&quot;</span><span class="p">)</span> <span class="p">,</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/data_Processing/covariate/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;factor_analysis_opt&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.factor.cov&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
+<span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;factor_analysis_opt&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">ipynb</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;factor_analysis_opt&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">molecular_pheno_whole</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">region_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;region_list&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">genotype</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span> \
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--covariate </span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;covariate_file&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">covariate</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_QC&quot;</span><span class="p">)[</span><span class="s2">&quot;related&quot;</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_QC&quot;</span><span class="p">)[</span><span class="s2">&quot;unrelated&quot;</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;phenotype_reformating&quot;</span><span class="p">),</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/data_preprocessing/covariate/pca/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.pca.cov&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
+<span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+     <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PCA</span> \
+        <span class="o">--</span><span class="n">related</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">unrelated</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">molecular_phenotype</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span> \
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_factor_merge</span><span class="p">]</span>
+<span class="c1">## PCA models</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca&quot;</span><span class="p">),</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;factor&quot;</span><span class="p">)</span>
+<span class="kn">output:</span> <span class="n">pca_factor</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.pca.cov&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;modelr&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+        <span class="n">pca_output</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[0]]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">mtx</span> <span class="o">=</span> <span class="n">pca_output</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;PC&quot;</span><span class="p">))</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
+        <span class="n">colnames</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">pca_output</span><span class="err">$</span><span class="n">IID</span>
+        <span class="n">mtx</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">()</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="s2">&quot;#id&quot;</span> <span class="o">=</span> <span class="n">rownames</span><span class="p">(</span><span class="n">mtx</span><span class="p">))</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;#id&quot;</span><span class="p">,</span><span class="n">everything</span><span class="p">())</span>
+        <span class="n">factor_cov</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[1]]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">bind_rows</span><span class="p">(</span><span class="n">factor_cov</span><span class="p">,</span><span class="n">mtx</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="qtl-associations">
@@ -687,23 +837,25 @@ Conditions:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">QTL_1</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;data_proc&quot;</span><span class="p">),</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/QTL_association/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_tool_option&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_analysis_option&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">_QTL_recipe.tsv&#39;</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca_factor_merge&quot;</span><span class="p">),</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;grm&quot;</span><span class="p">),</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;phenotype_reformatting&quot;</span><span class="p">)[</span><span class="s2">&quot;per_chrom_pheno&quot;</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;genotype_reformatting&quot;</span><span class="p">)[</span><span class="s2">&quot;vcf_list&quot;</span><span class="p">],</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/association_scan/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_tool_option&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_analysis_option&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.QTL_output_recipe.tsv&#39;</span>
 <span class="c1">#task: trunk_workers = 1, trunk_size = 1, walltime = &#39;24h&#39;,  mem = &#39;40G&#39;, tags = f&#39;{step_name}_{_output[0]:bn}&#39;</span>
 <span class="kn">bash:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">QTL_association</span><span class="o">/</span><span class="n">QTL_association</span><span class="o">.</span><span class="n">ipynb</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_tool_option&quot;</span><span class="p">]]</span><span class="n">_</span><span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_analysis_option&quot;</span><span class="p">]]</span><span class="n">_Recipe</span> \
-        <span class="o">--</span><span class="n">recipe</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
+    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">association_scan</span><span class="o">/</span><span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_tool_option&quot;</span><span class="p">]]</span><span class="o">/</span><span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_tool_option&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">ipynb</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_analysis_option&quot;</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">molecular_pheno</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">covariate</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>\
+        <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> \
         <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> \
         <span class="o">--</span><span class="n">window</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;cis_windows&quot;</span><span class="p">]]</span> \
         <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]]</span>  \
-        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">QTL_association</span><span class="o">/</span> \
-        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>
+        <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">:</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">QTL_association</span><span class="o">/</span> \       
+        <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--grm </span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;QTL_tool_option&quot;</span><span class="p">]]</span> <span class="o">==</span> <span class="s2">&quot;APEX&quot;</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="id1">
-<h3>Example:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="example">
+<h3>Example:<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
 <p>sos run /home/hs3163/GIT/ADSPFG-xQTL/workflow/QTL_association/QTL_association.ipynb APEX_cis_Recipe <br />
 –recipe Data_Processing/PCC.data_proc_output_recipe.tsv <br />
 –container /mnt/mfs/statgen/containers/apex.sif <br />
@@ -760,8 +912,8 @@ Conditions:
 </div>
 </div>
 </div>
-<div class="section" id="id2">
-<h3>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>sos run /home/hs3163/GIT/ADSPFG-xQTL/workflow/Meta_Analysis/Meta_Analysis.ipynb Recipe <br />
 –sumstat_list_path /mnt/mfs/statgen/xqtl_workflow_testing/testing_no_cov/QTL_association/sumstat_list <br />
 –region_list ~/GIT/ADSPFG-xQTL/MWE/mwe_region_long <br />
@@ -798,8 +950,8 @@ Conditions:
 </div>
 </div>
 </div>
-<div class="section" id="id3">
-<h3>Example<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>sos run /home/hs3163/GIT/ADSPFG-xQTL/workflow/Fine_Mapping/SumStat/SuSiE_RSS.ipynb Fine_mapping <br />
 –recipe /mnt/mfs/statgen/xqtl_workflow_testing/testing_no_cov/Meta_analysis/Fine_mapping_recipe.txt <br />
 –LD_Recipe /home/hs3163/GIT/ADSPFG-xQTL/MWE/LD_Recipe <br />

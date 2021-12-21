@@ -12,3 +12,23 @@ https://cumc.github.io/xqtl-pipeline
 
 
 ![APA Diagram](images/Aqtl_v1.png)
+
+## Contributors
+
+This repository is developed by the ADSP FG Brain xQTL consortium.
+
+### Lead developers
+
+Brain xQTL methods and analysis subgroup
+
+- Gao Wang (PI), Department of Neurology, Columbia University
+- Hao Sun, Department of Neurology, Columbia University
+- Wenhao Gou, Department of Biostatistics, Columbia University
+- Amanda Tsai, Department of Biostatistics, Columbia University  
+- Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
+
+### Consortium contributors
+
+scRNA-seq deconvolution
+
+- 

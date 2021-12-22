@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Genotype data preprocessing &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -104,7 +105,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../complete_analysis/eQTL_analysis.html">
-   eQTL analysis complete workflow
+   Bulk RNA-seq eQTL analysis
   </a>
  </li>
 </ul>
@@ -324,6 +325,11 @@
      Fine-mapping with SuSiE RSS model
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fine_mapping/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -487,7 +493,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-preprocessing">
+  <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-preprocessing">
 <h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
 <p><strong>FIXME: a general comment – I am thinking this kind of notebook (that sits outside these folders) should be of a tutorial nature. It should only contain <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span></code> commands interactively with enough text explanations. For those who want to run the default analysis they should work with <code class="docutils literal notranslate"><span class="pre">master_control.ipynb</span></code> and generate the commands to run as is. For those who want to customize the analysis, they should refer to each of these “recipe” and change the parameters here. That should cover 95% user cases. People will read the module notebooks only for learning purpose. For those who want to edit the module notebooks we will consider them developers or at least power users and I expect few of them.</strong></p>
 <p><strong>FIXME: specific comment – this pipeline should contain GWAS QC, genotype formatting, GRM and LD calculations</strong></p>
@@ -499,7 +505,7 @@
 <li><p>LD from genotype, filtered by grm [TBD]</p></li>
 <li><p>Molecular_phenotype per chrom within selected regions in the format APEX and tensorQTL takes</p></li>
 </ol>
-<div class="section" id="input">
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>The input for this workflow is 1 row of the input recipe file, documenting the path to</p>
 <ol class="simple">
@@ -508,8 +514,8 @@
 <li><p>1 file documenting the list of region to be analyzed</p></li>
 <li></li>
 </ol>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>For each collection, the output is 23 sets of :</p>
 <ol class="simple">
@@ -520,14 +526,14 @@
 <ol class="simple">
 <li><p>PCA + Factor + Covariate file</p></li>
 </ol>
-</div>
-<div class="section" id="excutable">
+</section>
+<section id="excutable">
 <h2>Excutable:<a class="headerlink" href="#excutable" title="Permalink to this headline">¶</a></h2>
 <p>This notebook depends on the scripts of multiple other notebook, the directory those are specify by exe_dir</p>
-</div>
-<div class="section" id="process-of-genotype-data">
+</section>
+<section id="process-of-genotype-data">
 <h2>Process of Genotype data<a class="headerlink" href="#process-of-genotype-data" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="qc-for-missingness-and-maf">
+<section id="qc-for-missingness-and-maf">
 <h3>QC for Missingness and MAF<a class="headerlink" href="#qc-for-missingness-and-maf" title="Permalink to this headline">¶</a></h3>
 <p><strong>FIXME: here you should improve GWAS_QC.ipynb so that it takes a list of genotypes. You only call <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span> <span class="pre">GWAS_QC.ipynb</span></code> without having to do any preprocessing here.</strong></p>
 <div class="cell docutils container">
@@ -633,8 +639,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="plink2vcf">
+</section>
+<section id="plink2vcf">
 <h3>PLINK2VCF<a class="headerlink" href="#plink2vcf" title="Permalink to this headline">¶</a></h3>
 <p>This step takes genotype_list documenting filtered plink file(output from genotype qc), turn them into vcf format so that APEX can used and also create a list documenting them</p>
 <div class="cell docutils container">
@@ -655,8 +661,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="pca">
+</section>
+<section id="pca">
 <h3>PCA<a class="headerlink" href="#pca" title="Permalink to this headline">¶</a></h3>
 <p>This is a five step workflow that act on a list qced genotype file to generate a genome wide PCA</p>
 <ol class="simple">
@@ -875,8 +881,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="loco-grm-by-gcta">
+</section>
+<section id="loco-grm-by-gcta">
 <h3>LOCO GRM by GCTA<a class="headerlink" href="#loco-grm-by-gcta" title="Permalink to this headline">¶</a></h3>
 <p>GRM was used due to the advantage of gcta where seperate sets of bfile can be feeded to generate the grm result without merging them. A list of bfile that are used to generate the GRM are listed</p>
 <div class="cell docutils container">
@@ -898,11 +904,11 @@
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 <div class="toctree-wrapper compound">
 </div>
-</div>
+</section>
 
     <script type="text/x-thebe-config">
     {

@@ -27,10 +27,8 @@ Brain xQTL methods and analysis subgroup
 - Amanda Tsai, Department of Biostatistics, Columbia University  
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
 
-### Consortium collaborators
+### Consortium contributors
 
-Single-cell nucleotide RNA-seq
-
-- 
+scRNA-seq deconvolution
 
 - 

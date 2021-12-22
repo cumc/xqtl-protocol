@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>eQTL summary statistics formatting &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -106,7 +107,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
-   eQTL analysis complete workflow
+   Bulk RNA-seq eQTL analysis
   </a>
  </li>
 </ul>
@@ -326,6 +327,11 @@
      Fine-mapping with SuSiE RSS model
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -535,7 +541,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="eqtl-summary-statistics-formatting">
+  <section class="tex2jax_ignore mathjax_ignore" id="eqtl-summary-statistics-formatting">
 <h1>eQTL summary statistics formatting<a class="headerlink" href="#eqtl-summary-statistics-formatting" title="Permalink to this headline">¶</a></h1>
 <p>This workflow converts <code class="docutils literal notranslate"><span class="pre">fastqtl</span></code> eQTL analysis summary statistics text output to formats more friendly to R analysis. In particular:</p>
 <ol class="simple">
@@ -543,9 +549,9 @@
 <li><p>It combines multiple studies into one single HDF5 file. In the context of GTEx each study is result from one tissue.</p></li>
 <li><p>For MASH analysis in particular, it extracts from the complete data a subset of results to compute data driven MASH prior covariance, and to fit the MASH mixture model.</p></li>
 </ol>
-<div class="section" id="input-data">
+<section id="input-data">
 <h2>Input data<a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="a-list-of-summary-statistics">
+<section id="a-list-of-summary-statistics">
 <h3>A list of summary statistics<a class="headerlink" href="#a-list-of-summary-statistics" title="Permalink to this headline">¶</a></h3>
 <p>Summary statistics from <code class="docutils literal notranslate"><span class="pre">fasteqtl</span></code>-like output are in text format, one row per gene-snp pair. Columns in our example data-set are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gene_id</span> 
@@ -572,24 +578,24 @@
 <li><p>Specify 2 numbers for  <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> and p-value. <span class="math notranslate nohighlight">\(\text{SE}(\hat{\beta})\)</span> will then be computed on the fly assuming that the test is two-sided test and that <span class="math notranslate nohighlight">\(\hat{\beta}/\text{SE}(\hat{\beta})\)</span> is standard normal.</p></li>
 </ol>
 <p>Current default is <code class="docutils literal notranslate"><span class="pre">--cols</span> <span class="pre">8</span> <span class="pre">9</span> <span class="pre">7</span></code>. <strong>Currently this pipeline only supports and requires summary statistics <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>, <span class="math notranslate nohighlight">\(\text{SE}(\hat{\beta})\)</span> and p-value, not other quantities (eg t statistic)</strong>.</p>
-</div>
-<div class="section" id="a-list-of-gene-names-optional">
+</section>
+<section id="a-list-of-gene-names-optional">
 <h3>A list of gene names (optional)<a class="headerlink" href="#a-list-of-gene-names-optional" title="Permalink to this headline">¶</a></h3>
 <p>To speed up merging multiple HDF5 files it helps to provide a list of gene names. Otherwise it takes too much time to figure them out from individual HDF5 files before merger can happen. The gene list has the contents like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ENSG00000186092</span><span class="o">.</span><span class="mi">4</span>
-<span class="n">ENSG00000227232</span><span class="o">.</span><span class="mi">5</span>
-<span class="n">ENSG00000228463</span><span class="o">.</span><span class="mi">9</span>
-<span class="n">ENSG00000241860</span><span class="o">.</span><span class="mi">6</span>
-<span class="n">ENSG00000268903</span><span class="o">.</span><span class="mi">1</span>
-<span class="n">ENSG00000269981</span><span class="o">.</span><span class="mi">1</span>
-<span class="n">ENSG00000279457</span><span class="o">.</span><span class="mi">4</span>
-<span class="n">ENSG00000279928</span><span class="o">.</span><span class="mi">2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ENSG00000186092</span><span class="mf">.4</span>
+<span class="n">ENSG00000227232</span><span class="mf">.5</span>
+<span class="n">ENSG00000228463</span><span class="mf">.9</span>
+<span class="n">ENSG00000241860</span><span class="mf">.6</span>
+<span class="n">ENSG00000268903</span><span class="mf">.1</span>
+<span class="n">ENSG00000269981</span><span class="mf">.1</span>
+<span class="n">ENSG00000279457</span><span class="mf">.4</span>
+<span class="n">ENSG00000279928</span><span class="mf">.2</span>
 <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="run-analysis">
+</section>
+</section>
+<section id="run-analysis">
 <h2>Run analysis<a class="headerlink" href="#run-analysis" title="Permalink to this headline">¶</a></h2>
 <p>Under the same folder as this list file, you keep all these listed data files. Then you run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">JOB_OPTION</span><span class="o">=</span><span class="s2">&quot;-j 8&quot;</span>
@@ -608,15 +614,15 @@
 </pre></div>
 </div>
 <p>to convert to HDF5 AND extract MASH input.</p>
-<div class="section" id="note-on-job-option">
+<section id="note-on-job-option">
 <h3>Note on <code class="docutils literal notranslate"><span class="pre">JOB_OPTION</span></code><a class="headerlink" href="#note-on-job-option" title="Permalink to this headline">¶</a></h3>
 <p>With bash variable <code class="docutils literal notranslate"><span class="pre">JOB_OPTION</span></code> set to <code class="docutils literal notranslate"><span class="pre">-q</span> <span class="pre">midway2</span> <span class="pre">-c</span> <span class="pre">midway2.yml</span></code>, each workflow is configured to run on UChicago RCC’s midway2 cluster, via <code class="docutils literal notranslate"><span class="pre">task</span></code> option.
 When executed as is, it takes 33hrs to convert the summary statistics for GTEx data (Release V8).
 You might need to configure <code class="docutils literal notranslate"><span class="pre">task</span></code> differently for your computing environment if you are familiar with <code class="docutils literal notranslate"><span class="pre">SoS</span></code>.
 Otherwise, you can use the <code class="docutils literal notranslate"><span class="pre">JOB_OPTION</span></code> <code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">8</span></code> to use 8 CPU threads.</p>
-</div>
-</div>
-<div class="section" id="more-options">
+</section>
+</section>
+<section id="more-options">
 <h2>More options<a class="headerlink" href="#more-options" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_report_cell docutils container">
 <div class="cell_input docutils container">
@@ -688,8 +694,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="output-data">
+</section>
+<section id="output-data">
 <h2>Output data<a class="headerlink" href="#output-data" title="Permalink to this headline">¶</a></h2>
 <p>If you run the entire workflow, you should find under <code class="docutils literal notranslate"><span class="pre">./fastqtl_to_mash_output</span></code> (can be configured):</p>
 <ul class="simple">
@@ -724,10 +730,10 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="pipeline-details">
+</section>
+<section id="pipeline-details">
 <h2>Pipeline details<a class="headerlink" href="#pipeline-details" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="hdf5-utilities">
+<section id="hdf5-utilities">
 <h3>HDF5 utilities<a class="headerlink" href="#hdf5-utilities" title="Permalink to this headline">¶</a></h3>
 <p>The HDF5 Python interface <code class="docutils literal notranslate"><span class="pre">pytables</span></code> is used to program the data format conversion workhorse. You can use command, eg, <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">tables</span></code> to install <code class="docutils literal notranslate"><span class="pre">pytables</span></code> package.</p>
 <div class="cell docutils container">
@@ -1037,10 +1043,10 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="convert-to-hdf5-format">
+</section>
+<section id="convert-to-hdf5-format">
 <h3>Convert to HDF5 format<a class="headerlink" href="#convert-to-hdf5-format" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="per-study-tissue-conversion">
+<section id="per-study-tissue-conversion">
 <h4>Per study (tissue) conversion<a class="headerlink" href="#per-study-tissue-conversion" title="Permalink to this headline">¶</a></h4>
 <p>For per study conversion I use <code class="docutils literal notranslate"><span class="pre">bzip2</span></code> compression method and <code class="docutils literal notranslate"><span class="pre">float32</span></code> to achieve higher compression rate. This workflow step will generate one HDF5 file per summary statistics file. <code class="docutils literal notranslate"><span class="pre">h5copy</span></code> program can be installed via <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">hdf5</span></code>.</p>
 <div class="cell docutils container">
@@ -1090,8 +1096,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="merge-per-study-tissue-hdf5-to-one-hdf5">
+</section>
+<section id="merge-per-study-tissue-hdf5-to-one-hdf5">
 <h4>Merge per study (tissue) HDF5 to one HDF5<a class="headerlink" href="#merge-per-study-tissue-hdf5-to-one-hdf5" title="Permalink to this headline">¶</a></h4>
 <p>This step creates tables for each summary statistic per gene from multiple studies. Rows are effects (SNPs), columns are conditions (tissue names). This time I use <code class="docutils literal notranslate"><span class="pre">zlib</span></code> compression for better compatibility with other HDF5 routines (eg <code class="docutils literal notranslate"><span class="pre">rhdf5</span></code>).</p>
 <div class="cell docutils container">
@@ -1135,9 +1141,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="extract-data-for-mash-model">
+</section>
+</section>
+<section id="extract-data-for-mash-model">
 <h3>Extract data for MASH model<a class="headerlink" href="#extract-data-for-mash-model" title="Permalink to this headline">¶</a></h3>
 <p>We need to extract the “top” signals based on single tissue analysis to compute MASH priors, as well as some random SNP sets to fit MASH mixture model.</p>
 <div class="cell docutils container">
@@ -1204,8 +1210,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="compute-z-score-and-save-to-rds">
+</section>
+<section id="compute-z-score-and-save-to-rds">
 <h3>Compute Z score and save to RDS<a class="headerlink" href="#compute-z-score-and-save-to-rds" title="Permalink to this headline">¶</a></h3>
 <p>Here I also implemented two command options to subset data:</p>
 <ul class="simple">
@@ -1336,9 +1342,9 @@ Sections
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">*.z</span></code>, <code class="docutils literal notranslate"><span class="pre">*.b</span></code> and <code class="docutils literal notranslate"><span class="pre">*.s</span></code> stands for z-scores, <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> and <span class="math notranslate nohighlight">\(\text{SE}(\hat{\beta})\)</span> (standard error). <code class="docutils literal notranslate"><span class="pre">strong</span></code> is data of the “strongest” gene-SNP pair; <code class="docutils literal notranslate"><span class="pre">random</span></code> is a random subset of gene-SNP pairs. They are used to find pattern of sharing in strong signals and learning mixture weights. Additionally <code class="docutils literal notranslate"><span class="pre">random.test.*</span></code> is a seperate random data-set that can be used to assess fit / overfit of the MASH mixture model.</p>
-</div>
-</div>
-<div class="section" id="export-workflow-documentation-to-html-format">
+</section>
+</section>
+<section id="export-workflow-documentation-to-html-format">
 <h2>Export workflow documentation to HTML format<a class="headerlink" href="#export-workflow-documentation-to-html-format" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">workflow</span><span class="o">/</span><span class="n">fastqtl_to_mash</span> <span class="n">document_it</span>
 </pre></div>
@@ -1356,8 +1362,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Factor analysis using Bi-Cross validation &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -240,11 +239,6 @@
      TensorQTL QTL calling pipeline
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../association_scan/APEX/APEX_LMM.html">
-     APEX QTL calling pipeline
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -445,11 +439,6 @@
    Main code for the pipeline: APEX
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reference">
-   Reference:
-  </a>
- </li>
 </ul>
 
             </nav>
@@ -461,20 +450,64 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="factor-analysis-using-bi-cross-validation">
+  <div class="tex2jax_ignore mathjax_ignore section" id="factor-analysis-using-bi-cross-validation">
 <h1>Factor analysis using Bi-Cross validation<a class="headerlink" href="#factor-analysis-using-bi-cross-validation" title="Permalink to this headline">¶</a></h1>
 <p>Implemented in APEX</p>
-<section id="main-code-for-the-pipeline-apex">
+<div class="section" id="main-code-for-the-pipeline-apex">
 <h2>Main code for the pipeline: APEX<a class="headerlink" href="#main-code-for-the-pipeline-apex" title="Permalink to this headline">¶</a></h2>
 <p>Input:</p>
 <ol class="simple">
 <li><p>a bed file for molecular phenotype
 if covariate file is required:</p></li>
 <li><p>A cov file with colnames as samples and covariates/pca/factor named as #id columns on the side.</p></li>
-<li><p>A vcf file documenting the genotype of the samples for any genetics regions.
-Output:</p></li>
+<li><p>A vcf file documenting the genotype of the samples for any genetics regions.</p></li>
+</ol>
+<p>Output:</p>
+<ol class="simple">
 <li><p>A covariate file with colnames as samples and covariates/pca/factor named as #id columns on the side.</p></li>
 </ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">wd</span>
+<span class="c1"># For cluster jobs, number commands to run per job</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Wall clock time expected</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
+<span class="c1"># Memory expected</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16384&quot;</span>
+<span class="c1"># Number of threads</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># Software container option</span>
+<span class="kn">parameter:</span> <span class="n">container_apex</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="c1"># N PEER factors, If do not specify or specified as 0, default values suggested by </span>
+<span class="c1"># UCSC (based on different sample size) Will be used</span>
+<span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">n_of_factor</span> <span class="o">=</span> <span class="n">N</span>
+
+<span class="c1"># Default values from PEER:</span>
+<span class="c1">## The number of max iteration</span>
+
+<span class="kn">parameter:</span> <span class="n">iteration</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1"># The molecular phenotype matrix, in bed, after annotation</span>
+<span class="kn">parameter:</span> <span class="n">molecular_pheno</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># The covariate file</span>
+<span class="kn">parameter:</span> <span class="n">covariate</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
+
+<span class="c1"># vcf Genotypy list, so that apex factor can run with covariate file input, requirment: vcf shall have the same sample as the cov and molecular phenotype</span>
+<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">vcf_file</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="s2">&quot;dir&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX</span><span class="p">]</span>
@@ -495,16 +528,8 @@ Output:</p></li>
 </div>
 </div>
 </div>
-</section>
-<section id="reference">
-<h2>Reference:<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Codes are adapted from <a class="reference external" href="https://github.com/RTIInternational/biocloud_docker_tools/blob/master/peer/v1.3/run_peer.R">here</a></p></li>
-<li><p>GTEX recommandation of PEER factors is <a class="reference external" href="https://gtexportal.org/home/documentationPage">here</a></p></li>
-<li><p>Examples by PEER is at <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">github</a></p></li>
-</ul>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

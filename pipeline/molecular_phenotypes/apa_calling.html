@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>APA Calling &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -238,11 +237,6 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">
      TensorQTL QTL calling pipeline
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../association_scan/APEX/APEX_LMM.html">
-     APEX QTL calling pipeline
     </a>
    </li>
   </ul>
@@ -553,13 +547,13 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="apa-calling">
+  <div class="tex2jax_ignore mathjax_ignore section" id="apa-calling">
 <h1>APA Calling<a class="headerlink" href="#apa-calling" title="Permalink to this headline">¶</a></h1>
-<section id="aim">
+<div class="section" id="aim">
 <h2>Aim<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
 <p>The purpose of this notebook is to call APA-based information (PDUI) based on DAPARS2 method
 (<a class="reference external" href="https://github.com/3UTR/DaPars2">https://github.com/3UTR/DaPars2</a>).</p>
-<section id="methods-overview">
+<div class="section" id="methods-overview">
 <h3>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h3>
 <p>(Optional) 3UTR Generation:</p>
 <ul>
@@ -582,16 +576,16 @@
 </li>
 </ul>
 <p>3 - Impute missing values in Dapars result</p>
-<section id="dependence">
+<div class="section" id="dependence">
 <h4>Dependence<a class="headerlink" href="#dependence" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p><em>Python2</em> (Note: codes in python2 can be update to Python 3 easily)</p></li>
 <li><p><em>Python3</em></p></li>
 <li><p><em>R</em></p></li>
 </ul>
-</section>
-</section>
-<section id="input-for-the-whole-pipeline">
+</div>
+</div>
+<div class="section" id="input-for-the-whole-pipeline">
 <h3>Input for the whole Pipeline<a class="headerlink" href="#input-for-the-whole-pipeline" title="Permalink to this headline">¶</a></h3>
 <p>Required input:</p>
 <ul class="simple">
@@ -602,16 +596,16 @@
 <ul class="simple">
 <li><p>GTF(served as the reference)</p></li>
 </ul>
-</section>
-<section id="output">
+</div>
+<div class="section" id="output">
 <h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Dapars config files (in the current directory)</p></li>
 <li><p>PUDI (Raw) information saved in txt (in the specified output directory)</p></li>
 <li><p>PDUI (Imputed) information saved in txt. This can be used for further analysis.</p></li>
 </ul>
-</section>
-<section id="workflow">
+</div>
+<div class="section" id="workflow">
 <h3>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -629,8 +623,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="step-0-generate-3utr-regions-based-on-gtf">
+</div>
+<div class="section" id="step-0-generate-3utr-regions-based-on-gtf">
 <h3>Step 0: Generate 3UTR regions based on GTF<a class="headerlink" href="#step-0-generate-3utr-regions-based-on-gtf" title="Permalink to this headline">¶</a></h3>
 <p>The 3UTR regions (saved in bed format) could be use <strong>repeatly</strong> for different samples. It only served as the reference region, such that you <strong>should not</strong> run it if given generated hg19/hg38 3UTR regions.</p>
 <div class="cell docutils container">
@@ -659,10 +653,10 @@
 </div>
 </div>
 </div>
-</section>
-<section id="step-1-generating-config-files-and-calculating-sample-depth">
+</div>
+<div class="section" id="step-1-generating-config-files-and-calculating-sample-depth">
 <h3>Step 1: Generating config files and calculating sample depth<a class="headerlink" href="#step-1-generating-config-files-and-calculating-sample-depth" title="Permalink to this headline">¶</a></h3>
-<section id="notes-on-input-file-format">
+<div class="section" id="notes-on-input-file-format">
 <h4>Notes on input file format<a class="headerlink" href="#notes-on-input-file-format" title="Permalink to this headline">¶</a></h4>
 <p>For the input file, it has the following format. Additional notes are:</p>
 <ul class="simple">
@@ -753,11 +747,11 @@ chr1	11517	11625	0
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="step2-run-dapars2-main-to-calculate-pduis">
+</div>
+</div>
+<div class="section" id="step2-run-dapars2-main-to-calculate-pduis">
 <h3>Step2: Run Dapars2 main to calculate PDUIs<a class="headerlink" href="#step2-run-dapars2-main-to-calculate-pduis" title="Permalink to this headline">¶</a></h3>
-<section id="tip-modified-dapars2-multi-sample-py">
+<div class="section" id="tip-modified-dapars2-multi-sample-py">
 <h4>Tip: modified Dapars2_Multi_Sample.py<a class="headerlink" href="#tip-modified-dapars2-multi-sample-py" title="Permalink to this headline">¶</a></h4>
 <p>Default input of Dapars2_Multi_Sample.py did not consider the situation that first column did not contain “chr” (shown in <em>Step 2</em>).</p>
 <ul class="simple">
@@ -778,10 +772,10 @@ chr1	11517	11625	0
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
-<section id="step3-inpute-the-result">
+</div>
+</div>
+</div>
+<div class="section" id="step3-inpute-the-result">
 <h2>Step3: Inpute the result:<a class="headerlink" href="#step3-inpute-the-result" title="Permalink to this headline">¶</a></h2>
 <p>This step impute the missing value in PDUI matrix and return the Imputed one</p>
 <div class="cell docutils container">
@@ -899,11 +893,11 @@ chr1	11517	11625	0
 </div>
 </div>
 </div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="minimum-working-example">
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="minimum-working-example">
 <h1>Minimum working example<a class="headerlink" href="#minimum-working-example" title="Permalink to this headline">¶</a></h1>
-<section id="step-0-3utr-generation">
+<div class="section" id="step-0-3utr-generation">
 <h2>Step 0: 3UTR generation<a class="headerlink" href="#step-0-3utr-generation" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -948,8 +942,8 @@ INFO: Workflow UTR_generation (ID=wbdda56e90fddc24c) is executed successfully wi
 </div>
 </div>
 </div>
-</section>
-<section id="id1">
+</div>
+<div class="section" id="id1">
 <h2>Step 1: Generating config files and calculating sample depth<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -994,8 +988,8 @@ INFO: Workflow APAconfig (ID=wbeede41b336d4ece) is executed successfully with 1 
 </div>
 </div>
 </div>
-</section>
-<section id="step-2-dapars2-main">
+</div>
+<div class="section" id="step-2-dapars2-main">
 <h2>Step 2: Dapars2 Main<a class="headerlink" href="#step-2-dapars2-main" title="Permalink to this headline">¶</a></h2>
 <p>Note: the example is a truncated version, which just have coverage in chr1,chr11 and chr12</p>
 <div class="cell docutils container">
@@ -1127,8 +1121,8 @@ INFO: Workflow APAmain (ID=wd6b3f69cde79c5b0) is executed successfully with 1 co
 </div>
 </div>
 </div>
-</section>
-<section id="step-3-impute">
+</div>
+<div class="section" id="step-3-impute">
 <h2>Step 3: Impute<a class="headerlink" href="#step-3-impute" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1161,8 +1155,8 @@ INFO: Workflow APAimpute (ID=wc04627bf743db81f) is executed successfully with 1 
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

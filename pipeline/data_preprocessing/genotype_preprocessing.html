@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Genotype data preprocessing &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -240,11 +239,6 @@
      TensorQTL QTL calling pipeline
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../association_scan/APEX/APEX_LMM.html">
-     APEX QTL calling pipeline
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -441,46 +435,24 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input">
-   Input
+  <a class="reference internal nav-link" href="#genotype-qc-light-yellow">
+   Genotype QC(light yellow)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#output">
-   Output
+  <a class="reference internal nav-link" href="#grm">
+   GRM
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#excutable">
-   Excutable:
+  <a class="reference internal nav-link" href="#reformatting-and-partition-dark-yellow">
+   Reformatting and partition(dark yellow)
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#process-of-genotype-data">
-   Process of Genotype data
+  <a class="reference internal nav-link" href="#ld-red">
+   LD (Red)
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#qc-for-missingness-and-maf">
-     QC for Missingness and MAF
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plink2vcf">
-     PLINK2VCF
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pca">
-     PCA
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loco-grm-by-gcta">
-     LOCO GRM by GCTA
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -493,422 +465,79 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-preprocessing">
+  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-preprocessing">
 <h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
 <p><strong>FIXME: a general comment – I am thinking this kind of notebook (that sits outside these folders) should be of a tutorial nature. It should only contain <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span></code> commands interactively with enough text explanations. For those who want to run the default analysis they should work with <code class="docutils literal notranslate"><span class="pre">master_control.ipynb</span></code> and generate the commands to run as is. For those who want to customize the analysis, they should refer to each of these “recipe” and change the parameters here. That should cover 95% user cases. People will read the module notebooks only for learning purpose. For those who want to edit the module notebooks we will consider them developers or at least power users and I expect few of them.</strong></p>
-<p><strong>FIXME: specific comment – this pipeline should contain GWAS QC, genotype formatting, GRM and LD calculations</strong></p>
-<p>This is the data processing pipeline for xqtl workflow, containing the generation of:</p>
-<ol class="simple">
-<li><p>Factor from expression</p></li>
-<li><p>PCA from genotype</p></li>
-<li><p>GRM from genotype</p></li>
-<li><p>LD from genotype, filtered by grm [TBD]</p></li>
-<li><p>Molecular_phenotype per chrom within selected regions in the format APEX and tensorQTL takes</p></li>
-</ol>
-<section id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
-<p>The input for this workflow is 1 row of the input recipe file, documenting the path to</p>
-<ol class="simple">
-<li><p>1 complete molecular_phenotype data</p></li>
-<li><p>1 collection of genotype data in plink format, partitioned by chrm</p></li>
-<li><p>1 file documenting the list of region to be analyzed</p></li>
-<li></li>
-</ol>
-</section>
-<section id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<p>For each collection, the output is 23 sets of :</p>
-<ol class="simple">
-<li><p>EXP file for selected region</p></li>
-<li><p>genotype from vcf file</p></li>
-</ol>
-<p>1 sets of</p>
-<ol class="simple">
-<li><p>PCA + Factor + Covariate file</p></li>
-</ol>
-</section>
-<section id="excutable">
-<h2>Excutable:<a class="headerlink" href="#excutable" title="Permalink to this headline">¶</a></h2>
-<p>This notebook depends on the scripts of multiple other notebook, the directory those are specify by exe_dir</p>
-</section>
-<section id="process-of-genotype-data">
-<h2>Process of Genotype data<a class="headerlink" href="#process-of-genotype-data" title="Permalink to this headline">¶</a></h2>
-<section id="qc-for-missingness-and-maf">
-<h3>QC for Missingness and MAF<a class="headerlink" href="#qc-for-missingness-and-maf" title="Permalink to this headline">¶</a></h3>
-<p><strong>FIXME: here you should improve GWAS_QC.ipynb so that it takes a list of genotypes. You only call <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span> <span class="pre">GWAS_QC.ipynb</span></code> without having to do any preprocessing here.</strong></p>
+<p><strong>This tutorial contains examples on running the light yellow, dark yellow, and red section of the following diagram.</strong></p>
+<p><img alt="Blank diagram (1).png" src="pipeline/data_preprocessing/attachment:4e68e935-557f-4740-88cf-b289a53b1843.png" /></p>
+<div class="section" id="genotype-qc-light-yellow">
+<h2>Genotype QC(light yellow)<a class="headerlink" href="#genotype-qc-light-yellow" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">genotype_qc_1</span><span class="p">]</span>
-<span class="c1"># List of Genotype file in plink trio format</span>
-<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">chrom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">genotype_list</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">mwe_genotype_list</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">/</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
+    <span class="o">--</span><span class="n">merged_prefix</span> <span class="s2">&quot;merge&quot;</span> \
+    <span class="o">--</span><span class="n">container_lmm</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/lmm.sif&quot;</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="grm">
+<h2>GRM<a class="headerlink" href="#grm" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">GRM</span><span class="o">.</span><span class="n">ipynb</span>  <span class="n">GRM</span>\
+    <span class="o">--</span><span class="n">genotype_list</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">processed_genotype</span><span class="o">.</span><span class="n">plink_per_chrom</span><span class="o">.</span><span class="n">recipe</span> \
+    <span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">GRM</span><span class="o">/</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/twas_latest.sif&quot;</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="reformatting-and-partition-dark-yellow">
+<h2>Reformatting and partition(dark yellow)<a class="headerlink" href="#reformatting-and-partition-dark-yellow" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink2vcf</span>\
+    <span class="o">--</span><span class="n">genotype_list</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">processed_genotype</span><span class="o">.</span><span class="n">plink_per_chrom</span><span class="o">.</span><span class="n">recipe</span> \
+    <span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">genotype_reformmating</span><span class="o">/</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
+    <span class="o">--</span><span class="n">region_list</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">mwe_region</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/apex.sif&quot;</span> <span class="o">&amp;</span>
 
-<span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
-<span class="n">chrom</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="n">chrom_list</span><span class="p">)))</span>
-<span class="n">geno_inventory</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)])</span>
-<span class="k">def</span> <span class="nf">get_genotype_file</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">genotype_list</span><span class="p">,</span> <span class="n">geno_inventory</span><span class="p">):</span>
-    <span class="n">chrom</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chrom</span><span class="si">}</span><span class="s1">&#39;</span>
-    <span class="k">if</span> <span class="n">chrom</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;chr&#39;</span><span class="p">):</span>
-        <span class="n">chrom</span> <span class="o">=</span> <span class="n">chrom</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
-    <span class="k">if</span> <span class="n">chrom</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">geno_inventory</span><span class="p">:</span>
-        <span class="n">geno_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chrom</span><span class="si">}</span><span class="s1">&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">geno_file</span> <span class="o">=</span> <span class="n">geno_inventory</span><span class="p">[</span><span class="n">chrom</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">geno_file</span><span class="p">):</span>
-        <span class="c1"># relative path</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">genotype_list</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">/&#39;</span> <span class="o">+</span> <span class="n">geno_file</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot find genotype file </span><span class="si">{</span><span class="n">geno_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">geno_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">genotype_list</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">/&#39;</span> <span class="o">+</span> <span class="n">geno_file</span>
-    <span class="k">return</span> <span class="n">path</span><span class="p">(</span><span class="n">geno_file</span><span class="p">)</span>
-
-<span class="c1"># The path to the file that contains the list of samples to remove (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">remove_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># The path to the file that contains the list of variants to keep</span>
-<span class="kn">parameter:</span> <span class="n">keep_variants</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># minimum MAF filter to use. Notice that PLINK default is 0.01</span>
-<span class="kn">parameter:</span> <span class="n">maf_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># maximum MAF filter to use</span>
-<span class="kn">parameter:</span> <span class="n">maf_max_filter</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="c1"># Maximum missingess per-variant</span>
-<span class="kn">parameter:</span> <span class="n">geno_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># Maximum missingness per-sample</span>
-<span class="kn">parameter:</span> <span class="n">mind_filter</span> <span class="o">=</span> <span class="mf">0.02</span>
-<span class="c1"># HWE filter </span>
-<span class="kn">parameter:</span> <span class="n">hwe_filter</span> <span class="o">=</span> <span class="mf">5e-08</span>
-
-
-
-<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">keep_samples</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">keep_samples</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
-<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">keep_variants</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">keep_variants</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
-<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">remove_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">remove_samples</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">remove_samples</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
-
-<span class="kn">input:</span> <span class="n">genotype_list</span><span class="p">,</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;chrom&quot;</span>
-<span class="n">geno_file</span> <span class="o">=</span> <span class="n">get_genotype_file</span><span class="p">(</span><span class="n">_chrom</span><span class="p">,</span> <span class="n">genotype_list</span><span class="p">,</span> <span class="n">geno_inventory</span><span class="p">)</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Genotype/</span><span class="si">{</span><span class="n">geno_file</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.filtered</span><span class="si">{</span><span class="s2">&quot;.extracted&quot;</span> <span class="k">if</span> <span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.bed&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span><span class="p">:</span><span class="mi">1</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">geno_file</span><span class="p">:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">remove_samples</span>   <span class="err">$</span><span class="p">[</span><span class="n">remove_samples</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">keep_samples</span>   <span class="err">$</span><span class="p">[</span><span class="n">keep_samples</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">keep_variants</span>    <span class="err">$</span><span class="p">[</span><span class="n">keep_variants</span> <span class="p">]</span> \
-            <span class="o">--</span><span class="n">maf_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">maf_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">maf_max_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">maf_max_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">geno_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">geno_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">mind_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">mind_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">hwe_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">hwe_filter</span><span class="p">]</span> 
+<span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_gene</span> \
+    <span class="o">--</span><span class="n">genotype_list</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">processed_genotype</span><span class="o">.</span><span class="n">plink_per_chrom</span><span class="o">.</span><span class="n">recipe</span> \
+    <span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">genotype_reformmating</span><span class="o">/</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
+    <span class="o">--</span><span class="n">region_list</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">mwe_region</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/apex.sif&quot;</span> <span class="o">&amp;</span>
 </pre></div>
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="ld-red">
+<h2>LD (Red)<a class="headerlink" href="#ld-red" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">Generate</span> <span class="n">a</span> <span class="n">reciepe</span> <span class="n">to</span> <span class="n">document</span> <span class="n">the</span> <span class="n">filtered</span><span class="o">-</span><span class="n">ed</span> <span class="n">genotype</span> 
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">LD</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">LD</span> \
+    <span class="o">--</span><span class="n">genotype_list</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">module</span><span class="o">/</span><span class="n">genotype_format</span><span class="o">/</span><span class="n">demo_per_gene_plink</span><span class="o">/</span><span class="n">plink_per_gene_list</span> \
+    <span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">LD</span><span class="o">/</span>  \
+    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/twas_latest.sif&quot;</span> <span class="o">&amp;</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">genotype_qc_2</span><span class="p">]</span>
-<span class="c1"># List of Genotype file in plink trio format</span>
-<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">chrom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
-<span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
-<span class="n">chrom</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="n">chrom_list</span><span class="p">)))</span>
-<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="n">qced_plink_genotype_list</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/Genotype/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.filtered.plink.genotype_list&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
-    <span class="n">chrom</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;$[&quot;&#39;</span><span class="p">,</span><span class="s1">&#39;&quot;.join(chrom)]&#39;</span><span class="p">)</span>
-    <span class="n">file</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,])</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">tibble</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr` = chrom, dir = file)</span>
-    <span class="n">table</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">],</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
 </div>
-</div>
-</div>
-</section>
-<section id="plink2vcf">
-<h3>PLINK2VCF<a class="headerlink" href="#plink2vcf" title="Permalink to this headline">¶</a></h3>
-<p>This step takes genotype_list documenting filtered plink file(output from genotype qc), turn them into vcf format so that APEX can used and also create a list documenting them</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">plink2vcf</span><span class="p">]</span>
-<span class="c1"># The output genotype list from genotype qc 2: 1.list of plink, 2.passed basic filtering</span>
-<span class="kn">input:</span> <span class="n">named_output</span><span class="p">(</span><span class="s2">&quot;qced_plink_genotype_list&quot;</span><span class="p">)</span>
-<span class="kn">output:</span> <span class="n">qced_vcf_genotype_list</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/Genotype/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">_vcf_geno/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.vcf_geno_list.txt&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">plink2VCF</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink2vcf</span> \
-            <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="pca">
-<h3>PCA<a class="headerlink" href="#pca" title="Permalink to this headline">¶</a></h3>
-<p>This is a five step workflow that act on a list qced genotype file to generate a genome wide PCA</p>
-<ol class="simple">
-<li><p>Merge all the plink from the raw data via qc(same criterio as genotype_filtering)[FIXME: this can be simplify by using the qced file directly?].</p></li>
-<li><p>Estimate and Filtered by whole genome kinship</p></li>
-<li><p>LD prunning</p></li>
-<li><p>PCA</p></li>
-<li><p>Project back PCA result</p></li>
-</ol>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">merge_plink</span><span class="p">]</span>
-<span class="c1"># List of unfiltered Genotype file in plink trio format, not output from genotype_2</span>
-<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">chrom_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
-<span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]</span>
-<span class="n">chrom</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">extract</span><span class="p">(</span><span class="n">chrom_list</span><span class="p">)))</span>
-<span class="n">geno_inventory</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
-<span class="n">geno_file</span> <span class="o">=</span> <span class="p">[</span><span class="n">geno_inventory</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chrom</span><span class="p">))</span> <span class="p">]</span>
-
-<span class="kn">input:</span> <span class="n">geno_file</span>
-<span class="kn">output:</span> <span class="n">merge_plink</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/Genotype/PCA/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.bed&quot;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">merged_prefix</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">king</span><span class="p">]</span>
-<span class="c1"># Merged Genotype file in plink trio format</span>
-<span class="c1"># Name of the analysis</span>
-<span class="c1"># kinship cutoff</span>
-<span class="kn">parameter:</span> <span class="n">kinship</span> <span class="o">=</span> <span class="mf">0.0625</span>
-<span class="c1"># Otherwise (use `--no-maximize-unrelated`) the entire family will be removed</span>
-<span class="kn">parameter:</span> <span class="n">maximize_unrelated</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;merge_plink&quot;</span><span class="p">)[</span><span class="s2">&quot;merge_plink&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">king</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/Genotype/PCA/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.related_id&quot;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">kinship</span> <span class="err">$</span><span class="p">[</span><span class="n">kinship</span><span class="p">]</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_unrelated_sample</span><span class="p">]</span>
-<span class="c1"># Merged Genotype file in plink trio format</span>
-<span class="c1"># minimum MAF filter to use. Notice that PLINK default is 0.01</span>
-<span class="kn">parameter:</span> <span class="n">maf_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># maximum MAF filter to use</span>
-<span class="kn">parameter:</span> <span class="n">maf_max_filter</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="c1"># Maximum missingess per-variant</span>
-<span class="kn">parameter:</span> <span class="n">geno_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># Maximum missingness per-sample</span>
-<span class="kn">parameter:</span> <span class="n">mind_filter</span> <span class="o">=</span> <span class="mf">0.02</span>
-<span class="c1"># HWE filter </span>
-<span class="kn">parameter:</span> <span class="n">hwe_filter</span> <span class="o">=</span> <span class="mf">5e-08</span>
-
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;merge_plink&quot;</span><span class="p">)</span> <span class="p">,</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">)</span>
-<span class="kn">output:</span> <span class="n">pca_unrelated_sample</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Genotype/PCA/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.unrelated.bed&#39;</span><span class="p">,</span> 
-        <span class="n">keep_variants</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Genotype/PCA/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.filtered.prune.in&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">remove_samples</span>   <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">maf_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">maf_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">maf_max_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">maf_max_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">geno_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">geno_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">mind_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">mind_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">hwe_filter</span>   <span class="err">$</span><span class="p">[</span><span class="n">hwe_filter</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">merged_name</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_related_sample</span><span class="p">]</span>
-<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/Genotype/PCA/cache/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.related_id&quot;</span>
-<span class="kn">parameter:</span> <span class="n">geno_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/Genotype/PCA/cache/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.bed&quot;</span>
-<span class="c1"># The path to the file that contains the list of variants to keep</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;merge_plink&quot;</span><span class="p">),</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca_unrelated_sample&quot;</span><span class="p">)[</span><span class="s2">&quot;keep_variants&quot;</span><span class="p">],</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;king&quot;</span><span class="p">)</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">ann</span><span class="si">}</span><span class="s1">.related.bed&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span><span class="p">:</span><span class="mi">1</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="n">keep_samples</span>   <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="n">keep_variants</span>    <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
-            <span class="o">--</span><span class="n">maf_filter</span>  <span class="mi">0</span> \
-            <span class="o">--</span><span class="n">maf_max_filter</span>   <span class="mi">0</span> \
-            <span class="o">--</span><span class="n">geno_filter</span>   <span class="mi">0</span> \
-            <span class="o">--</span><span class="n">mind_filter</span>   <span class="mi">0</span> \
-            <span class="o">--</span><span class="n">hwe_filter</span>   <span class="mi">0</span> \
-            <span class="o">--</span><span class="n">merged_name</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_model</span><span class="p">]</span>
-<span class="c1"># Plink binary file</span>
-<span class="c1">## The phenotypic file</span>
-<span class="c1"># Number of Principal Components to output. Default is 10</span>
-<span class="kn">parameter:</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="c1"># Number of Principal Components based on which outliers should be evaluated. Default is 5 but this should be based on examine the scree plot</span>
-<span class="kn">parameter:</span> <span class="n">maha_k</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="c1"># POPS in pca</span>
-<span class="kn">parameter:</span> <span class="n">pops</span> <span class="o">=</span> <span class="s2">&quot;RACE_1&quot;</span>
-<span class="c1"># Homogeneity of populations. Set to --homogeneous when true and --no-homogeneous when false</span>
-<span class="kn">parameter:</span> <span class="n">homogeneous</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">/Genotype/PCA/cache/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.related_id&quot;</span>
-
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca_unrelated_sample&quot;</span><span class="p">)[</span><span class="s2">&quot;pca_unrelated_sample&quot;</span><span class="p">]</span> <span class="p">,</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;phenoFile_mod&quot;</span><span class="p">)[</span><span class="s2">&quot;phenoFile_mod&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">pca_model</span> <span class="o">=</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/Genotype/PCA/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.exp.pca.rds&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flashpca</span><span class="p">:</span><span class="mi">1</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">phenoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">label_col</span> <span class="s2">&quot;RACE&quot;</span> \
-            <span class="o">--</span><span class="n">k</span> <span class="err">$</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">maha_k</span> <span class="err">$</span><span class="p">[</span><span class="n">maha_k</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">pop_col</span> <span class="s2">&quot;RACE&quot;</span> \
-            <span class="o">--</span><span class="n">pops</span> <span class="err">$</span><span class="p">[</span><span class="n">pops</span><span class="p">]</span>   \
-            <span class="o">--</span><span class="n">homogeneous</span> <span class="err">$</span><span class="p">[</span><span class="n">homogeneous</span><span class="p">]</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">project_sample</span><span class="p">]</span>
-<span class="c1">## Plink binary file</span>
-<span class="c1">## The phenotypic file, in bed</span>
-<span class="c1">## The PCA model, in rds</span>
-<span class="c1">## Population lable: 2 column: iid + RACE</span>
-<span class="c1"># Number of Principal Components to output. Default is 10</span>
-<span class="kn">parameter:</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="c1"># Number of Principal Components based on which outliers should be evaluated. Default is 5 but this should be based on examine the scree plot</span>
-<span class="kn">parameter:</span> <span class="n">maha_k</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="c1"># Homogeneity of populations. Set to --homogeneous when true and --no-homogeneous when false</span>
-<span class="kn">parameter:</span> <span class="n">homogeneous</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="kn">parameter:</span> <span class="n">prob</span> <span class="o">=</span> <span class="mf">0.8</span>
-<span class="kn">parameter:</span> <span class="n">pval</span> <span class="o">=</span> <span class="mf">0.05</span>
-
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca_unrelated_sample&quot;</span><span class="p">)[</span><span class="s2">&quot;pca_unrelated_sample&quot;</span><span class="p">],</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;phenoFile_mod&quot;</span><span class="p">)[</span><span class="s2">&quot;phenoFile_mod&quot;</span><span class="p">]</span> <span class="p">,</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;pca_model&quot;</span><span class="p">)[</span><span class="s2">&quot;pca_model&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">project_sample</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.pca.projected.rds&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">project_samples</span><span class="p">:</span><span class="mi">1</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="err">$</span><span class="p">[</span><span class="n">container_lmm</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">phenoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">pca_model</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">a</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">pop_col</span> <span class="s2">&quot;RACE&quot;</span> \
-            <span class="o">--</span><span class="n">label_col</span> <span class="s2">&quot;RACE&quot;</span> \
-            <span class="o">--</span><span class="n">prob</span> <span class="err">$</span><span class="p">[</span><span class="n">prob</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">pval</span> <span class="err">$</span><span class="p">[</span><span class="n">pval</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">k</span> <span class="err">$</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">maha_k</span> <span class="err">$</span><span class="p">[</span><span class="n">maha_k</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_factor</span><span class="p">]</span>
-<span class="c1">## PCA models</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;project_sample&quot;</span><span class="p">)[</span><span class="s2">&quot;project_sample&quot;</span><span class="p">],</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Factor_analysis&quot;</span><span class="p">)[</span><span class="s2">&quot;Factor_analysis&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">pca_factor</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.pca.cov&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;modelr&quot;</span><span class="p">)</span>
-        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
-        <span class="n">pca_output</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;$[_input[0]]&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">pc_scores</span>
-        <span class="n">mtx</span> <span class="o">=</span> <span class="n">pca_output</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;PC&quot;</span><span class="p">))</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
-        <span class="n">colnames</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">pca_output</span><span class="err">$</span><span class="n">IID</span>
-        <span class="n">mtx</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">()</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="s2">&quot;#id&quot;</span> <span class="o">=</span> <span class="n">rownames</span><span class="p">(</span><span class="n">mtx</span><span class="p">))</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;#id&quot;</span><span class="p">,</span><span class="n">everything</span><span class="p">())</span>
-        <span class="n">factor_cov</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[1]]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">bind_rows</span><span class="p">(</span><span class="n">factor_cov</span><span class="p">,</span><span class="n">mtx</span><span class="p">)</span>
-        <span class="n">output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="loco-grm-by-gcta">
-<h3>LOCO GRM by GCTA<a class="headerlink" href="#loco-grm-by-gcta" title="Permalink to this headline">¶</a></h3>
-<p>GRM was used due to the advantage of gcta where seperate sets of bfile can be feeded to generate the grm result without merging them. A list of bfile that are used to generate the GRM are listed</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">GRM</span><span class="p">]</span>
-<span class="c1"># List of Genotype file in plink trio format</span>
-<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">input:</span> <span class="n">genotype_list</span>
-<span class="kn">output:</span> <span class="n">GRM</span> <span class="o">=</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/Genotype/GRM/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.grm_list.txt&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">LOCO_GRM</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">GRM</span> \
-            <span class="o">--</span><span class="n">wd</span> <span class="err">$</span><span class="p">[</span><span class="n">wd</span><span class="p">]</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container</span><span class="p">]</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">numThreads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span> \
-            <span class="o">--</span><span class="n">genotype_list</span> <span class="err">$</span><span class="p">[</span><span class="n">genotype_list</span><span class="p">]</span> \
-            <span class="o">-</span><span class="n">J</span> <span class="err">$</span><span class="p">[</span><span class="n">J</span><span class="p">]</span> <span class="o">-</span><span class="n">q</span> <span class="err">$</span><span class="p">[</span><span class="kp">queue</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="err">$</span><span class="p">[</span><span class="n">yml</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
 <div class="toctree-wrapper compound">
 </div>
-</section>
+</div>
 
     <script type="text/x-thebe-config">
     {

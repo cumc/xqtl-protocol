@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: gaow/base-notebook
+Stage: spython-base
+
+%labels
+maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
+%post
+
+# Maintainer and author
+
+su -  root # USER root
+
+# Install all additional python packages:
+pip install qtl
+
+wget https://github.com/samtools/bcftools/releases/download/1.2/bcftools-1.2.tar.bz2\
+&& tar xvf bcftools-1.2.tar.bz2 \
+&& cd bcftools-1.2 \
+&& make\
+&& make install\
+&& cd htslib-1.2.1\
+&& make\
+&& make install
+
+rm -rf bcftools-1.2 \
+&& rm -rf bcftools-1.2.tar.bz2
+%runscript
+exec /bin/bash "$@"
+%startscript
+exec /bin/bash "$@"

@@ -1,0 +1,55 @@
+Bootstrap: docker
+From: gaow/base-notebook
+Stage: spython-base
+
+%labels
+MAINTAINER Gao Wang <wang.gao@columbia.edu>
+%post
+
+
+cd /tmp
+su -  root # USER root
+
+# PLINK
+
+wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
+unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/*
+
+
+# R
+
+R --slave -e "for (p in c('rlang','abind','data.table', 'readr', 'dplyr', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
+
+# GIT
+
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+apt-get --assume-yes update
+apt-get --assume-yes install git
+apt-get --assume-yes install libgsl0-dev
+
+#RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+#RUN brew install gsl
+
+
+# APEX
+git clone https://github.com/corbinq/apex.git && \
+cd apex/bin && \
+gunzip apex_Linux_x86_64.gz && \
+mv apex_Linux_x86_64 /usr/local/bin/apex && chmod +x /usr/local/bin/apex
+
+sudo apt-get install tabix
+
+
+# TensorQTL
+
+pip install tensorqtl
+    
+su -  jovyan # USER jovyan
+
+# to build: docker build -t hs3163/apex -f apex.dockerfile .
+%runscript
+cd /tmp
+exec /bin/bash "$@"
+%startscript
+cd /tmp
+exec /bin/bash "$@"

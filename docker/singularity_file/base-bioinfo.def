@@ -13,7 +13,7 @@ maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
 su -  root # USER root
 
 ## Tidyverse
-R --slave -e "install.packages(c('tidyverse','BiocManager', 'RcppEigen'))"
+R --slave -e "install.packages(c('rlang','tidyverse','BiocManager', 'RcppEigen'))"
 
 # Genotype
 
@@ -69,8 +69,11 @@ R --slave -e "BiocManager::install('biomaRt')"
 ## See container APEX, PEER, and flashpca
 
 # sumstat_merger
-R --slave -e "BiocManager::install("VariantAnnotation")"
+R --slave -e "BiocManager::install('VariantAnnotation')"
 pip install Biopython
+
+
+# to build singularity build --remote ./ 
 
 %runscript
 exec /bin/bash "$@"

@@ -1,0 +1,28 @@
+Bootstrap: docker
+From: gaow/base-notebook
+Stage: spython-base
+
+%labels
+maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
+%post
+
+# Maintainer and author
+
+su -  root # USER root
+
+apt-get update \
+&& apt install -y --no-install-recommends  git-all  libboost-all-dev
+
+## APEX: version: commit 63b605e00766141693a69eee6d630ad8ec3b9de0
+
+git clone https://github.com/corbinq/apex.git \
+&& cd apex/bin \
+&& gunzip apex_Linux_x86_64.gz \
+&& mv apex_Linux_x86_64 /usr/local/bin/apex && chmod +x /usr/local/bin/apex
+
+%runscript
+cd /tmp
+exec /bin/bash "$@"
+%startscript
+cd /tmp
+exec /bin/bash "$@"

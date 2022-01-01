@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: gaow/base-notebook
+Stage: spython-base
+
+%labels
+MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
+%post
+
+
+cd /tmp
+su -  root # USER root
+
+# PLINK
+
+wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
+unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin 
+
+# TensorQTL
+
+pip install tensorqtl
+pip install fastparquet
+
+
+%runscript
+cd /tmp
+exec /bin/bash "$@"
+%startscript
+cd /tmp
+exec /bin/bash "$@"

@@ -1,0 +1,38 @@
+Bootstrap: docker
+From: gaow/base-notebook
+Stage: spython-base
+
+%labels
+MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
+%post
+
+
+cd /tmp
+su -  root # USER root
+
+
+# R dependency and plink2R
+P2R_VERSION=d74be015e8f54d662b96c6c2a52a614746f9030d
+wget https://github.com/gabraham/plink2R/archive/${P2R_VERSION}.zip && \
+unzip ${P2R_VERSION}.zip && \
+R --slave -e "install.packages(c('rlang', 'RcppEigen','devtools','BiocManager','data.table'))" && \
+R --slave -e "install.packages('plink2R-${P2R_VERSION}/plink2R/',repos=NULL)" && \
+R --slave -e "devtools::install_github('stephenslab/susieR', ref='cran')" && \
+R --slave -e "devtools::install_github('hadley/devtools', ref='cran')" && 
+
+R --slave -e "for (p in c('abind','data.table', 'readr', 'dplyr', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
+
+# VCF
+
+R --slave -e "BiocManager::install('VariantAnnotation')"
+
+
+
+# to build: singularity build --remote unisusie.sif unisusie.def
+
+%runscript
+cd /tmp
+exec /bin/bash "$@"
+%startscript
+cd /tmp
+exec /bin/bash "$@"

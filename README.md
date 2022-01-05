@@ -15,12 +15,11 @@ The left sidebar lists the analysis to be performed for QTL analysis, roughly in
 
 ## Overall xQTL workflow schema
 
-![QTL Diagram](https://user-images.githubusercontent.com/54919134/140530539-460b7ada-1ce0-4d55-beb7-72e73fc6e568.jpeg)
+![QTL Diagram](images/complete_workflow.png)
 
-## Molecular phenotype specific pipelines
+## Genotype, phenotype and covariates data preprocessing workflow schema
 
-
-![APA Diagram](images/Aqtl_v1.png)
+![Data preprocessing diagram](images/data_preprocessing.png)
 
 ## Contributors
 

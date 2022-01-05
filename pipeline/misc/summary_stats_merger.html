@@ -121,7 +121,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">
-   Bulk RNA-seq expression calling
+   RNA-seq Calling
   </a>
  </li>
  <li class="toctree-l1">
@@ -552,14 +552,16 @@
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--cwd</span></code>, the path of output directory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--cwd</span></code>, the path of working directory</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--yml_path</span></code>, the path of yaml file</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--keep_ambiguous</span></code>, bool. if Ture, keep ambiguous alleles which can not be decided from flip or reverse, such as A/T or C/G. Otherwise, remove them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--keep-ambiguous</span></code>, boolean. default False. if add –keep-ambiguous parameter, keep ambiguous alleles which can not be decided from flip or reverse, such as A/T or C/G. Otherwise, remove them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--intersect</span></code>, boolean. default False. if add –intersect parameter, output intersect SNPs in all input files.</p></li>
 </ul>
 <div class="section" id="the-format-of-the-input-yaml-file">
 <h3>The format of the input yaml file<a class="headerlink" href="#the-format-of-the-input-yaml-file" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">INPUT:</span>
   <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">testflip</span><span class="o">/*.</span><span class="n">gz</span><span class="p">:</span>
+        <span class="n">ID</span><span class="p">:</span> <span class="n">CHR</span><span class="p">,</span><span class="n">POS</span>
         <span class="n">CHR</span><span class="p">:</span> <span class="n">CHR</span>
         <span class="n">POS</span><span class="p">:</span> <span class="n">POS</span>
         <span class="n">A0</span><span class="p">:</span> <span class="n">REF</span>
@@ -572,6 +574,7 @@
   
 <span class="kn">TARGET:</span> 
   <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">testflip</span><span class="o">/</span><span class="n">snps500</span><span class="o">.</span><span class="n">regenie</span><span class="o">.</span><span class="n">snp_stats</span><span class="o">.</span><span class="n">gz</span><span class="p">:</span>
+        <span class="n">ID</span><span class="p">:</span> <span class="n">CHR</span><span class="p">,</span><span class="n">POS</span>
         <span class="n">CHR</span><span class="p">:</span> <span class="n">CHR</span>
         <span class="n">POS</span><span class="p">:</span> <span class="n">POS</span>
         <span class="n">A0</span><span class="p">:</span> <span class="n">REF</span>
@@ -583,7 +586,7 @@
 <span class="kn">OUTPUT:</span> <span class="n">data</span><span class="o">/</span><span class="n">testflip</span><span class="o">/</span><span class="n">output</span><span class="o">/</span>
 </pre></div>
 </div>
-<p>There are four parts in the input yaml file.</p>
+<p>There are three parts in the input yaml file.</p>
 <ul class="simple">
 <li><p>INPUT</p>
 <ul>
@@ -592,14 +595,15 @@
 <li><p>the input summary statistic files with the column names in below.</p></li>
 <li><p>the input files can be from multiple directory and from different format. The input paths must follow the rules related to Unix shell. the format is to pair the column names with keys (CHR, POS, A0, A1, SNP, STAT, SE, P). if not provided, the column names of the input file will be considered as the default keys.</p></li>
 <li><p>The input summary statistic file cannot have duplicated chr:pos</p></li>
-<li><p>The input summary statstic file cannot have # in its header</p></li>
+<li><p>The input summary statstic file cannot have # in its header
+-<code class="docutils literal notranslate"><span class="pre">ID</span></code> in yml is a unique identifier for each SNP. The default are CHR,POS. These duplicated identifier will only keep the first one in the file.</p></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>TARGET</p>
 <ul>
-<li><p>the reference summary statistic file, which the other files compare with.</p></li>
+<li><p>the target file is a reference summary statistic file or a file with chr, pos, a0, a1 columns at least, which the other files compare with.</p></li>
 </ul>
 </li>
 <li><p>OUTPUT</p>
@@ -613,10 +617,15 @@
 <div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>new summary statistic files with common SNPs in all input files. the sign of statistics has been corrected to make it consistent in different data.</p>
+<ul class="simple">
+<li><p>for each input sumstat file, a qced version will be generated.</p></li>
+<li><p>The generated sumstat files will have header as “CHR  ,   POS  ,   A0   ,   A1    ,  SNP   ,  STAT ,   SE    ,  P” regardless of input header</p></li>
+<li><p>The generated sumstat files will be in gz format.</p></li>
+</ul>
 </div>
 <div class="section" id="example-command">
 <h2>Example command<a class="headerlink" href="#example-command" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">./</span><span class="n">summary_stats_merger</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">data</span> <span class="o">--</span><span class="n">yml_path</span> <span class="n">data</span><span class="o">/</span><span class="n">template</span><span class="o">.</span><span class="n">yml</span> <span class="o">--</span><span class="n">keep_ambiguous</span><span class="o">=</span><span class="kc">True</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">./</span><span class="n">summary_stats_merger</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">data</span> <span class="o">--</span><span class="n">yml_list</span> <span class="n">data</span><span class="o">/</span><span class="n">yml_list</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">ambiguous</span> <span class="o">--</span><span class="n">intersect</span>
 </pre></div>
 </div>
 <div class="cell docutils container">
@@ -628,12 +637,12 @@
 <span class="kn">parameter:</span> <span class="n">yml_list</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">yml_path</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">yml_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="c1"># Path to work directory where the yaml file locates</span>
-<span class="c1">#parameter: yml_path = path(&quot;.&quot;)</span>
-<span class="c1">#if Ture, keep ambiguous alleles which can not be decided from flip or reverse, such as A/T or C/G. Otherwise, remove them.</span>
-<span class="kn">parameter:</span> <span class="n">keep_ambiguous</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="c1">#if add --keep-ambiguous parameter, keep ambiguous alleles which can not be decided from flip or reverse, such as A/T or C/G. Otherwise, remove them.</span>
+<span class="kn">parameter:</span> <span class="n">keep_ambiguous</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># if add --intersect parameter, output intersect SNPs in all input files.</span>
+<span class="kn">parameter:</span> <span class="n">intersect</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># Containers that contains the necessary packages</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="c1">#parameter: container = str</span>
 </pre></div>
 </div>
 </div>
@@ -653,7 +662,7 @@
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
     <span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 
-    <span class="k">def</span> <span class="nf">merge_sumstats</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span><span class="n">keep_ambiguous</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">merge_sumstats</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span><span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">):</span>
         <span class="c1">#parse yaml</span>
         <span class="n">yml</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">yml</span><span class="p">)</span>
         <span class="n">input_dict</span> <span class="o">=</span> <span class="n">parse_input</span><span class="p">(</span><span class="n">yml</span><span class="p">[</span><span class="s1">&#39;INPUT&#39;</span><span class="p">])</span>
@@ -672,13 +681,18 @@
         <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">lst_sumstats</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="n">nq</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">snps_match</span><span class="p">(</span><span class="n">query</span><span class="p">,</span><span class="n">lst_sumstats</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">target_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])],</span><span class="n">keep_ambiguous</span><span class="p">)</span>
             <span class="n">nqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nq</span><span class="p">)</span>
-        <span class="c1">#get common snps</span>
-        <span class="n">common_snps</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">nq</span><span class="o">.</span><span class="n">SNP</span><span class="p">)</span> <span class="k">for</span> <span class="n">nq</span> <span class="ow">in</span> <span class="n">nqs</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total number of common SNPs: &#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">common_snps</span><span class="p">))</span>
-        <span class="c1">#write out new smustats</span>
-        <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">):</span>
-            <span class="n">sumstats</span> <span class="o">=</span> <span class="n">nq</span><span class="p">[</span><span class="n">nq</span><span class="o">.</span><span class="n">SNP</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_snps</span><span class="p">)]</span>
-            <span class="n">sumstats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">intersect</span><span class="p">:</span>
+            <span class="c1">#get common snps</span>
+            <span class="n">common_snps</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">nq</span><span class="o">.</span><span class="n">SNP</span><span class="p">)</span> <span class="k">for</span> <span class="n">nq</span> <span class="ow">in</span> <span class="n">nqs</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total number of common SNPs: &#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">common_snps</span><span class="p">))</span>
+            <span class="c1">#write out new smustats</span>
+            <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">):</span>
+                <span class="n">sumstats</span> <span class="o">=</span> <span class="n">nq</span><span class="p">[</span><span class="n">nq</span><span class="o">.</span><span class="n">SNP</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_snps</span><span class="p">)]</span>
+                <span class="n">sumstats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">):</span>
+                <span class="c1">#output match SNPs with target SNPs.</span>
+                <span class="n">nq</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All are done!!!&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">):</span>
@@ -693,7 +707,7 @@
         <span class="n">input_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">yml_input</span><span class="p">:</span>
             <span class="k">for</span> <span class="kp">name</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]):</span>
-                <span class="n">input_dict</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">input_dict</span><span class="p">[</span><span class="kp">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">input_dict</span>
 
     <span class="k">def</span> <span class="nf">read_sumstat</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -703,6 +717,9 @@
             <span class="n">sumstats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
+                <span class="n">sumstats</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sumstats</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">sumstats</span> <span class="o">=</span> <span class="n">sumstats</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">])</span>
+                <span class="n">sumstats</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">sumstats</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span>
                 <span class="n">sumstats</span> <span class="o">=</span> <span class="n">sumstats</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;According to config_file, input summary statistics should have the following columns: %s&#39;</span> <span class="o">%</span> <span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
@@ -713,8 +730,6 @@
         <span class="k">return</span> <span class="n">sumstats</span>
 
     <span class="k">def</span> <span class="nf">snps_match</span><span class="p">(</span><span class="n">query</span><span class="p">,</span><span class="n">subject</span><span class="p">,</span><span class="n">keep_ambiguous</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">subject</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">subject</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1">#overlap snps by chr+pos</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total rows of query: &quot;</span><span class="p">,</span><span class="n">query</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot;Total rows of subject: &quot;</span><span class="p">,</span><span class="n">subject</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span><span class="p">[</span><span class="n">subject</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
@@ -724,16 +739,17 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;There are duplicated chr:pos&quot;</span><span class="p">)</span>
         <span class="n">pm</span> <span class="o">=</span> <span class="n">pair_match</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">A1</span><span class="p">,</span><span class="n">query</span><span class="o">.</span><span class="n">A0</span><span class="p">,</span><span class="n">subject</span><span class="o">.</span><span class="n">A1</span><span class="p">,</span><span class="n">subject</span><span class="o">.</span><span class="n">A0</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">keep_ambiguous</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: there are&#39;</span><span class="p">,</span><span class="nb">sum</span><span class="p">(</span><span class="o">~</span><span class="n">pm</span><span class="o">.</span><span class="n">ambiguous</span><span class="p">),</span><span class="s1">&#39;ambiguous SNPs&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Warning: there are&#39;</span><span class="p">,</span><span class="nb">sum</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">ambiguous</span><span class="p">),</span><span class="s1">&#39;ambiguous SNPs&#39;</span><span class="p">)</span>
             <span class="n">pm</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pm</span> <span class="o">=</span> <span class="n">pm</span><span class="p">[</span><span class="o">~</span><span class="n">pm</span><span class="o">.</span><span class="n">ambiguous</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
         <span class="n">keep_idx</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Overlap SNPs&quot;</span><span class="p">,</span><span class="nb">sum</span><span class="p">(</span><span class="n">keep_idx</span><span class="p">))</span>
+        <span class="n">keep_idx</span> <span class="o">=</span> <span class="n">keep_idx</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">keep_idx</span><span class="o">==</span><span class="kc">True</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Overlap SNPs&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">keep_idx</span><span class="p">))</span>
         <span class="c1">#overlap snps by chr+pos+alleles.</span>
-        <span class="n">new_subject</span> <span class="o">=</span> <span class="n">subject</span><span class="p">[</span><span class="n">keep_idx</span><span class="p">]</span>
+        <span class="n">new_subject</span> <span class="o">=</span> <span class="n">subject</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_idx</span><span class="p">]</span>
         <span class="c1">#update beta and snp info</span>
-        <span class="n">new_query</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_subject</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">5</span><span class="p">],</span><span class="n">query</span><span class="p">[</span><span class="n">keep_idx</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">5</span><span class="p">:]],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">new_query</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_subject</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">5</span><span class="p">],</span><span class="n">query</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">keep_idx</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">5</span><span class="p">:]],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">new_query</span><span class="o">.</span><span class="n">STAT</span><span class="p">[</span><span class="n">pm</span><span class="o">.</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">new_query</span><span class="o">.</span><span class="n">STAT</span><span class="p">[</span><span class="n">pm</span><span class="o">.</span><span class="n">sign_flip</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">new_query</span><span class="p">,</span><span class="n">new_subject</span>
 
@@ -773,8 +789,9 @@
 
     <span class="n">yml</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_yml_path[1]}</span><span class="s2">&quot;</span>
     <span class="n">keep_ambiguous</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">keep_ambiguous</span><span class="p">}</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">)</span>
-    <span class="n">merge_sumstats</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">)</span>
+    <span class="n">intersect</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">intersect</span><span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">)</span>
+    <span class="n">merge_sumstats</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

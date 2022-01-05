@@ -27,9 +27,13 @@ This repository is developed by the ADSP FG Brain xQTL consortium.
 
 ### Lead developers
 
+Project leader
+
+- Philip De Jager, Department of Neurology, Columbia University
+
 Brain xQTL methods and analysis subgroup
 
-- Gao Wang (PI), Department of Neurology, Columbia University
+- Gao Wang, Department of Neurology, Columbia University
 - Hao Sun, Department of Neurology, Columbia University
 - Wenhao Gou, Department of Biostatistics, Columbia University
 - Amanda Tsai, Department of Biostatistics, Columbia University  

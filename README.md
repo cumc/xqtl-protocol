@@ -10,17 +10,16 @@ The left sidebar lists the analysis to be performed for QTL analysis, roughly in
 
 - The **COMPLETE PIPELINES** section is reserved for publishing the code used for various QTL analysis. Contents in this section can be generated automatically from workflow notebooks in the other sections, as will be discussed next.
 - The rest sections in bold are various types of analysis available, from generating the molecular phenotypes to performing some of the selected multi-omics data integration analysis.
-- Text under each bold section title shows the complete workflow commands to perform analysis implemented using the Script of Scripts (SoS) language.
-- 
+- Text under each bold section title shows the complete workflow commands to perform analysis implemented using the Script of Scripts (SoS) language, as will be discussed next.
+- The workflows can be expanded by clicking on the down arrows to check out the SoS workflows implementing each task as an analysis module. These are the core pipeline implementations. Each of these pipeline modules are documented with some background information, required input, expected output, and a minimal working example, followed by the actual code implementation.
 
 ## Overall xQTL workflow schema
 
-![QTL Diagram](https://user-images.githubusercontent.com/54919134/140530539-460b7ada-1ce0-4d55-beb7-72e73fc6e568.jpeg)
+![QTL Diagram](images/complete_workflow.png)
 
-## Molecular phenotype specific pipelines
+## Genotype, phenotype and covariates data preprocessing workflow schema
 
-
-![APA Diagram](images/Aqtl_v1.png)
+![Data preprocessing diagram](images/data_preprocessing.png)
 
 ## Contributors
 

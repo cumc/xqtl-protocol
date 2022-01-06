@@ -33,11 +33,11 @@ Project leader
 
 Brain xQTL methods and analysis subgroup
 
-- Gao Wang, Department of Neurology, Columbia University
 - Hao Sun, Department of Neurology, Columbia University
 - Wenhao Gou, Department of Biostatistics, Columbia University
 - Amanda Tsai, Department of Biostatistics, Columbia University  
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
+- Gao Wang (group leader), Department of Neurology, Columbia University
 
 ### Consortium collaborators
 

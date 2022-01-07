@@ -712,16 +712,26 @@
 <p>Reference panel should have at least 3000 sequenced individuals from target population.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">exe_dir</span> <span class="o">=</span> <span class="n">path</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ld_score</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">none</span>
-<span class="kn">parameter:</span> <span class="n">ref_ld</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="mi">1</span>
-<span class="kn">parameter:</span> <span class="n">annot_file</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="mf">1.</span><span class="n">annot</span><span class="o">.</span><span class="n">parquet</span>
-<span class="kn">bash:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">output</span>
-    <span class="n">python</span> <span class="n">compute_ldscores</span><span class="o">.</span><span class="n">py</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="n">ref_ldexample_data</span><span class="o">/</span><span class="n">reference</span><span class="o">.</span><span class="mi">1</span> \
-    <span class="o">--</span><span class="n">annot</span> <span class="n">annot_file</span> \
-    <span class="o">--</span><span class="n">out</span> <span class="n">output</span><span class="o">/</span><span class="n">ldscores1</span><span class="o">.</span><span class="n">parquet</span>
+<span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">annot_file</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">annot_file</span><span class="p">,</span> <span class="n">genoFile</span>
+<span class="c1">#output: f&#39;{wd:a}/{?}.parquet&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">python</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">compute_ldscores</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span> \
+    <span class="o">--</span><span class="n">annot</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
+    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -733,14 +743,14 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ld_score_uk</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">none</span>
-<span class="kn">parameter:</span> <span class="n">annot_file</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="mf">1.</span><span class="n">annot</span><span class="o">.</span><span class="n">parquet</span>
-<span class="kn">base:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">output</span>
-    <span class="n">python</span> <span class="n">compute_ldscores_from_ld</span><span class="o">.</span><span class="n">py</span> \
-    <span class="o">--</span><span class="n">annot</span> <span class="n">annot_file</span> \
+<span class="kn">parameter:</span> <span class="n">annot_file</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">annot_file</span>
+<span class="c1">#output: f&#39;{wd:a}/{?}.parquet&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">python</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">compute_ldscores_from_ld</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">annot</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
     <span class="o">--</span><span class="n">ukb</span> \
-    <span class="o">--</span><span class="n">out</span> <span class="n">output</span><span class="o">/</span><span class="n">ldscores2</span><span class="o">.</span><span class="n">parquet</span>
+    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -752,16 +762,17 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ld_score_own</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">none</span>
-<span class="kn">parameter:</span> <span class="n">annot_file</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="mf">1.</span><span class="n">annot</span><span class="o">.</span><span class="n">parquet</span>
+<span class="kn">parameter:</span> <span class="n">annot_file</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">sample_size</span> <span class="o">=</span> <span class="nb">int</span>
-<span class="kn">base:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">output</span>
-    <span class="n">python</span> <span class="n">compute_ldscores_from_ld</span><span class="o">.</span><span class="n">py</span> \
-    <span class="o">--</span><span class="n">annot</span> <span class="n">annot_file</span> \
-    <span class="o">--</span><span class="n">out</span> <span class="n">output</span><span class="o">/</span><span class="n">ldscores3</span><span class="o">.</span><span class="n">parquet</span> \
-    <span class="o">--</span><span class="n">n</span> <span class="n">sample_size</span>\
-    <span class="n">bcor_files</span><span class="o">/*.</span><span class="n">bcor</span>
+<span class="kn">parameter:</span> <span class="n">bcor_files</span> <span class="o">=</span> <span class="n">paths</span>
+<span class="kn">input:</span> <span class="n">annot_file</span><span class="p">,</span><span class="n">bcor_files</span>
+<span class="c1">#output</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">python</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">compute_ldscores_from_ld</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
+    <span class="o">--</span><span class="n">annot</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> \
+    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">]</span> \
+    <span class="o">--</span><span class="n">n</span> <span class="err">$</span><span class="p">[</span><span class="n">sample_size</span><span class="p">]</span> \
+    
 </pre></div>
 </div>
 </div>
@@ -776,13 +787,13 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">prior_causal_prob</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">sumstats</span> <span class="o">=</span> <span class="n">AD_sumstats_Jansenetal_2019sept</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">none</span>
-<span class="kn">bash:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span> 
-    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">output</span>
+<span class="kn">parameter:</span> <span class="n">sumstats</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">sumstats</span>
+<span class="c1">#output: f&#39;{wd}/{name}.snps_with_vars&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">python</span> <span class="n">extract_snpvar</span><span class="o">.</span><span class="n">py</span> \
-        <span class="o">--</span><span class="n">sumstats</span> <span class="n">sumstats</span> \
-        <span class="o">--</span><span class="n">out</span> <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">snps_with_var</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">sumstats</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">]</span> \
         <span class="o">--</span><span class="n">allow</span><span class="o">-</span><span class="n">missing</span>
 </pre></div>
 </div>
@@ -798,17 +809,19 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">munged_sumstats</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">sumstats</span> <span class="o">=</span> <span class="n">AD_sumstats_Jansenetal_2019sept</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
+<span class="kn">parameter:</span> <span class="n">sumstats</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">sample_size</span> <span class="o">=</span> <span class="nb">int</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">none</span>
-<span class="kn">bash:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span> 
-    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="n">SLDSC_output</span>
+<span class="kn">parameter:</span> <span class="n">min_info</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kn">parameter:</span> <span class="n">min_maf</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kn">input:</span> <span class="n">sumstats</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.sumstat_merger&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">python</span> <span class="n">munge_polyfun_sumstats</span><span class="o">.</span><span class="n">py</span> \
-      <span class="o">--</span><span class="n">sumstats</span> <span class="n">sumstats</span> \
-      <span class="o">--</span><span class="n">n</span> <span class="n">sample_size</span> \
-      <span class="o">--</span><span class="n">out</span> <span class="o">/</span><span class="n">SLDSC_output</span><span class="o">/</span><span class="n">sumstats_munged</span><span class="o">.</span><span class="n">parquet</span> \
-      <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">info</span> <span class="mi">0</span> \
-      <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">maf</span> <span class="mi">0</span>
+      <span class="o">--</span><span class="n">sumstats</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
+      <span class="o">--</span><span class="n">n</span> <span class="err">$</span><span class="p">[</span><span class="n">sample_size</span><span class="p">]</span> \
+      <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">]</span> \
+      <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">info</span> <span class="err">$</span><span class="p">[</span><span class="n">min_info</span><span class="p">]</span> \
+      <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">maf</span> <span class="err">$</span><span class="p">[</span><span class="n">min_maf</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>

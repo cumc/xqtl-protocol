@@ -506,6 +506,16 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-prepare-intermediate-input-files">
+     Step 0 : Prepare Intermediate Input Files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">
+     FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#step-1-prepare-gwas-pip">
      Step 1: Prepare GWAS PIP
     </a>
@@ -636,6 +646,71 @@
 </div>
 <div class="section" id="workflow">
 <h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-0-prepare-intermediate-input-files">
+<h3>Step 0 : Prepare Intermediate Input Files<a class="headerlink" href="#step-0-prepare-intermediate-input-files" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gene.prior.txt.gz</span></code> : eQTL SNP data file</p></li>
+</ul>
+</div>
+<div class="section" id="fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">
+<h3>FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)<a class="headerlink" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eqtl_z1</span><span class="p">]</span>
+<span class="kn">bash:</span>
+    <span class="n">mkdir</span> <span class="n">z_files</span> <span class="n">vcfs</span> <span class="n">dap_rst_dir</span> <span class="n">annot</span>
+    <span class="n">gunzip</span> <span class="o">-</span><span class="n">c</span> <span class="n">gene</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>   
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eqtl_z2</span><span class="p">]</span>
+<span class="kn">R:</span> 
+    <span class="c1"># create z file </span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyverse&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">::</span><span class="n">fread</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{_input}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+    <span class="n">gene</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">V5</span><span class="o">/</span><span class="n">V6</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">select</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="n">V2</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;z_files/&quot;</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span><span class="s2">&quot;txt&quot;</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">))</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">colnames</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">rownames</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span> 
+  
+    <span class="c1"># create vcf file</span>
+    <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">id</span><span class="p">){</span>
+      <span class="n">rows</span> <span class="o">=</span> <span class="n">dim</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">id</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+      <span class="nb">chr</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="n">pos</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="n">a1</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="n">a2</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">rows</span><span class="p">){</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="n">str_split</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="nb">chr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">split</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">a1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">a2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">4</span><span class="p">]</span>
+      <span class="p">}</span>
+      <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">var</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">)</span>
+    <span class="p">}</span>
+  
+    <span class="n">vcf</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">[,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">vcf</span><span class="p">)</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;CHROM&quot;</span><span class="p">,</span> <span class="s2">&quot;POS&quot;</span><span class="p">,</span> <span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;REF&quot;</span><span class="p">,</span> <span class="s2">&quot;ALT&quot;</span><span class="p">)</span>
+    <span class="n">vcf</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;vcfs/&quot;</span><span class="p">,</span><span class="n">paste</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="s2">&quot;vcf&quot;</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">))</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">vcf</span><span class="p">,</span><span class="n">vcf</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span><span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eqtl_z3</span><span class="p">]</span>
+<span class="kn">bash:</span> 
+    <span class="n">gzip</span> <span class="n">gene</span><span class="o">.</span><span class="n">vcf</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="step-1-prepare-gwas-pip">
 <h3>Step 1: Prepare GWAS PIP<a class="headerlink" href="#step-1-prepare-gwas-pip" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -653,10 +728,16 @@
 </div>
 </div>
 <p><strong>Part 2</strong>: Convert z-scores to PIPs.</p>
-<p>[gwas_pip]
-bash:
-torus -d gwas.zval.gz –load_zval -dump_pip gwas.pip
-gzip gwas.pip</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">gwas_pip</span><span class="p">]</span>
+<span class="kn">bash:</span>
+    <span class="n">torus</span> <span class="o">-</span><span class="n">d</span> <span class="n">gwas</span><span class="o">.</span><span class="n">zval</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">load_zval</span> <span class="o">-</span><span class="n">dump_pip</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span>
+    <span class="n">gzip</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="step-2-prepare-eqtl-annotation-file">
 <h3>Step 2: Prepare eQTL Annotation File<a class="headerlink" href="#step-2-prepare-eqtl-annotation-file" title="Permalink to this headline">¶</a></h3>
@@ -699,7 +780,7 @@ gzip gwas.pip</p>
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">dap_annot</span><span class="p">]</span>
 <span class="kn">bash:</span> 
-    <span class="n">dap</span><span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">d_z</span> <span class="n">z_file</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">d_ld</span> <span class="n">chr1_ld</span><span class="o">.</span><span class="n">ld</span><span class="o">.</span><span class="n">bin</span> <span class="o">-</span><span class="n">p</span> <span class="o">./</span><span class="n">data</span> <span class="o">-</span><span class="n">ld_control</span> <span class="mf">0.5</span> <span class="o">--</span><span class="nb">all</span> <span class="o">-</span><span class="n">t</span> <span class="mi">4</span> <span class="o">&gt;</span> <span class="n">dap_annot</span> 
+    <span class="n">dap</span><span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">d_z</span> <span class="n">z_file</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">d_ld</span> <span class="n">chr1_ld</span><span class="o">.</span><span class="n">ld</span><span class="o">.</span><span class="n">bin</span> <span class="o">-</span><span class="n">p</span> <span class="n">dumpgene</span><span class="o">/</span><span class="n">gene</span><span class="o">.</span><span class="n">prior</span> <span class="o">-</span><span class="n">ld_control</span> <span class="mf">0.5</span> <span class="o">--</span><span class="nb">all</span> <span class="o">-</span><span class="n">t</span> <span class="mi">4</span> <span class="o">&gt;</span> <span class="n">dap_rst_dir</span> 
     <span class="n">perl</span> <span class="n">summarize_dap2enloc</span><span class="o">.</span><span class="n">pl</span> <span class="o">-</span><span class="nb">dir</span> <span class="n">dap_rst_dir</span> <span class="o">-</span><span class="n">vcf</span> <span class="n">vcfs</span><span class="o">/</span><span class="n">gene</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="n">annot</span><span class="o">/</span><span class="n">gene</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
@@ -726,7 +807,7 @@ gzip gwas.pip</p>
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">example</span><span class="p">]</span>
 <span class="kn">bash:</span>
-    <span class="n">mkdir</span> <span class="n">dap_rst_dir</span> <span class="n">annot</span>
+    <span class="n">mkdir</span> <span class="n">dap_rst_dir</span> <span class="n">annot</span> 
     <span class="n">perl</span> <span class="n">format2torus</span><span class="o">.</span><span class="n">pl</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">txt</span> <span class="o">&gt;</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span>
     <span class="n">gzip</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span>
     <span class="n">torus</span> <span class="o">-</span><span class="n">d</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">load_zval</span> <span class="o">-</span><span class="n">dump_pip</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span>

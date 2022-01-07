@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 LABEL maintainer="Amanda Tsai<at3535@cumc.columbia.edu>"
 RUN cd /tmp
 USER root
+# RUN R --slave -e "install.packages('tidyverse')"
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
 git-all \

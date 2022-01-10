@@ -1,4 +1,4 @@
-FROM gaow/base-notebook AS spython-base
+FROM gaow/base-notebook
 LABEL maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
 su -  root # USER root
 RUN pip install qtl

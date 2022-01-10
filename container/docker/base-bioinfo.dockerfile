@@ -1,4 +1,4 @@
-FROM gaow/base-notebook AS spython-base
+FROM gaow/base-notebook
 LABEL maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
 su -  root # USER root
 RUN R --slave -e "install.packages(c('rlang','tidyverse','BiocManager', 'RcppEigen'))"

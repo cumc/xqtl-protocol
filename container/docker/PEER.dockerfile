@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 AS spython-base
+FROM ubuntu:18.04
 LABEL maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
 ENV R_BASE_VERSION=3.5.1-2bionic
 ENV DEBIAN_FRONTEND=noninteractive

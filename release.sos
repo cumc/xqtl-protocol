@@ -1,7 +1,15 @@
 #!/usr/bin/env sos-runner
 #fileformat=SOS1.0
 
-[build]
+[docker_to_singularity, default_1]
+import glob
+depends: executable('spython')
+input: glob.glob("container/docker/*.dockerfile"), group_by = 1
+output: f"container/singularity/{_input:bn}.def"
+bash: expand = True
+  spython recipe {_input} | sed 's/Stage: spython-base//g' &> {_output}
+
+[build, default_2]
 bash:
 	jupyter-book build .  --path-output . --config website/_config.yml --toc website/_toc.yml 
 	rsync -auzP images/* _build/html/_images/

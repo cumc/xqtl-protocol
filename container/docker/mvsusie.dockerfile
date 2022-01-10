@@ -1,4 +1,4 @@
-FROM gaow/base-notebook AS spython-base
+FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN cd /tmp
 su -  root # USER root

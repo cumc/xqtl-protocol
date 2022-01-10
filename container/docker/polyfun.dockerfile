@@ -1,4 +1,4 @@
-FROM gaow/base-notebook AS spython-base
+FROM gaow/base-notebook
 LABEL maintainer="Amanda Tsai<at3535@cumc.columbia.edu>"
 RUN cd /tmp
 su -  root # USER root

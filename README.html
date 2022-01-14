@@ -488,15 +488,22 @@
   <a class="reference internal nav-link" href="#how-to-use-this-resource">
    How to use this resource
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#source-code">
+     Source code
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#organization-of-the-resource">
+     Organization of the resource
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overall-xqtl-workflow-schema">
-   Overall xQTL workflow schema
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#genotype-phenotype-and-covariates-data-preprocessing-workflow-schema">
-   Genotype, phenotype and covariates data preprocessing workflow schema
+  <a class="reference internal nav-link" href="#xqtl-workflow-blueprint">
+   xQTL workflow blueprint
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -507,11 +514,6 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#lead-developers">
      Lead developers
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#consortium-collaborators">
-     Consortium collaborators
     </a>
    </li>
   </ul>
@@ -529,25 +531,30 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="xqtl-analysis-pipeline">
 <h1>xQTL analysis pipeline<a class="headerlink" href="#xqtl-analysis-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>Developed for reproducible QTL analysis for the NIH/NIA Alzheimer’s Disease Sequencing Project Functional Genomics Consortium</p>
-<p><a class="reference external" href="https://cumc.github.io/xqtl-pipeline">https://cumc.github.io/xqtl-pipeline</a></p>
+<p>Developed for reproducible QTL analysis for the NIH/NIA Alzheimer’s Disease Sequencing Project Functional Genomics Consortium.</p>
 <div class="section" id="how-to-use-this-resource">
 <h2>How to use this resource<a class="headerlink" href="#how-to-use-this-resource" title="Permalink to this headline">¶</a></h2>
-<p>The left sidebar lists the analysis to be performed for QTL analysis, roughly in sequential orders.</p>
+<p>Pipelines in this repository are written in the <a class="reference external" href="https://vatlab.github.io/sos-docs/">Script of Scripts (SoS) workflow language</a>. Like most other workflow languages, SoS workflows can <strong>distribute and execute computing jobs directly in High Performance Computing cluster</strong>. It can also use <strong>containers (Docker or Singularity)</strong> to help with setting up computational environment and improve reproducibility. Unlike most other workflow languages, SoS workflows are created using SoS Notebooks (based on Ipython Notebook and developed in <a class="reference external" href="https://jupyter.org/">Jupyter</a>) which allow for both <strong>scientific narrative and pipeline scripts in the same document</strong>. Unlike typical Jupyter Notebooks intended for interactive data analysis, SoS workflows written in Jupyter Notebooks can be executed directly as command line scripts either on a local computer or in a HPC environment.</p>
+<div class="section" id="source-code">
+<h3>Source code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>The <strong>COMPLETE PIPELINES</strong> section is reserved for publishing the code used for various QTL analysis. Contents in this section can be generated automatically from workflow notebooks in the other sections, as will be discussed next.</p></li>
-<li><p>The rest sections in bold are various types of analysis available, from generating the molecular phenotypes to performing some of the selected multi-omics data integration analysis.</p></li>
-<li><p>Text under each bold section title shows the complete workflow commands to perform analysis implemented using the Script of Scripts (SoS) language, as will be discussed next.</p></li>
-<li><p>The workflows can be expanded by clicking on the down arrows to check out the SoS workflows implementing each task as an analysis module. These are the core pipeline implementations. Each of these pipeline modules are documented with some background information, required input, expected output, and a minimal working example, followed by the actual code implementation.</p></li>
+<li><p>Source code of pipelines and containers implemented in this repository are available at <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/tree/main/pipeline">https://github.com/cumc/xqtl-pipeline/tree/main/pipeline</a>.</p></li>
+<li><p>Container configurations are available at <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/tree/main/container">https://github.com/cumc/xqtl-pipeline/tree/main/container</a></p></li>
 </ul>
 </div>
-<div class="section" id="overall-xqtl-workflow-schema">
-<h2>Overall xQTL workflow schema<a class="headerlink" href="#overall-xqtl-workflow-schema" title="Permalink to this headline">¶</a></h2>
-<p><img alt="QTL Diagram" src="_images/complete_workflow.png" /></p>
+<div class="section" id="organization-of-the-resource">
+<h3>Organization of the resource<a class="headerlink" href="#organization-of-the-resource" title="Permalink to this headline">¶</a></h3>
+<p>The website <a class="reference external" href="https://cumc.github.io/xqtl-pipeline">https://cumc.github.io/xqtl-pipeline</a> is generated from files under <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> folder of the source code repository. The logic of the entire xQTL analysis workflow is roughly reflected on the side bar:</p>
+<ul class="simple">
+<li><p>The <strong>COMPLETE PIPELINES</strong> section is reserved for “push botton” commands that generates the entire QTL analysis pipeline workflow code from a configuration file. Notebooks under this sections are meant to be <strong>executed in command line</strong>. The generated commands can be executed as is to complete all available analysis, or can be used to help customizing specific analysis tasks. The configuration file itself helps centralized control and book keeping of workflows executed.</p></li>
+<li><p>Other sections in bold contain various types of analysis available, roughly showing from upstream to downstream analysis in order. We will refer to them as <em><strong>analysis groups</strong></em>, which are further divided into <em><strong>analysis subgroups</strong></em> by links to notebooks under each analysis group. These notebooks illustrate commands to perform analysis implemented in the group. Most of them are “tutorials” in nature and are meant to be <strong>executed interactively in Jupyter</strong> to run the SoS pipelines line by line. A few are the actual <em><strong>analysis modules</strong></em> implementing pipelines in SoS, as will be discussed next.</p></li>
+<li><p><em>Analysis subgroups</em> can be expanded by clicking on the down arrows to access the SoS workflows implemention of <em><strong>pipeline modules</strong></em>. These are the core pipeline implementations to be <strong>executed in command line</strong>, and are meant to be <strong>self-contained</strong> — they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline modules are documented with some background information, required input, expected output, and most importantly a <strong>minimal working example</strong> to allow users to test it out with a toy data-set before applying to their own analysis. The rest of the pipeline module are the actual code implementations.</p></li>
+</ul>
 </div>
-<div class="section" id="genotype-phenotype-and-covariates-data-preprocessing-workflow-schema">
-<h2>Genotype, phenotype and covariates data preprocessing workflow schema<a class="headerlink" href="#genotype-phenotype-and-covariates-data-preprocessing-workflow-schema" title="Permalink to this headline">¶</a></h2>
-<p><img alt="Data preprocessing diagram" src="_images/data_preprocessing.png" /></p>
+</div>
+<div class="section" id="xqtl-workflow-blueprint">
+<h2>xQTL workflow blueprint<a class="headerlink" href="#xqtl-workflow-blueprint" title="Permalink to this headline">¶</a></h2>
+<p><img alt="QTL Diagram" src="_images/complete_workflow.png" /></p>
 </div>
 <div class="section" id="contributors">
 <h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>
@@ -565,14 +572,6 @@
 <li><p>Amanda Tsai, Department of Biostatistics, Columbia University</p></li>
 <li><p>Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University</p></li>
 <li><p>Gao Wang (group leader), Department of Neurology, Columbia University</p></li>
-</ul>
-</div>
-<div class="section" id="consortium-collaborators">
-<h3>Consortium collaborators<a class="headerlink" href="#consortium-collaborators" title="Permalink to this headline">¶</a></h3>
-<p>Single-cell nucleotide RNA-seq</p>
-<ul class="simple">
-<li></li>
-<li></li>
 </ul>
 </div>
 </div>

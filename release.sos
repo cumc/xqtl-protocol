@@ -10,6 +10,7 @@ bash: expand = True
   spython recipe {_input} | sed 's/Stage: spython-base//g' &> {_output}
 
 [build, default_2]
+input: group_by = 'all'
 bash:
 	jupyter-book build .  --path-output . --config website/_config.yml --toc website/_toc.yml 
 	rsync -auzP images/* _build/html/_images/

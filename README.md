@@ -28,7 +28,14 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under `
 
 This repository is developed by the ADSP FG Brain xQTL consortium.
 
-### Lead developers
+### Developers
+
+Lead developers
+
+- Hao Sun, Department of Neurology, Columbia University
+- Wenhao Gou, Department of Biostatistics, Columbia University
+- Amanda Tsai, Department of Biostatistics, Columbia University  
+- Gao Wang, Department of Neurology, Columbia University
 
 Project leader
 
@@ -36,8 +43,6 @@ Project leader
 
 Brain xQTL methods and analysis subgroup
 
-- Hao Sun, Department of Neurology, Columbia University
-- Wenhao Gou, Department of Biostatistics, Columbia University
-- Amanda Tsai, Department of Biostatistics, Columbia University  
-- Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
 - Gao Wang (group leader), Department of Neurology, Columbia University
+- Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
+- Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University

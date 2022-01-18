@@ -5,6 +5,7 @@ RUN R --slave -e "install.packages(c('rlang',
                                      'tidyverse',
                                      'BiocManager', 
                                      'RcppEigen',
+                                     # For kinship analysis
                                      'igraph'))"
 RUN cd /tmp && wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
     unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/*

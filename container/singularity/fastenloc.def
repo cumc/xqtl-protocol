@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: gaow/base-notebook
+
+
+%labels
+maintainer="Amanda Tsai<at3535@cumc.columbia.edu>"
+%post
+cd /tmp
+su -  root # USER root
+R --slave -e "install.packages('tidyverse')"
+apt-get update
+apt-get install -y --no-install-recommends \
+git-all \
+libboost-all-dev \
+libgsl-dev \
+zlib1g
+git clone https://github.com/xqwen/torus.git
+cd torus/src && make && cp ./torus /usr/local/bin/torus && chmod +x /usr/local/bin/torus
+git clone https://github.com/xqwen/dap.git
+cd dap/dap_src/ && make && cp ./dap-g /usr/local/bin/dap-g && chmod +x /usr/local/bin/dap-g
+git clone https://github.com/xqwen/fastenloc.git
+cd fastenloc/src/ && make && cp ./fastenloc /usr/local/bin/fastenloc && chmod +x /usr/local/bin/fastenloc
+echo "cd /tmp" >> /entrypoint.sh
+echo "exec /bin/bash "$@"" >> /entrypoint.sh
+chmod u+x /entrypoint.sh
+%runscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"
+%startscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"

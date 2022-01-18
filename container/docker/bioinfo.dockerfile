@@ -26,5 +26,6 @@ RUN cd /tmp \
 RUN R --slave -e "BiocManager::install('biomaRt')"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
 # Biopython package was used for summary stats merger script to handle strand flips
+# QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
 RUN pip install qtl Biopython
 CMD exec /bin/bash "$@"

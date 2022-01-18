@@ -3,16 +3,22 @@ hosts:
     address: localhost
     paths:
       home: /home/{user_name}
+  # This HPC queue is called "neurology". 
+  # You can change it to a name that makes sense to you for your HPC system
   neurology:
+    # You can modify it to your context although whatever written here does not matter to running jobs
     description: Columbia Neurology CSG cluster
     address: localhost
     paths:
       home: /home/{user_name}
     queue_type: pbs
     status_check_interval: 30
-    account: ""
+    # Below you can define some variables that goes into the `task_template`
     partition: ""
     PE: $ -pe openmp {cores}
+    # This is the HPC job template that you should adapt for your own system.
+    # In addition to variables defined above, the variables in `{}` are reserved SoS variables
+    # that can be used as is when you adapt it to compose your own template
     task_template: |
       #!/bin/sh
       #$ -l h_rt={walltime}
@@ -24,29 +30,29 @@ hosts:
       #$ -cwd
       #$ -S /bin/bash
       #{partition}
-      module load Singularity
-      module load R/4.0
-      export PATH=$PATH:/home/hs3163/fusion/fusion_twas-master/
-      export PATH=$PATH:/home/hs3163/fusion/fusion_twas-master/plink2R-master/
-      source /home/hs3163/.bashrc
-      export PATH=$HOME/miniconda3/bin:$PATH
-      export SINGULARITY_BIND="/mnt/mfs/ctcn/:/mnt/mfs/ctcn/"
-      export PATH=$PATH:/home/hs3163/GIT/METAL/build/bin
+      
+      # Below is your usual computational code
       set -e
       sos execute {task} -v {verbosity} -s {sig_mode}
-    kill_cmd: qdel {job_id}
+    # Maximum number of cores, memory and walltime ever to ask. 
+    # This will restrict the job queue generated from the pipeline to use a reasonable amount of resources
     max_cores: 40
     max_mem: 128G
     max_running_jobs: 50
     max_walltime: '240:00:00'
-    status_cmd: qstat -j {job_id}
+    # Configure of job submission, status and deletion command
     submit_cmd: qsub {job_file}
-#    submit_cmd_output: Your job {job_id} ("{job_name}") has been submitted
+    status_cmd: qstat -j {job_id}
+    kill_cmd: qdel {job_id}
+    submit_cmd_output: 'Your job {job_id} ("{job_name}") has been submitted to queue <{queue}>'
+  # This is another HPC queue that shares most of the configuration with the above queue
+  # But needs some slight adjustments specific for the queue
   csg: 
     based_on: hosts.neurology
     partition: $ -q csg.q
     PE: $ -pe orte {cores}
-    submit_cmd_output: 'Your job {job_id} ("{job_name}") has been submitted'
+    submit_cmd_output: 'Your job {job_id} ("{job_name}") has been submitted  to queue <{queue}>'
+  # This is yet another HPC queue available in the system
   high_mem:
     based_on: hosts.neurology
     partition: $ -q high_mem.q

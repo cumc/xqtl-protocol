@@ -7,6 +7,14 @@ RUN R --slave -e "install.packages(c('rlang',
                                      'RcppEigen',
                                      # For kinship analysis
                                      'igraph'))"
+                                     
+RUN R --slave -e "BiocManager::install('biomaRt')"
+RUN R --slave -e "BiocManager::install('VariantAnnotation')"
+
+# Biopython package was used for summary stats merger script to handle strand flips
+# QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
+RUN pip install qtl Biopython
+                                     
 RUN cd /tmp && wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
     unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/*
 RUN cd /tmp && wget https://s3.amazonaws.com/plink2-assets/plink2_linux_avx2_20211217.zip && \
@@ -23,9 +31,5 @@ RUN cd /tmp \
     && make \
     && make install \
     && rm -rf /tmp/*
-RUN R --slave -e "BiocManager::install('biomaRt')"
-RUN R --slave -e "BiocManager::install('VariantAnnotation')"
-# Biopython package was used for summary stats merger script to handle strand flips
-# QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-RUN pip install qtl Biopython
+
 CMD exec /bin/bash "$@"

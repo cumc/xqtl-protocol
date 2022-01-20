@@ -1,24 +1,15 @@
 Bootstrap: docker
 From: gaow/base-notebook
-Stage: spython-base
+
 
 %labels
 MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 %post
-
-
 cd /tmp
 su -  root # USER root
-
-# GIT
-
 apt-get update \
 && apt install -y --no-install-recommends  git-all  libboost-all-dev
-
-# METAL | git commit e2253cc3901df8403a331bd725d4d9fe1edfb19f
-
 git clone https://github.com/statgen/METAL
-
 cd METAL
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -26,15 +17,12 @@ make
 make test
 make install
 cp ./bin/metal  /usr/local/bin/metal && chmod +x /usr/local/bin/metal
-
-# VCF
 R --slave -e "install.packages(c('BiocManager'))"
 R --slave -e "BiocManager::install('VariantAnnotation')"
-
-
+echo "cd /tmp" >> /entrypoint.sh
+echo "exec /bin/bash "$@"" >> /entrypoint.sh
+chmod u+x /entrypoint.sh
 %runscript
-cd /tmp
-exec /bin/bash "$@"
+exec /bin/bash /bin/bash /entrypoint.sh "$@"
 %startscript
-cd /tmp
-exec /bin/bash "$@"
+exec /bin/bash /bin/bash /entrypoint.sh "$@"

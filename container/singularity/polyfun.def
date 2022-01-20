@@ -1,0 +1,32 @@
+Bootstrap: docker
+From: gaow/base-notebook
+
+
+%labels
+maintainer="Amanda Tsai<at3535@cumc.columbia.edu>"
+%post
+cd /tmp
+su -  root # USER root
+R -e "remotes::install_github('stephenslab/susieR',build_vignettes=FALSE)"
+R -e "install.packages('Ckmeans.1d.dp', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+R -e "install.packages('KRIS', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+apt-get update \
+&& apt install -y --no-install-recommends  git-all  libboost-all-dev
+git clone https://github.com/omerwe/polyfun
+mv ./polyfun/* /usr/local/bin/
+wget http://www.christianbenner.com/finemap_v1.4_x86_64.tgz
+tar xvf finemap_v1.4_x86_64.tgz
+mv ./finemap_v1.4_x86_64/finemap_v1.4_x86_64 /usr/local/bin/
+wget http://www.christianbenner.com/ldstore_v2.0_x86_64.tgz
+tar xzvf ldstore_v2.0_x86_64.tgz
+mv ./ldstore_v2.0_x86_64/ldstore_v2.0_x86_64 /usr/local/bin/
+python -m pip install -U pip
+pip install pandas-plink networkx scipy bitarray rpy2 sklearn
+chmod 777 /usr/local/bin/*
+echo "cd /tmp" >> /entrypoint.sh
+echo "exec /bin/bash "$@"" >> /entrypoint.sh
+chmod u+x /entrypoint.sh
+%runscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"
+%startscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"

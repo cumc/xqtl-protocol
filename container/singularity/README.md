@@ -1,13 +1,9 @@
-# Singularity Recipe
-These files are meant to be used as templates to build a singularity sif file. Each sos module can then use the sif file as the container in place of the docker.
+# Automatically generated singularity configurations
 
-The command to generate the sif file is:
-`singularity build {filename}.sif {filename}.def`
+Warning: all files in this folder are generated from docker configurations under `../docker` folder. **Please do not manually edit contents in this folder**. To generate them,
 
-If the previous command returns an error due to an environment issue. The sif file can also be built remotely.
-Please login (or create an account by following prompt) by 
-`singularity remote login`
-And then run
-`singularity build --remote {filename}.sif {filename}.def`
+```
+singularity build --fakeroot {filename}.sif {filename}.def
+```
 
-Internet connection is required for the remote option.
+It will generate the `sif` file in the current directory.

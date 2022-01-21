@@ -65,9 +65,10 @@ RUN cd /opt && \
 ENV LD_LIBRARY_PATH /usr/local/lib/bamtools:$LD_LIBRARY_PATH
 
 # bamsync
-COPY bamsync /opt/bamsync
-RUN cd /opt/bamsync && make
-ENV PATH /opt/bamsync:$PATH
+ENV GTEX_PIPLINE 3481dd43b2e8a33cc217155483ce25d5255aafa9
+RUN cd /tmp && \
+    wget --no-check-certificate https://github.com/broadinstitute/gtex-pipeline/archive/${GTEX_PIPELINE}.zip gtex-pipeline.zip \
+    && unzip gtex-pipeline.zip && cd gtex-pipeline-${GTEX_PIPELINE} && cd rnaseq/bamsync && make && mv bamsync /usr/local/bin
 
 # Picard tools
 RUN mkdir /opt/picard-tools && \
@@ -118,4 +119,5 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     apt-get update -y && apt-get install google-cloud-sdk -y
 
 # scripts
-COPY src src/
+
+RUN mv /tmp/gtex-pipeline-${GTEX_PIPELINE}/rnaseq/src $PWD && rm -rf /tmp/gtex-pipeline*

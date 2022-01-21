@@ -18,10 +18,13 @@ It will generate the `sif` file in the current directory.
 
 If fakeroot didn't work and gave the error message of:
 1. `FATAL:   could not use fakeroot: no mapping entry found in /etc/subuid for {username}`
+
    Check if your username is in /etc/subuid
 
 2. `ERROR  : Failed to create container namespaces`
+
    For debian system, do `sudo echo 1 > /proc/sys/kernel/unprivileged_userns_clone`
    
 3. `FATAL:   Unable to create build: while searching for mksquashfs: exec: "mksquashfs": executable file not found in $PATH`
-   do `sudo apt-get update && sudo apt-get install squashfs-tools`
+
+   Do `sudo apt-get update && sudo apt-get install squashfs-tools`

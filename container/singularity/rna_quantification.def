@@ -2,14 +2,9 @@ Bootstrap: docker
 From: ubuntu:18.04
 
 
-%files
-bamsync /opt/bamsync
-src src/
 %labels
 MAINTAINER Francois Aguet
 %post
-# Dockerfile for GTEx RNA-seq pipeline
-# https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 
 apt-get update && apt-get install -y software-properties-common && \
 apt-get update && apt-get install -y \
@@ -30,11 +25,11 @@ python3-pip \
 unzip \
 vim-common \
 wget \
-zlib1g-dev \
-&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+zlib1g-dev && \
 apt-get clean && \
 apt-get autoremove -y && \
 rm -rf /var/lib/{apt,dpkg,cache,log}/
+## FIXME: The 'rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*'  command was removed, please add back the specific contents that are to be removed. 
 
 
 #-----------------------------
@@ -73,8 +68,10 @@ tar -xf v2.4.1.tar.gz && rm v2.4.1.tar.gz && cd bamtools-2.4.1 && mkdir build &&
 LD_LIBRARY_PATH=/usr/local/lib/bamtools:$LD_LIBRARY_PATH
 
 # bamsync
-cd /opt/bamsync && make
-PATH=/opt/bamsync:$PATH
+GTEX_PIPELINE=3481dd43b2e8a33cc217155483ce25d5255aafa9
+cd /tmp && \
+wget --no-check-certificate https://github.com/broadinstitute/gtex-pipeline/archive/${GTEX_PIPELINE}.zip -O gtex-pipeline.zip \
+&& unzip gtex-pipeline.zip && cd gtex-pipeline-${GTEX_PIPELINE} && cd rnaseq/bamsync && make && mv bamsync /usr/local/bin
 
 # Picard tools
 mkdir /opt/picard-tools && \
@@ -100,6 +97,7 @@ chmod 755 /opt/ucsc/*
 PATH=/opt/ucsc:$PATH
 
 # python modules
+curl https://bootstrap.pypa.io/get-pip.py | python3
 pip3 install --upgrade pip setuptools
 pip3 install tables numpy pandas scipy pyarrow matplotlib seaborn
 # numpy dependencies:
@@ -125,15 +123,20 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
 apt-get update -y && apt-get install google-cloud-sdk -y
 
 # scripts
+
+mv /tmp/gtex-pipeline-${GTEX_PIPELINE}/rnaseq/src /opt/ && rm -rf /tmp/gtex-pipeline*
+PATH=/opt/src:$PATH
+
 %environment
 export PATH=/opt/STAR-2.7.8a/bin/Linux_x86_64_static:$PATH
 export PATH=/opt/RSEM-1.3.3:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib/bamtools:$LD_LIBRARY_PATH
-export PATH=/opt/bamsync:$PATH
+export GTEX_PIPELINE=3481dd43b2e8a33cc217155483ce25d5255aafa9
 export PATH=$PATH:/opt/kallisto_linux-v0.46.2
 export PATH=/opt/ucsc:$PATH
 export PATH=/opt/FastQC-0.11.9:$PATH
 export PATH=/opt/rnaseqc:$PATH
+export PATH=/opt/src:$PATH
 %runscript
 exec /bin/bash "$@"
 %startscript

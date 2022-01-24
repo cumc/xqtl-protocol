@@ -163,7 +163,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="genotype_formatting.html">
-     Genotype data reformat
+     Genotype data formatting workflows
     </a>
    </li>
   </ul>
@@ -490,56 +490,52 @@
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   GWAS data QC workflow
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#overview">
-     Overview
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods">
+   Methods
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input-format">
+   Input format
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#default-qc-parameters">
+   Default QC parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#minimal-working-example">
+   Minimal working example
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-1-perform-qc-and-ld-pruning-on-the-entire-data-set">
+     Example 1: perform QC and LD pruning on the entire data-set
     </a>
    </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input-format">
-     Input format
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-2-perform-qc-for-unrelated-individuals-and-extract-those-variants-from-related-individuals">
+     Example 2: Perform QC for unrelated individuals and extract those variants from related individuals
     </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#run-this-workflow">
-     Run this workflow
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#minimal-working-example">
-     Minimal working example
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#first-scenario-estimate-kinship">
-       First scenario: estimate kinship
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#first-scenario-do-qc">
-       First scenario: do qc
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#merge-all-the-bed-files-into-one-bed-file">
-   Merge all the .bed files into one bed file
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimate-kinship-in-the-sample">
+   Estimate kinship in the sample
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#estimate-kinship-in-the-sample">
-     Estimate kinship in the sample
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#genotype-and-sample-qc">
+   Genotype and sample QC
+  </a>
  </li>
 </ul>
 
@@ -554,60 +550,117 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="gwas-data-qc-workflow">
 <h1>GWAS data QC workflow<a class="headerlink" href="#gwas-data-qc-workflow" title="Permalink to this headline">¶</a></h1>
-<p>This workflow implements some prelimary data QC steps for PLINK input files.</p>
+<p>This workflow implements some prelimary data QC steps for PLINK input files. VCF format of inputs will be converted to PLINK before performing QC.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This notebook includes workflow for</p>
 <ul class="simple">
-<li><p>Computer kinship matrix in sample and estimate related individuals</p></li>
+<li><p>Compute kinship matrix in sample and estimate related individuals</p></li>
 <li><p>Genotype and sample QC: by MAF, missing data and HWE</p></li>
-<li><p>LD pruning</p></li>
+<li><p>LD pruning for follow up PCA analysis on genotype, as needed</p></li>
 </ul>
+<p>A potential limitation is that the workflow requires all samples and chromosomes to be merged as one single file, in order to perform both sample and variant level QC. However, in our experience using this pipeline with 200K exomes with 15 million variants, this pipeline works on the single merged PLINK file.</p>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>Depending on the context of your problem, the workflow can be executed in two ways:</p>
+<ol class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">qc</span></code> command to perform genotype data QC and LD pruning to generate a subset of variants in preparation for analysis such as PCA.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">king</span></code> first on either the original or a subset of common variants to identify unrelated individuals. The <code class="docutils literal notranslate"><span class="pre">king</span></code> pipeline will split samples to related and unrelated individuals. Then you perform <code class="docutils literal notranslate"><span class="pre">qc</span></code> on these individuals only and finally extract the same set of QC-ed variants for related individuals.</p></li>
+</ol>
 </div>
 <div class="section" id="input-format">
 <h2>Input format<a class="headerlink" href="#input-format" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
-<li><p>Whole genome data in VCF format, or in PLINK bim/bed/fam bundle; Or,</p></li>
-<li><p>A list of per chromosome VCF data</p></li>
-</ol>
+<p>The whole genome PLINK bim/bed/fam bundle. For input in VCF format and/or per-chromosome VCF or PLINK format, please use <code class="docutils literal notranslate"><span class="pre">vcf_to_plink</span></code> and <code class="docutils literal notranslate"><span class="pre">merge_plink</span></code> in <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/pipeline/data_preprocessing/genotype/genotype_formatting.ipynb">genotype formatting</a> pipeline to convert them to PLINK file bundle.</p>
 </div>
-<div class="section" id="run-this-workflow">
-<h2>Run this workflow<a class="headerlink" href="#run-this-workflow" title="Permalink to this headline">¶</a></h2>
-<p>Depending on the context of your problem, the workflow can be executed in two ways:</p>
-<ol class="simple">
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">merge_plink</span></code> if necessary, to merge all samples first; then run <code class="docutils literal notranslate"><span class="pre">king</span></code> to perform kinship estimate and finally <code class="docutils literal notranslate"><span class="pre">qc</span></code> to do addition QC</p></li>
-<li><p>When you have a separate data-set for kinship estimate different from your genotype of interest, you can run <code class="docutils literal notranslate"><span class="pre">king</span></code>, followed by <code class="docutils literal notranslate"><span class="pre">qc</span></code>.</p></li>
-</ol>
-<p>In both cases, you should use the <code class="docutils literal notranslate"><span class="pre">*.related_remove</span></code> output from <code class="docutils literal notranslate"><span class="pre">king</span></code> as the <code class="docutils literal notranslate"><span class="pre">--remove_samples</span></code> parameter input for <code class="docutils literal notranslate"><span class="pre">qc</span></code> step.</p>
+<div class="section" id="default-qc-parameters">
+<h2>Default QC parameters<a class="headerlink" href="#default-qc-parameters" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Kinship coefficient for related individuals: 0.0625</p></li>
+<li><p>MAF designed for common variant analysis: 0.01</p></li>
+<li><p>Variant level missingness threshold: 0.1</p></li>
+<li><p>Sample level missingness threshold: 0.1</p></li>
+<li><p>LD pruning via PLINK for PCA analysis:</p>
+<ul>
+<li><p>window 50</p></li>
+<li><p>shift 10</p></li>
+<li><p>r2 0.1</p></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
-<p>FIXME: first specify which of the 2 scenarios this example is for, then show how to run it.</p>
-<div class="section" id="first-scenario-estimate-kinship">
-<h3>First scenario: estimate kinship<a class="headerlink" href="#first-scenario-estimate-kinship" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">bioworkflows</span><span class="o">/</span><span class="n">GWAS</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span>\
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">~/</span><span class="n">output</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="o">~/</span><span class="n">MWE_AD</span><span class="o">/</span><span class="n">rename_chr22</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">name</span> <span class="n">first</span> \ 
-    <span class="o">--</span><span class="n">kinship</span> <span class="mf">0.05</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="first-scenario-do-qc">
-<h3>First scenario: do qc<a class="headerlink" href="#first-scenario-do-qc" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">bioworkflows</span><span class="o">/</span><span class="n">GWAS</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span>\
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">~/</span><span class="n">output</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="o">~/</span><span class="n">MWE_AD</span><span class="o">/</span><span class="n">rename_chr22</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">remove_samples</span> <span class="o">~/</span><span class="n">output</span><span class="o">/</span><span class="n">rename_chr22</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">related_remove</span> \
+<p>Minimal working example data-set as well as the singularity container <code class="docutils literal notranslate"><span class="pre">bioinfo.sif</span></code> can be downloaded from <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed">Google Drive</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">chr1_chr6</span></code> data-set was merged from <code class="docutils literal notranslate"><span class="pre">chr1</span></code> and <code class="docutils literal notranslate"><span class="pre">chr6</span></code> data, using <code class="docutils literal notranslate"><span class="pre">merge_plink</span></code> command from <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/pipeline/data_preprocessing/genotype/genotype_formatting.ipynb">genotype formatting</a> pipeline.</p>
+<div class="section" id="example-1-perform-qc-and-ld-pruning-on-the-entire-data-set">
+<h3>Example 1: perform QC and LD pruning on the entire data-set<a class="headerlink" href="#example-1-perform-qc-and-ld-pruning-on-the-entire-data-set" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">maf_filter</span> <span class="mf">0.5</span> \
     <span class="o">--</span><span class="n">geno_filter</span> <span class="mf">0.2</span> \
     <span class="o">--</span><span class="n">mind_filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">hwe_filter</span> <span class="mf">0.0</span> \
-    <span class="o">--</span><span class="n">name</span> <span class="n">first</span> \
+    <span class="o">--</span><span class="n">hwe_filter</span> <span class="mf">1e-6</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="mi">20220110</span> \
     <span class="o">--</span><span class="n">window</span> <span class="mi">50</span> \
     <span class="o">--</span><span class="n">shift</span> <span class="mi">10</span> \
-    <span class="o">--</span><span class="n">r2</span> <span class="mf">0.5</span> 
+    <span class="o">--</span><span class="n">r2</span> <span class="mf">0.5</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-2-perform-qc-for-unrelated-individuals-and-extract-those-variants-from-related-individuals">
+<h3>Example 2: Perform QC for unrelated individuals and extract those variants from related individuals<a class="headerlink" href="#example-2-perform-qc-for-unrelated-individuals-and-extract-those-variants-from-related-individuals" title="Permalink to this headline">¶</a></h3>
+<p>Determine and split between related and unrelated individuals,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="mi">20220110</span> \
+    <span class="o">--</span><span class="n">kinship</span> <span class="mf">0.05</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Variant level and sample level QC on unrelated individuals, in preparation for PCA analysis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">maf_filter</span> <span class="mf">0.5</span> \
+    <span class="o">--</span><span class="n">geno_filter</span> <span class="mf">0.2</span> \
+    <span class="o">--</span><span class="n">mind_filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">hwe_filter</span> <span class="mf">1e-6</span> \
+    <span class="o">--</span><span class="n">window</span> <span class="mi">50</span> \
+    <span class="o">--</span><span class="n">shift</span> <span class="mi">10</span> \
+    <span class="o">--</span><span class="n">r2</span> <span class="mf">0.5</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">r2</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -625,13 +678,19 @@
 Workflows:
   king
   qc
-  merge_plink
 
 Global Workflow Options:
   --cwd VAL (as path, required)
                         the output directory for generated files
-  --name VAL (as str, required)
+  --name &#39;&#39;
                         A string to identify your analysis run
+  --genoFile  paths
+
+                        PLINK binary files
+  --kinship 0.0625 (as float)
+                        Kinship coefficient threshold for related individuals
+                        (e.g first degree above 0.25, second degree above 0.125,
+                        third degree above 0.0625)
   --job-size 1 (as int)
                         For cluster jobs, number commands to run per job
   --walltime 5h
@@ -640,19 +699,27 @@ Global Workflow Options:
                         Memory expected
   --numThreads 20 (as int)
                         Number of threads
-  --container-lmm &#39;statisticalgenetics/lmm:1.8&#39;
+  --container &#39;&#39;
                         Software container option
 
 Sections
-  king:                 Inference of relationships in the sample to remove
+  king_1:               Inference of relationships in the sample to identify
                         closely related individuals
     Workflow Options:
-      --kinship 0.0625 (as float)
-                        Filter based on kinship coefficient higher than a number
-                        (e.g first degree 0.25, second degree 0.125, third
-                        degree 0.0625)
-      --genoFile VAL (as path, required)
-                        Plink binary file
+      --kin-maf 0.01 (as float)
+                        PLINK binary file
+  king_2:               Select a list of unrelated individual with an attempt to
+                        maximize the unrelated individuals selected from the
+                        data
+    Workflow Options:
+      --[no-]maximize-unrelated (default to True)
+                        If set to true, the unrelated individuals in a family
+                        will be kept without being reported. Otherwise (use
+                        `--no-maximize-unrelated`) the entire family will be
+                        removed Note that attempting to maximize unrelated
+                        individuals is computationally intensive on large data.
+  king_3:               Split genotype data into related and unrelated samples,
+                        if related individuals are detected
   qc_1:                 Filter SNPs and select individuals
     Workflow Options:
       --remove-samples . (as path)
@@ -665,16 +732,15 @@ Sections
                         The path to the file that contains the list of variants
                         to keep
       --maf-filter 0.01 (as float)
-                        MAF filter to use
-      --geno-filter 0.01 (as float)
+                        minimum MAF filter to use.
+      --maf-max-filter 0.0 (as float)
+                        maximum MAF filter to use
+      --geno-filter 0.1 (as float)
                         Maximum missingess per-variant
-      --mind-filter 0.02 (as float)
+      --mind-filter 0.1 (as float)
                         Maximum missingness per-sample
-      --hwe-filter 5e-08 (as float)
+      --hwe-filter 1e-06 (as float)
                         HWE filter
-      --genoFile  paths
-
-                        Plink binary files
   qc_2:                 LD prunning and remove related individuals (both ind of
                         a pair)
     Workflow Options:
@@ -683,25 +749,6 @@ Sections
       --shift 10 (as int)
                         Shift window every 10 snps
       --r2 0.1 (as float)
-  qc_3:                 Merge all the .bed files into one bed file
-    Workflow Options:
-      --merged-prefix &#39;&#39;
-  merge_plink:
-    Workflow Options:
-      --merged-prefix VAL (as str, required)
-      --genoFile  paths
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-    <span class="o">--</span><span class="n">genotype_list</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">mwe_genotype_list</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">./</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;Dry&quot;</span> \
-    <span class="o">--</span><span class="n">merged_prefix</span> <span class="s2">&quot;merge&quot;</span> \
-    <span class="o">--</span><span class="n">container_lmm</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/lmm.sif&quot;</span> <span class="o">&amp;</span>
 </pre></div>
 </div>
 </div>
@@ -712,7 +759,12 @@ Sections
 <span class="c1"># the output directory for generated files</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># A string to identify your analysis run</span>
-<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">b</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># PLINK binary files</span>
+<span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">paths</span>
+<span class="c1"># Kinship coefficient threshold for related individuals</span>
+<span class="c1"># (e.g first degree above 0.25, second degree above 0.125, third degree above 0.0625)</span>
+<span class="kn">parameter:</span> <span class="n">kinship</span> <span class="o">=</span> <span class="mf">0.0625</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -722,144 +774,15 @@ Sections
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="c1"># Software container option</span>
-<span class="kn">parameter:</span> <span class="n">container_lmm</span> <span class="o">=</span> <span class="s1">&#39;statisticalgenetics/lmm:2.4&#39;</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">container</span><span class="p">:</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="c1"># use this function to edit memory string for PLINK input</span>
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">geno_file_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">genoFile</span> <span class="o">=</span> <span class="n">geno_file_inv</span><span class="p">[</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="merge-all-the-bed-files-into-one-bed-file">
-<h1>Merge all the .bed files into one bed file<a class="headerlink" href="#merge-all-the-bed-files-into-one-bed-file" title="Permalink to this headline">¶</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">qc_1</span><span class="p">,</span><span class="n">merge_plink</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">merged_prefix</span> <span class="o">=</span> <span class="kp">name</span>
-<span class="kn">input:</span> <span class="n">genoFile</span> <span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
-<span class="kn">output:</span> <span class="n">merged_bed</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">merged_prefix</span><span class="si">}</span><span class="s2">.mergrd.bed&quot;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container_lmm</span>
-    <span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])}</span> <span class="o">|</span> <span class="n">sed</span> <span class="s1">&#39;s/ /</span><span class="se">\n</span><span class="s1">/g&#39;</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">merge_list</span>
-    <span class="n">plink</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">merge</span><span class="o">-</span><span class="nb">list</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">merge_list</span> \
-    <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e06</span><span class="p">}</span>
-
-<span class="c1">## Genotype and sample QC</span>
-
-<span class="n">QC</span> <span class="n">the</span> <span class="n">genetic</span> <span class="n">data</span> <span class="n">based</span> <span class="n">on</span> <span class="n">MAF</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">and</span> <span class="n">variant</span> <span class="n">missigness</span> <span class="ow">and</span> <span class="n">Hardy</span><span class="o">-</span><span class="n">Weinberg</span> <span class="n">Equilibrium</span> <span class="p">(</span><span class="n">HWE</span><span class="p">)</span><span class="o">.</span>
-
-<span class="n">In</span> <span class="n">this</span> <span class="n">step</span> <span class="n">you</span> <span class="n">may</span> <span class="n">also</span> <span class="n">provide</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">samples</span> <span class="n">to</span> <span class="n">keep</span><span class="p">,</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">case</span> <span class="n">when</span> <span class="n">you</span> <span class="n">would</span> <span class="n">like</span> <span class="n">to</span> <span class="n">subset</span> <span class="n">a</span> <span class="n">sample</span> <span class="n">based</span> <span class="n">on</span> <span class="n">their</span> <span class="n">ancestries</span> <span class="n">to</span> <span class="n">perform</span> <span class="n">independent</span> <span class="n">analyses</span> <span class="n">on</span> <span class="n">each</span> <span class="n">of</span> <span class="n">these</span> <span class="n">groups</span><span class="o">.</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Merge all the .bed files into one bed file </span>
-<span class="p">[</span><span class="n">qc_1</span><span class="p">,</span><span class="n">merge_plink</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">merged_prefix</span> <span class="o">=</span> <span class="kp">name</span>
-<span class="kn">input:</span> <span class="n">genoFile</span> <span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
-<span class="kn">output:</span> <span class="n">merged_bed</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">merged_prefix</span><span class="si">}</span><span class="s2">.mergrd.bed&quot;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container_lmm</span><span class="p">,</span> <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">genoFile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">genoFile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-    <span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])}</span> <span class="o">|</span> <span class="n">sed</span> <span class="s1">&#39;s/ /</span><span class="se">\n</span><span class="s1">/g&#39;</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">merge_list</span>
-    <span class="n">plink</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">merge</span><span class="o">-</span><span class="nb">list</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">merge_list</span> \
-    <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e06</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter SNPs and select individuals </span>
-<span class="p">[</span><span class="n">qc_2</span><span class="p">,</span><span class="n">basic_filter</span><span class="p">]</span>
-<span class="c1"># The path to the file that contains the list of samples to remove (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">remove_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># The path to the file that contains the list of variants to keep</span>
-<span class="kn">parameter:</span> <span class="n">keep_variants</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># minimum MAF filter to use. Notice that PLINK default is 0.01</span>
-<span class="kn">parameter:</span> <span class="n">maf_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># maximum MAF filter to use</span>
-<span class="kn">parameter:</span> <span class="n">maf_max_filter</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="c1"># Maximum missingess per-variant</span>
-<span class="kn">parameter:</span> <span class="n">geno_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># Maximum missingness per-sample</span>
-<span class="kn">parameter:</span> <span class="n">mind_filter</span> <span class="o">=</span> <span class="mf">0.02</span>
-<span class="c1"># HWE filter </span>
-<span class="kn">parameter:</span> <span class="n">hwe_filter</span> <span class="o">=</span> <span class="mf">5e-08</span>
-
-<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">keep_samples</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">keep_samples</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
-<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">keep_variants</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">keep_variants</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
-<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">remove_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">remove_samples</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">remove_samples</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
-
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.filtered</span><span class="si">{</span><span class="s2">&quot;.extracted&quot;</span> <span class="k">if</span> <span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.bed&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container_lmm</span> 
-    <span class="n">plink</span> \
-      <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--maf </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">maf_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">maf_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--max-maf </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">maf_max_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">maf_max_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--geno </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">geno_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">geno_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--hwe </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hwe_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">hwe_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--mind </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mind_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">mind_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--keep </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">keep_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--remove </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">remove_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">remove_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
-      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--extract </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">keep_variants</span><span class="p">)</span> <span class="k">if</span> <span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
-      <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
-      <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
-      <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
-      <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># LD prunning and remove related individuals (both ind of a pair)</span>
-<span class="p">[</span><span class="n">qc_3</span><span class="p">,</span><span class="n">LD_pruning</span><span class="p">]</span>
-<span class="c1"># Window size</span>
-<span class="kn">depends:</span> <span class="n">sos_step</span><span class="p">(</span><span class="s2">&quot;qc_1&quot;</span><span class="p">)</span>
-<span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="c1"># Shift window every 10 snps</span>
-<span class="kn">parameter:</span> <span class="n">shift</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="kn">parameter:</span> <span class="n">r2</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="kn">output:</span> <span class="n">bed</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.prune.bed&#39;</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.prune.in&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_lmm</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">plink2</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">indep</span><span class="o">-</span><span class="n">pairwise</span> <span class="err">$</span><span class="p">{</span><span class="n">window</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">shift</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">r2</span><span class="p">}</span>  \
-    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="s2">&quot;prune&quot;</span><span class="p">]:</span><span class="n">nn</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
-   
-    <span class="n">plink2</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">extract</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="s1">&#39;prune&#39;</span><span class="p">]}</span> \
-    <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="s1">&#39;bed&#39;</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
-    <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
-</pre></div>
 </div>
 </div>
 </div>
@@ -868,30 +791,38 @@ Sections
 <p>The output is a list of related individuals, as well as the kinship matrix</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inference of relationships in the sample to remove closely related individuals</span>
-<span class="p">[</span><span class="n">qc_4</span><span class="p">,</span><span class="n">king_1</span><span class="p">]</span>
-<span class="c1"># Plink binary file</span>
-<span class="kn">parameter:</span> <span class="n">kinship</span> <span class="o">=</span> <span class="mf">0.0625</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.kin0&#39;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inference of relationships in the sample to identify closely related individuals</span>
+<span class="p">[</span><span class="n">king_1</span><span class="p">]</span>
+<span class="c1"># PLINK binary file</span>
+<span class="kn">parameter:</span> <span class="n">kin_maf</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="kn">input:</span> <span class="n">genoFile</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}{</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="kp">name</span><span class="p">)</span> <span class="k">if</span> <span class="kp">name</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.kin0&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_lmm</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">plink2</span> \
-      <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
+      <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">king</span><span class="o">-</span><span class="n">table</span> \
       <span class="o">--</span><span class="n">king</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="nb">filter</span> <span class="err">$</span><span class="p">{</span><span class="n">kinship</span><span class="p">}</span> \
+      <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">af</span> <span class="err">$</span><span class="p">{</span><span class="n">kin_maf</span><span class="p">}</span> \
+      <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">af</span> <span class="err">$</span><span class="p">{</span><span class="mi">1</span><span class="o">-</span><span class="n">kin_maf</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
-      
-<span class="p">[</span><span class="n">qc_5</span><span class="p">,</span><span class="n">king_2</span><span class="p">]</span>
-<span class="c1"># Filter based on kinship coefficient higher than a number (e.g first degree 0.25, second degree 0.125, third degree 0.0625)</span>
-<span class="kn">parameter:</span> <span class="n">kinship</span> <span class="o">=</span> <span class="mf">0.0625</span>
-<span class="c1"># If set to true, the unrelated individuals in a family will be kept without being reported. But this will take a significantly long time.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a list of unrelated individual with an attempt to maximize the unrelated individuals selected from the data </span>
+<span class="p">[</span><span class="n">king_2</span><span class="p">]</span>
+<span class="c1"># If set to true, the unrelated individuals in a family will be kept without being reported. </span>
 <span class="c1"># Otherwise (use `--no-maximize-unrelated`) the entire family will be removed</span>
-<span class="kn">parameter:</span> <span class="n">maximize_unrelated</span> <span class="o">=</span> <span class="s2">&quot;FALSE&quot;</span>
-<span class="kn">output:</span> <span class="n">relate_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.related_id&#39;</span>
+<span class="c1"># Note that attempting to maximize unrelated individuals is computationally intensive on large data.</span>
+<span class="kn">parameter:</span> <span class="n">maximize_unrelated</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.related_id&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span><span class="o">=</span><span class="n">container_lmm</span>
+<span class="kn">R:</span>  <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
     <span class="n">library</span><span class="p">(</span><span class="n">igraph</span><span class="p">)</span>
     <span class="c1"># Remove related individuals while keeping maximum number of individuals</span>
@@ -899,8 +830,8 @@ Sections
     <span class="c1"># https://rdrr.io/cran/plinkQC/src/R/utils.R</span>
     <span class="c1">#&#39; @param relatedness [data.frame] containing pair-wise relatedness estimates</span>
     <span class="c1">#&#39; (in column [relatednessRelatedness]) for individual 1 (in column</span>
-    <span class="c1">#&#39; [relatednessID1] and individual 2 (in column [relatednessID1]). Columns</span>
-    <span class="c1">#&#39; relatednessID1, relatednessID2 and relatednessRelatedness have to present,</span>
+    <span class="c1">#&#39; [relatednessIID1] and individual 2 (in column [relatednessIID1]). Columns</span>
+    <span class="c1">#&#39; relatednessIID1, relatednessIID2 and relatednessRelatedness have to present,</span>
     <span class="c1">#&#39; while additional columns such as family IDs can be present. Default column</span>
     <span class="c1">#&#39; names correspond to column names in output of plink --genome</span>
     <span class="c1">#&#39; (\url{https://www.cog-genomics.org/plink/1.9/ibd}). All original</span>
@@ -910,35 +841,35 @@ Sections
     <span class="c1">#&#39; threshold are considered related.</span>
     <span class="n">relatednessFilter</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">relatedness</span><span class="p">,</span> 
                                   <span class="n">relatednessTh</span><span class="p">,</span>
-                                  <span class="n">relatednessID1</span><span class="o">=</span><span class="s2">&quot;ID1&quot;</span><span class="p">,</span> 
-                                  <span class="n">relatednessID2</span><span class="o">=</span><span class="s2">&quot;ID2&quot;</span><span class="p">,</span>
+                                  <span class="n">relatednessIID1</span><span class="o">=</span><span class="s2">&quot;IID1&quot;</span><span class="p">,</span> 
+                                  <span class="n">relatednessIID2</span><span class="o">=</span><span class="s2">&quot;IID2&quot;</span><span class="p">,</span>
                                   <span class="n">relatednessRelatedness</span><span class="o">=</span><span class="s2">&quot;KINSHIP&quot;</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1"># format data</span>
-        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">relatednessID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)))</span> <span class="p">{</span>
-            <span class="n">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">,</span> <span class="n">relatednessID1</span><span class="p">,</span> <span class="s2">&quot;for relatedness not found!&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">relatednessIID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)))</span> <span class="p">{</span>
+            <span class="n">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">,</span> <span class="n">relatednessIID1</span><span class="p">,</span> <span class="s2">&quot;for relatedness not found!&quot;</span><span class="p">))</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">relatednessID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)))</span> <span class="p">{</span>
-            <span class="n">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">,</span> <span class="n">relatednessID1</span><span class="p">,</span> <span class="s2">&quot;for relatedness not found!&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">relatednessIID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)))</span> <span class="p">{</span>
+            <span class="n">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">,</span> <span class="n">relatednessIID1</span><span class="p">,</span> <span class="s2">&quot;for relatedness not found!&quot;</span><span class="p">))</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">relatednessRelatedness</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)))</span> <span class="p">{</span>
             <span class="n">stop</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Column&quot;</span><span class="p">,</span> <span class="n">relatednessRelatedness</span><span class="p">,</span>
                        <span class="s2">&quot;for relatedness not found!&quot;</span><span class="p">))</span>
         <span class="p">}</span>
 
-        <span class="n">ID1_index</span> <span class="o">&lt;-</span> <span class="n">which</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)</span> <span class="o">==</span> <span class="n">relatednessID1</span><span class="p">)</span>
-        <span class="n">ID2_index</span> <span class="o">&lt;-</span> <span class="n">which</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)</span> <span class="o">==</span> <span class="n">relatednessID2</span><span class="p">)</span>
+        <span class="n">iid1_index</span> <span class="o">&lt;-</span> <span class="n">which</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)</span> <span class="o">==</span> <span class="n">relatednessIID1</span><span class="p">)</span>
+        <span class="n">iid2_index</span> <span class="o">&lt;-</span> <span class="n">which</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)</span> <span class="o">==</span> <span class="n">relatednessIID2</span><span class="p">)</span>
 
-        <span class="n">relatedness</span><span class="p">[,</span><span class="n">ID1_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">(</span><span class="n">relatedness</span><span class="p">[,</span><span class="n">ID1_index</span><span class="p">])</span>
-        <span class="n">relatedness</span><span class="p">[,</span><span class="n">ID2_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">(</span><span class="n">relatedness</span><span class="p">[,</span><span class="n">ID2_index</span><span class="p">])</span>
+        <span class="n">relatedness</span><span class="p">[,</span><span class="n">iid1_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">(</span><span class="n">relatedness</span><span class="p">[,</span><span class="n">iid1_index</span><span class="p">])</span>
+        <span class="n">relatedness</span><span class="p">[,</span><span class="n">iid2_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">(</span><span class="n">relatedness</span><span class="p">[,</span><span class="n">iid2_index</span><span class="p">])</span>
 
         <span class="n">relatedness_names</span> <span class="o">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)</span>
-        <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)[</span><span class="n">ID1_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s2">&quot;ID1&quot;</span>
-        <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)[</span><span class="n">ID2_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s2">&quot;ID2&quot;</span>
+        <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)[</span><span class="n">iid1_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s2">&quot;IID1&quot;</span>
+        <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)[</span><span class="n">iid2_index</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s2">&quot;IID2&quot;</span>
         <span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)[</span><span class="n">names</span><span class="p">(</span><span class="n">relatedness</span><span class="p">)</span> <span class="o">==</span> <span class="n">relatednessRelatedness</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s2">&quot;M&quot;</span>
 
         <span class="c1"># Remove symmetric IID rows</span>
         <span class="n">relatedness_original</span> <span class="o">&lt;-</span> <span class="n">relatedness</span>
-        <span class="n">relatedness</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="p">::</span><span class="n">select</span><span class="p">(</span><span class="n">relatedness</span><span class="p">,</span> <span class="n">ID1</span><span class="p">,</span> <span class="n">ID2</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+        <span class="n">relatedness</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="p">::</span><span class="n">select_</span><span class="p">(</span><span class="n">relatedness</span><span class="p">,</span> <span class="o">~</span><span class="n">IID1</span><span class="p">,</span> <span class="o">~</span><span class="n">IID2</span><span class="p">,</span> <span class="o">~</span><span class="n">M</span><span class="p">)</span>
 
         <span class="n">sortedIDs</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">apply</span><span class="p">(</span><span class="n">relatedness</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">c</span><span class="p">(</span><span class="n">sort</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
@@ -950,23 +881,23 @@ Sections
 
         <span class="c1"># individuals with at least one pair-wise comparison &gt; relatednessTh</span>
         <span class="c1"># return NULL to failIDs if no one fails the relatedness check</span>
-        <span class="n">highRelated</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="p">::</span><span class="nb">filter</span><span class="p">(</span><span class="n">relatedness</span><span class="p">,</span> <span class="n">M</span> <span class="o">&gt;</span> <span class="n">relatednessTh</span><span class="p">)</span>
+        <span class="n">highRelated</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="p">::</span><span class="n">filter_</span><span class="p">(</span><span class="n">relatedness</span><span class="p">,</span> <span class="o">~</span><span class="n">M</span> <span class="o">&gt;</span> <span class="n">relatednessTh</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">nrow</span><span class="p">(</span><span class="n">highRelated</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">relatednessFails</span><span class="o">=</span><span class="n">NULL</span><span class="p">,</span> <span class="n">failIDs</span><span class="o">=</span><span class="n">NULL</span><span class="p">))</span>
         <span class="p">}</span>
 
         <span class="c1"># all samples with related individuals</span>
-        <span class="n">allRelated</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">highRelated</span><span class="err">$</span><span class="n">ID1</span><span class="p">,</span> <span class="n">highRelated</span><span class="err">$</span><span class="n">ID2</span><span class="p">)</span>
+        <span class="n">allRelated</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">highRelated</span><span class="err">$</span><span class="n">IID1</span><span class="p">,</span> <span class="n">highRelated</span><span class="err">$</span><span class="n">IID2</span><span class="p">)</span>
         <span class="n">uniqueIIDs</span> <span class="o">&lt;-</span> <span class="n">unique</span><span class="p">(</span><span class="n">allRelated</span><span class="p">)</span>
 
         <span class="c1"># Further selection of samples with relatives in cohort</span>
         <span class="n">multipleRelative</span> <span class="o">&lt;-</span> <span class="n">unique</span><span class="p">(</span><span class="n">allRelated</span><span class="p">[</span><span class="n">duplicated</span><span class="p">(</span><span class="n">allRelated</span><span class="p">)])</span>
         <span class="n">singleRelative</span> <span class="o">&lt;-</span> <span class="n">uniqueIIDs</span><span class="p">[</span><span class="err">!</span><span class="n">uniqueIIDs</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">multipleRelative</span><span class="p">]</span>
 
-        <span class="n">highRelatedMultiple</span> <span class="o">&lt;-</span> <span class="n">highRelated</span><span class="p">[</span><span class="n">highRelated</span><span class="err">$</span><span class="n">ID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">multipleRelative</span> <span class="o">|</span>
-                                            <span class="n">highRelated</span><span class="err">$</span><span class="n">ID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">multipleRelative</span><span class="p">,]</span>
-        <span class="n">highRelatedSingle</span> <span class="o">&lt;-</span> <span class="n">highRelated</span><span class="p">[</span><span class="n">highRelated</span><span class="err">$</span><span class="n">ID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">singleRelative</span> <span class="o">&amp;</span>
-                                           <span class="n">highRelated</span><span class="err">$</span><span class="n">ID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">singleRelative</span><span class="p">,]</span>
+        <span class="n">highRelatedMultiple</span> <span class="o">&lt;-</span> <span class="n">highRelated</span><span class="p">[</span><span class="n">highRelated</span><span class="err">$</span><span class="n">IID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">multipleRelative</span> <span class="o">|</span>
+                                            <span class="n">highRelated</span><span class="err">$</span><span class="n">IID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">multipleRelative</span><span class="p">,]</span>
+        <span class="n">highRelatedSingle</span> <span class="o">&lt;-</span> <span class="n">highRelated</span><span class="p">[</span><span class="n">highRelated</span><span class="err">$</span><span class="n">IID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">singleRelative</span> <span class="o">&amp;</span>
+                                           <span class="n">highRelated</span><span class="err">$</span><span class="n">IID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">singleRelative</span><span class="p">,]</span>
 
         <span class="c1"># Only one related samples per individual</span>
         <span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">singleRelative</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
@@ -981,8 +912,8 @@ Sections
         <span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">multipleRelative</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">relatedPerID</span> <span class="o">&lt;-</span> <span class="n">lapply</span><span class="p">(</span><span class="n">multipleRelative</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
                 <span class="n">tmp</span> <span class="o">&lt;-</span> <span class="n">highRelatedMultiple</span><span class="p">[</span><span class="n">rowSums</span><span class="p">(</span>
-                    <span class="n">cbind</span><span class="p">(</span><span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">ID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">x</span><span class="p">,</span>
-                          <span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">ID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">x</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="n">cbind</span><span class="p">(</span><span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">IID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">x</span><span class="p">,</span>
+                          <span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">IID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">x</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
                 <span class="n">rel</span> <span class="o">&lt;-</span> <span class="n">unique</span><span class="p">(</span><span class="n">unlist</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span>
                 <span class="k">return</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span>
             <span class="p">})</span>
@@ -990,10 +921,10 @@ Sections
 
             <span class="n">keepIDs_multiple</span> <span class="o">&lt;-</span> <span class="n">lapply</span><span class="p">(</span><span class="n">relatedPerID</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
                 <span class="n">pairwise</span> <span class="o">&lt;-</span> <span class="n">t</span><span class="p">(</span><span class="n">combn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-                <span class="n">index</span> <span class="o">&lt;-</span> <span class="p">(</span><span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">ID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span>
-                              <span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">ID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">2</span><span class="p">])</span> <span class="o">|</span>
-                    <span class="p">(</span><span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">ID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span>
-                         <span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">ID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">index</span> <span class="o">&lt;-</span> <span class="p">(</span><span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">IID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span>
+                              <span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">IID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">2</span><span class="p">])</span> <span class="o">|</span>
+                    <span class="p">(</span><span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">IID1</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span>
+                         <span class="n">highRelatedMultiple</span><span class="err">$</span><span class="n">IID2</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">pairwise</span><span class="p">[,</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">combination</span> <span class="o">&lt;-</span> <span class="n">highRelatedMultiple</span><span class="p">[</span><span class="n">index</span><span class="p">,]</span>
                 <span class="n">combination_graph</span> <span class="o">&lt;-</span> <span class="n">igraph</span><span class="p">::</span><span class="n">graph_from_data_frame</span><span class="p">(</span><span class="n">combination</span><span class="p">,</span>
                                                                    <span class="n">directed</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
@@ -1025,14 +956,14 @@ Sections
         <span class="p">}</span>
         <span class="n">allFailIIDs</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">failIDs_single</span><span class="p">,</span> <span class="n">failIDs_multiple</span><span class="p">)</span>
         <span class="n">relatednessFails</span> <span class="o">&lt;-</span> <span class="n">lapply</span><span class="p">(</span><span class="n">allFailIIDs</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">fail_inorder</span> <span class="o">&lt;-</span> <span class="n">relatedness_original</span><span class="err">$</span><span class="n">ID1</span> <span class="o">==</span> <span class="nb">id</span> <span class="o">&amp;</span>
+            <span class="n">fail_inorder</span> <span class="o">&lt;-</span> <span class="n">relatedness_original</span><span class="err">$</span><span class="n">IID1</span> <span class="o">==</span> <span class="nb">id</span> <span class="o">&amp;</span>
                 <span class="n">relatedness_original</span><span class="err">$</span><span class="n">M</span> <span class="o">&gt;</span> <span class="n">relatednessTh</span>
-            <span class="n">fail_inreverse</span> <span class="o">&lt;-</span> <span class="n">relatedness_original</span><span class="err">$</span><span class="n">ID2</span> <span class="o">==</span> <span class="nb">id</span> <span class="o">&amp;</span>
+            <span class="n">fail_inreverse</span> <span class="o">&lt;-</span> <span class="n">relatedness_original</span><span class="err">$</span><span class="n">IID2</span> <span class="o">==</span> <span class="nb">id</span> <span class="o">&amp;</span>
                 <span class="n">relatedness_original</span><span class="err">$</span><span class="n">M</span> <span class="o">&gt;</span> <span class="n">relatednessTh</span>
             <span class="k">if</span> <span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">fail_inreverse</span><span class="p">))</span> <span class="p">{</span>
                 <span class="n">inreverse</span> <span class="o">&lt;-</span> <span class="n">relatedness_original</span><span class="p">[</span><span class="n">fail_inreverse</span><span class="p">,</span> <span class="p">]</span>
-                <span class="n">id1</span> <span class="o">&lt;-</span> <span class="n">ID1_index</span>
-                <span class="n">id2</span> <span class="o">&lt;-</span> <span class="n">ID2_index</span>
+                <span class="n">id1</span> <span class="o">&lt;-</span> <span class="n">iid1_index</span>
+                <span class="n">id2</span> <span class="o">&lt;-</span> <span class="n">iid2_index</span>
                 <span class="n">inreverse</span><span class="p">[,</span><span class="n">c</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="n">inreverse</span><span class="p">[,</span><span class="n">c</span><span class="p">(</span><span class="n">id2</span><span class="p">,</span> <span class="n">id1</span><span class="p">)]</span>
                 <span class="n">names</span><span class="p">(</span><span class="n">inreverse</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">relatedness_names</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -1049,8 +980,8 @@ Sections
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
             <span class="n">names</span><span class="p">(</span><span class="n">relatednessFails</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">relatedness_names</span>
             <span class="n">rownames</span><span class="p">(</span><span class="n">relatednessFails</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="mi">1</span><span class="p">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">relatednessFails</span><span class="p">)</span>
-            <span class="n">uniqueFails</span> <span class="o">&lt;-</span> <span class="n">relatednessFails</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">relatednessFails</span><span class="p">[,</span><span class="n">ID1_index</span><span class="p">]),]</span>
-            <span class="n">failIDs</span> <span class="o">&lt;-</span> <span class="n">uniqueFails</span><span class="p">[,</span><span class="n">ID1_index</span><span class="p">]</span>
+            <span class="n">uniqueFails</span> <span class="o">&lt;-</span> <span class="n">relatednessFails</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">relatednessFails</span><span class="p">[,</span><span class="n">iid1_index</span><span class="p">]),]</span>
+            <span class="n">failIDs</span> <span class="o">&lt;-</span> <span class="n">uniqueFails</span><span class="p">[,</span><span class="n">iid1_index</span><span class="p">]</span>
         <span class="p">}</span>
         <span class="k">return</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">relatednessFails</span><span class="o">=</span><span class="n">relatednessFails</span><span class="p">,</span> <span class="n">failIDs</span><span class="o">=</span><span class="n">failIDs</span><span class="p">))</span>
     <span class="p">}</span>
@@ -1059,7 +990,7 @@ Sections
     <span class="c1"># main code</span>
     <span class="n">kin0</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="n">header</span><span class="o">=</span><span class="n">F</span><span class="p">,</span> <span class="n">stringsAsFactor</span><span class="o">=</span><span class="n">F</span><span class="p">)</span>
     <span class="n">colnames</span><span class="p">(</span><span class="n">kin0</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;FID1&quot;</span><span class="p">,</span><span class="s2">&quot;ID1&quot;</span><span class="p">,</span><span class="s2">&quot;FID2&quot;</span><span class="p">,</span><span class="s2">&quot;ID2&quot;</span><span class="p">,</span><span class="s2">&quot;NSNP&quot;</span><span class="p">,</span><span class="s2">&quot;HETHET&quot;</span><span class="p">,</span><span class="s2">&quot;IBS0&quot;</span><span class="p">,</span><span class="s2">&quot;KINSHIP&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">maximize_unrelated</span><span class="p">})</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">maximize_unrelated</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">})</span> <span class="p">{</span>
         <span class="n">rel</span> <span class="o">&lt;-</span> <span class="n">relatednessFilter</span><span class="p">(</span><span class="n">kin0</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">kinship</span><span class="p">},</span> <span class="s2">&quot;ID1&quot;</span><span class="p">,</span> <span class="s2">&quot;ID2&quot;</span><span class="p">,</span> <span class="s2">&quot;KINSHIP&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">failIDs</span>
         <span class="n">tmp1</span> <span class="o">&lt;-</span> <span class="n">kin0</span><span class="p">[,</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">tmp2</span> <span class="o">&lt;-</span> <span class="n">kin0</span><span class="p">[,</span><span class="mi">3</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
@@ -1083,12 +1014,15 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">qc_6</span><span class="p">,</span><span class="n">sep_by_relateness</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;qc_5&quot;</span><span class="p">),</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;qc_3&quot;</span><span class="p">)[</span><span class="s2">&quot;bed&quot;</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="n">unrelated_bed</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.unrelated.bed&#39;</span><span class="p">,</span>
-        <span class="n">related_bed</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.related.bed&#39;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split genotype data into related and unrelated samples, if related individuals are detected</span>
+<span class="p">[</span><span class="n">king_3</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">genoFile</span>
+<span class="kn">output:</span> <span class="n">unrelated_bed</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.unrelated.bed&#39;</span><span class="p">,</span>
+        <span class="n">related_bed</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.related.bed&#39;</span>
+<span class="n">related_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+<span class="n">stop_if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">related_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container_lmm</span>
+<span class="kn">bash:</span>  <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">plink2</span> \
       <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">remove</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
@@ -1104,6 +1038,90 @@ Sections
       <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="genotype-and-sample-qc">
+<h2>Genotype and sample QC<a class="headerlink" href="#genotype-and-sample-qc" title="Permalink to this headline">¶</a></h2>
+<p>QC the genetic data based on MAF, sample and variant missigness and Hardy-Weinberg Equilibrium (HWE).</p>
+<p>In this step you may also provide a list of samples to keep, for example in the case when you would like to subset a sample based on their ancestries to perform independent analyses on each of these groups.</p>
+<p>The default parameters are set to reflect some suggestions in Table 1 of <a class="reference external" href="https://dx.doi.org/10.1002%2Fmpr.1608">this paper</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter SNPs and select individuals </span>
+<span class="p">[</span><span class="n">qc_1</span> <span class="p">(</span><span class="n">basic</span> <span class="n">QC</span> <span class="n">filters</span><span class="p">)]</span>
+<span class="c1"># The path to the file that contains the list of samples to remove (format FID, IID)</span>
+<span class="kn">parameter:</span> <span class="n">remove_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
+<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="c1"># The path to the file that contains the list of variants to keep</span>
+<span class="kn">parameter:</span> <span class="n">keep_variants</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="c1"># minimum MAF filter to use. </span>
+<span class="kn">parameter:</span> <span class="n">maf_filter</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="c1"># maximum MAF filter to use</span>
+<span class="kn">parameter:</span> <span class="n">maf_max_filter</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="c1"># Maximum missingess per-variant</span>
+<span class="kn">parameter:</span> <span class="n">geno_filter</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="c1"># Maximum missingness per-sample</span>
+<span class="kn">parameter:</span> <span class="n">mind_filter</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="c1"># HWE filter </span>
+<span class="kn">parameter:</span> <span class="n">hwe_filter</span> <span class="o">=</span> <span class="mf">1e-06</span>
+
+<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">keep_samples</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">keep_samples</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
+<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">keep_variants</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">keep_variants</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
+<span class="n">fail_if</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">remove_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">remove_samples</span> <span class="o">==</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)),</span> <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Cannot find ``</span><span class="si">{</span><span class="n">remove_samples</span><span class="si">}</span><span class="s1">``&#39;</span><span class="p">)</span>
+
+<span class="kn">input:</span> <span class="n">genoFile</span><span class="p">,</span> <span class="n">group_by</span><span class="o">=</span><span class="mi">1</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}{</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="kp">name</span><span class="p">)</span> <span class="k">if</span> <span class="kp">name</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.filtered</span><span class="si">{</span><span class="s2">&quot;.extracted&quot;</span> <span class="k">if</span> <span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.bed&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">volumes</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">plink2</span> \
+      <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--maf </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">maf_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">maf_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--max-maf </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">maf_max_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">maf_max_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--geno </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">geno_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">geno_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--hwe </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">hwe_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">hwe_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--mind </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mind_filter</span><span class="p">)</span> <span class="k">if</span> <span class="n">mind_filter</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--keep </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">keep_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--remove </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">remove_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">remove_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--extract </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">keep_variants</span><span class="p">)</span> <span class="k">if</span> <span class="n">keep_variants</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
+      <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
+      <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
+      <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
+      <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># LD prunning and remove related individuals (both ind of a pair)</span>
+<span class="p">[</span><span class="n">qc_2</span> <span class="p">(</span><span class="n">LD</span> <span class="n">pruning</span><span class="p">)]</span>
+<span class="c1"># Window size</span>
+<span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># Shift window every 10 snps</span>
+<span class="kn">parameter:</span> <span class="n">shift</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">r2</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">stop_if</span><span class="p">(</span><span class="n">r2</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+<span class="kn">output:</span> <span class="n">bed</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.prune.bed&#39;</span><span class="p">,</span> <span class="n">prune</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.prune.in&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">plink2</span> \
+    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">indep</span><span class="o">-</span><span class="n">pairwise</span> <span class="err">$</span><span class="p">{</span><span class="n">window</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">shift</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">r2</span><span class="p">}</span>  \
+    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="s2">&quot;prune&quot;</span><span class="p">]:</span><span class="n">nn</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
+   
+    <span class="n">plink2</span> \
+    <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">extract</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="s1">&#39;prune&#39;</span><span class="p">]}</span> \
+    <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="s1">&#39;bed&#39;</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e6</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

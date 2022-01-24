@@ -163,7 +163,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">
-     Genotype data reformat
+     Genotype data formatting workflows
     </a>
    </li>
   </ul>
@@ -843,14 +843,13 @@ Sections
 <span class="c1"># Length:</span>
 <span class="kn">parameter:</span> <span class="n">sjdbOverhang</span> <span class="o">=</span> <span class="nb">int</span>
 
-<span class="kn">input:</span> <span class="n">fasta</span><span class="p">,</span> <span class="n">gtf</span><span class="p">,</span> <span class="n">sjdbOverhang</span>
+<span class="kn">input:</span> <span class="n">fasta</span><span class="p">,</span> <span class="n">gtf</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_rna_calling</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-
     <span class="n">STAR</span> <span class="o">--</span><span class="n">runMode</span> <span class="n">genomeGenerate</span> \
          <span class="o">--</span><span class="n">genomeDir</span> <span class="err">$</span><span class="p">{</span><span class="n">STAR_index_dir</span><span class="p">}</span> \
          <span class="o">--</span><span class="n">genomeFastaFiles</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
          <span class="o">--</span><span class="n">sjdbGTFfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> \
-         <span class="o">--</span><span class="n">sjdbOverhang</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span> \
+         <span class="o">--</span><span class="n">sjdbOverhang</span> <span class="err">$</span><span class="p">{</span><span class="n">sjdbOverhang</span><span class="p">}</span> \
          <span class="o">--</span><span class="n">runThreadN</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -886,7 +885,6 @@ Sections
 
 <span class="kn">input:</span> <span class="n">fasta</span><span class="p">,</span> <span class="n">gtf</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_rna_calling</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-
     <span class="n">rsem</span><span class="o">-</span><span class="n">prepare</span><span class="o">-</span><span class="n">reference</span> \
             <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
             <span class="err">$</span><span class="p">{</span><span class="n">RMES_index_dir</span><span class="p">}</span> \
@@ -955,7 +953,7 @@ Sections
 <span class="kn">parameter:</span> <span class="n">adapter</span> <span class="o">=</span> <span class="nb">str</span>
 <span class="c1"># Other parameters (i.e. leading, trailing ... )</span>
 
-<span class="kn">input:</span> <span class="n">fastq1_raw</span><span class="p">,</span> <span class="n">fastq1_raw</span>
+<span class="kn">input:</span> <span class="n">fastq1_raw</span><span class="p">,</span> <span class="n">fastq2_raw</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_paired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_unpaired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_paired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_unpaired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_rna_calling</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="err">$</span><span class="p">{</span><span class="n">soft_dir</span><span class="p">}</span><span class="o">/</span><span class="n">trimmomatic</span><span class="o">-</span><span class="mf">0.39</span><span class="o">.</span><span class="n">jar</span> <span class="n">PE</span> <span class="o">-</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
@@ -995,12 +993,12 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">STAR_align</span><span class="p">]</span>
 <span class="c1"># Input cleaned fastq files</span>
 <span class="kn">parameter:</span> <span class="n">fastq1_clean</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">parameter:</span> <span class="n">fastq1_clean</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">fastq2_clean</span> <span class="o">=</span> <span class="n">path</span>
 
 <span class="c1"># STAR indexing file</span>
 <span class="kn">parameter:</span> <span class="n">STAR_index</span> <span class="o">=</span> <span class="n">path</span>
 
-<span class="kn">input:</span> <span class="n">fastq1_clean</span><span class="p">,</span><span class="n">fastq1_clean</span>
+<span class="kn">input:</span> <span class="n">fastq1_clean</span><span class="p">,</span><span class="n">fastq2_clean</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/$</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.out.bam&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_rna_calling</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
@@ -1087,7 +1085,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">RNA_QC</span><span class="p">]</span>
 <span class="c1"># Output from STAR:</span>
-<span class="kn">parameter:</span> <span class="n">STAR_bam</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">QC_bam</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Reference genome</span>
 <span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
 
@@ -1121,7 +1119,8 @@ Sections
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">RSEM</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">STAR_tras</span>
+<span class="kn">parameter:</span> <span class="n">STAR_tras</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">STAR_tras</span> 
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container_rna_calling</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">python3</span> <span class="n">run_RSEM</span><span class="o">.</span><span class="n">py</span> \
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="mi">1000</span> \

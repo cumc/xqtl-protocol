@@ -163,7 +163,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="genotype/genotype_formatting.html">
-     Genotype data reformat
+     Genotype data formatting workflows
     </a>
    </li>
   </ul>
@@ -547,7 +547,7 @@
 <div class="section" id="analysis-steps">
 <h3>Analysis steps<a class="headerlink" href="#analysis-steps" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li><p>Genotype data quality control (QC). See here for the [QC steps performed].</p></li>
+<li><p>Genotype data quality control (QC). See here for the <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/pipeline/data_preprocessing/genotype/GWAS_QC.html">QC default settings</a>.</p></li>
 <li><p>Principle component analysis (PCA) based QC, and PC computation for each sub-population available in the genotype data.</p></li>
 <li><p>Genomic relationship matrix (GRM) computation.</p></li>
 <li><p>Genotype data reformatting for downstream fine-mapping analysis.</p></li>
@@ -556,8 +556,8 @@
 <div class="section" id="input-data-requirement">
 <h3>Input data requirement<a class="headerlink" href="#input-data-requirement" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li><p>Genotype data. See here for <span class="xref myst">format details</span>.</p></li>
-<li><p>[Optional] a sample information file to specific population information, if external data such as HapMap or 1000 Genomes are to be integrated to the PCA analysis to visualize and assess population structure in the genotype data. See here for <span class="xref myst">format details</span>.</p></li>
+<li><p>Genotype data. See here for <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/pipeline/data_preprocessing/genotype/genotype_formatting.html">format details</a>.</p></li>
+<li><p>[Optional] a sample information file to specific population information, if external data such as HapMap or 1000 Genomes are to be integrated to the PCA analysis to visualize and assess population structure in the genotype data. See here for <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/pipeline/data_preprocessing/genotype/genotype_formatting.html">format details</a>.</p></li>
 </ol>
 </div>
 </div>
@@ -565,15 +565,62 @@
 <h2>Genotype QC<a class="headerlink" href="#genotype-qc" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span>  <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-    <span class="o">--</span><span class="n">genotype_list</span> <span class="n">Rosmap_wgs_genotype_list</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">GWAS_QC</span><span class="o">/</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;ac&quot;</span> \
-    <span class="o">--</span><span class="n">container_lmm</span> <span class="s2">&quot;base-bioinfo.sif&quot;</span> 
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1</span><span class="o">.</span><span class="n">bed</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr6</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">chr1_chr6</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Determine and split between related and unrelated individuals,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="mi">20220110</span> \
+    <span class="o">--</span><span class="n">kinship</span> <span class="mf">0.05</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Variant level and sample level QC on unrelated individuals, in preparation for PCA analysis:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">maf_filter</span> <span class="mf">0.5</span> \
+    <span class="o">--</span><span class="n">geno_filter</span> <span class="mf">0.2</span> \
+    <span class="o">--</span><span class="n">mind_filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">hwe_filter</span> <span class="mf">1e-6</span> \
+    <span class="o">--</span><span class="n">window</span> <span class="mi">50</span> \
+    <span class="o">--</span><span class="n">shift</span> <span class="mi">10</span> \
+    <span class="o">--</span><span class="n">r2</span> <span class="mf">0.5</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">r2</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>FIXME: contents below are yet to be reviewed. Please do not run</strong></p>
 </div>
 <div class="section" id="principle-component-analysis">
 <h2>Principle component analysis<a class="headerlink" href="#principle-component-analysis" title="Permalink to this headline">¶</a></h2>

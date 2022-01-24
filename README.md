@@ -13,7 +13,12 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 ### Source code
 
 - Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-pipeline/tree/main/pipeline. 
-- Container configurations are available at https://github.com/cumc/xqtl-pipeline/tree/main/container
+- Container configurations are available at https://github.com/cumc/xqtl-pipeline/tree/main/container.
+
+### Data and software
+
+- Minimal working examples are available through request to access [this Google Drive folder](https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed).
+- Under the folder above you can find `singularity` image release for software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
 
 ### Organization of the resource
 

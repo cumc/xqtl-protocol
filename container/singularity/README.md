@@ -16,15 +16,17 @@ singularity build --fakeroot {filename}.sif {filename}.def
 
 It will generate the `sif` file in the current directory.
 
-If fakeroot didn't work and gave the error message of:
-1. `FATAL:   could not use fakeroot: no mapping entry found in /etc/subuid for {username}`
+### Potential issues
 
-   Check if your username is in /etc/subuid
+If `--fakeroot` did not work with error message of one of the following:
+
+1. `FATAL:   could not use fakeroot: no mapping entry found in /etc/subuid for {username}`
+   - Solution: check if your username is in `/etc/subuid` by `cat /etc/subuid`. If not, add it in
 
 2. `ERROR  : Failed to create container namespaces`
-
-   For debian system, do `sudo echo 1 > /proc/sys/kernel/unprivileged_userns_clone`
+   - Solution: for debian system, do `sudo echo 1 > /proc/sys/kernel/unprivileged_userns_clone`
    
 3. `FATAL:   Unable to create build: while searching for mksquashfs: exec: "mksquashfs": executable file not found in $PATH`
+   - Solution: for debian system, do `sudo apt-get update && sudo apt-get install squashfs-tools`
 
-   Do `sudo apt-get update && sudo apt-get install squashfs-tools`
+If you are on a HPC please ask your admin to read these suggestions and implement them for your system.

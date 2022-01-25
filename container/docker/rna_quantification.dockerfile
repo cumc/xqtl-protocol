@@ -1,5 +1,3 @@
-# Dockerfile for GTEx RNA-seq pipeline
-# https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/Dockerfile
 FROM ubuntu:18.04
 MAINTAINER Francois Aguet
 
@@ -22,11 +20,11 @@ RUN apt-get update && apt-get install -y software-properties-common && \
         unzip \
         vim-common \
         wget \
-        zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+        zlib1g-dev && \
     apt-get clean && \
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
+## FIXME: The 'rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*'  command was removed, please add back the specific contents that are to be removed. 
 
 
 #-----------------------------
@@ -65,9 +63,9 @@ RUN cd /opt && \
 ENV LD_LIBRARY_PATH /usr/local/lib/bamtools:$LD_LIBRARY_PATH
 
 # bamsync
-ENV GTEX_PIPLINE 3481dd43b2e8a33cc217155483ce25d5255aafa9
+ENV GTEX_PIPELINE 3481dd43b2e8a33cc217155483ce25d5255aafa9
 RUN cd /tmp && \
-    wget --no-check-certificate https://github.com/broadinstitute/gtex-pipeline/archive/${GTEX_PIPELINE}.zip gtex-pipeline.zip \
+    wget --no-check-certificate https://github.com/broadinstitute/gtex-pipeline/archive/${GTEX_PIPELINE}.zip -O gtex-pipeline.zip \
     && unzip gtex-pipeline.zip && cd gtex-pipeline-${GTEX_PIPELINE} && cd rnaseq/bamsync && make && mv bamsync /usr/local/bin
 
 # Picard tools
@@ -94,6 +92,7 @@ RUN mkdir /opt/ucsc && \
 ENV PATH /opt/ucsc:$PATH
 
 # python modules
+RUN curl https://bootstrap.pypa.io/get-pip.py | python3
 RUN pip3 install --upgrade pip setuptools
 RUN pip3 install tables numpy pandas scipy pyarrow matplotlib seaborn
 # numpy dependencies:
@@ -120,4 +119,6 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
 
 # scripts
 
-RUN mv /tmp/gtex-pipeline-${GTEX_PIPELINE}/rnaseq/src $PWD && rm -rf /tmp/gtex-pipeline*
+RUN mv /tmp/gtex-pipeline-${GTEX_PIPELINE}/rnaseq/src /opt/ && rm -rf /tmp/gtex-pipeline*
+ENV PATH /opt/src:$PATH
+

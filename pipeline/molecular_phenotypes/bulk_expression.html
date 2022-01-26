@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>RNA-seq Calling &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -682,14 +683,14 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="rna-seq-calling">
+  <section class="tex2jax_ignore mathjax_ignore" id="rna-seq-calling">
 <h1>RNA-seq Calling<a class="headerlink" href="#rna-seq-calling" title="Permalink to this headline">¶</a></h1>
 <p>This pipeline aims to call the RNA-seq data (Step 1 to 4) as well as transcript quantification (Step 5) from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. The whole pipeline is aligned with <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">GTEx</a>. Please refer two <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail.</p>
-<div class="section" id="methods-overview">
+<section id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
 <p><img alt="RNA quantification pipeline" src="../../_images/rna_quantification.png" /></p>
-</div>
-<div class="section" id="setup-and-global-parameters">
+</section>
+<section id="setup-and-global-parameters">
 <h2>Setup and global parameters:<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -808,54 +809,54 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="step-0-1-optional-generating-indexing-file-for-star">
+</section>
+<section id="step-0-1-optional-generating-indexing-file-for-star">
 <h2>Step 0.1: (Optional) Generating indexing file for <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#step-0-1-optional-generating-indexing-file-for-star" title="Permalink to this headline">¶</a></h2>
 <p>This step generate the indexing file for STAR alignment. This file just need to generate once and can be re-used.</p>
-<div class="section" id="step-inputs">
+<section id="step-inputs">
 <h3>Step Inputs:<a class="headerlink" href="#step-inputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_index_dir</span></code>: a path to the output.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence. Both of them needs to be unzipped</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</p></li>
 </ul>
-</div>
-<div class="section" id="step-output">
+</section>
+<section id="step-output">
 <h3>Step Output:<a class="headerlink" href="#step-output" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">STAR_index_dir</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">STAR</span></code></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="step-0-2-optional-generating-indexing-file-for-rsem">
+</section>
+</section>
+<section id="step-0-2-optional-generating-indexing-file-for-rsem">
 <h2>Step 0.2: (Optional) Generating indexing file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#step-0-2-optional-generating-indexing-file-for-rsem" title="Permalink to this headline">¶</a></h2>
 <p>This step generate the indexing file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code>. This file just need to generate once.</p>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Step Inputs:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">RSEM_index_dir</span></code>: a path to the output.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</p></li>
 </ul>
-</div>
-<div class="section" id="step-outputs">
+</section>
+<section id="step-outputs">
 <h3>Step Outputs:<a class="headerlink" href="#step-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">RSEM_index_dir</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="step-0-3-qc-before-alignment">
+</section>
+</section>
+<section id="step-0-3-qc-before-alignment">
 <h2>Step 0.3: QC before alignment<a class="headerlink" href="#step-0-3-qc-before-alignment" title="Permalink to this headline">¶</a></h2>
 <p><strong>FIXME</strong> This software need to be install.</p>
 <p>This step utilize <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> and will generate two QC report in <code class="docutils literal notranslate"><span class="pre">html</span></code> format</p>
-<div class="section" id="id2">
+<section id="id2">
 <h3>Step Inputs:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">fastq1_raw</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_raw</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
 </ul>
-</div>
-<div class="section" id="id3">
+</section>
+<section id="id3">
 <h3>Step Outputs:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Two <code class="docutils literal notranslate"><span class="pre">html</span></code> file for QC report</p></li>
@@ -873,21 +874,21 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-1-remove-adaptor-through-trimmomatic">
+</section>
+</section>
+<section id="step-1-remove-adaptor-through-trimmomatic">
 <h2>Step 1: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code><a class="headerlink" href="#step-1-remove-adaptor-through-trimmomatic" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a></p>
 <p><strong>FIXME</strong> This step is form the workflow at Boston. and not in GTEx pipeline. Also, this software need to be install.</p>
-<div class="section" id="id4">
+<section id="id4">
 <h3>Step Inputs:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">fastq1_raw</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_raw</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">soft_dir</span></code>: directory for the software</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">adapter</span></code>: <strong>string</strong> for the adapter reference file.</p></li>
 </ul>
-</div>
-<div class="section" id="id5">
+</section>
+<section id="id5">
 <h3>Step Outputs:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Two paired <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file for alignment</p></li>
@@ -924,20 +925,20 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-2-alignment-through-star">
+</section>
+</section>
+<section id="step-2-alignment-through-star">
 <h2>Step 2: Alignment through <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#step-2-alignment-through-star" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">STAR</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_STAR.py">Script in docker</a></p>
 <p>This step is the main step for <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment.</p>
-<div class="section" id="id6">
+<section id="id6">
 <h3>Step Inputs:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">fastq1_clean</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_clean</span></code>: paths to clean <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file from Step 1.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_index</span></code>: directory for the STAR aligment index</p></li>
 </ul>
-</div>
-<div class="section" id="id7">
+</section>
+<section id="id7">
 <h3>Step Outputs:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>bam file output <code class="docutils literal notranslate"><span class="pre">${wd}/{sample_id}.Aligned.sortedByCoord.out.bam</span></code>, will be used in step 3 and 4</p></li>
@@ -1008,19 +1009,19 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-3-mark-duplicates-reads-through-picard">
+</section>
+</section>
+<section id="step-3-mark-duplicates-reads-through-picard">
 <h2>Step 3: Mark duplicates reads through <code class="docutils literal notranslate"><span class="pre">Picard</span></code><a class="headerlink" href="#step-3-mark-duplicates-reads-through-picard" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">MarkDuplicates</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_MarkDuplicates.py">Script in docker</a></p>
 <p>This step is the first QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment. This step maily remove duplications in <code class="docutils literal notranslate"><span class="pre">bam</span></code> file output by STAR.</p>
-<div class="section" id="id8">
+<section id="id8">
 <h3>Step Inputs:<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_bam</span></code>: path to the output in Step 2.</p></li>
 </ul>
-</div>
-<div class="section" id="id9">
+</section>
+<section id="id9">
 <h3>Step Outputs:<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>A new <code class="docutils literal notranslate"><span class="pre">.bam</span></code> file with duplication  marked with the hexadecimal value of <code class="docutils literal notranslate"><span class="pre">0x0400</span></code>, which corresponds to a decimal value of 1024</p></li>
@@ -1036,21 +1037,21 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-4-post-aligment-qc-through-rna-seqc">
+</section>
+</section>
+<section id="step-4-post-aligment-qc-through-rna-seqc">
 <h2>Step 4: Post aligment QC through <code class="docutils literal notranslate"><span class="pre">RNA-SeQC</span></code><a class="headerlink" href="#step-4-post-aligment-qc-through-rna-seqc" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://github.com/getzlab/rnaseqc">RNA-SeQC</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_rnaseqc.py">Script in docker</a></p>
 <p><strong>FIXME</strong></p>
 <p>This step is second QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment.</p>
-<div class="section" id="id10">
+<section id="id10">
 <h3>Step Inputs:<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">QC_bam</span></code>: path to the output in Step 3.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code>: reference genome <code class="docutils literal notranslate"><span class="pre">.gtf</span></code> file</p></li>
 </ul>
-</div>
-<div class="section" id="id11">
+</section>
+<section id="id11">
 <h3>Step Outputs:<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <p>need to fill</p>
 <div class="cell docutils container">
@@ -1072,20 +1073,20 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-5-quantify-expression-through-rsem">
+</section>
+</section>
+<section id="step-5-quantify-expression-through-rsem">
 <h2>Step 5: Quantify expression through <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#step-5-quantify-expression-through-rsem" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://deweylab.github.io/RSEM/rsem-calculate-expression.html">RSEM</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_RSEM.py">Script in docker</a></p>
 <p>This step generate the expression matrix from STAR output. Estimate gene and isoform expression from RNA-Seq data are generated.</p>
-<div class="section" id="id12">
+<section id="id12">
 <h3>Step Inputs:<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_tras</span></code>: path to the output in Step 2.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RSEM_index</span></code>: path to RSEM index</p></li>
 </ul>
-</div>
-<div class="section" id="id13">
+</section>
+<section id="id13">
 <h3>Step Outputs:<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <p>need to fill</p>
 <div class="cell docutils container">
@@ -1106,9 +1107,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

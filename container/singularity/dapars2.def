@@ -1,0 +1,32 @@
+Bootstrap: docker
+From: gaow/base-notebook:1.0.0
+
+
+%labels
+maintainer = "Liucheng Shi<ls3751@cumc.columbia.edu>"
+%post
+
+
+LC_ALL=C.UTF-8
+LANG=C.UTF-8
+
+su -  root # USER root
+
+conda install -y -c bioconda/label/cf201901 plink2
+conda install -y -c bioconda/label/cf201901 bcftools
+R -e "install.packages(c('dplyr', 'tidyr', 'doParallel','VIM','preprocessCore'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+mkdir /script
+cd /script
+wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/DaPars_Extract_Anno.py &&\
+wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/Dapars2_Multi_Sample.py &&\
+wget https://github.com/cumc/xqtl-pipeline/blob/main/code/gtf2bed12.py
+echo "cd /tmp" >> /entrypoint.sh
+echo "exec /bin/bash "$@"" >> /entrypoint.sh
+chmod u+x /entrypoint.sh
+%environment
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+%runscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"
+%startscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"

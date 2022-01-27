@@ -65,8 +65,7 @@ ENV LD_LIBRARY_PATH /usr/local/lib/bamtools:$LD_LIBRARY_PATH
 # bamsync
 ENV GTEX_PIPELINE 3481dd43b2e8a33cc217155483ce25d5255aafa9
 RUN cd /tmp && \
-    wget --no-check-certificate https://github.com/broadinstitute/gtex-pipeline/archive/${GTEX_PIPELINE}.zip -O gtex-pipeline.zip \
-    && unzip gtex-pipeline.zip && cd gtex-pipeline-${GTEX_PIPELINE} && cd rnaseq/bamsync && make && mv bamsync /usr/local/bin
+    wget --no-check-certificate https://github.com/broadinstitute/gtex-pipeline/archive/${GTEX_PIPELINE}.zip -O gtex-pipeline.zip && unzip gtex-pipeline.zip && cd gtex-pipeline-${GTEX_PIPELINE} && cd rnaseq/bamsync && make && mv bamsync /usr/local/bin
 
 # Picard tools
 RUN mkdir /opt/picard-tools && \
@@ -117,8 +116,20 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     apt-get update -y && apt-get install google-cloud-sdk -y
 
+# Trimmomatic
+RUN wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
+RUN mv Trimmomatic-0.39.zip /opt/
+RUN cd /opt/
+RUN unzip Trimmomatic-0.39.zip
+
 # scripts
 
 RUN mv /tmp/gtex-pipeline-${GTEX_PIPELINE}/rnaseq/src /opt/ && rm -rf /tmp/gtex-pipeline*
+RUN cd /opt/src
+RUN cp run_MarkDuplicates.py run_MarkDuplicates_queryname.py
+RUN perl -pi -e 's/coordinate/queryname/g' run_MarkDuplicates_queryname.py
+RUN export PATH=/opt/src:$PATH
+
 ENV PATH /opt/src:$PATH
+
 

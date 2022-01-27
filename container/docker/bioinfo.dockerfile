@@ -40,6 +40,7 @@ RUN wget wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/mas
 
 # gffread
 RUN apt-get update && apt install -y --no-install-recommends  git-all  libboost-all-dev
+RUN cd /tmp
 RUN git clone https://github.com/gpertea/gffread
 RUN cd gffread
 RUN make release

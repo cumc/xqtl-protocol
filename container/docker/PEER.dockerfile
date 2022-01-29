@@ -1,7 +1,6 @@
 FROM ubuntu:18.04
 LABEL maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
 ENV R_BASE_VERSION=3.5.1-2bionic
-ENV DEBIAN_FRONTEND=noninteractive
 ENV R_BASE_VERSION=3.5.1-2bionic
 RUN useradd docker
 RUN mkdir /home/docker
@@ -20,9 +19,8 @@ wget \
 ca-certificates
 RUN rm -rf /var/lib/apt/lists/*
 RUN R_BASE_VERSION=3.5.1-2bionic
-RUN DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
+RUN apt-get update && \
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 cpp \
 libgirepository-1.0-1 \
 libglib2.0-0 \

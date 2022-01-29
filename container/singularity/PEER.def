@@ -6,7 +6,6 @@ From: ubuntu:18.04
 maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
 %post
 R_BASE_VERSION=3.5.1-2bionic
-DEBIAN_FRONTEND=noninteractive
 R_BASE_VERSION=3.5.1-2bionic
 useradd docker
 mkdir /home/docker
@@ -25,9 +24,8 @@ wget \
 ca-certificates
 rm -rf /var/lib/apt/lists/*
 R_BASE_VERSION=3.5.1-2bionic
-DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get install -y --no-install-recommends \
+apt-get update && \
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 cpp \
 libgirepository-1.0-1 \
 libglib2.0-0 \
@@ -91,7 +89,6 @@ echo "exec /bin/bash "$@"" >> /entrypoint.sh
 chmod u+x /entrypoint.sh
 %environment
 export R_BASE_VERSION=3.5.1-2bionic
-export DEBIAN_FRONTEND=noninteractive
 export R_BASE_VERSION=3.5.1-2bionic
 %runscript
 exec /bin/bash /bin/bash /entrypoint.sh "$@"

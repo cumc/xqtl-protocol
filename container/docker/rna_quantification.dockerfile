@@ -1,8 +1,8 @@
 FROM ubuntu:18.04
 MAINTAINER Francois Aguet; Hao Sun
 
-RUN apt-get update && apt-get install -y software-properties-common && \
-    apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	software-properties-common \
         build-essential \
         cmake \
         curl \

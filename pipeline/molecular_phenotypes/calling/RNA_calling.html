@@ -647,6 +647,16 @@
      Step Outputs
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stranded-option">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       stranded
+      </span>
+     </code>
+     option
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -844,8 +854,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
-<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
-<span class="n">cwd</span> <span class="o">=</span> <span class="n">wd</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -861,7 +870,10 @@ Sections
 <span class="kn">parameter:</span> <span class="n">fastq2</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Sample ID</span>
 <span class="kn">parameter:</span> <span class="n">sample_id</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="c1"># Is the RNA-seq data stranded</span>
+<span class="kn">parameter:</span> <span class="n">is_stranded</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1097,19 +1109,34 @@ Sections
 <li><p>{sample}.fragmentSizes.txt : A list of fragment sizes recorded, if a BED file was provided</p></li>
 <li><p>{sample}.coverage.tsv : A tab-delimited list of (Gene ID, Transcript ID, Mean Coverage, Coverage Std, Coverage CV) tuples for all transcripts encountered in the GTF.</p></li>
 </ul>
+</div>
+<div class="section" id="stranded-option">
+<h3><code class="docutils literal notranslate"><span class="pre">stranded</span></code> option<a class="headerlink" href="#stranded-option" title="Permalink to this headline">¶</a></h3>
+<p>If you have strand-specific data, specify the library type. There are four library types:</p>
+<p>Paired reads:</p>
+<ul class="simple">
+<li><p>RF: first read (/1) of fragment pair is sequenced as anti-sense (reverse(R)), and second read (/2) is in the sense strand (forward(F)); typical of the dUTP/UDG sequencing method.</p></li>
+<li><p>FR: first read (/1) of fragment pair is sequenced as sense (forward), and second read (/2) is in the antisense strand (reverse)</p></li>
+</ul>
+<p>Unpaired (single) reads:</p>
+<ul class="simple">
+<li><p>F: the single read is in the sense (forward) orientation</p></li>
+<li><p>R: the single read is in the antisense (reverse) orientation</p></li>
+</ul>
 <p><strong>FIXME: please list all outputs in <code class="docutils literal notranslate"><span class="pre">output</span></code></strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_4</span><span class="p">]</span>
 <span class="c1"># Reference gene model</span>
 <span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Default empty for unstranded. Options are fr or rf</span>
+<span class="kn">parameter:</span> <span class="n">stranded</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">.gene_tpm.gct.gz&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">run_rnaseqc</span><span class="o">.</span><span class="n">py</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">gtf</span><span class="p">}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> \
-        <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">stranded</span> <span class="n">rf</span>
+        <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span> <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">stranded</span><span class="p">)</span> <span class="k">if</span> <span class="n">stranded</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1141,7 +1168,7 @@ Sections
     <span class="n">run_RSEM</span><span class="o">.</span><span class="n">py</span> \
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="mi">1000</span> \
         <span class="o">--</span><span class="n">estimate_rspd</span> <span class="n">true</span> \
-        <span class="o">--</span><span class="n">is_stranded</span> <span class="n">true</span> \
+        <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">RSEM_index</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;trans_bam&quot;</span><span class="p">]:</span><span class="n">a</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">sample_id</span><span class="p">}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">d</span><span class="p">}</span>
 </pre></div>

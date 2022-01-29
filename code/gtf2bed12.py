@@ -1,4 +1,4 @@
-#!~/tools/anaconda2/bin/python
+#!/usr/bin/python2
 '''
 #Convert a gtf into a bed file with 12 columns. In the output bed file, each row represents a transcript and blocks in each transcript are exons.
 #Input: a gtf file

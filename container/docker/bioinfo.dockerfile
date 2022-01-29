@@ -21,16 +21,13 @@ RUN cd /tmp && wget https://s3.amazonaws.com/plink2-assets/plink2_linux_avx2_202
     unzip plink2_linux_avx2_20211217.zip && mv plink2 /usr/local/bin && rm -rf /tmp/plink2*
 RUN cd /tmp && wget https://cnsgenomics.com/software/gcta/bin/gcta_1.93.2beta.zip && \
     unzip gcta_1.93.2beta.zip && mv gcta_1.93.2beta/gcta64 /usr/local/bin && rm -rf /tmp/gcta*
-RUN cd /tmp \
-    && wget https://github.com/samtools/bcftools/releases/download/1.2/bcftools-1.2.tar.bz2 \
-    && tar xvf bcftools-1.2.tar.bz2 \
-    && cd bcftools-1.2 \
-    && make\
-    && make install \
-    && cd htslib-1.2.1\
-    && make \
-    && make install \
-    && rm -rf /tmp/bcftools*
+RUN #Install bcftools
+RUN wget https://github.com/samtools/bcftools/releases/download/1.12/bcftools-1.12.tar.bz2 -O bcftools.tar.bz2 && \
+    tar -xjvf bcftools.tar.bz2 && \
+    cd bcftools-1.12 && \
+    make && \
+    make prefix=/usr/local/bin install && \
+    ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
     
 # Normalization and collapse annotation script
 RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/gene_model/collapse_annotation.py && mv collapse_annotation.py /usr/local/bin/

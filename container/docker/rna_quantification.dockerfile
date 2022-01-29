@@ -129,7 +129,7 @@ RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/q
 # gffread
 RUN cd /tmp
 RUN wget https://github.com/gpertea/gffread/archive/refs/tags/v0.12.7.zip && \
-    unzip v0.12.7.zip && \
+    unzip -o v0.12.7.zip && \
     cd gffread-0.12.7 && make release && \
     mv gffread  /usr/local/bin/ && \
     cd .. && rm -r gffread*

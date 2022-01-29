@@ -3,18 +3,17 @@
 Warning: all files in this folder are generated from docker configurations under `../docker` folder. **Please do not manually edit contents in this folder**. To generate them, run
 
 ```
-./release docker_to_singularity
+./release.sos docker_to_singularity
 ```
 
-under the root directory of this repo.
 
 ## Build singularity images
 
 ```
-singularity build --fakeroot {filename}.sif {filename}.def
+./release.sos singularity --config bioinfo.def --out-dir "./"
 ```
 
-It will generate the `sif` file in the current directory.
+under the root directory of this repo. It will generate the `sif` file in the directory specified by `--out-dir`.
 
 ### Potential issues
 

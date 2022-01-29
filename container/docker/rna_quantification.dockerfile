@@ -1,26 +1,14 @@
-FROM ubuntu:18.04
+FROM gaow/base-notebook
 MAINTAINER Francois Aguet; Hao Sun
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	software-properties-common \
-        build-essential \
-        cmake \
-        curl \
-        git git-all \
         libboost-all-dev \
         libbz2-dev \
         libcurl3-dev \
         libhdf5-serial-dev \
-        liblzma-dev \
         libncurses5-dev \
-        libssl-dev \
         openjdk-8-jdk \
-        python3 \
-        python3-pip \
-        unzip \
-        vim-common \
-        wget \
-        zlib1g-dev && \
     apt-get clean && \
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -140,8 +128,8 @@ RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/q
 
 # gffread
 RUN cd /tmp
-RUN git clone https://github.com/gpertea/gffread
-RUN cd gffread
-RUN make release
-RUN mv gffread  /usr/local/bin/
-RUN cd .. && rm -r gffread
+RUN wget https://github.com/gpertea/gffread/archive/refs/tags/v0.12.7.zip && \
+    unzip v0.12.7.zip && \
+    cd gffread-0.12.7 && make release && \
+    mv gffread  /usr/local/bin/ && \
+    cd .. && rm -r gffread*

@@ -9,6 +9,13 @@ output: f"container/singularity/{_input:bn}.def"
 bash: expand = True
   spython recipe {_input} | sed 's/Stage: spython-base//g' &> {_output}
 
+[singularity]
+parameter: config = path
+parameter: out_dir = path('container/singularity')
+bash: expand = True
+  singularity build --fakeroot {out_dir}/{config:n}.sif container/singularity/{config}
+  md5sum {out_dir}/{config:n}.sif > {out_dir}/{config:n}.md5
+
 [build, default_2]
 input: group_by = 'all'
 bash:

@@ -3,7 +3,7 @@ From: ubuntu:18.04
 
 
 %labels
-MAINTAINER Francois Aguet
+MAINTAINER Francois Aguet; Hao Sun
 %post
 
 apt-get update && apt-get install -y software-properties-common && \
@@ -11,7 +11,7 @@ apt-get update && apt-get install -y \
 build-essential \
 cmake \
 curl \
-git \
+git git-all \
 libboost-all-dev \
 libbz2-dev \
 libcurl3-dev \
@@ -138,6 +138,18 @@ export PATH=/opt/src:$PATH
 PATH=/opt/src:$PATH
 
 
+# Normalization and collapse annotation script
+wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/gene_model/collapse_annotation.py && mv collapse_annotation.py /usr/local/bin/ && chmod +x /usr/local/bin/collapse_annotation.py
+
+wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/qtl/src/eqtl_prepare_expression.py && mv eqtl_prepare_expression.py /usr/local/bin/ &&  chmod +x /usr/local/bin/eqtl_prepare_expression.py
+
+# gffread
+cd /tmp
+git clone https://github.com/gpertea/gffread
+cd gffread
+make release
+mv gffread  /usr/local/bin/
+cd .. && rm -r gffread
 %environment
 export PATH=/opt/STAR-2.7.8a/bin/Linux_x86_64_static:$PATH
 export PATH=/opt/RSEM-1.3.3:$PATH

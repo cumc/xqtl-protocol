@@ -33,21 +33,6 @@ cd bcftools-1.12 && \
 make && \
 make prefix=/usr/local/bin install && \
 ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
-    
-# Normalization and collapse annotation script
-wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/gene_model/collapse_annotation.py && mv collapse_annotation.py /usr/local/bin/
-
-wget wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/qtl/src/eqtl_prepare_expression.py && mv eqtl_prepare_expression.py /usr/local/bin/
-
-
-# gffread
-apt-get update && apt install -y --no-install-recommends  git-all  libboost-all-dev
-cd /tmp
-git clone https://github.com/gpertea/gffread
-cd gffread
-make release
-mv gffread  /usr/local/bin/
-cd .. && rm -r gffread
 
 %runscript
 exec /bin/bash exec /bin/bash "$@"

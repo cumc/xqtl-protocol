@@ -1,12 +1,12 @@
 FROM ubuntu:18.04
-MAINTAINER Francois Aguet
+MAINTAINER Francois Aguet; Hao Sun
 
 RUN apt-get update && apt-get install -y software-properties-common && \
     apt-get update && apt-get install -y \
         build-essential \
         cmake \
         curl \
-        git \
+        git git-all \
         libboost-all-dev \
         libbz2-dev \
         libcurl3-dev \
@@ -133,3 +133,15 @@ RUN export PATH=/opt/src:$PATH
 ENV PATH /opt/src:$PATH
 
 
+# Normalization and collapse annotation script
+RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/gene_model/collapse_annotation.py && mv collapse_annotation.py /usr/local/bin/ && chmod +x /usr/local/bin/collapse_annotation.py
+
+RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/qtl/src/eqtl_prepare_expression.py && mv eqtl_prepare_expression.py /usr/local/bin/ &&  chmod +x /usr/local/bin/eqtl_prepare_expression.py
+
+# gffread
+RUN cd /tmp
+RUN git clone https://github.com/gpertea/gffread
+RUN cd gffread
+RUN make release
+RUN mv gffread  /usr/local/bin/
+RUN cd .. && rm -r gffread

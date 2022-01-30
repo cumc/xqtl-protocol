@@ -5,10 +5,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	software-properties-common \
         libboost-all-dev \
         libbz2-dev \
-        libcurl3-dev \
-        libhdf5-serial-dev \
+        libhdf5-dev \
         libncurses5-dev \
-        openjdk-8-jdk \
+        default-jdk && \
     apt-get clean && \
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -132,4 +131,4 @@ RUN wget https://github.com/gpertea/gffread/archive/refs/tags/v0.12.7.zip && \
     unzip -o v0.12.7.zip && \
     cd gffread-0.12.7 && make release && \
     mv gffread  /usr/local/bin/ && \
-    cd .. && rm -r gffread*
+    cd .. && rm -r gffread* v0.12.7*

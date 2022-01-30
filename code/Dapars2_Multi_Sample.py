@@ -152,9 +152,9 @@ def De_Novo_3UTR_Identification_Loading_Target_Wig_for_TCGA_Multiple_Samples_Mul
     All_events_ids = UTR_events_dict.keys()
     num_threads = Num_threads
     Assigned_events_ids_all_threads = Assign_to_different_processor_balance_events(All_events_ids, num_threads)
-
+    
     num_real_threads = len(Assigned_events_ids_all_threads)
-
+    
     Output_each_processor_all = []
     for i in range(num_real_threads):
         curr_temp_output = temp_dir + 'Each_processor_3UTR_Result_%s.txt' % (str(i+1))
@@ -308,7 +308,7 @@ def Load_Target_Wig_files_Multiple_threads_shared_dict_sampleid_key(All_Wig_file
     UTR_events_dict = {}
     for line in open(UTR_Annotation_file, 'r'):
         fields = line.strip('\n').split('\t')
-        curr_chr = (no_chr_prefix == "T")*'chr' + fields[0]
+        curr_chr = fields[0]
         if curr_chr == curr_processing_chr:
             region_start = fields[1]
             region_end = fields[2]
@@ -324,7 +324,7 @@ def Load_Target_Wig_files_Multiple_threads_shared_dict_sampleid_key(All_Wig_file
             region_end = int(region_end) - 1
             if region_start + 50 < region_end:
                 UTR_events_dict[fields[3]] = [curr_chr,region_start,region_end,fields[-1],UTR_pos]
-
+    
     Assigned_index = Assign_to_different_processor_balance(num_samples, num_threads)
 
     manager = multiprocessing.Manager() # create only 1 Manager
@@ -356,7 +356,7 @@ def load_wig_funct_shared_dict_sampleid_key(All_wig_files, assigned_indexes,UTR_
                 if line[0] != '#' and line[0] != 't':
                     fields = line.strip('\n').split('\t')
                     chrom_name = (no_chr_prefix == "T")*'chr' + fields[0]
-                    print >> sys.stderr, chrom_name
+                    # print >> sys.stderr, chrom_name
 
                     if chrom_name == curr_processing_chr:
                         region_start = int(fields[1])
@@ -375,7 +375,7 @@ def load_wig_funct_shared_dict_sampleid_key(All_wig_files, assigned_indexes,UTR_
                             break
             fin.close()
         if curr_processing_chr not in curr_sample_All_chroms_coverage_dict:
-            print >> sys.stderr, 'no wig: ' + curr_wig_file + curr_processing_chr
+            print >> sys.stderr, 'no wig: ' + curr_wig_file
         else:
             curr_sample_All_chroms_coverage_dict[curr_processing_chr][1].append(0)
 

@@ -152,9 +152,9 @@ def De_Novo_3UTR_Identification_Loading_Target_Wig_for_TCGA_Multiple_Samples_Mul
     All_events_ids = UTR_events_dict.keys()
     num_threads = Num_threads
     Assigned_events_ids_all_threads = Assign_to_different_processor_balance_events(All_events_ids, num_threads)
-
+    
     num_real_threads = len(Assigned_events_ids_all_threads)
-
+    
     Output_each_processor_all = []
     for i in range(num_real_threads):
         curr_temp_output = temp_dir + 'Each_processor_3UTR_Result_%s.txt' % (str(i+1))
@@ -323,8 +323,8 @@ def Load_Target_Wig_files_Multiple_threads_shared_dict_sampleid_key(All_Wig_file
             region_start = int(region_start) + 1
             region_end = int(region_end) - 1
             if region_start + 50 < region_end:
-                UTR_events_dict[fields[3]] = [fields[0],region_start,region_end,fields[-1],UTR_pos]
-
+                UTR_events_dict[fields[3]] = [curr_chr,region_start,region_end,fields[-1],UTR_pos]
+    
     Assigned_index = Assign_to_different_processor_balance(num_samples, num_threads)
 
     manager = multiprocessing.Manager() # create only 1 Manager

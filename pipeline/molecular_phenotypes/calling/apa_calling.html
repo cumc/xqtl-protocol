@@ -709,7 +709,7 @@
 <span class="c1"># path to GTF file </span>
 <span class="kn">parameter:</span> <span class="n">thread</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">22</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;gaow/apa&quot;</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -726,8 +726,8 @@
 <span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="n">gtf</span>
 <span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/gene_annotation.bed&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/transcript_to_geneName.txt&#39;</span><span class="p">]</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span>
-    <span class="n">python2</span> <span class="n">Scripts</span><span class="o">/</span><span class="n">gtf2bed12</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">gtf</span> <span class="s2">&quot;$</span><span class="si">{_input}</span><span class="s2">&quot;</span> <span class="o">--</span><span class="n">out</span> <span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">&quot;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">python2</span> <span class="o">../../../</span><span class="n">code</span><span class="o">/</span><span class="n">gtf2bed12</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">gtf</span> <span class="s2">&quot;$</span><span class="si">{_input}</span><span class="s2">&quot;</span> <span class="o">--</span><span class="n">out</span> <span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -738,8 +738,8 @@
 <span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/gene_annotation.bed&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/transcript_to_geneName.txt&#39;</span><span class="p">]</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">gtf</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_3UTR.bed&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span>
-    <span class="n">python2</span> <span class="n">Scripts</span><span class="o">/</span><span class="n">DaPars_Extract_Anno</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">b</span> <span class="s2">&quot;$</span><span class="si">{_input[0]}</span><span class="s2">&quot;</span> <span class="o">-</span><span class="n">s</span> <span class="s2">&quot;$</span><span class="si">{_input[1]}</span><span class="s2">&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">python2</span> <span class="o">../../../</span><span class="n">code</span><span class="o">/</span><span class="n">DaPars_Extract_Anno</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">b</span> <span class="s2">&quot;$</span><span class="si">{_input[0]}</span><span class="s2">&quot;</span> <span class="o">-</span><span class="n">s</span> <span class="s2">&quot;$</span><span class="si">{_input[1]}</span><span class="s2">&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -757,21 +757,21 @@
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">10</span> <span class="n">Sample_Input</span><span class="o">/</span><span class="n">Wigfiles</span><span class="o">/</span><span class="n">Sample1</span><span class="o">.</span><span class="n">wig</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">10</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">sample1</span><span class="o">.</span><span class="n">wig</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>track type=bedGraph
-chr1	10000	10812	0
-chr1	10812	10820	1
-chr1	10820	11094	0
-chr1	11094	11170	1
-chr1	11170	11404	0
-chr1	11404	11480	1
-chr1	11480	11504	0
-chr1	11504	11517	1
-chr1	11517	11625	0
+1	0	10099	0
+1	10099	10113	1
+1	10113	10146	0
+1	10146	10157	2
+1	10157	10230	0
+1	10230	10241	2
+1	10241	10279	0
+1	10279	10301	1
+1	10301	10329	0
 </pre></div>
 </div>
 </div>
@@ -786,11 +786,10 @@ chr1	11517	11625	0
 <span class="c1"># Default parameters for Dapars2:</span>
 <span class="kn">parameter:</span> <span class="n">least_pass_coverage_percentage</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="kn">parameter:</span> <span class="n">coverage_threshold</span> <span class="o">=</span> <span class="mi">10</span>
-
 <span class="kn">parameter:</span> <span class="n">no_chr_prefix</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
 <span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/sample_mapping_files.txt&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/sample_configuration_file.txt&#39;</span><span class="p">]</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
-<span class="kn">python3:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span>
+<span class="kn">python3:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="kn">import</span> <span class="nn">re</span>
     <span class="kn">import</span> <span class="nn">os</span>
     <span class="n">target_all_sample</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{bfile}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -827,7 +826,7 @@ chr1	11517	11625	0
     <span class="n">config_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annotated_3UTR=$</span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Aligned_Wig_files=</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_all_sample</span><span class="p">))</span>
-    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output_directory=$</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">/$</span><span class="si">{</span><span class="n">bfile</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output_directory=../../../../../MWE_dapars2/Output/Wigfiles</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output_result_file=Dapars_result</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Least_pass_coverage_percentage=$</span><span class="si">{</span><span class="n">least_pass_coverage_percentage</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Coverage_threshold=$</span><span class="si">{coverage_threshold}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -852,13 +851,13 @@ chr1	11517	11625	0
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Call Dapars2 multi_chromosome</span>
 <span class="p">[</span><span class="n">APAmain</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">no_chr_prefix</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">parameter:</span> <span class="n">no_chr_prefix</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span>
 <span class="kn">parameter:</span> <span class="n">chrlist</span> <span class="o">=</span> <span class="nb">list</span>
 <span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s1">&#39;chrlist&#39;</span>
 <span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Wigfiles_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">/Dapars_result_result_temp.</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
-<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">python2</span> <span class="n">Scripts</span><span class="o">/</span><span class="n">Dapars2_Multi_Sample</span><span class="o">.</span><span class="n">py</span> <span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="n">sample_configuration_file</span><span class="o">.</span><span class="n">txt</span> <span class="p">{</span><span class="n">_chrlist</span><span class="p">}</span> <span class="p">{</span><span class="n">no_chr_prefix</span><span class="p">}</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">python2</span> <span class="o">../../../</span><span class="n">code</span><span class="o">/</span><span class="n">Dapars2_Multi_Sample</span><span class="o">.</span><span class="n">py</span> <span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="n">sample_configuration_file</span><span class="o">.</span><span class="n">txt</span> <span class="p">{</span><span class="n">_chrlist</span><span class="p">}</span> <span class="p">{</span><span class="n">no_chr_prefix</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -877,12 +876,12 @@ chr1	11517	11625	0
 <span class="c1"># parameter: dapars_raw = </span>
 <span class="kn">parameter:</span> <span class="n">chrlist</span> <span class="o">=</span> <span class="nb">list</span>
 <span class="c1"># Default k neighbours. Set k = 0 will train the k in a data-driven manner</span>
-<span class="kn">parameter:</span> <span class="n">knn</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="kn">parameter:</span> <span class="n">knn</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="kn">input:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Wigfiles_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">/Dapars_result_result_temp.</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Dapars_result_imputed_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
 
-
+<span class="o">.</span><span class="n">libPaths</span><span class="p">(</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/R/site-library&#39;</span> <span class="p">,</span> <span class="s1">&#39;/usr/lib/R/site-library&#39;</span><span class="p">,</span> <span class="s1">&#39;/usr/lib/R/library&#39;</span><span class="p">,</span> <span class="o">.</span><span class="n">libPaths</span><span class="p">()))</span>
 <span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">dplyr</span><span class="p">))</span>
 <span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">tidyr</span><span class="p">))</span>
 <span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">doParallel</span><span class="p">))</span>
@@ -992,9 +991,10 @@ chr1	11517	11625	0
 <h2>Step 0: 3UTR generation<a class="headerlink" href="#step-0-3utr-generation" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">apacalling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">UTR_generation</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Sample_Input</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v19</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">gtf</span> 
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">UTR_generation</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v19</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
@@ -1002,33 +1002,31 @@ chr1	11517	11625	0
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">UTR_generation_1</span>: Generate the 3UTR region according to the gtf file
 Done!
 INFO: <span class=" -Color -Color-Green">UTR_generation_1</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">UTR_generation_1</span> output:   <span class=" -Color -Color-Green">/Users/albert29/Documents/Xqtl/Call_Dapars/Output/gene_annotation.bed /Users/albert29/Documents/Xqtl/Call_Dapars/Output/transcript_to_geneName.txt</span>
+INFO: <span class=" -Color -Color-Green">UTR_generation_1</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/gene_annotation.bed /mnt/mfs/statgen/ls3751/MWE_dapars2/Output/transcript_to_geneName.txt</span>
 INFO: Running <span class=" -Color -Color-Green">UTR_generation_2</span>: 
 Generating regions ...
 Total extracted 3&#39; UTR: 140563
 Finished
 INFO: <span class=" -Color -Color-Green">UTR_generation_2</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">UTR_generation_2</span> output:   <span class=" -Color -Color-Green">/Users/albert29/Documents/Xqtl/Call_Dapars/Output/gencode.v19.annotation_3UTR.bed</span>
-INFO: Workflow UTR_generation (ID=wbdda56e90fddc24c) is executed successfully with 2 completed steps.
+INFO: <span class=" -Color -Color-Green">UTR_generation_2</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/gencode.v19.annotation_3UTR.bed</span>
+INFO: Workflow UTR_generation (ID=wf41b62313b6bb15a) is executed successfully with 2 completed steps.
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/Users/albert29/Documents/Xqtl/Call_Dapars/Output</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output</span>
 ├── gencode.v19.annotation_3UTR.bed
 ├── gene_annotation.bed
-├── sample_configuration_file.txt
-├── sample_mapping_files.txt
 └── transcript_to_geneName.txt
 
-0 directories, 5 files
+0 directories, 3 files
 </pre></div>
 </div>
 </div>
@@ -1038,36 +1036,37 @@ INFO: Workflow UTR_generation (ID=wbdda56e90fddc24c) is executed successfully wi
 <h2>Step 1: Generating config files and calculating sample depth<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">apacalling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAconfig</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Sample_Input</span><span class="o">/</span><span class="n">Wigfiles</span> \
-    <span class="o">--</span><span class="n">annotation</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v19</span><span class="o">.</span><span class="n">annotation_3UTR</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">no_chr_prefix</span> <span class="n">F</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAconfig</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">bfile</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span> \
+    <span class="o">--</span><span class="n">annotation</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v19</span><span class="o">.</span><span class="n">annotation_3UTR</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">no_chr_prefix</span> <span class="n">T</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAconfig</span>: Calculcate total depth and configuration file
 INFO: Total 4 samples found in provided dirctory!
-Coverage of sample  /Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample3.wig :  859989694
-Coverage of sample  /Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample2.wig :  1017641808
-Coverage of sample  /Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample1.wig :  851834461
-Coverage of sample  /Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample4.wig :  890005265
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample4.wig :  5943757290
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample3.wig :  6060347021
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample2.wig :  3617065465
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample1.wig :  2573149742
 INFO: <span class=" -Color -Color-Green">APAconfig</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">APAconfig</span> output:   <span class=" -Color -Color-Green">/Users/albert29/Documents/Xqtl/Call_Dapars/Output/sample_mapping_files.txt /Users/albert29/Documents/Xqtl/Call_Dapars/Output/sample_configuration_file.txt</span>
-INFO: Workflow APAconfig (ID=wbeede41b336d4ece) is executed successfully with 1 completed step.
+INFO: <span class=" -Color -Color-Green">APAconfig</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/sample_mapping_files.txt /mnt/mfs/statgen/ls3751/MWE_dapars2/Output/sample_configuration_file.txt</span>
+INFO: Workflow APAconfig (ID=wdc3865265bf562ea) is executed successfully with 1 completed step.
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/Users/albert29/Documents/Xqtl/Call_Dapars/Output</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output</span>
 ├── gencode.v19.annotation_3UTR.bed
 ├── gene_annotation.bed
 ├── sample_configuration_file.txt
@@ -1085,49 +1084,25 @@ INFO: Workflow APAconfig (ID=wbeede41b336d4ece) is executed successfully with 1 
 <p>Note: the example is a truncated version, which just have coverage in chr1,chr11 and chr12</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">apacalling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAmain</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">no_chr_prefix</span> <span class="n">F</span> \
-    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> <span class="n">chr10</span> <span class="n">chr11</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAmain</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">no_chr_prefix</span> <span class="n">T</span> \
+    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAmain</span>: Call Dapars2 multi_chromosome
-[Thu Dec 16 15:41:29 2021] Start Analysis ...
-All samples Joint Processing chr10 ...
-[Thu Dec 16 15:41:29 2021] Loading Coverage ...
-[Thu Dec 16 15:41:29 2021] Start Analysis ...
-[Thu Dec 16 15:41:29 2021] Start Analysis ...
+[Sun Jan 30 04:15:34 2022] Start Analysis ...
 All samples Joint Processing chr1 ...
-[Thu Dec 16 15:41:29 2021] Loading Coverage ...
-All samples Joint Processing chr11 ...
-[Thu Dec 16 15:41:29 2021] Loading Coverage ...
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample3.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample2.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample1.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample4.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample2.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample3.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample1.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample4.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample3.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample2.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample1.wig
-/Users/albert29/Documents/Xqtl/Call_Dapars/Sample_Input/Wigfiles/Sample4.wig
-[ 859989694 1017641808  851834461  890005265]
-[Thu Dec 16 15:41:51 2021] Loading Coverage Finished ...
-#assigned events:
-478
-478
-478
-477
-477
-477
-477
-477
-[ 859989694 1017641808  851834461  890005265]
-[Thu Dec 16 15:42:00 2021] Loading Coverage Finished ...
+[Sun Jan 30 04:15:34 2022] Loading Coverage ...
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample4.wig
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample3.wig
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample2.wig
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample1.wig
+[5943757290 6060347021 3617065465 2573149742]
+[Sun Jan 30 04:15:46 2022] Loading Coverage Finished ...
 #assigned events:
 1379
 1379
@@ -1137,77 +1112,40 @@ All samples Joint Processing chr11 ...
 1378
 1378
 1378
-[ 859989694 1017641808  851834461  890005265]
-[Thu Dec 16 15:42:01 2021] Loading Coverage Finished ...
-#assigned events:
-988
-988
-988
-988
-987
-987
-987
-987
-[Thu Dec 16 15:45:00 2021] Finished!
-INFO: <span class=" -Color -Color-Green">APAmain</span> (index=1) is <span class=" -Color -Color-Green">completed</span>.
-[Thu Dec 16 15:45:59 2021] Finished!
-INFO: <span class=" -Color -Color-Green">APAmain</span> (index=2) is <span class=" -Color -Color-Green">completed</span>.
-[Thu Dec 16 15:46:51 2021] Finished!
-INFO: <span class=" -Color -Color-Green">APAmain</span> (index=0) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">APAmain</span> output:   <span class=" -Color -Color-Green">/Users/albert29/Documents/Xqtl/Call_Dapars/Output/Wigfiles_chr1/Dapars_result_result_temp.chr1.txt /Users/albert29/Documents/Xqtl/Call_Dapars/Output/Wigfiles_chr10/Dapars_result_result_temp.chr10.txt... (3 items in 3 groups)</span>
-INFO: Workflow APAmain (ID=wd6b3f69cde79c5b0) is executed successfully with 1 completed step and 3 completed substeps.
+[Sun Jan 30 04:15:51 2022] Finished!
+INFO: <span class=" -Color -Color-Green">APAmain</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: <span class=" -Color -Color-Green">APAmain</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/Wigfiles_chr1/Dapars_result_result_temp.chr1.txt</span>
+INFO: Workflow APAmain (ID=w28477dad0713d81d) is executed successfully with 1 completed step.
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/Users/albert29/Documents/Xqtl/Call_Dapars/Output</span>
-├── <span class=" -Color -Color-Bold -Color-Bold-Blue">Wigfiles_chr1</span>
-│   ├── Dapars_result_result_temp.chr1.txt
-│   └── <span class=" -Color -Color-Bold -Color-Bold-Blue">tmp</span>
-│       ├── Each_processor_3UTR_Result_1.txt
-│       ├── Each_processor_3UTR_Result_2.txt
-│       ├── Each_processor_3UTR_Result_3.txt
-│       ├── Each_processor_3UTR_Result_4.txt
-│       ├── Each_processor_3UTR_Result_5.txt
-│       ├── Each_processor_3UTR_Result_6.txt
-│       ├── Each_processor_3UTR_Result_7.txt
-│       └── Each_processor_3UTR_Result_8.txt
-├── <span class=" -Color -Color-Bold -Color-Bold-Blue">Wigfiles_chr10</span>
-│   ├── Dapars_result_result_temp.chr10.txt
-│   └── <span class=" -Color -Color-Bold -Color-Bold-Blue">tmp</span>
-│       ├── Each_processor_3UTR_Result_1.txt
-│       ├── Each_processor_3UTR_Result_2.txt
-│       ├── Each_processor_3UTR_Result_3.txt
-│       ├── Each_processor_3UTR_Result_4.txt
-│       ├── Each_processor_3UTR_Result_5.txt
-│       ├── Each_processor_3UTR_Result_6.txt
-│       ├── Each_processor_3UTR_Result_7.txt
-│       └── Each_processor_3UTR_Result_8.txt
-├── <span class=" -Color -Color-Bold -Color-Bold-Blue">Wigfiles_chr11</span>
-│   ├── Dapars_result_result_temp.chr11.txt
-│   └── <span class=" -Color -Color-Bold -Color-Bold-Blue">tmp</span>
-│       ├── Each_processor_3UTR_Result_1.txt
-│       ├── Each_processor_3UTR_Result_2.txt
-│       ├── Each_processor_3UTR_Result_3.txt
-│       ├── Each_processor_3UTR_Result_4.txt
-│       ├── Each_processor_3UTR_Result_5.txt
-│       ├── Each_processor_3UTR_Result_6.txt
-│       ├── Each_processor_3UTR_Result_7.txt
-│       └── Each_processor_3UTR_Result_8.txt
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output</span>
 ├── gencode.v19.annotation_3UTR.bed
 ├── gene_annotation.bed
 ├── sample_configuration_file.txt
 ├── sample_mapping_files.txt
-└── transcript_to_geneName.txt
+├── transcript_to_geneName.txt
+└── <span class=" -Color -Color-Bold -Color-Bold-Blue">Wigfiles_chr1</span>
+    ├── Dapars_result_result_temp.chr1.txt
+    └── <span class=" -Color -Color-Bold -Color-Bold-Blue">tmp</span>
+        ├── Each_processor_3UTR_Result_1.txt
+        ├── Each_processor_3UTR_Result_2.txt
+        ├── Each_processor_3UTR_Result_3.txt
+        ├── Each_processor_3UTR_Result_4.txt
+        ├── Each_processor_3UTR_Result_5.txt
+        ├── Each_processor_3UTR_Result_6.txt
+        ├── Each_processor_3UTR_Result_7.txt
+        └── Each_processor_3UTR_Result_8.txt
 
-6 directories, 32 files
+2 directories, 14 files
 </pre></div>
 </div>
 </div>
@@ -1217,31 +1155,31 @@ INFO: Workflow APAmain (ID=wd6b3f69cde79c5b0) is executed successfully with 1 co
 <h2>Step 3: Impute<a class="headerlink" href="#step-3-impute" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">apacalling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAimpute</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">albert29</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Xqtl</span><span class="o">/</span><span class="n">Call_Dapars</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> <span class="n">chr10</span> <span class="n">chr11</span> 
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAimpute</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAimpute</span>: Dapars result Imputation
-[1] &quot;Use k = 5 for imputation&quot;
-[1] &quot;Use k = 5 for imputation&quot;
-[1] &quot;Use k = 5 for imputation&quot;
 Warning message:
+package ‘VIM’ was built under R version 4.0.5 
+[1] &quot;Use k = 5 for imputation&quot;
+Error in preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  : 
+  ERROR; return code from pthread_create() is 22
+In addition: Warning message:
 In preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  :
   NAs introduced by coercion
-INFO: <span class=" -Color -Color-Green">APAimpute</span> (index=1) is <span class=" -Color -Color-Green">completed</span>.
-Warning message:
-In preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  :
-  NAs introduced by coercion
-INFO: <span class=" -Color -Color-Green">APAimpute</span> (index=2) is <span class=" -Color -Color-Green">completed</span>.
-Warning message:
-In preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  :
-  NAs introduced by coercion
-INFO: <span class=" -Color -Color-Green">APAimpute</span> (index=0) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">APAimpute</span> output:   <span class=" -Color -Color-Green">/Users/albert29/Documents/Xqtl/Call_Dapars/Output/Dapars_result_imputed_chr1.txt /Users/albert29/Documents/Xqtl/Call_Dapars/Output/Dapars_result_imputed_chr10.txt... (3 items in 3 groups)</span>
-INFO: Workflow APAimpute (ID=wc04627bf743db81f) is executed successfully with 1 completed step and 3 completed substeps.
+Execution halted
+ERROR: APAimpute (id=9d62c6b78d820375) returns an error.
+ERROR: [APAimpute]: [0]: Executing script in Singularity returns an error (exitcode=1).
+The script has been saved to /home/ls3751/.sos/a23a325a1ed7f8c9/singularity_run_19849.R. To reproduce the error please run:
+<span class=" -Color -Color-Green">singularity exec  /mnt/mfs/statgen/ls3751/container/dapars2.sif Rscript /home/ls3751/.sos/a23a325a1ed7f8c9/singularity_run_19849.R</span>
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

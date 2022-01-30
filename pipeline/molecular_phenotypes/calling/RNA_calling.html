@@ -747,11 +747,12 @@
 </div>
 </div>
 </div>
-<p>To call gene-level RNA expression using <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code>,</p>
+<p><strong>You need to figure out from fastqc results what adapter reference sequence to use. See section Step 1 below for details</strong>. Here we choose <code class="docutils literal notranslate"><span class="pre">--fasta_with_adapters_etc</span> <span class="pre">TruSeq3-PE.fa</span></code> for our toy example. To call gene-level RNA expression using <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code>,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rnaseqc_call</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> \
+    <span class="o">--</span><span class="n">fasta_with_adapters_etc</span> <span class="n">TruSeq3</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
@@ -769,6 +770,7 @@
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
+    <span class="o">--</span><span class="n">fasta_with_adapters_etc</span> <span class="n">TruSeq3</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">RSEM_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
@@ -804,6 +806,14 @@ Global Workflow Options:
   --cwd VAL (as path, required)
                         The output directory for generated files. MUST BE FULL
                         PATH
+  --samples VAL (as path, required)
+                        Sample meta data list
+  --data-dir  path(f&quot;{samples:d}&quot;)
+
+                        Raw data directory, default to the same directory as
+                        sample list
+  --[no-]is-stranded (default to False)
+                        Is the RNA-seq data stranded
   --job-size 1 (as int)
                         For cluster jobs, number commands to run per job
   --walltime 5h
@@ -814,13 +824,6 @@ Global Workflow Options:
                         Number of threads
   --container &#39;&#39;
                         Software container option
-  --fastq1 VAL (as path, required)
-                        Raw data
-  --fastq2 VAL (as path, required)
-  --sample-id VAL (as str, required)
-                        Sample ID
-  --[no-]is-stranded (default to False)
-                        Is the RNA-seq data stranded
 
 Sections
   fastqc:
@@ -829,11 +832,18 @@ Sections
       --software-jar &#39;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&#39;
                         Path to the software. Default set to using our
                         rna_quantification.sif image
-      --adapter-file &#39;TruSeq3-PE.fa&#39;
-                        Path to the reference adaptors:
-      --maximum-mismatch-count 2 (as int)
+      --fasta-with-adapters-etc &#39;TruSeq3-PE.fa&#39;
+                        Illumina clip setting Path to the reference adaptors
+      --seed-mismatches 2 (as int)
       --palindrome-clip-threshold 30 (as int)
       --simple-clip-threshold 10 (as int)
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 3 (as int)
+                        Other settings
+      --trailing 3 (as int)
+      --min-len 50 (as int)
   rnaseqc_call_2, rsem_call_2, STAR_align:
     Workflow Options:
       --STAR-index VAL (as path, required)
@@ -854,12 +864,12 @@ Sections
       --outSAMstrandField intronMotif
       --outFilterIntronMotifs None
       --alignSoftClipAtReferenceEnds Yes
-      --quantMode &#39;TranscriptomeSAM GeneCounts&#39;
-      --outSAMattrRGline &#39;ID:rg1 SM:sm1&#39;
-      --outSAMattributes &#39;NH HI AS nM NM ch&#39;
+      --quantMode TranscriptomeSAM GeneCounts (as list)
+      --outSAMattrRGline ID:rg1 SM:sm1 (as list)
+      --outSAMattributes NH HI AS nM NM ch (as list)
       --chimSegmentMin 15 (as int)
       --chimJunctionOverhangMin 15 (as int)
-      --chimOutType &#39;Junctions WithinBAM SoftClip&#39;
+      --chimOutType Junctions WithinBAM SoftClip (as list)
       --chimMainSegmentMultNmax 1 (as int)
   rnaseqc_call_3:
   rnaseqc_call_4:
@@ -871,6 +881,7 @@ Sections
   rsem_call_3:
     Workflow Options:
       --RSEM-index VAL (as path, required)
+      --max-frag-len 1000 (as int)
 </pre></div>
 </div>
 </div>
@@ -961,25 +972,14 @@ Sections
 <div class="section" id="id1">
 <h3>Step Inputs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">fastq1_raw</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_raw</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">soft_dir</span></code>: directory for the software</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">adapter_file</span></code>: <strong>filename</strong> for the adapter reference file. based on the following rules:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">software_dir</span></code>: directory for the software</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fasta_with_adapters_etc</span></code>: <strong>filename</strong> for the adapter reference file. According to <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code> documention,</p></li>
 </ul>
-<p><strong>FIXME: the text below is not comprehensible. Please write it formally and clearly</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">As</span> <span class="n">a</span> <span class="n">rule</span> <span class="n">of</span> <span class="n">thumb</span> <span class="n">newer</span> <span class="n">libraries</span> <span class="n">will</span> 
-<span class="n">use</span> <span class="n">TruSeq3</span><span class="p">,</span> <span class="n">but</span> <span class="n">this</span> <span class="n">really</span> <span class="n">depends</span> <span class="n">on</span> <span class="n">your</span> <span class="n">service</span> <span class="n">provider</span><span class="o">.</span>
-<span class="n">If</span> <span class="n">you</span> <span class="n">use</span> <span class="n">FASTQC</span><span class="p">,</span> <span class="n">the</span> <span class="err">„</span><span class="n">Overrepresented</span> <span class="n">Sequences</span><span class="err">‟</span> <span class="n">report</span> <span class="n">can</span> <span class="n">help</span> <span class="n">indicate</span> <span class="n">which</span> <span class="n">adapter</span> 
-<span class="n">file</span> <span class="ow">is</span> <span class="n">best</span> <span class="n">suited</span> <span class="k">for</span> <span class="n">your</span> <span class="n">data</span><span class="o">.</span> 
-<span class="err">“</span><span class="n">Illumina</span> <span class="n">Single</span> <span class="n">End</span><span class="err">”</span> <span class="ow">or</span> <span class="err">“</span><span class="n">Illumina</span> <span class="n">Paired</span> <span class="n">End</span><span class="err">”</span> <span class="n">sequences</span> <span class="n">indicate</span> <span class="n">single</span><span class="o">-</span><span class="n">end</span> <span class="ow">or</span> <span class="n">paired</span><span class="o">-</span><span class="n">end</span> 
-<span class="n">TruSeq2</span> <span class="n">libraries</span><span class="p">,</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">appropriate</span> <span class="n">adapter</span> <span class="n">files</span> <span class="n">are</span> <span class="err">“</span><span class="n">TruSeq2</span><span class="o">-</span><span class="n">SE</span><span class="o">.</span><span class="n">fa</span><span class="err">”</span> <span class="ow">and</span> <span class="err">“</span><span class="n">TruSeq2</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span><span class="err">”</span> 
-<span class="n">respectively</span><span class="o">.</span> 
-<span class="err">“</span><span class="n">TruSeq</span> <span class="n">Universal</span> <span class="n">Adapter</span><span class="err">”</span> <span class="ow">or</span> <span class="err">“</span><span class="n">TruSeq</span> <span class="n">Adapter</span><span class="p">,</span> <span class="n">Index</span> <span class="err">…”</span> <span class="n">indicates</span> <span class="n">TruSeq</span><span class="o">-</span><span class="mi">3</span> <span class="n">libraries</span><span class="p">,</span> <span class="ow">and</span> 
-<span class="n">the</span> <span class="n">appropriate</span> <span class="n">adapter</span> <span class="n">files</span> <span class="n">are</span> <span class="err">“</span><span class="n">TruSeq3</span><span class="o">-</span><span class="n">SE</span><span class="o">.</span><span class="n">fa</span><span class="err">”</span> <span class="ow">or</span> <span class="err">“</span><span class="n">TruSeq3</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span><span class="err">”</span><span class="p">,</span> <span class="k">for</span> <span class="n">single</span><span class="o">-</span><span class="n">end</span> <span class="ow">and</span> 
-<span class="n">paired</span><span class="o">-</span><span class="n">end</span> <span class="n">data</span> <span class="n">respectively</span><span class="o">.</span> 
-<span class="n">Adapter</span> <span class="n">sequences</span> <span class="k">for</span> <span class="n">TruSeq2</span> <span class="n">multiplexed</span> <span class="n">libraries</span><span class="p">,</span> <span class="n">indicated</span> <span class="n">by</span> <span class="err">“</span><span class="n">Illumina</span> <span class="n">Multiplexing</span> 
-<span class="err">…”</span><span class="p">,</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">various</span> <span class="n">RNA</span> <span class="n">library</span> <span class="n">preparations</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">currently</span> <span class="n">included</span><span class="o">.</span>
-</pre></div>
-</div>
+<blockquote>
+<div><p>As a rule of thumb newer libraries will use <code class="docutils literal notranslate"><span class="pre">TruSeq3</span></code>, but this really depends on your service provider. If you use FASTQC, the “Overrepresented Sequences” report can help indicate which adapter file is best suited for your data. “Illumina Single End” or “Illumina Paired End” sequences indicate single-end or paired-end <code class="docutils literal notranslate"><span class="pre">TruSeq2</span></code> libraries, and the appropriate adapter files are <code class="docutils literal notranslate"><span class="pre">TruSeq2-SE.fa</span></code> and <code class="docutils literal notranslate"><span class="pre">TruSeq2-PE.fa</span></code> respectively. “TruSeq Universal Adapter” or “TruSeq Adapter, Index …” indicates <code class="docutils literal notranslate"><span class="pre">TruSeq-3</span></code> libraries, and the appropriate adapter files are <code class="docutils literal notranslate"><span class="pre">TruSeq3-SE.fa</span></code> or <code class="docutils literal notranslate"><span class="pre">TruSeq3-PE.fa</span></code>, for single-end and paired-end data respectively. Adapter sequences for <code class="docutils literal notranslate"><span class="pre">TruSeq2</span></code> multiplexed libraries, indicated by “Illumina Multiplexing
+…”, and the various RNA library preparations are not currently included.</p>
+</div></blockquote>
+<p>We have <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> workflow previously defined and executed. Users should decide what fasta adapter reference to use based on <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> results (or their own knowledge).</p>
 </div>
 <div class="section" id="id2">
 <h3>Step Outputs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
@@ -992,12 +992,19 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_1</span><span class="p">,</span> <span class="n">rsem_call_1</span><span class="p">,</span> <span class="n">remove_adaptor</span><span class="p">]</span>
 <span class="c1"># Path to the software. Default set to using our rna_quantification.sif image</span>
 <span class="kn">parameter:</span> <span class="n">software_jar</span> <span class="o">=</span> <span class="s2">&quot;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&quot;</span>
-<span class="c1"># Path to the reference adaptors:</span>
-<span class="kn">parameter:</span> <span class="n">adapter_file</span> <span class="o">=</span> <span class="s2">&quot;TruSeq3-PE.fa&quot;</span>
-<span class="kn">parameter:</span> <span class="n">maximum_mismatch_count</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Illumina clip setting</span>
+<span class="c1"># Path to the reference adaptors</span>
+<span class="kn">parameter:</span> <span class="n">fasta_with_adapters_etc</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="kn">parameter:</span> <span class="n">seed_mismatches</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="kn">parameter:</span> <span class="n">palindrome_clip_threshold</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="kn">parameter:</span> <span class="n">simple_clip_threshold</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="c1"># FIXME: Other parameters (i.e. leading, trailing ... )</span>
+<span class="c1"># sliding window setting</span>
+<span class="kn">parameter:</span> <span class="n">window_size</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="kn">parameter:</span> <span class="n">required_quality</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># Other settings</span>
+<span class="kn">parameter:</span> <span class="n">leading</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="kn">parameter:</span> <span class="n">trailing</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="kn">parameter:</span> <span class="n">min_len</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="kn">input:</span> <span class="n">fastq</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;sample_id&quot;</span>
 <span class="kn">output:</span> <span class="n">fq_1</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">_paired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span>
         <span class="n">fq_1_up</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">_unpaired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span>
@@ -1012,8 +1019,8 @@ Sections
         <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> \
-        <span class="n">ILLUMINACLIP</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">adapter_file</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">maximum_mismatch_count</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">palindrome_clip_threshold</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">simple_clip_threshold</span><span class="p">}</span> \
-        <span class="n">LEADING</span><span class="p">:</span><span class="mi">3</span> <span class="n">TRAILING</span><span class="p">:</span><span class="mi">3</span> <span class="n">SLIDINGWINDOW</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="mi">20</span> <span class="n">MINLEN</span><span class="p">:</span><span class="mi">50</span>
+        <span class="n">ILLUMINACLIP</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">fasta_with_adapters_etc</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">seed_mismatches</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">palindrome_clip_threshold</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">simple_clip_threshold</span><span class="p">}</span> \
+        <span class="n">LEADING</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">leading</span><span class="p">}</span> <span class="n">TRAILING</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">trailing</span><span class="p">}</span> <span class="n">SLIDINGWINDOW</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">window_size</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">required_quality</span><span class="p">}</span> <span class="n">MINLEN</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">min_len</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1027,7 +1034,7 @@ Sections
 <div class="section" id="id3">
 <h3>Step Inputs<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">fastq1</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2</span></code>: paths to clean <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file from Step 1.</p></li>
+<li><p>paths to clean <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file from Step 1.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_index</span></code>: directory for the STAR aligment index</p></li>
 </ul>
 </div>

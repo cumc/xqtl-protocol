@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: gaow/base-notebook:1.0.0
+From: gaow/base-notebook:latest
 
 
 %labels
@@ -11,15 +11,21 @@ LC_ALL=C.UTF-8
 LANG=C.UTF-8
 
 su -  root # USER root
-
-conda install -y -c bioconda/label/cf201901 plink2
-conda install -y -c bioconda/label/cf201901 bcftools
+conda install -y -c bioconda/label/cf201901 bedtools
+sudo apt update
+sudo apt-get update
+# RUN sudo apt upgrade -y --fix-missing
+sudo apt-get install -y python2
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+python2 get-pip.py
+python2.7 -m pip install numpy
+python2.7 -m pip install scipy
 R -e "install.packages(c('dplyr', 'tidyr', 'doParallel','VIM','preprocessCore'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
-mkdir /script
-cd /script
-wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/DaPars_Extract_Anno.py &&\
-wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/Dapars2_Multi_Sample.py &&\
-wget https://github.com/cumc/xqtl-pipeline/blob/main/code/gtf2bed12.py
+cd /opt
+mkdir script && cd script
+wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/gtf2bed12.py \
+&& wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/DaPars_Extract_Anno.py \
+&& wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/Dapars2_Multi_Sample.py
 echo "cd /tmp" >> /entrypoint.sh
 echo "exec /bin/bash "$@"" >> /entrypoint.sh
 chmod u+x /entrypoint.sh

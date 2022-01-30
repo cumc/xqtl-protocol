@@ -20,12 +20,9 @@ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 python2 get-pip.py
 python2.7 -m pip install numpy
 python2.7 -m pip install scipy
-R -e "install.packages(c('dplyr', 'tidyr', 'doParallel','VIM','preprocessCore'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
-cd /opt
-mkdir script && cd script
-wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/gtf2bed12.py \
-&& wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/DaPars_Extract_Anno.py \
-&& wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/Dapars2_Multi_Sample.py
+R -e "install.packages(c('dplyr', 'tidyr', 'doParallel'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+conda install -y -c conda-forge r-vim
+conda install -y -c bioconda bioconductor-preprocesscore
 echo "cd /tmp" >> /entrypoint.sh
 echo "exec /bin/bash "$@"" >> /entrypoint.sh
 chmod u+x /entrypoint.sh

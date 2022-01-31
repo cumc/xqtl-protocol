@@ -542,6 +542,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-note-on-ts-tv-summary-from-vcf-genotype-data">
+   A note on TS/TV summary from VCF genotype data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#input">
    Input
   </a>
@@ -602,6 +607,10 @@
 <li><p>Genotype quality GQ&gt;20.</p></li>
 </ol>
 <p>Filtering are done with <code class="docutils literal notranslate"><span class="pre">bcftools</span></code>. Here is a <a class="reference external" href="https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b">useful cheatsheet from github user &#64;elowy01</a>.</p>
+</div>
+<div class="section" id="a-note-on-ts-tv-summary-from-vcf-genotype-data">
+<h2>A note on TS/TV summary from VCF genotype data<a class="headerlink" href="#a-note-on-ts-tv-summary-from-vcf-genotype-data" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">bcftools</span> <span class="pre">stats</span></code> command provides useful summary statistics including TS/TV ratio, which is routinely used as a quality measure of variant calls. With dbSNP based annotation of novel and known variants, <code class="docutils literal notranslate"><span class="pre">bcftools</span></code> can compute TS/TV for novel and known variants at variant level, and at sample level. It should be noted that variant level TS/TV does not take sample genotype into consideration – it simply counts the TS and TV event for observed SNPs in the data. Other tools, such as <code class="docutils literal notranslate"><span class="pre">snpsift</span></code>, implements variant level TS/TV by counting TS and TV events in sample genotypes and compute the ratio after summing up TS and TV across all samples. See <a class="reference external" href="https://github.com/samtools/bcftools/issues/1526">here</a> some discussions on this issue. We provide <code class="docutils literal notranslate"><span class="pre">bcftools</span></code> TS/TV calculation before and after QC but users should be aware of the difference when interpreting the results.</p>
 </div>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>

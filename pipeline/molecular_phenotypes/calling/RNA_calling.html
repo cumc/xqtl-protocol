@@ -704,7 +704,7 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="rna-seq-calling">
 <h1>RNA-seq Calling<a class="headerlink" href="#rna-seq-calling" title="Permalink to this headline">¶</a></h1>
-<p>This pipeline aims to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail.</p>
+<p>This pipeline aims to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx / TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail.</p>
 <p><strong>Various reference data needs to be prepared before using this workflow</strong>. <span class="xref myst">Here we provide a module</span> to download and prepare the reference data.</p>
 <div class="section" id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
@@ -832,7 +832,7 @@ Sections
       --software-jar &#39;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&#39;
                         Path to the software. Default set to using our
                         rna_quantification.sif image
-      --fasta-with-adapters-etc &#39;TruSeq3-PE.fa&#39;
+      --fasta-with-adapters-etc VAL (as str, required)
                         Illumina clip setting Path to the reference adaptors
       --seed-mismatches 2 (as int)
       --palindrome-clip-threshold 30 (as int)
@@ -882,6 +882,7 @@ Sections
     Workflow Options:
       --RSEM-index VAL (as path, required)
       --max-frag-len 1000 (as int)
+      --[no-]estimate-rspd (default to True)
 </pre></div>
 </div>
 </div>
@@ -1225,6 +1226,7 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rsem_call_3</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="kn">parameter:</span> <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.isoforms.results&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.genes.results&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
@@ -1232,7 +1234,7 @@ Sections
     <span class="n">run_RSEM</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">{</span><span class="n">RSEM_index</span><span class="p">:</span><span class="n">a</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;trans_bam&quot;</span><span class="p">]:</span><span class="n">a</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_sample_id</span><span class="p">}</span> \
         <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">d</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="err">$</span><span class="p">{</span><span class="n">max_frag_len</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">estimate_rspd</span> <span class="n">true</span> \
+        <span class="o">--</span><span class="n">estimate_rspd</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">estimate_rspd</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>

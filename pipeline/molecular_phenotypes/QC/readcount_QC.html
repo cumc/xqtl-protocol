@@ -555,6 +555,8 @@
 <span class="kn">parameter:</span> <span class="n">low_expr_TPM</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="kn">parameter:</span> <span class="n">low_expr_TPM_percent</span> <span class="o">=</span> <span class="mf">0.2</span>
 <span class="kn">parameter:</span> <span class="n">TPM_pseudo_count</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="c1"># Only genes with missingness below the treshold will be imputed</span>
+<span class="kn">parameter:</span> <span class="n">missing_treshold</span> <span class="o">=</span> <span class="mf">0.1</span>
 </pre></div>
 </div>
 </div>
@@ -601,6 +603,10 @@
       <span class="n">TPM_data</span> <span class="o">=</span> <span class="n">TPM_data</span><span class="p">[,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
       <span class="n">loaded_sample_count</span> <span class="o">&lt;-</span> <span class="n">ncol</span><span class="p">(</span><span class="n">TPM_data</span><span class="p">)</span>
     <span class="p">}</span>
+    <span class="c1">#### NA check</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">TPM_data</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">){</span>      
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NA is not allowed in the data, Exit!&quot;</span><span class="p">)</span>
+      <span class="n">quit</span><span class="p">(</span><span class="n">save</span> <span class="o">=</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">runLast</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">)}</span>
     <span class="c1">#### make sure every expr column is in numeric type</span>
     <span class="n">matrix_check</span> <span class="o">&lt;-</span> <span class="nb">map</span><span class="p">(</span><span class="n">TPM_data</span><span class="p">,</span> <span class="ow">is</span><span class="o">.</span><span class="n">numeric</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">unlist</span>
     <span class="k">if</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="err">!</span><span class="n">matrix_check</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
@@ -610,6 +616,9 @@
       <span class="p">}</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gene expression profiles loaded successfully!&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="n">nrow</span><span class="p">(</span><span class="n">TPM_data</span><span class="p">),</span> <span class="s2">&quot;genes and&quot;</span><span class="p">,</span> <span class="n">ncol</span><span class="p">(</span><span class="n">TPM_data</span><span class="p">),</span> <span class="s2">&quot;samples are loaded from&quot;</span><span class="p">,</span> <span class="n">tpmfile</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+    
+
+  
     
     <span class="c1">#### Filter out low exp genes</span>
     <span class="n">keep_genes_idx</span> <span class="o">&lt;-</span> <span class="p">(</span><span class="n">rowMeans</span><span class="p">(</span><span class="n">TPM_data</span><span class="o">&gt;</span><span class="n">low_expr_TPM</span><span class="p">)</span><span class="o">&gt;</span><span class="n">low_expr_TPM_percent</span><span class="p">)</span> 

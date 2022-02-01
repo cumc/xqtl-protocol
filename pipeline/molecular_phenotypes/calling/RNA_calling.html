@@ -691,6 +691,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#merge-multi-sample-results">
+   Merge multi-sample results
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -724,6 +729,7 @@
 <p>A meta-data file, white space delimited without header, containing 3 columns: sample ID, fastq file 1, fastq file 2:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_1</span> <span class="n">samp1_r1</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span> <span class="n">samp1_r2</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span>
 <span class="n">sample_2</span> <span class="n">samp2_r1</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span> <span class="n">samp2_r2</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">sample_3</span> <span class="n">samp3_r1</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span> <span class="n">samp3_r2</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 <p>All the fastq files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
@@ -1131,7 +1137,7 @@ Sections
 <ul class="simple">
 <li><p>A new <code class="docutils literal notranslate"><span class="pre">.bam</span></code> file with duplication marked with the hexadecimal value of <code class="docutils literal notranslate"><span class="pre">0x0400</span></code>, which corresponds to a decimal value of 1024</p></li>
 </ul>
-<p>This step can be automatically ran while calling RSEM/RNA_QC</p>
+<p>This step can be automatically ran as part of RNA-SeQC pipeline. It will not work for <strong>unsorted</strong> file <code class="docutils literal notranslate"><span class="pre">Aligned.toTranscriptome.out.bam</span></code>. However, various sources, including STAR documentation, seem to suggest that RSEM can be performed directly on <code class="docutils literal notranslate"><span class="pre">Aligned.toTranscriptome.out.bam</span></code> output. We therefore skip sort and mark duplicates before RSEM.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_3</span><span class="p">]</span>
@@ -1226,7 +1232,8 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rsem_call_3</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="kn">parameter:</span> <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">parameter:</span> <span class="n">is_pair_ended</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.isoforms.results&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.genes.results&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
@@ -1235,10 +1242,55 @@ Sections
         <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">d</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="err">$</span><span class="p">{</span><span class="n">max_frag_len</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">estimate_rspd</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">estimate_rspd</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">is_pair_ended</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="merge-multi-sample-results">
+<h2>Merge multi-sample results<a class="headerlink" href="#merge-multi-sample-results" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_5</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.rnaseqc.gene_tpm.gct.gz&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.rnaseqc.gene_reads.gct.gz&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.rnaseqc.exon_reads.gct.gz&#39;</span>
+<span class="kn">python:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">def</span> <span class="nf">make_gct</span><span class="p">(</span><span class="n">gct_path</span><span class="p">):</span>
+        <span class="c1"># sample_name</span>
+        <span class="n">sample_name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">gct_path</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
+        <span class="c1"># read_input</span>
+        <span class="n">pre_gct</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">gct_path</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+                              <span class="n">skiprows</span><span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="s2">&quot;Name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">pre_gct</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;gene_ID&quot;</span>
+        <span class="n">pre_gct</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample_name</span><span class="p">]</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">pre_gct</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">merge_gct</span><span class="p">(</span><span class="n">gct_path_list</span><span class="p">):</span>
+        <span class="n">gct</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">gct_path</span> <span class="ow">in</span> <span class="n">gct_path_list</span><span class="p">:</span>
+            <span class="c1">#check duplicated indels and remove them.</span>
+            <span class="n">gct_col</span> <span class="o">=</span> <span class="n">make_gct</span><span class="p">(</span><span class="n">gct_path</span><span class="p">)</span>
+            <span class="n">gct</span> <span class="o">=</span> <span class="n">gct</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">gct_col</span><span class="p">,</span><span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">left_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">how</span> <span class="o">=</span> <span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gct</span>
+
+    <span class="n">input_list</span> <span class="o">=</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]</span>
+    <span class="n">tpm_list</span> <span class="o">=</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">gc_list</span> <span class="o">=</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">ec_list</span> <span class="o">=</span> <span class="n">input_list</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">gct_path_list_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tpm_list</span><span class="p">,</span><span class="n">gc_list</span><span class="p">,</span><span class="n">ec_list</span><span class="p">]</span>
+    <span class="n">output_path</span> <span class="o">=</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">,}]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">output_path</span><span class="p">)):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">merge_gct</span><span class="p">(</span><span class="n">gct_path_list_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>

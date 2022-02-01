@@ -15,3 +15,7 @@ RUN python2.7 -m pip install numpy scipy
 RUN R -e "install.packages(c('doParallel', 'VIM', 'BiocManager'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN Rscript -e 'BiocManager::install("preprocessCore")'
 RUN conda install -y -c bioconda/label/cf201901 bedtools
+
+# Dapars scripts
+RUN for i in DaPars_Extract_Anno.py Dapars2_Multi_Sample.py gtf2bed12.py; do wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/${i} \
+	&& mv ${i} /usr/local/bin/ && chmod +x /usr/local/bin/${i}; done

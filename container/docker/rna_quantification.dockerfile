@@ -112,9 +112,6 @@ RUN unzip Trimmomatic-0.39.zip
 # scripts
 
 RUN mv /tmp/gtex-pipeline-${GTEX_PIPELINE}/rnaseq/src /opt/ && rm -rf /tmp/gtex-pipeline*
-RUN cd /opt/src
-RUN cp run_MarkDuplicates.py run_MarkDuplicates_queryname.py
-RUN perl -pi -e 's/coordinate/queryname/g' run_MarkDuplicates_queryname.py
 RUN export PATH=/opt/src:$PATH
 
 ENV PATH /opt/src:$PATH

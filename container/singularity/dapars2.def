@@ -11,25 +11,19 @@ LC_ALL=C.UTF-8
 LANG=C.UTF-8
 
 su -  root # USER root
-conda install -y -c bioconda/label/cf201901 bedtools
-sudo apt update
-sudo apt-get update
-# RUN sudo apt upgrade -y --fix-missing
-sudo apt-get install -y python2
+apt-get update && apt-get install -y python2 && apt-get clean && \
+apt-get autoremove -y && \
+rm -rf /var/lib/{apt,dpkg,cache,log}/
 curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 python2 get-pip.py
-python2.7 -m pip install numpy
-python2.7 -m pip install scipy
-R -e "install.packages(c('dplyr', 'tidyr', 'doParallel'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
-conda install -y -c conda-forge r-vim
-conda install -y -c bioconda bioconductor-preprocesscore
-echo "cd /tmp" >> /entrypoint.sh
-echo "exec /bin/bash "$@"" >> /entrypoint.sh
-chmod u+x /entrypoint.sh
+python2.7 -m pip install numpy scipy
+R -e "install.packages(c('doParallel', 'VIM', 'BiocManager'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+Rscript -e 'BiocManager::install("preprocessCore")'
+conda install -y -c bioconda/label/cf201901 bedtools
 %environment
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 %runscript
-exec /bin/bash /bin/bash /entrypoint.sh "$@"
+exec /bin/bash "$@"
 %startscript
-exec /bin/bash /bin/bash /entrypoint.sh "$@"
+exec /bin/bash "$@"

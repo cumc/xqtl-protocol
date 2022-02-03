@@ -18,6 +18,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 # Pipeline components
 #-----------------------------
 
+# R packages for TPM QC
+RUN R --slave -e "install.packages(c('rlang','RcppEigen','RColorBrewer','ape','reshape2'))"
+
 # htslib
 RUN cd /opt && \
     wget --no-check-certificate https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2 && \

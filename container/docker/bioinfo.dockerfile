@@ -31,6 +31,6 @@ RUN wget https://github.com/samtools/bcftools/releases/download/1.12/bcftools-1.
 #Instal SnpEff that contains SnpSift
 RUN wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip && \
     unzip snpEff_latest_core.zip &&  \
-    cp  snpEff /opt 
+    mv snpEff /opt 
 
 CMD exec /bin/bash "$@"

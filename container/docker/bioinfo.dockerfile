@@ -28,13 +28,13 @@ RUN cd /tmp && wget https://github.com/samtools/bcftools/releases/download/1.12/
     make prefix=/usr/local/bin install && \
     ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
     
-RUN wget https://github.com/samtools/htslib/releases/download/1.12/htslib-1.12.tar.bz2 -O htslib-1.12.tar.bz2 && \
+RUN cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.12/htslib-1.12.tar.bz2 -O htslib-1.12.tar.bz2 && \
     tar -xjvf htslib-1.12.tar.bz2 && \
     cd htslib-1.12 && \
     ./configure --prefix=/usr/local/bin && \
     make && \
     make install && \
-    cp tabix bgzip htsfile /usr/local/bin
+    cp tabix bgzip htsfile /usr/local/bin && rm -rf /tmp/htslib*
     
 #Instal SnpEff that contains SnpSift
 RUN cd /tmp && wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip && \

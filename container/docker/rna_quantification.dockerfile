@@ -119,12 +119,13 @@ RUN export PATH=/opt/src:$PATH
 
 ENV PATH /opt/src:$PATH
 
-
 # Normalization and collapse annotation script
 RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/master/gene_model/collapse_annotation.py && mv collapse_annotation.py /usr/local/bin/ && chmod +x /usr/local/bin/collapse_annotation.py
 
 ## The sed is a temporary patch for the issue discussed in https://github.com/pandas-dev/pandas/pull/44632#issuecomment-1029185339
-RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/1d6c11c10f9c2e0befeb7076ba9df3a5832d2a0b/qtl/src/eqtl_prepare_expression.py && sed "s/dtype=str/dtype={0:str,1:str}/g"  ./eqtl_prepare_expression.py > /usr/local/bin/eqtl_prepare_expression.py &&  chmod +x /usr/local/bin/eqtl_prepare_expression.py && rm ./eqtl_prepare_expression.py
+RUN wget https://raw.githubusercontent.com/broadinstitute/gtex-pipeline/1d6c11c10f9c2e0befeb7076ba9df3a5832d2a0b/qtl/src/eqtl_prepare_expression.py && \
+    sed "s/dtype=str/dtype={0:str,1:str}/g" ./eqtl_prepare_expression.py > /usr/local/bin/eqtl_prepare_expression.py && \
+    chmod +x /usr/local/bin/eqtl_prepare_expression.py && rm ./eqtl_prepare_expression.py
 
 # gffread
 RUN cd /tmp

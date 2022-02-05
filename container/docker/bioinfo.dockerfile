@@ -21,13 +21,21 @@ RUN cd /tmp && wget https://s3.amazonaws.com/plink2-assets/plink2_linux_avx2_202
     unzip plink2_linux_avx2_20211217.zip && mv plink2 /usr/local/bin && rm -rf /tmp/plink2*
 RUN cd /tmp && wget https://cnsgenomics.com/software/gcta/bin/gcta_1.93.2beta.zip && \
     unzip gcta_1.93.2beta.zip && mv gcta_1.93.2beta/gcta64 /usr/local/bin && rm -rf /tmp/gcta*
-RUN #Install bcftools
+#Install bcftools, tabix, and bgzip
 RUN cd /tmp && wget https://github.com/samtools/bcftools/releases/download/1.12/bcftools-1.12.tar.bz2 -O bcftools.tar.bz2 && \
     tar -xjvf bcftools.tar.bz2 && \
     cd bcftools-1.12 && \
+    make prefix=/usr/local/bin install && \
+    ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
+    
+RUN wget https://github.com/samtools/htslib/releases/download/1.12/htslib-1.12.tar.bz2 -O htslib-1.12.tar.bz2 && \
+    tar -xjvf htslib-1.12.tar.bz2 && \
+    cd htslib-1.12 && \
+    ./configure --prefix=/usr/local/bin && \
     make && \
-    make prefix=/usr/local install && \
-    rm -rf /tmp/bcftools*
+    make install && \
+    cp tabix bgzip htsfile /usr/local/bin
+    
 #Instal SnpEff that contains SnpSift
 RUN cd /tmp && wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip && \
     unzip snpEff_latest_core.zip &&  \

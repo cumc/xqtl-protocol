@@ -1,0 +1,742 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Molecular phenotype normalization &#8212; ADSP-FG Project</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Phenotype data reformat" href="phenotype_formatting.html" />
+    <link rel="prev" title="Phenotype data preprocessing" href="../phenotype_preprocessing.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   xQTL analysis pipeline
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Complete Pipelines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
+   Bulk RNA-seq eQTL analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../reference_data.html">
+   Reference data preprocessing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">
+   RNA-seq calling and QC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">
+     RNA-seq Calling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">
+   APA Calling
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/VCF_QC.html">
+     Genotype VCF file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/GWAS_QC.html">
+     Genotype PLINK file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../genotype/genotype_formatting.html">
+     Genotype data formatting utilities
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Molecular phenotype normalization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="phenotype_formatting.html">
+     Phenotype data reformat
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../covariate/PEER_factor.html">
+     Factor analysis using PEER
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../covariate/remove_covariates.html">
+     Computing covariate residuals
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../association_scan/cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL calling pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/APEX/APEX.html">
+     APEX QTL calling pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../association_scan/transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
+     MASH analysis pipeline with data-driven prior matrices
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
+     Multivariate SuSiE and FastENLOC
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">
+     Stratified LD Score Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_merger.html">
+   Summary statistics merger
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH/NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/code/data_preprocessing/phenotype/normalization.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/data_preprocessing/phenotype/normalization.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/data_preprocessing/phenotype/normalization.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input">
+   Input
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mwe">
+   MWE:
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="molecular-phenotype-normalization">
+<h1>Molecular phenotype normalization<a class="headerlink" href="#molecular-phenotype-normalization" title="Permalink to this headline">¶</a></h1>
+<p>This is the normalization step for data processing pipeline for xqtl workflow, containing the generation of:</p>
+<ol class="simple">
+<li><p>whole Molecular_phenotype in bed format, normalized.</p></li>
+</ol>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>The input for this workflow is:</p>
+<ol class="simple">
+<li><p>1 complete gene data table</p></li>
+<li><p>1 complete gene tmp table</p></li>
+<li><p>1 gtf table after the collapse_gene notation</p></li>
+<li><p>1 index file cross referencing the sample name in the expression and genotype</p></li>
+<li><p>1 vcf_chrom_list, provided by default, should be 1 column of chr1:chr22 chromosomes, without header</p></li>
+</ol>
+<p><strong>Violation of any of the following requirement will cause error and break the process unless noted otherwise</strong></p>
+<p>Requirement for input 1 and 2:</p>
+<ol class="simple">
+<li><p>Sep by “\t”</p></li>
+<li><p>have 2 unneeded rows above colname</p></li>
+<li><p>file name end with gct</p></li>
+<li><p>can only have samples in input 4</p></li>
+<li><p>req 1,2,3 already satisfy by using output from bulk_expression_qc</p></li>
+</ol>
+<p>Requirement for 3 and 5:</p>
+<ol>
+<li><p>3 must have the same gene name format as 1 &amp; 2, i.e. ENSG00000000003 &amp; ENSG00000000003.1 can not coexist</p>
+<p>Violation will cause empty output</p>
+</li>
+<li><p>3 must have the same chromosome name format as 5.</p>
+<p>Violation will cause empty output</p>
+</li>
+<li><p>5 should have the same chromosome name format as the genotype data to be used.</p></li>
+</ol>
+<p>Requirement for input 4</p>
+<ol class="simple">
+<li><p>Sep by “\t”</p></li>
+<li><p>must contains all the sample name in 1 &amp; 2</p></li>
+<li><p>Only 2 columns</p></li>
+</ol>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>For each collection, the output is 1:</p>
+<ol class="simple">
+<li><p>normalized Molecular_phenotype bed file</p></li>
+</ol>
+<p>It take care of the purple part of the following diagram</p>
+</div>
+<div class="section" id="mwe">
+<h2>MWE:<a class="headerlink" href="#mwe" title="Permalink to this headline">¶</a></h2>
+<p>The mwe of input 1,2 can be generated by the mwe of bulk_expression_qc, that of input 5 can be generated by reference_data_processing
+The mwe of input 3,4 can be found here:<a class="reference external" href="https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk">https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">normalization</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Normalization</span> \
+<span class="o">--</span><span class="n">tpm_gct</span> <span class="s2">&quot;mwe.low_expression_filtered.outlier_removed.processed.tpm.gct&quot;</span>      \
+<span class="o">--</span><span class="n">counts_gct</span> <span class="s2">&quot;mwe.low_expression_filtered.outlier_removed.processed.geneCount.gct&quot;</span>      \
+<span class="o">--</span><span class="n">vcf_chr_list</span> <span class="s2">&quot;vcf_chrom_list&quot;</span>   \
+<span class="o">--</span><span class="n">sample_participant_lookup</span> <span class="s2">&quot;sampleSheetAfterQc.txt&quot;</span> \
+<span class="o">--</span><span class="n">container</span> <span class="o">./</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="n">wd</span> <span class="o">./</span>      \
+<span class="o">--</span><span class="n">annotation_gtf</span> <span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span>  <span class="o">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># Work directory &amp; output directory</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># The filename namefor output data</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;gaow/twas&#39;</span>
+<span class="c1"># namefor the analysis output</span>
+<span class="kn">parameter:</span> <span class="kp">name</span><span class="o">=</span> <span class="s1">&#39;ROSMAP&#39;</span>
+<span class="c1"># Output of bulk_expression_qc</span>
+<span class="c1">## An gene count table</span>
+<span class="kn">parameter:</span> <span class="n">counts_gct</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1">## An gene TPM table</span>
+<span class="kn">parameter:</span> <span class="n">tpm_gct</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># An gene gtf annotation table</span>
+<span class="kn">parameter:</span> <span class="n">annotation_gtf</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># a file containing the number of chromosome in follow up analysis</span>
+<span class="kn">parameter:</span> <span class="n">vcf_chr_list</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+<span class="c1"># A file to map sample ID from expression to genotype,must contain two columns, sample_id and participant_id, mapping IDs in the expression files to IDs in the genotype (these can be the same).</span>
+<span class="kn">parameter:</span> <span class="n">sample_participant_lookup</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># For cluster jobs, number commands to run per job</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Wall clock time expected</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
+<span class="c1"># Memory expected</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
+<span class="c1"># Number of threads</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Normalization</span><span class="p">]</span>
+<span class="c1"># Path to the input molecular phenotype data, should be a processd and indexed bed.gz file, with tabix index.</span>
+<span class="kn">input:</span> <span class="n">counts_gct</span><span class="p">,</span><span class="n">tpm_gct</span><span class="p">,</span> <span class="n">annotation_gtf</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bnnnnn</span><span class="si">}</span><span class="s1">.expression.bed.gz&#39;</span><span class="p">,</span>  <span class="c1"># For factor</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>  
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">eqtl_prepare_expression</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">{</span><span class="n">tpm_gct</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">counts_gct</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span> \
+    <span class="err">$</span><span class="p">{</span><span class="n">sample_participant_lookup</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span> <span class="n">vcf_chr_list</span> <span class="k">if</span> <span class="n">vcf_chr_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">bnnn</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">tpm_threshold</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">count_threshold</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">sample_frac_threshold</span> <span class="mf">0.2</span> \
+    <span class="o">--</span><span class="n">normalization_method</span> <span class="n">tmm</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            kernelName: "sos",
+            path: "./code/data_preprocessing/phenotype"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../phenotype_preprocessing.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Phenotype data preprocessing</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="phenotype_formatting.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Phenotype data reformat</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+        
+            &copy; Copyright 2021, ADSP-FG xQTL methods and data integration subgroup.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

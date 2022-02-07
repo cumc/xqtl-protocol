@@ -1,0 +1,1379 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APA Calling &#8212; ADSP-FG Project</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Genotype data preprocessing" href="../../data_preprocessing/genotype_preprocessing.html" />
+    <link rel="prev" title="scRNA-seq expression calling" href="../scnuc_expression.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   xQTL analysis pipeline
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Complete Pipelines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
+   Bulk RNA-seq eQTL analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../data_preprocessing/reference_data.html">
+   Reference data preprocessing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../bulk_expression.html">
+   RNA-seq calling and QC
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="RNA_calling.html">
+     RNA-seq Calling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   APA Calling
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">
+     Genotype VCF file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
+     Genotype PLINK file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data formatting utilities
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/normalization.html">
+     Molecular phenotype normalization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data reformat
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/PEER_factor.html">
+     Factor analysis using PEER
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/remove_covariates.html">
+     Computing covariate residuals
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../association_scan/cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL calling pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/APEX/APEX.html">
+     APEX QTL calling pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../association_scan/transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
+     MASH analysis pipeline with data-driven prior matrices
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
+     Multivariate SuSiE and FastENLOC
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">
+     Stratified LD Score Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_merger.html">
+   Summary statistics merger
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH/NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/code/molecular_phenotypes/calling/apa_calling.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/molecular_phenotypes/calling/apa_calling.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/molecular_phenotypes/calling/apa_calling.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aim">
+   Aim
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods">
+   Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#utr-reference">
+     3’UTR Reference
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#call-wig-data-from-transcriptome-bam-files">
+     Call WIG data from transcriptome BAM files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#config-files-generation">
+     Config files Generation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dapars2-main-function">
+     Dapars2 Main Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#impute-missing-values-in-dapars-result">
+     Impute missing values in Dapars result
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input">
+   Input
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#minimal-working-example">
+   Minimal working example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command interface
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#workflow-implementation">
+   Workflow implementation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-generate-3utr-regions-based-on-gtf">
+     Step 0: Generate 3UTR regions based on GTF
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-generate-wig-calls-from-bam-files">
+     Step 1: Generate WIG calls from BAM files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-generating-config-files-and-calculating-sample-depth">
+     Step 2: Generating config files and calculating sample depth
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#notes-on-input-file-format">
+       Notes on input file format
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-run-dapars2-main-to-calculate-pduis">
+     Step 3: Run Dapars2 main to calculate PDUIs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-4-inpute-missing-values">
+     Step 4: Inpute missing values
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analysis-demo">
+   Analysis demo
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-3utr-generation">
+     Step 0: 3UTR generation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-generating-config-files-and-calculating-sample-depth">
+     Step 1: Generating config files and calculating sample depth
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-dapars2-main">
+     Step 2: Dapars2 Main
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-impute">
+     Step 3: Impute
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="apa-calling">
+<h1>APA Calling<a class="headerlink" href="#apa-calling" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="aim">
+<h2>Aim<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of this notebook is to call APA-based information (PDUI) based on <a class="reference external" href="https://github.com/3UTR/DaPars2">DAPARS2 method</a>.</p>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../../</span><span class="n">images</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="sos_hint">> ../../images/apa_calling.png (45.2 KiB):</div></div><img alt="../../../_images/apa_calling_3_1.png" src="../../../_images/apa_calling_3_1.png" />
+</div>
+</div>
+<div class="section" id="utr-reference">
+<h3>3’UTR Reference<a class="headerlink" href="#utr-reference" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><em><a class="reference external" href="http://gtf2bed12.py">gtf2bed12.py</a></em> : Covert gtf to bed format (Source from in-house codes from Li Lab: <a class="reference external" href="https://github.com/Xu-Dong/Exon_Intron_Extractor/blob/main/scripts/gtf2bed12.py">https://github.com/Xu-Dong/Exon_Intron_Extractor/blob/main/scripts/gtf2bed12.py</a>)</p></li>
+<li><p><em>DaPars_Extract_Anno.py</em> : extract the 3UTR regions in bed formats from the whole genome bed (Source from Dapars 2: <a class="reference external" href="https://github.com/3UTR/DaPars2/blob/master/src/DaPars_Extract_Anno.py">https://github.com/3UTR/DaPars2/blob/master/src/DaPars_Extract_Anno.py</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="call-wig-data-from-transcriptome-bam-files">
+<h3>Call WIG data from transcriptome BAM files<a class="headerlink" href="#call-wig-data-from-transcriptome-bam-files" title="Permalink to this headline">¶</a></h3>
+<p>Using bedtools or rsem-bam2wig, for RSEM based alignment</p>
+</div>
+<div class="section" id="config-files-generation">
+<h3>Config files Generation<a class="headerlink" href="#config-files-generation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><em>Python 3</em> loops to read line by line the sum of reads coverage of all chromosome.</p></li>
+</ul>
+</div>
+<div class="section" id="dapars2-main-function">
+<h3>Dapars2 Main Function<a class="headerlink" href="#dapars2-main-function" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p><em>Dapars2_Multi_Sample.py</em>: use the least sqaures methods to calculate the usage of long isoforms (<a class="reference external" href="https://github.com/3UTR/DaPars2/blob/master/src/Dapars2_Multi_Sample.py">https://github.com/3UTR/DaPars2/blob/master/src/Dapars2_Multi_Sample.py</a>)</p>
+<p>Note: this part of code have been modified from source to deal with some formatting discrepancy in wig file</p>
+</li>
+</ul>
+</div>
+<div class="section" id="impute-missing-values-in-dapars-result">
+<h3>Impute missing values in Dapars result<a class="headerlink" href="#impute-missing-values-in-dapars-result" title="Permalink to this headline">¶</a></h3>
+<p>KNN using <code class="docutils literal notranslate"><span class="pre">VIM</span></code> R package.</p>
+</div>
+</div>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>A list of transcriptome level BAM files, eg generated by RSEM</p></li>
+<li><p>The 3’UTR annotation reference file</p></li>
+</ul>
+<p>If you do not have 3’UTR annotation file, please generate it first. Input to this step is the transcriptome level gene feature file in <code class="docutils literal notranslate"><span class="pre">GTF</span></code> format that <span class="xref myst">we previously prepared</span>.</p>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Dapars config files</p></li>
+<li><p>PUDI (Raw) information saved in txt</p></li>
+<li><p>PDUI (Imputed) information saved in txt. This is recommended for further analysis.</p></li>
+</ul>
+</div>
+<div class="section" id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
+<p>To generate 3’UTR reference data,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">UTR_reference</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">apa</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run apa_calling.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  UTR_reference
+  APAconfig
+  APAmain
+  APAimpute
+
+Global Workflow Options:
+  --walltime 36h
+  --mem 100G
+  --ncore 22 (as int)
+  --cwd VAL (as path, required)
+                        the output directory for generated files
+  --thread 8 (as int)
+                        path to GTF file
+  --job-size 22 (as int)
+  --container &#39;&#39;
+
+Sections
+  UTR_reference:        Generate the 3UTR region according to the gtf file
+    Workflow Options:
+      --hg-gtf VAL (as path, required)
+                        gtf file
+  APAconfig:            Calculcate total depth and configuration file
+    Workflow Options:
+      --bfile VAL (as path, required)
+      --annotation VAL (as path, required)
+      --least-pass-coverage-percentage 0.3 (as float)
+                        Default parameters for Dapars2:
+      --coverage-threshold 10 (as int)
+      --no-chr-prefix F
+  APAmain:              Call Dapars2 multi_chromosome
+    Workflow Options:
+      --no-chr-prefix T
+      --chrlist VAL VAL ... (as type, required)
+  APAimpute:            Dapars result Imputation
+    Workflow Options:
+      --chrlist VAL VAL ... (as type, required)
+                        Input path parameter: dapars_raw =
+      --knn 8 (as int)
+                        Default k neighbours. Set k = 0 will train the k in a
+                        data-driven manner
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="workflow-implementation">
+<h2>Workflow implementation<a class="headerlink" href="#workflow-implementation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;36h&#39;</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;100G&#39;</span>
+<span class="kn">parameter:</span> <span class="n">ncore</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="c1"># the output directory for generated files</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># path to GTF file </span>
+<span class="kn">parameter:</span> <span class="n">thread</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="step-0-generate-3utr-regions-based-on-gtf">
+<h3>Step 0: Generate 3UTR regions based on GTF<a class="headerlink" href="#step-0-generate-3utr-regions-based-on-gtf" title="Permalink to this headline">¶</a></h3>
+<p>The 3UTR regions (saved in bed format) could be use <strong>repeatly</strong> for different samples. It only served as the reference region. You may not need to run it if given generated hg19/hg38 3UTR regions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the 3UTR region according to the gtf file</span>
+<span class="p">[</span><span class="n">UTR_reference</span><span class="p">]</span>
+<span class="c1"># gtf file</span>
+<span class="kn">parameter:</span> <span class="n">hg_gtf</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">hg_gtf</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.bed&#39;</span><span class="p">,</span> 
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.transcript_to_geneName.txt&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_3UTR.bed&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">gtf2bed12</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">gtf</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span>
+    <span class="n">mv</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">bed</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+    <span class="n">mv</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="n">transcript_to_geneName</span><span class="o">.</span><span class="n">txt</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+    <span class="n">DaPars_Extract_Anno</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">b</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-1-generate-wig-calls-from-bam-files">
+<h3>Step 1: Generate WIG calls from BAM files<a class="headerlink" href="#step-1-generate-wig-calls-from-bam-files" title="Permalink to this headline">¶</a></h3>
+<p>Generating WIG from BAM data via <code class="docutils literal notranslate"><span class="pre">bedtools</span></code> is recommended by Dapars authors. However, our transcriptome level calls are made using RSEM, which in fact contains a program called <code class="docutils literal notranslate"><span class="pre">rsem-bam2wig</span></code> with this one additional feature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="err">–</span><span class="n">no</span><span class="o">-</span><span class="n">fractional</span><span class="o">-</span><span class="n">weight</span> <span class="p">:</span> <span class="n">If</span> <span class="n">this</span> <span class="ow">is</span> <span class="nb">set</span><span class="p">,</span> <span class="n">RSEM</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">look</span> <span class="k">for</span> <span class="err">“</span><span class="n">ZW</span><span class="err">”</span> <span class="n">tag</span> <span class="ow">and</span> <span class="n">each</span> <span class="n">alignment</span> <span class="n">appeared</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">BAM</span> <span class="n">file</span> <span class="n">has</span> <span class="n">weight</span> <span class="mf">1.</span> <span class="n">Set</span> <span class="n">this</span> <span class="k">if</span> <span class="n">your</span> <span class="n">BAM</span> <span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">generated</span> <span class="n">by</span> <span class="n">RSEM</span><span class="o">.</span> <span class="n">Please</span> <span class="n">note</span> <span class="n">that</span> <span class="n">this</span> <span class="n">option</span> <span class="n">must</span> <span class="n">be</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span> <span class="n">of</span> <span class="n">the</span> <span class="n">command</span> <span class="n">line</span>
+</pre></div>
+</div>
+<p>Here we stick to <code class="docutils literal notranslate"><span class="pre">bedtools</span></code> because of its popularity and most generic BAM files may not have the <code class="docutils literal notranslate"><span class="pre">ZW</span></code> tag anyways.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">wigconverting</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">n</span>  <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
+<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="kn">import</span> <span class="nn">glob</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">subprocess</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/mnt/mfs/ctcn/datasets/rosmap/rnaseq/dlpfcTissue/batch</span><span class="si">{_n}</span><span class="s2">/STAR_aligned&quot;</span>
+    <span class="kp">name</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/**/*Aligned.sortedByCoord.out.bam&quot;</span><span class="p">,</span> <span class="n">recursive</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">wigpath</span> <span class="o">=</span> <span class="s2">&quot;/home/ls3751/project/ls3751/wig/batch</span><span class="si">{_n}</span><span class="s2">/&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">wigpath</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">wigpath</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="kp">name</span><span class="p">:</span>
+        <span class="n">str1</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">wigpath</span> <span class="o">+</span> <span class="nb">id</span> <span class="o">+</span> <span class="s2">&quot;.wig&quot;</span>
+        <span class="c1"># new_cmd = &quot;echo &quot; + i + &quot; &gt; &quot; + out</span>
+        <span class="n">new_cmd</span> <span class="o">=</span> <span class="s2">&quot;bedtools genomecov -ibam &quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot; -bga -split -trackline&quot;</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">new_cmd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-2-generating-config-files-and-calculating-sample-depth">
+<h3>Step 2: Generating config files and calculating sample depth<a class="headerlink" href="#step-2-generating-config-files-and-calculating-sample-depth" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="notes-on-input-file-format">
+<h4>Notes on input file format<a class="headerlink" href="#notes-on-input-file-format" title="Permalink to this headline">¶</a></h4>
+<p>For the input file, it has the following format. Additional notes are:</p>
+<ul class="simple">
+<li><p>The first line is the information of file. If you do not have them, please add any content on first line</p></li>
+<li><p>The file must end with “.wig”. It will not cause any problem if you directly change from “.bedgraph”</p></li>
+<li><p>If your input wig file did not have the characters <strong>“chr”</strong> in the first column, please set <code class="docutils literal notranslate"><span class="pre">no_chr_prefix</span> <span class="pre">=</span> <span class="pre">T</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">10</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">sample1</span><span class="o">.</span><span class="n">wig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>track type=bedGraph
+1	0	10099	0
+1	10099	10113	1
+1	10113	10146	0
+1	10146	10157	2
+1	10157	10230	0
+1	10230	10241	2
+1	10241	10279	0
+1	10279	10301	1
+1	10301	10329	0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculcate total depth and configuration file</span>
+<span class="p">[</span><span class="n">APAconfig</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">bfile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">annotation</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Default parameters for Dapars2:</span>
+<span class="kn">parameter:</span> <span class="n">least_pass_coverage_percentage</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="kn">parameter:</span> <span class="n">coverage_threshold</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">no_chr_prefix</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+<span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/sample_mapping_files.txt&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/sample_configuration_file.txt&#39;</span><span class="p">]</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
+<span class="kn">python3:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">target_all_sample</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{bfile}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">target_all_sample</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;.*wig$&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">target_all_sample</span><span class="p">))</span>
+    <span class="n">target_all_sample</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;$</span><span class="si">{bfile}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">target_all_sample</span><span class="p">]</span>
+    <span class="c1">#print(target_all_sample)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;INFO: Total&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">target_all_sample</span><span class="p">),</span><span class="s2">&quot;samples found in provided dirctory!&quot;</span><span class="p">)</span>
+    <span class="c1"># Total depth file:</span>
+    <span class="nb">chr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">22</span><span class="p">):</span>
+        <span class="nb">chr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="nb">chr</span> <span class="o">=</span> <span class="nb">chr</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;$</span><span class="si">{no_chr_prefix}</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>
+        <span class="nb">chr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;chr&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">chr</span><span class="p">]</span>
+    <span class="n">mapping_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[0]}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">current_sample</span> <span class="ow">in</span> <span class="n">target_all_sample</span><span class="p">:</span>
+        <span class="n">current_sample_total_depth</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># skip the default type = bedgraph line</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">current_sample</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span>
+                <span class="n">fields</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">curr_chr</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">region_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">region_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">current_sample_total_depth</span> <span class="o">+=</span> <span class="p">(</span><span class="n">curr_chr</span> <span class="ow">in</span> <span class="nb">chr</span><span class="p">)</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="o">*</span> <span class="p">(</span><span class="n">region_end</span> <span class="o">-</span> <span class="n">region_start</span><span class="p">)</span>
+        <span class="n">field_out</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_sample</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_sample_total_depth</span><span class="p">)]</span>
+        <span class="n">mapping_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">field_out</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coverage of sample &quot;</span><span class="p">,</span> <span class="n">current_sample</span><span class="p">,</span> <span class="s2">&quot;: &quot;</span><span class="p">,</span> <span class="n">current_sample_total_depth</span><span class="p">)</span>
+    <span class="n">mapping_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Configuration file:</span>
+
+    <span class="n">config_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annotated_3UTR=$</span><span class="si">{</span><span class="n">annotation</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Aligned_Wig_files=</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_all_sample</span><span class="p">))</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output_directory=../../../../../MWE_dapars2/Output/Wigfiles</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output_result_file=Dapars_result</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Least_pass_coverage_percentage=$</span><span class="si">{</span><span class="n">least_pass_coverage_percentage</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Coverage_threshold=$</span><span class="si">{coverage_threshold}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Num_Threads=$</span><span class="si">{thread}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sequencing_depth_file=$</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> 
+    <span class="n">config_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>    
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-3-run-dapars2-main-to-calculate-pduis">
+<h3>Step 3: Run Dapars2 main to calculate PDUIs<a class="headerlink" href="#step-3-run-dapars2-main-to-calculate-pduis" title="Permalink to this headline">¶</a></h3>
+<p>Default input of <code class="docutils literal notranslate"><span class="pre">Dapars2_Multi_Sample.py</span></code> did not consider the situation that first column did not contain “chr” (shown in <em>Step 2</em>). We add a new argument no_chr_prefix (default is FALSE)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Call Dapars2 multi_chromosome</span>
+<span class="p">[</span><span class="n">APAmain</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">chr_prefix</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">parameter:</span> <span class="n">chrlist</span> <span class="o">=</span> <span class="nb">list</span>
+<span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s1">&#39;chrlist&#39;</span>
+<span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Wigfiles_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">/Dapars_result_result_temp.</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">Dapars2_Multi_Sample</span><span class="o">.</span><span class="n">py</span> <span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="n">sample_configuration_file</span><span class="o">.</span><span class="n">txt</span> <span class="p">{</span><span class="n">_chrlist</span><span class="p">}</span> <span class="p">{</span><span class="s2">&quot;F&quot;</span> <span class="k">if</span> <span class="n">chr_prefix</span> <span class="k">else</span> <span class="s2">&quot;T&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-4-inpute-missing-values">
+<h3>Step 4: Inpute missing values<a class="headerlink" href="#step-4-inpute-missing-values" title="Permalink to this headline">¶</a></h3>
+<p>This step impute the missing value in PDUI matrix and return the Imputed one</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dapars result Imputation </span>
+<span class="p">[</span><span class="n">APAimpute</span><span class="p">]</span>
+<span class="c1"># Input path</span>
+<span class="c1"># parameter: dapars_raw = </span>
+<span class="kn">parameter:</span> <span class="n">chrlist</span> <span class="o">=</span> <span class="nb">list</span>
+<span class="c1"># Default k neighbours. Set k = 0 will train the k in a data-driven manner</span>
+<span class="kn">parameter:</span> <span class="n">knn</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="kn">input:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Wigfiles_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">/Dapars_result_result_temp.</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Dapars_result_imputed_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+
+<span class="o">.</span><span class="n">libPaths</span><span class="p">(</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/R/site-library&#39;</span> <span class="p">,</span> <span class="s1">&#39;/usr/lib/R/site-library&#39;</span><span class="p">,</span> <span class="s1">&#39;/usr/lib/R/library&#39;</span><span class="p">,</span> <span class="o">.</span><span class="n">libPaths</span><span class="p">()))</span>
+<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">dplyr</span><span class="p">))</span>
+<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">tidyr</span><span class="p">))</span>
+<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">doParallel</span><span class="p">))</span>
+<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">VIM</span><span class="p">))</span>
+<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">preprocessCore</span><span class="p">))</span>
+  
+  
+<span class="c1"># KNN impute</span>
+
+<span class="c1"># Decide the optimal n if possible. Set the k to 2:#sample </span>
+<span class="c1"># and train a best k. The idea is that, randomly remove </span>
+<span class="c1"># 20% numbers in the full value subset 5 times, calculate </span>
+<span class="c1"># MSE of imputed value by VIM and true value to decide which </span>
+<span class="c1"># k is the optimal one. (an analog from 5 fold CV)</span>
+  
+  
+<span class="n">knn_train_sample</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">input_df</span><span class="p">,</span> <span class="n">k_nb</span><span class="p">){</span>
+      <span class="c1"># Sample data and remove entries</span>
+      <span class="c1"># We must keep 1 full col for impute</span>
+      <span class="n">dim_df</span> <span class="o">&lt;-</span> <span class="n">dim</span><span class="p">(</span><span class="n">input_df</span><span class="p">)</span>
+      <span class="n">sample_size</span> <span class="o">&lt;-</span>  <span class="nb">round</span><span class="p">(</span><span class="n">dim_df</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">dim_df</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="n">row_index</span> <span class="o">&lt;-</span> <span class="n">sample</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">input_df</span><span class="p">),</span> <span class="n">sample_size</span><span class="p">)</span>
+      <span class="n">col_index</span> <span class="o">&lt;-</span> <span class="n">sample</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">input_df</span><span class="p">),</span> <span class="n">sample_size</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="n">T</span><span class="p">)</span>
+      <span class="n">val_list</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">()</span>
+      <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">row_index</span><span class="p">)){</span>
+        <span class="n">val_list</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">val_list</span><span class="p">,</span> <span class="n">input_df</span><span class="p">[</span><span class="n">row_index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">col_index</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+        <span class="n">input_df</span><span class="p">[</span><span class="n">row_index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">col_index</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">NA</span>
+      <span class="p">}</span>
+
+      <span class="c1"># Impute value</span>
+
+      <span class="n">impute_data</span> <span class="o">&lt;-</span> <span class="n">VIM</span><span class="p">::</span><span class="n">kNN</span><span class="p">(</span><span class="n">input_df</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">k_nb</span><span class="p">)</span>
+      <span class="n">impute_data</span> <span class="o">&lt;-</span> <span class="n">impute_data</span><span class="p">[,</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">input_df</span><span class="p">)]</span>
+
+      <span class="c1"># Calculate the MSE:</span>
+      <span class="n">predict_list</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">()</span>
+      <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">row_index</span><span class="p">)){</span>
+        <span class="n">predict_list</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">predict_list</span><span class="p">,</span> <span class="n">impute_data</span><span class="p">[</span><span class="n">row_index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">col_index</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+      <span class="p">}</span>
+      <span class="n">tss</span> <span class="o">&lt;-</span> <span class="nb">sum</span><span class="p">((</span><span class="n">predict_list</span> <span class="o">-</span> <span class="n">val_list</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span>
+      <span class="k">return</span><span class="p">(</span><span class="n">tss</span><span class="p">)</span>
+<span class="p">}</span>
+  
+ <span class="c1"># Read the data</span>
+    <span class="n">input_dir</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
+  
+
+    <span class="n">dapars_result</span> <span class="o">&lt;-</span> 
+      <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span>
+                 <span class="n">header</span> <span class="o">=</span> <span class="n">T</span><span class="p">)</span> 
+    
+    <span class="n">dapars_names</span> <span class="o">&lt;-</span> 
+      <span class="n">dapars_result</span> <span class="o">%&gt;%</span> 
+      <span class="n">select</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
+  
+    <span class="n">dapars_result</span> <span class="o">&lt;-</span>
+      <span class="n">dapars_result</span> <span class="o">%&gt;%</span> 
+      <span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span> 
+ 
+  <span class="k">if</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">knn</span><span class="p">}</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+    
+
+    <span class="n">dapars_train_data</span> <span class="o">&lt;-</span> <span class="n">dapars_result</span> <span class="o">%&gt;%</span> <span class="n">drop_na</span><span class="p">()</span>
+
+    <span class="c1"># Train the model</span>
+    <span class="n">no_cores</span> <span class="o">&lt;-</span> <span class="n">detectCores</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">cl</span> <span class="o">&lt;-</span> <span class="n">makeCluster</span><span class="p">(</span><span class="n">no_cores</span><span class="p">)</span>
+    <span class="n">registerDoParallel</span><span class="p">(</span><span class="n">cl</span><span class="p">)</span>
+
+    <span class="n">index</span> <span class="o">&lt;-</span> <span class="n">seq</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncol</span><span class="p">(</span><span class="n">dapars_train_data</span><span class="p">),</span> <span class="n">by</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Change by = x for precision, for large dataset, please make it bigger</span>
+    <span class="n">result_list</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">()</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">index</span><span class="p">)){</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;Train k = &quot;</span><span class="p">,</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">re</span> <span class="o">&lt;-</span> <span class="n">foreach</span><span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="o">.</span><span class="n">combine</span> <span class="o">=</span> <span class="n">c</span><span class="p">)</span> <span class="o">%</span><span class="n">dopar</span><span class="o">%</span> 
+          <span class="n">knn_train_sample</span><span class="p">(</span><span class="n">dapars_train_data</span><span class="p">,</span> <span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">result_list</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">result_list</span><span class="p">,</span> <span class="n">mean</span><span class="p">(</span><span class="n">re</span><span class="p">))</span>
+      <span class="p">}</span>
+
+    <span class="n">optimal_k</span> <span class="o">&lt;-</span> <span class="n">index</span><span class="p">[</span><span class="n">which</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">result_list</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;Optimal k selected is &quot;</span><span class="p">,</span> <span class="n">optimal_k</span><span class="p">))</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="n">optimal_k</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">knn</span><span class="p">}</span> 
+      <span class="nb">print</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;Use k = &quot;</span><span class="p">,</span> <span class="n">optimal_k</span><span class="p">,</span> <span class="s2">&quot; for imputation&quot;</span><span class="p">))</span>
+    <span class="p">}</span>
+      
+    
+  
+    <span class="c1"># Train the whole dataset:</span>
+    <span class="n">imputed_full_data</span> <span class="o">&lt;-</span> <span class="n">VIM</span><span class="p">::</span><span class="n">kNN</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">optimal_k</span><span class="p">)</span>
+    <span class="n">imputed_full_data</span> <span class="o">&lt;-</span> <span class="n">imputed_full_data</span><span class="p">[,</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">)]</span>
+  
+    <span class="n">qnorm_full_data</span> <span class="o">&lt;-</span> 
+      <span class="n">preprocessCore</span><span class="p">::</span><span class="n">normalize</span><span class="o">.</span><span class="n">quantiles</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">imputed_full_data</span><span class="p">),</span> 
+                                          <span class="n">copy</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+  
+    <span class="n">final_data</span> <span class="o">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">dapars_names</span><span class="p">,</span> <span class="n">qnorm_full_data</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">final_data</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="analysis-demo">
+<h2>Analysis demo<a class="headerlink" href="#analysis-demo" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-0-3utr-generation">
+<h3>Step 0: 3UTR generation<a class="headerlink" href="#step-0-3utr-generation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">UTR_generation</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v19</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">UTR_generation_1</span>: Generate the 3UTR region according to the gtf file
+Done!
+INFO: <span class=" -Color -Color-Green">UTR_generation_1</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: <span class=" -Color -Color-Green">UTR_generation_1</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/gene_annotation.bed /mnt/mfs/statgen/ls3751/MWE_dapars2/Output/transcript_to_geneName.txt</span>
+INFO: Running <span class=" -Color -Color-Green">UTR_generation_2</span>: 
+Generating regions ...
+Total extracted 3&#39; UTR: 140563
+Finished
+INFO: <span class=" -Color -Color-Green">UTR_generation_2</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: <span class=" -Color -Color-Green">UTR_generation_2</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/gencode.v19.annotation_3UTR.bed</span>
+INFO: Workflow UTR_generation (ID=wf41b62313b6bb15a) is executed successfully with 2 completed steps.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output</span>
+├── gencode.v19.annotation_3UTR.bed
+├── gene_annotation.bed
+└── transcript_to_geneName.txt
+
+0 directories, 3 files
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-1-generating-config-files-and-calculating-sample-depth">
+<h3>Step 1: Generating config files and calculating sample depth<a class="headerlink" href="#step-1-generating-config-files-and-calculating-sample-depth" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAconfig</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">bfile</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span> \
+    <span class="o">--</span><span class="n">annotation</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v19</span><span class="o">.</span><span class="n">annotation_3UTR</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">no_chr_prefix</span> <span class="n">T</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAconfig</span>: Calculcate total depth and configuration file
+INFO: Total 4 samples found in provided dirctory!
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample4.wig :  5943757290
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample3.wig :  6060347021
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample2.wig :  3617065465
+Coverage of sample  /mnt/mfs/statgen/ls3751/MWE_dapars2/sample1.wig :  2573149742
+INFO: <span class=" -Color -Color-Green">APAconfig</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: <span class=" -Color -Color-Green">APAconfig</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/sample_mapping_files.txt /mnt/mfs/statgen/ls3751/MWE_dapars2/Output/sample_configuration_file.txt</span>
+INFO: Workflow APAconfig (ID=wdc3865265bf562ea) is executed successfully with 1 completed step.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output</span>
+├── gencode.v19.annotation_3UTR.bed
+├── gene_annotation.bed
+├── sample_configuration_file.txt
+├── sample_mapping_files.txt
+└── transcript_to_geneName.txt
+
+0 directories, 5 files
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-2-dapars2-main">
+<h3>Step 2: Dapars2 Main<a class="headerlink" href="#step-2-dapars2-main" title="Permalink to this headline">¶</a></h3>
+<p>Note: the example is a truncated version, which just have coverage in chr1,chr11 and chr12</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAmain</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">no_chr_prefix</span> <span class="n">T</span> \
+    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAmain</span>: Call Dapars2 multi_chromosome
+[Sun Jan 30 04:15:34 2022] Start Analysis ...
+All samples Joint Processing chr1 ...
+[Sun Jan 30 04:15:34 2022] Loading Coverage ...
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample4.wig
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample3.wig
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample2.wig
+/mnt/mfs/statgen/ls3751/MWE_dapars2/sample1.wig
+[5943757290 6060347021 3617065465 2573149742]
+[Sun Jan 30 04:15:46 2022] Loading Coverage Finished ...
+#assigned events:
+1379
+1379
+1379
+1379
+1379
+1378
+1378
+1378
+[Sun Jan 30 04:15:51 2022] Finished!
+INFO: <span class=" -Color -Color-Green">APAmain</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: <span class=" -Color -Color-Green">APAmain</span> output:   <span class=" -Color -Color-Green">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output/Wigfiles_chr1/Dapars_result_result_temp.chr1.txt</span>
+INFO: Workflow APAmain (ID=w28477dad0713d81d) is executed successfully with 1 completed step.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">/mnt/mfs/statgen/ls3751/MWE_dapars2/Output</span>
+├── gencode.v19.annotation_3UTR.bed
+├── gene_annotation.bed
+├── sample_configuration_file.txt
+├── sample_mapping_files.txt
+├── transcript_to_geneName.txt
+└── <span class=" -Color -Color-Bold -Color-Bold-Blue">Wigfiles_chr1</span>
+    ├── Dapars_result_result_temp.chr1.txt
+    └── <span class=" -Color -Color-Bold -Color-Bold-Blue">tmp</span>
+        ├── Each_processor_3UTR_Result_1.txt
+        ├── Each_processor_3UTR_Result_2.txt
+        ├── Each_processor_3UTR_Result_3.txt
+        ├── Each_processor_3UTR_Result_4.txt
+        ├── Each_processor_3UTR_Result_5.txt
+        ├── Each_processor_3UTR_Result_6.txt
+        ├── Each_processor_3UTR_Result_7.txt
+        └── Each_processor_3UTR_Result_8.txt
+
+2 directories, 14 files
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="step-3-impute">
+<h3>Step 3: Impute<a class="headerlink" href="#step-3-impute" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAimpute</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
+    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAimpute</span>: Dapars result Imputation
+Warning message:
+package ‘VIM’ was built under R version 4.0.5 
+[1] &quot;Use k = 5 for imputation&quot;
+Error in preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  : 
+  ERROR; return code from pthread_create() is 22
+In addition: Warning message:
+In preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  :
+  NAs introduced by coercion
+Execution halted
+ERROR: APAimpute (id=9d62c6b78d820375) returns an error.
+ERROR: [APAimpute]: [0]: Executing script in Singularity returns an error (exitcode=1).
+The script has been saved to /home/ls3751/.sos/a23a325a1ed7f8c9/singularity_run_19849.R. To reproduce the error please run:
+<span class=" -Color -Color-Green">singularity exec  /mnt/mfs/statgen/ls3751/container/dapars2.sif Rscript /home/ls3751/.sos/a23a325a1ed7f8c9/singularity_run_19849.R</span>
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            kernelName: "sos",
+            path: "./code/molecular_phenotypes/calling"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../scnuc_expression.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">scRNA-seq expression calling</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../../data_preprocessing/genotype_preprocessing.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Genotype data preprocessing</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+        
+            &copy; Copyright 2021, ADSP-FG xQTL methods and data integration subgroup.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

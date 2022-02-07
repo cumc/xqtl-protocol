@@ -128,7 +128,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">
-   RNA-seq Calling
+   RNA-seq calling and QC
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -142,8 +142,8 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../molecular_phenotypes/QC/readcount_QC.html">
-     TPM Quality control
+    <a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
     </a>
    </li>
   </ul>
@@ -394,7 +394,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
-     Multivariate colocalization
+     Multivariate SuSiE and FastENLOC
     </a>
    </li>
   </ul>
@@ -412,6 +412,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">
      Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">
+     Stratified LD Score Regression
     </a>
    </li>
    <li class="toctree-l2">
@@ -797,6 +802,12 @@ Sections
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># PLINK binary files</span>
 <span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">paths</span>
+<span class="c1"># The path to the file that contains the list of samples to remove (format FID, IID)</span>
+<span class="kn">parameter:</span> <span class="n">remove_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
+<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="c1"># The path to the file that contains the list of variants to keep</span>
+<span class="kn">parameter:</span> <span class="n">keep_variants</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 <span class="c1"># Kinship coefficient threshold for related individuals</span>
 <span class="c1"># (e.g first degree above 0.25, second degree above 0.125, third degree above 0.0625)</span>
 <span class="kn">parameter:</span> <span class="n">kinship</span> <span class="o">=</span> <span class="mf">0.0625</span>
@@ -837,6 +848,8 @@ Sections
       <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">king</span><span class="o">-</span><span class="n">table</span> \
       <span class="o">--</span><span class="n">king</span><span class="o">-</span><span class="n">table</span><span class="o">-</span><span class="nb">filter</span> <span class="err">$</span><span class="p">{</span><span class="n">kinship</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--keep </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">keep_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--remove </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">remove_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">remove_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \
       <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">af</span> <span class="err">$</span><span class="p">{</span><span class="n">kin_maf</span><span class="p">}</span> \
       <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">af</span> <span class="err">$</span><span class="p">{</span><span class="mi">1</span><span class="o">-</span><span class="n">kin_maf</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
@@ -1060,6 +1073,7 @@ Sections
     <span class="n">plink</span> \
       <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">remove</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
+      <span class="err">$</span><span class="p">{(</span><span class="s1">&#39;--keep </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">keep_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">keep_samples</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> \      
       <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
       <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
       <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
@@ -1086,12 +1100,6 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter SNPs and select individuals </span>
 <span class="p">[</span><span class="n">qc_no_prune</span><span class="p">,</span> <span class="n">qc_1</span> <span class="p">(</span><span class="n">basic</span> <span class="n">QC</span> <span class="n">filters</span><span class="p">)]</span>
-<span class="c1"># The path to the file that contains the list of samples to remove (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">remove_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># The path to the file that contains the list of samples to keep (format FID, IID)</span>
-<span class="kn">parameter:</span> <span class="n">keep_samples</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># The path to the file that contains the list of variants to keep</span>
-<span class="kn">parameter:</span> <span class="n">keep_variants</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 <span class="c1"># minimum MAF filter to use. 0 means do not apply this filter.</span>
 <span class="kn">parameter:</span> <span class="n">maf_filter</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="c1"># maximum MAF filter to use. 0 means do not apply this filter.</span>

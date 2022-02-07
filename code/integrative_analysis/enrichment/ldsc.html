@@ -607,9 +607,8 @@
 <div class="section" id="ldsc-model">
 <h3>LDSC model<a class="headerlink" href="#ldsc-model" title="Permalink to this headline">¶</a></h3>
 <p>Under a polygenic assumption, in which effect sizes for variants are drawn independently from distributions with variance proportional to  <span class="math notranslate nohighlight">\(1/(p(1-p))\)</span> where p is the minor allele frequency (MAF), the expected <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic of variant j is:</p>
-<p>\begin{equation}
-E[\chi^2|l_j] = Nh^2l_j/M + Na + 1 (1)
-\end{equation}</p>
+<div class="math notranslate nohighlight">
+\[E[\chi^2|l_j] = Nh^2l_j/M + Na + 1 \quad (1)\]</div>
 <p>where <span class="math notranslate nohighlight">\(N\)</span> is the sample size; <span class="math notranslate nohighlight">\(M\)</span> is the number of SNPs, such that <span class="math notranslate nohighlight">\(h^2/M\)</span> is the average heritability explained per SNP; <span class="math notranslate nohighlight">\(a\)</span> measures the contribution of confounding biases, such as cryptic relatedness and population stratification; and <span class="math notranslate nohighlight">\(l_j = \sum_k r^2_{jk}\)</span> is the LD Score of variant <span class="math notranslate nohighlight">\(j\)</span>, which measures the amount of genetic variation tagged by <span class="math notranslate nohighlight">\(j\)</span>. A full derivation of this equation is provided in the Supplementary Note of Sullivan et al (2015). An alternative derivation is provided in Supplementary Note of Zhu and Stephens (2017) AoAS.</p>
 <p>From this we can see that LD Score regression can be used to compute SNP-based heritability for a phenotype or trait, from GWAS summary statistics and does not require genotype information like other methods such as REML do.</p>
 </div>
@@ -621,9 +620,8 @@ E[\chi^2|l_j] = Nh^2l_j/M + Na + 1 (1)
 <p>S-LDSC determines that a category of SNPs is enriched for heritability if SNPs with high LD to that category have more significant <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics than SNPs with low LD to that category.</p>
 <p>Here, enrichment of a category is defined as the proportion of SNP heritability in the category divided by the proportion of SNPs in that category.</p>
 <p>More precisely, under a polygenic model, the expected <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic of SNP <span class="math notranslate nohighlight">\(j\)</span> is</p>
-<p>\begin{equation}
-E[\chi^2_j] = N\sum_CT_Cl(j,C) + Na + 1 …… (2)
-\end{equation}</p>
+<div class="math notranslate nohighlight">
+\[E[\chi^2_j] = N\sum_CT_Cl(j,C) + Na + 1 \quad (2)\]</div>
 <p>where <span class="math notranslate nohighlight">\(N\)</span> is sample size, C indexes categories, <span class="math notranslate nohighlight">\(ℓ(j, C)\)</span> is the LD score of SNP j with respect to category <span class="math notranslate nohighlight">\(l(j,C) = \sum_{k\epsilon C} r^2_{jk}\)</span>, <span class="math notranslate nohighlight">\(a\)</span> is a term that measures the contribution of confounding biases, and if the categories are disjoint, <span class="math notranslate nohighlight">\(\tau_C\)</span> is the per-SNP heritability in category <span class="math notranslate nohighlight">\(C\)</span>; if the categories overlap, then the per-SNP heritability of SNP j is <span class="math notranslate nohighlight">\(\sum_{C:j\epsilon C} \tau_C\)</span>.  Equation 2 allows us to estimate <span class="math notranslate nohighlight">\(\tau_C\)</span> via a (computationally simple) multiple regression of <span class="math notranslate nohighlight">\(\chi^2\)</span> against <span class="math notranslate nohighlight">\(ℓ(j, C)\)</span>, for either a quantitative or case-control study.</p>
 <p>To see how these methods have been applied to real world data as well as a further discussion on methods and comparisons to other methods please read the three papers listed at the top of the document.</p>
 </div>

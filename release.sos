@@ -22,3 +22,12 @@ bash:
 	jupyter-book build .  --path-output . --config website/_config.yml --toc website/_toc.yml 
 	rsync -auzP images/* _build/html/_images/
 	ghp-import -n -p -f _build/html
+	rm -rf pipeline/*
+
+[make_link, default_3]
+from glob import glob
+input: [x for x in glob('code/**/*.ipynb', recursive=True) if not '.ipynb_checkpoints' in x], group_by = 1
+output: f'pipeline/{_input:b}'
+bash: expand = True
+	cd pipeline
+	ln -s ../{_input} {_output:b}

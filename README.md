@@ -12,7 +12,7 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 
 ### Source code
 
-- Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-pipeline/tree/main/pipeline. 
+- Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-pipeline/tree/main/code. 
 - Container configurations are available at https://github.com/cumc/xqtl-pipeline/tree/main/container.
 
 ### Data and software
@@ -22,7 +22,7 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 
 ### Organization of the resource
 
-The website https://cumc.github.io/xqtl-pipeline is generated from files under `pipeline` folder of the source code repository. The logic of the entire xQTL analysis workflow is roughly reflected on the left side bar:
+The website https://cumc.github.io/xqtl-pipeline is generated from files under `code` folder of the source code repository. The `pipeline` folder are symbolic links automatically generated for pipeline files under `code`. The logic of the entire xQTL analysis workflow is roughly reflected on the left side bar:
 
 - The **COMPLETE PIPELINES** section is reserved for "push botton" commands that generates the entire QTL analysis pipeline workflow script from a single configuration file (**[FIXME: link to config file example]**). Notebooks under this sections are meant to be **executed as command line software** to generate data analysis commands. The generated commands can be executed as is to complete all available analysis, or can be used to help customizing specific analysis tasks by making modification on them. The configuration file itself helps centralized control and book keeping of workflows executed.
 - Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as ***analysis groups***, which are further divided into ***analysis subgroups*** by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the subgroup. Most of them are "tutorials" in nature and are meant to be **executed interactively in Jupyter or in command terminal** to run the SoS pipelines line by line. A few are the actual ***pipeline modules*** implementing pipelines in SoS, as will be discussed next.

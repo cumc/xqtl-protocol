@@ -636,9 +636,30 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">bulk_expression_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span>
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
     <span class="o">--</span><span class="n">TPM</span><span class="o">-</span><span class="n">file</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">TPM</span><span class="o">.</span><span class="n">gct</span> \
-    <span class="o">--</span><span class="n">raw</span><span class="o">-</span><span class="n">counts</span><span class="o">-</span><span class="n">file</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">Counts</span><span class="o">.</span><span class="n">gct</span>
+    <span class="o">--</span><span class="n">raw</span><span class="o">-</span><span class="n">counts</span><span class="o">-</span><span class="n">file</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">Counts</span><span class="o">.</span><span class="n">gct</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="n">output</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;Gene expression profiles loaded successfully!&quot;</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;19 genes and 1118 samples are loaded from data/mwe.TPM.gct&quot;</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;0 genes are filtered, because &gt; 20 </span><span class="si">% s</span><span class="s2">amples have expression values &lt; 0.1&quot;</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;19 genes left, saving output.&quot;</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">output</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">log</span>
 </pre></div>
 </div>
 </div>
@@ -753,8 +774,8 @@ Sections
     <span class="c1">#### Filter out low exp genes</span>
     <span class="n">keep_genes_idx</span> <span class="o">&lt;-</span> <span class="p">(</span><span class="n">rowMeans</span><span class="p">(</span><span class="n">TPM_data</span><span class="o">&gt;</span><span class="n">low_expr_TPM</span><span class="p">)</span><span class="o">&gt;</span><span class="n">low_expr_TPM_percent</span><span class="p">)</span> 
     <span class="n">TPM_data</span> <span class="o">=</span> <span class="n">TPM_data</span><span class="p">[</span><span class="n">keep_genes_idx</span><span class="p">,]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">keep_genes_idx</span><span class="p">),</span> <span class="s2">&quot;genes are filtered, because &gt;&quot;</span><span class="p">,</span> <span class="n">low_expr_TPM_percent</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">% s</span><span class="s2">amples have expression values &lt;&quot;</span><span class="p">,</span> <span class="n">low_expr_TPM</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">keep_genes_idx</span><span class="p">),</span> <span class="s2">&quot;genes left, saving output.&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">keep_genes_idx</span><span class="p">),</span> <span class="s2">&quot;genes are filtered by filter: &gt;&quot;</span><span class="p">,</span> <span class="n">low_expr_TPM_percent</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">% s</span><span class="s2">amples have expression values &lt;&quot;</span><span class="p">,</span> <span class="n">low_expr_TPM</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">keep_genes_idx</span><span class="p">),</span> <span class="s2">&quot;genes left, saving output to $[_output].&quot;</span><span class="p">))</span>
     <span class="n">TPM_data</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s2">&quot;gene_ID&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>

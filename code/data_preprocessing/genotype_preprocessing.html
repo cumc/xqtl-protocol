@@ -583,11 +583,6 @@
    Genomic relationship matrix
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reformatting-and-partition-for-regional-genotypic-data">
-   Reformatting and partition for regional genotypic data
-  </a>
- </li>
 </ul>
 
             </nav>
@@ -851,56 +846,17 @@
 </div>
 </div>
 </div>
-<p><strong>FIXME: workflow below still needs to be tested and polished up by Gao Wang. They are not ready to reproduce</strong></p>
+<p><strong>FIXME: still need to add in section for VCF formatted file processing</strong></p>
 </div>
 </div>
 <div class="section" id="genomic-relationship-matrix">
 <h2>Genomic relationship matrix<a class="headerlink" href="#genomic-relationship-matrix" title="Permalink to this headline">¶</a></h2>
-<p>input:</p>
-<ol class="simple">
-<li><p>A list of plink trio per chrom, output from Genotype QC</p></li>
-</ol>
-<p>output:</p>
-<ol class="simple">
-<li><p>A collection of ld.rds file that are suitable for mvsusie_rss and susie_rss</p></li>
-<li><p>One row of the LD recipe file for this particular theme, so that susie_rss can find the correct ld</p></li>
-</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="n">GRM</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">GRM</span>
-    <span class="o">--</span><span class="n">genotype_list</span> <span class="n">demo</span><span class="o">.</span><span class="n">processed_genotype</span><span class="o">.</span><span class="n">plink_per_chrom</span><span class="o">.</span><span class="n">recipe</span> \
-    <span class="o">--</span><span class="n">wd</span> <span class="n">GRM</span><span class="o">/</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;base-bioinfo.sif&quot;</span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="reformatting-and-partition-for-regional-genotypic-data">
-<h2>Reformatting and partition for regional genotypic data<a class="headerlink" href="#reformatting-and-partition-for-regional-genotypic-data" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="n">plink2vcf</span>\
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">ac</span><span class="o">.</span><span class="n">mergrd</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">wd</span> <span class="n">genotype_reformmating</span><span class="o">/</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;ac&quot;</span> \
-    <span class="o">--</span><span class="n">region_list</span> <span class="n">geneTpmResidualsAgeGenderAdj_rename_region_list</span><span class="o">.</span><span class="n">txt</span>  \
-    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;base-bioinfo.sif&quot;</span> 
-
-<span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_gene</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">ac</span><span class="o">.</span><span class="n">mergrd</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">wd</span> <span class="n">genotype_reformmating</span><span class="o">/</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;dlpfc&quot;</span> \
-    <span class="o">--</span><span class="n">region_list</span> <span class="n">mwe_region</span>  \
-    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;base-bioinfo.sif&quot;</span> 
-
-<span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_chrom</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">ac</span><span class="o">.</span><span class="n">mergrd</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">wd</span> <span class="n">genotype_reformmating</span><span class="o">/</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;pcc&quot;</span> \
-    <span class="o">--</span><span class="n">region_list</span> <span class="n">mwe_region</span>  \
-    <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;base-bioinfo.sif&quot;</span> 
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GRM</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">grm</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">genotype</span><span class="o">-</span><span class="nb">list</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">list</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>

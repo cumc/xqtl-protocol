@@ -6,6 +6,16 @@ From: gaow/base-notebook
 maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
 %post
 su -  root # USER root
+
+
+# Install JAVA
+apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk && \
+apt-get clean && \
+apt-get autoremove -y && \
+rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+
+# Install R pkg
 R --slave -e "install.packages(c('rlang',
                                      'tidyverse',
                                      'BiocManager', 
@@ -45,6 +55,8 @@ cp tabix bgzip htsfile /usr/local/bin && rm -rf /tmp/htslib*
 cd /tmp && wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip && \
 unzip snpEff_latest_core.zip &&  \
 mv snpEff /opt && rm -rf /tmp/snpEff*
+    
+
 
 %runscript
 exec /bin/bash exec /bin/bash "$@"

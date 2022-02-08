@@ -1,6 +1,16 @@
 FROM gaow/base-notebook
 LABEL maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
 su -  root # USER root
+
+
+# Install JAVA
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk && \
+  apt-get clean && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/{apt,dpkg,cache,log}/
+
+
+# Install R pkg
 RUN R --slave -e "install.packages(c('rlang',
                                      'tidyverse',
                                      'BiocManager', 
@@ -40,5 +50,7 @@ RUN cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.12/ht
 RUN cd /tmp && wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip && \
     unzip snpEff_latest_core.zip &&  \
     mv snpEff /opt && rm -rf /tmp/snpEff*
+    
+
 
 CMD exec /bin/bash "$@"

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Genotype data formatting utilities &#8212; ADSP-FG Project</title>
+    <title>Genotype data formatting &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -197,7 +197,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Genotype data formatting utilities
+     Genotype data formatting
     </a>
    </li>
   </ul>
@@ -607,8 +607,8 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-formatting-utilities">
-<h1>Genotype data formatting utilities<a class="headerlink" href="#genotype-data-formatting-utilities" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-formatting">
+<h1>Genotype data formatting<a class="headerlink" href="#genotype-data-formatting" title="Permalink to this headline">¶</a></h1>
 <p>This module implements a collection of workflows used to format genotype data.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
@@ -741,10 +741,10 @@ Sections
 <span class="k">def</span> <span class="nf">get_genotype_file</span><span class="p">(</span><span class="n">geno_file_paths</span><span class="p">):</span>
     <span class="c1">#</span>
     <span class="k">def</span> <span class="nf">valid_geno_file</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="n">suffixes</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">suffixes</span>
-        <span class="k">if</span> <span class="n">suffixes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bed&#39;</span><span class="p">:</span>
+        <span class="n">suffixes</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">suffixes</span>
+        <span class="k">if</span> <span class="n">suffixes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.bed&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">suffixes</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span> <span class="o">==</span> <span class="s2">&quot;vcf.gz&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">suffixes</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">suffixes</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span> <span class="o">==</span> <span class="s2">&quot;.vcf.gz&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="c1">#</span>
@@ -758,6 +758,11 @@ Sections
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">x</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">geno_file</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">/&#39;</span> <span class="o">+</span> <span class="n">x</span>
         <span class="k">return</span> <span class="n">x</span>
+    <span class="c1"># </span>
+    <span class="k">def</span> <span class="nf">format_chrom</span><span class="p">(</span><span class="n">chrom</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">chrom</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;chr&#39;</span><span class="p">):</span>
+            <span class="n">chrom</span> <span class="o">=</span> <span class="n">chrom</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">chrom</span>
     <span class="c1"># Inputs are either VCF or bed, or a vector of them</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">geno_file_paths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">valid_geno_file</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geno_file_paths</span><span class="p">]):</span>
@@ -773,9 +778,10 @@ Sections
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">]):</span>
             <span class="k">return</span> <span class="n">paths</span><span class="p">([</span><span class="n">complete_geno_path</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">geno_file</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">])</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">]):</span>
-            <span class="n">genos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">(</span><span class="n">complete_geno_path</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geno_file</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">])</span>
+            <span class="n">genos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">format_chrom</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">path</span><span class="p">(</span><span class="n">complete_geno_path</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geno_file</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geno_file</span><span class="si">}</span><span class="s2"> should contain one column of files, or two columns of chr number and corresponding file&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geno_file</span><span class="si">}</span><span class="s2"> should contain one column of file names, or two columns of chrom number and corresponding file name&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">genos</span>
             
 <span class="n">genoFile</span> <span class="o">=</span> <span class="n">get_genotype_file</span><span class="p">(</span><span class="n">genoFile</span><span class="p">)</span>
 </pre></div>

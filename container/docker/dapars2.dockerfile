@@ -13,7 +13,7 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 RUN python2 get-pip.py
 RUN python2.7 -m pip install numpy scipy
 RUN R -e "install.packages(c('doParallel', 'VIM', 'BiocManager'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
-RUN Rscript -e 'BiocManager::install("preprocessCore")'
+RUN Rscript -e 'BiocManager::install("impute")'
 RUN conda install -y -c bioconda/label/cf201901 bedtools
 
 # Dapars scripts

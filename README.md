@@ -42,9 +42,13 @@ This repository is developed by the ADSP FG Brain xQTL consortium.
 Lead developers
 
 - Hao Sun, Department of Neurology, Columbia University
+- Gao Wang, Department of Neurology, Columbia University
+
+Contributors
+
 - Wenhao Gou, Department of Biostatistics, Columbia University
 - Amanda Tsai, Department of Biostatistics, Columbia University  
-- Gao Wang, Department of Neurology, Columbia University
+- Liucheng Shi, Department of Biostatistics, Columbia University
 
 Project leader
 

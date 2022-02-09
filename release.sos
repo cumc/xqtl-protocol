@@ -13,6 +13,7 @@ bash: expand = True
 parameter: config = path
 parameter: out_dir = path('container/singularity')
 bash: expand = True
+  rm -f {out_dir}/{config:n}.sif
   singularity build --fakeroot {out_dir}/{config:n}.sif container/singularity/{config}
   md5sum {out_dir}/{config:n}.sif > {out_dir}/{config:n}.md5
 

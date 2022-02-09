@@ -116,7 +116,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../reference_data.html">
-   Reference data preprocessing
+   Reference data standardization
   </a>
  </li>
 </ul>
@@ -535,14 +535,21 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input">
-   Input
+  <a class="reference internal nav-link" href="#overview">
+   Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#output">
-   Output
+  <a class="reference internal nav-link" href="#input">
+   Input
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output">
+     Output
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#annotation-of-molecular-phenotype-file">
@@ -562,23 +569,27 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="gene-symbol-annotation">
 <h1>Gene symbol annotation<a class="headerlink" href="#gene-symbol-annotation" title="Permalink to this headline">¶</a></h1>
-<p>This is the phenotype annotation step for data processing pipeline for xqtl workflow, containing the generation of annotated phenotype</p>
+<p>This workflow adds gene symbol and genomic coordinate annotation to gene-level molecular phenotype files generated.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Annotation is done using <code class="docutils literal notranslate"><span class="pre">biomaRt</span></code> package in R. We require ENSEMBL version to be specified explicitly in this pipeline. As of 2021 for the Brain xQTL project, we use ENSEMBL version 103.</p>
+</div>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
-<p>The input for this workflow is the collection of data for 1 conditions as described in the readme of this git repo</p>
 <ol class="simple">
-<li><p>1 complete unresidual molecular_phenotype data</p></li>
+<li><p>Molecular phenotype data in <code class="docutils literal notranslate"><span class="pre">gct.gz</span></code> format that does not have chr, start and end positions (not yet in <code class="docutils literal notranslate"><span class="pre">bed</span></code> format)</p></li>
 <li><p>(Optional) 1 file documenting the list of region to be analyzed to filtered out unneeded genes</p></li>
 </ol>
-</div>
 <div class="section" id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
 <p>For each collection, the output is
 3. 1 region list file documenting chr, pos, start, end, gene_ID
 4. 1 complete and annotated unresidual phenotype file (bed+index), suitable to be fed into factor analysis</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># Ensembl version to use. You can list them via biomaRt::listEnsemblArchives()</span>
+<span class="kn">parameter:</span> <span class="n">ensembl_version</span> <span class="o">=</span> <span class="nb">int</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="c1"># Work directory &amp; output directory</span>
 <span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span>
@@ -606,6 +617,7 @@
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="annotation-of-molecular-phenotype-file">
 <h2>Annotation of molecular phenotype file<a class="headerlink" href="#annotation-of-molecular-phenotype-file" title="Permalink to this headline">¶</a></h2>
 <p>This workflow adds the annotations of chr pos(TSS where start = end -1) and gene_ID to the bed file</p>
@@ -624,7 +636,7 @@
     <span class="n">gene_exp</span> <span class="o">=</span> <span class="n">readr</span><span class="p">::</span><span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[0]]&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span><span class="p">(</span><span class="s2">&quot;#chr&quot;</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">colnames</span><span class="p">(</span><span class="n">gene_exp</span><span class="p">)</span> <span class="p">){</span>
     <span class="n">gene_exp</span> <span class="o">=</span> <span class="n">gene_exp</span><span class="p">[,</span><span class="mi">4</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">gene_exp</span><span class="p">)]}</span>
-    <span class="n">ensembl</span> <span class="o">=</span> <span class="n">useDataset</span><span class="p">(</span><span class="s2">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span><span class="n">mart</span><span class="o">=</span><span class="n">useMart</span><span class="p">(</span><span class="s2">&quot;ENSEMBL_MART_ENSEMBL&quot;</span><span class="p">))</span>
+    <span class="n">ensembl</span> <span class="o">=</span> <span class="n">useEnsembl</span><span class="p">(</span><span class="n">biomart</span> <span class="o">=</span> <span class="s2">&quot;ensembl&quot;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s2">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span> <span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;$[ensembl_version]&quot;</span><span class="p">)</span>
     <span class="n">ensembl_df</span> <span class="o">&lt;-</span> <span class="n">getBM</span><span class="p">(</span><span class="n">attributes</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="s2">&quot;ensembl_gene_id&quot;</span><span class="p">,</span><span class="s2">&quot;chromosome_name&quot;</span><span class="p">,</span> <span class="s2">&quot;start_position&quot;</span><span class="p">,</span> <span class="s2">&quot;end_position&quot;</span><span class="p">),</span><span class="n">mart</span><span class="o">=</span><span class="n">ensembl</span><span class="p">)</span>
     <span class="n">my_genes</span> <span class="o">=</span> <span class="n">gene_exp</span><span class="err">$</span><span class="n">gene_ID</span>
     <span class="n">keep_genes</span> <span class="o">=</span>  <span class="n">my_genes</span>

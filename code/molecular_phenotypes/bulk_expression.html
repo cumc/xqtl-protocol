@@ -574,6 +574,16 @@
    </code>
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-sample-rna-seq-qc">
+   Multi-sample RNA-seq QC
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-sample-read-count-normalization">
+   Multi-sample read count normalization
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -705,6 +715,38 @@
     <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">RSEM_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="multi-sample-rna-seq-qc">
+<h2>Multi-sample RNA-seq QC<a class="headerlink" href="#multi-sample-rna-seq-qc" title="Permalink to this headline">¶</a></h2>
+<p>We need to use a different MWE data-set that contains multiple samples – here is the <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk">Google Drive link</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">bulk_expression_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">tpm</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">TPM</span><span class="o">.</span><span class="n">gct</span> \
+    <span class="o">--</span><span class="n">counts</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">Counts</span><span class="o">.</span><span class="n">gct</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="multi-sample-read-count-normalization">
+<h2>Multi-sample read count normalization<a class="headerlink" href="#multi-sample-read-count-normalization" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">bulk_expression_normalization</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">normalize</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">tpm</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tpm</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">counts</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">geneCount</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
+    <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">data</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="n">count</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>

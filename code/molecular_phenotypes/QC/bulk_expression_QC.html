@@ -637,8 +637,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">bulk_expression_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
-    <span class="o">--</span><span class="n">tpm</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">TPM</span><span class="o">.</span><span class="n">gct</span> \
-    <span class="o">--</span><span class="n">counts</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">Counts</span><span class="o">.</span><span class="n">gct</span> \
+    <span class="o">--</span><span class="n">tpm</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">TPM</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">counts</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">Counts</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
@@ -695,9 +695,9 @@ Workflows:
   qc
 
 Global Workflow Options:
-  --TPM-file VAL (as path, required)
+  --tpm-gct VAL (as path, required)
                         Required input is TPM file
-  --raw-counts-file . (as path)
+  --counts-gct . (as path)
                         Raw counts file is optional and if available, it will be
                         filtered to match with the TPM file sample and genes
   --cwd VAL (as path, required)
@@ -944,9 +944,9 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">qc_3</span> <span class="p">(</span><span class="n">remove</span> <span class="n">gene</span> <span class="ow">and</span> <span class="n">samples</span> <span class="kn">from</span> <span class="nn">raw</span> <span class="n">counts</span><span class="p">)]</span>
 <span class="n">stop_if</span><span class="p">(</span><span class="ow">not</span> <span class="n">counts_gct</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.low_expression_filtered.outlier_removed.geneCount.gct.gz&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.geneCount.gct.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;30G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
     <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
     <span class="c1"># Reason to use read.table: 1.accomodate both &quot; &quot; and &quot;\t&quot;</span>

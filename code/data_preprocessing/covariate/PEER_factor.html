@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Factor analysis using PEER &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -540,11 +541,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#number-of-factors-to-use">
-   Number of factors to use
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#outputs">
    Outputs
   </a>
@@ -560,6 +556,11 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#number-of-factors-to-use">
+   Number of factors to use
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#minimumal-working-example">
@@ -592,13 +593,13 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="factor-analysis-using-peer">
+  <section class="tex2jax_ignore mathjax_ignore" id="factor-analysis-using-peer">
 <h1>Factor analysis using PEER<a class="headerlink" href="#factor-analysis-using-peer" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This workflow performs <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">Probabilistic Estimation of Expression Residuals (PEER) method</a>, a method also used for GTEx eQTL data analysis.</p>
-</div>
-<div class="section" id="input">
+</section>
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Molecular phenotype in <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> file format with indexing:</p></li>
@@ -648,33 +649,33 @@
 </div></div>
 </div>
 <p>Covariates file is optional to the PEER method but it should be supplied in order to construct a proper PEER model in the context of xQTL mapping.</p>
-</div>
-<div class="section" id="number-of-factors-to-use">
+</section>
+<section id="outputs">
+<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
+<p>Output prefix will be derived from the phenotype and covariate files unless <code class="docutils literal notranslate"><span class="pre">--name</span></code> parameter is specified.</p>
+<section id="main-outputs">
+<h3>Main outputs<a class="headerlink" href="#main-outputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{name}.PEER.cov</span></code>: result for peer factor covariates</p></li>
+</ul>
+</section>
+<section id="other-outputs">
+<h3>Other outputs<a class="headerlink" href="#other-outputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>A diagnosis polt for check of convergence</p></li>
+<li><p>peer precision /residuals /weights</p></li>
+</ul>
+</section>
+</section>
+<section id="number-of-factors-to-use">
 <h2>Number of factors to use<a class="headerlink" href="#number-of-factors-to-use" title="Permalink to this headline">¶</a></h2>
 <p>By default the pipeline applies recommendations from <a class="reference external" href="https://gtexportal.org/home/documentationPage">GTEx</a>:</p>
 <blockquote>
 <div><p>A set of covariates identified using the Probabilistic Estimation of Expression Residuals (PEER) method (Stegle et al., PLoS Comp. Biol., 2010 ), calculated for the normalized expression matrices (described below). For eQTL analyses, the number of PEER factors was determined as function of sample size (N): 15 factors for N&lt;150, 30 factors for 150≤ N&lt;250, 45 factors for 250≤ N&lt;350, and 60 factors for N≥350, as a result of optimizing for the number of eGenes discovered. For sQTL analyses, 15 PEER factors were computed for each tissue.</p>
 </div></blockquote>
 <p>Although one can specify fixed number of factors using <code class="docutils literal notranslate"><span class="pre">--N</span></code> option in this pipeline.</p>
-</div>
-<div class="section" id="outputs">
-<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
-<p>Output prefix will be derived from the phenotype and covariate files unless <code class="docutils literal notranslate"><span class="pre">--name</span></code> parameter is specified.</p>
-<div class="section" id="main-outputs">
-<h3>Main outputs<a class="headerlink" href="#main-outputs" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{name}.PEER.cov</span></code>: result for peer factor covariates</p></li>
-</ul>
-</div>
-<div class="section" id="other-outputs">
-<h3>Other outputs<a class="headerlink" href="#other-outputs" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>A diagnosis polt for check of convergence</p></li>
-<li><p>peer precision /residuals /weights</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="minimumal-working-example">
+</section>
+<section id="minimumal-working-example">
 <h2>Minimumal working example<a class="headerlink" href="#minimumal-working-example" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -756,8 +757,8 @@ Exporting results ... Done.
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="command-interface">
+</section>
+<section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -816,8 +817,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="implementation">
+</section>
+<section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -828,6 +829,8 @@ Sections
 <span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># The covariate file</span>
 <span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># The PCA file</span>
+<span class="kn">parameter:</span> <span class="n">pcaFile</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -853,7 +856,6 @@ Sections
 <span class="c1">## Tolarance parameters</span>
 <span class="kn">parameter:</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.001</span>
 <span class="kn">parameter:</span> <span class="n">var_tol</span> <span class="o">=</span> <span class="mf">0.00001</span>
-
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="kp">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
     <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">phenoFile</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
@@ -864,7 +866,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PEER</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">covFile</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER.cov&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER_diagnosis.pdf&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER.cov.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER_diagnosis.pdf&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">R:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">library</span><span class="p">(</span><span class="n">peer</span><span class="p">)</span>
@@ -976,7 +978,7 @@ Sections
     <span class="n">precision</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">PEER_getAlpha</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># PEER factors x 1</span>
     <span class="n">resid</span><span class="o">.</span><span class="n">mat</span> <span class="o">&lt;-</span> <span class="n">t</span><span class="p">(</span><span class="n">PEER_getResiduals</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>  <span class="c1"># omic features x samples</span>
     
-    <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;peer.factor_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">))</span>
+    <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;PEER_&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">))</span>
     <span class="n">rownames</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">rownames</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="n">colnames</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span>
     <span class="n">colnames</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">peer</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">names</span>
@@ -1001,20 +1003,23 @@ Sections
     <span class="n">WriteTable</span><span class="p">(</span><span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="s2">&quot;${_output[0]:bn}.peer_precisions.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
     <span class="n">WriteTable</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="s2">&quot;${_output[0]:bn}.peer_residuals.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
     <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;Done.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+  
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">gzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="reference">
+</section>
+<section id="reference">
 <h2>Reference:<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Codes are adapted from <a class="reference external" href="https://github.com/RTIInternational/biocloud_docker_tools/blob/master/peer/v1.3/run_peer.R">here</a></p></li>
 <li><p>GTEx recommandation of PEER factors is <a class="reference external" href="https://gtexportal.org/home/documentationPage">here</a></p></li>
 <li><p>Examples by PEER is at <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">github</a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

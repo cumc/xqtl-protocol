@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Multivariate SuSiE and FastENLOC &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -42,8 +43,6 @@
     <script src="../../../_static/copybutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -533,91 +532,98 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#aim">
-   Aim:
+   Aim
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#input">
-   Input:
+   Input
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#output">
-   Output:
+   Output
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#method">
-   Method:
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functions">
-   Functions:
+   Method
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#allele-flip">
-     1) Allele Flip
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#construct-eqtl-data-frame">
-     2) Construct eQTL data frame
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#remove-duplicate-variants">
-     3) Remove Duplicate variants
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#construct-signal-clusters-ld-r-2-threshold-0-5">
-     4) Construct signal clusters (LD
-     <span class="math notranslate nohighlight">
-      \(R^{2}\)
-     </span>
-     threshold = 0.5)
+     Allele Flip
     </a>
    </li>
   </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#workflow">
-   Workflow:
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-1-extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
-     Step 1: Extract common SNPS between the GWAS summary statistics and eQTL data
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-2-obtain-snp-pips-from-gwas-summary-statistics-using-susie-linear-regression">
-     Step 2: Obtain SNP PIPs from GWAS summary statistics using SuSiE linear regression
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-3-construct-signal-clusters-using-eqtl-snp-pips">
-     Step 3: Construct signal clusters using eQTL SNP PIPs
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#step-4-colocalization-with-fastenloc">
-   Step 4: Colocalization with FastEnloc
-  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#minimal-working-example">
-   Minimal Working Example:
+   Minimal working example
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command interface
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#summary">
-   Summary
+  <a class="reference internal nav-link" href="#implementation">
+   Implementation
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-data-formatting">
+     Step 0: data formatting
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
+       Extract common SNPS between the GWAS summary statistics and eQTL data
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#extract-common-snps-between-the-summary-statistics-and-ld">
+       Extract common SNPS between the summary statistics and LD
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-fine-mapping">
+     Step 1: fine-mapping
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-fine-mapping-results-processing">
+     Step 2: fine-mapping results processing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">
+       Construct eQTL annotation file using eQTL SNP PIPs and credible sets
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#export-gwas-pip">
+       Export GWAS PIP
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-colocalization-with-fastenloc">
+     Step 3: Colocalization with FastEnloc
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -630,14 +636,14 @@
         
               <div>
                 
-  <div class="section" id="multivariate-susie-and-fastenloc">
+  <section class="tex2jax_ignore mathjax_ignore" id="multivariate-susie-and-fastenloc">
 <h1>Multivariate SuSiE and FastENLOC<a class="headerlink" href="#multivariate-susie-and-fastenloc" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="aim">
-<h2>Aim:<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
+<section id="aim">
+<h2>Aim<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
 <p>This notebook aims to demonstrate a workflow of generating posterior inclusion probabilities (PIPs) from GWAS summary statistics using SuSiE linear regression and construsting SNP signal clusters from global eQTL analysis data obtained from multivariate SuSiE models.</p>
-</div>
-<div class="section" id="input">
-<h2>Input:<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>GWAS Summary Statistics with the following columns:</p></li>
 </ol>
@@ -663,14 +669,30 @@
 <ol class="simple">
 <li><p>LD correlation matrix</p></li>
 </ol>
-</div>
-<div class="section" id="output">
-<h2>Output:<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>Intermediate files:</p>
 <ol class="simple">
-<li><p>GWAS PIP file</p></li>
-<li><p>eQTL annotation file</p></li>
+<li><p>GWAS PIP file with the following columns</p></li>
 </ol>
+<ul class="simple">
+<li><p>var_id</p></li>
+<li><p>ld_block</p></li>
+<li><p>snp_pip</p></li>
+<li><p>block_pip</p></li>
+</ul>
+<ol class="simple">
+<li><p>eQTL annotation file with the following columns</p></li>
+</ol>
+<ul class="simple">
+<li><p>chr</p></li>
+<li><p>bp</p></li>
+<li><p>var_id</p></li>
+<li><p>a1</p></li>
+<li><p>a2</p></li>
+<li><p>annotations, in the form: gene:cs_num&#64;tissue=snp_pip[cs_pip:cs_total_snps]</p></li>
+</ul>
 <p>Final Outputs:</p>
 <ol class="simple">
 <li><p>Enrichment analysis result prefix.enloc.enrich.rst: estimated enrichment parameters and standard errors.</p></li>
@@ -699,489 +721,63 @@
 <li><p>Sorted list of colocalization signals with
 <code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-grk6</span> <span class="pre">prefix.enloc.sig.out</span></code></p></li>
 </ol>
-</div>
-<div class="section" id="method">
-<h2>Method:<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="functions">
-<h2>Functions:<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="allele-flip">
-<h3>1) Allele Flip<a class="headerlink" href="#allele-flip" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="method">
+<h2>Method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h2>
+<section id="allele-flip">
+<h3>Allele Flip<a class="headerlink" href="#allele-flip" title="Permalink to this headline">¶</a></h3>
 <p>Takes into consideration 3 situations:</p>
 <ol class="simple">
 <li><p>“Major” and “minor” alleles flipped</p></li>
 <li><p>Different strand but same variant</p></li>
 <li><p>Remove variants with A/T and C/G alleles due to ambiguity</p></li>
 </ol>
+</section>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
-<span class="n">library</span><span class="p">(</span><span class="n">devtools</span><span class="p">)</span>
-<span class="n">library</span><span class="p">(</span><span class="n">susieR</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">eqtl</span><span class="o">-</span><span class="n">sumstats</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">gwas</span><span class="o">-</span><span class="n">sumstats</span> <span class="o">..</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">allele</span><span class="o">.</span><span class="n">qc</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">ref1</span><span class="p">,</span><span class="n">ref2</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1"># a1 and a2 are the first data-set</span>
-	<span class="c1"># ref1 and ref2 are the 2nd data-set</span>
-	<span class="c1"># Make all the alleles into upper-case, as A,T,C,G:</span>
-        <span class="n">a1</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>
-        <span class="n">a2</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span>
-        <span class="n">ref1</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">ref1</span><span class="p">)</span>
-        <span class="n">ref2</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">ref2</span><span class="p">)</span>
-	<span class="c1"># Strand flip, to change the allele representation in the 2nd data-set</span>
-	<span class="n">strand_flip</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="p">{</span>
-		<span class="n">flip</span> <span class="o">=</span> <span class="n">ref</span>
-		<span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span>
-		<span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
-		<span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
-		<span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>
-		<span class="n">flip</span>
-	<span class="p">}</span>
-	<span class="n">flip1</span> <span class="o">=</span> <span class="n">strand_flip</span><span class="p">(</span><span class="n">ref1</span><span class="p">)</span>
-	<span class="n">flip2</span> <span class="o">=</span> <span class="n">strand_flip</span><span class="p">(</span><span class="n">ref2</span><span class="p">)</span>
-	<span class="n">snp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-	<span class="c1"># Remove strand ambiguous SNPs (scenario 3)</span>
-	<span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="err">!</span><span class="p">((</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;A&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;T&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;T&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;A&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;C&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;G&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;G&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;C&quot;</span><span class="p">))</span>
-	<span class="c1"># Remove non-ATCG coding</span>
-	<span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]][</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span> <span class="o">&amp;</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;T&quot;</span> <span class="o">&amp;</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;G&quot;</span> <span class="o">&amp;</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;C&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="n">F</span>
-	<span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]][</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;T&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;G&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;C&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="n">F</span>
-	<span class="c1"># as long as scenario 1 is involved, sign_flip will return TRUE</span>
-	<span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;sign_flip&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">ref2</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">ref1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">flip2</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">flip1</span><span class="p">)</span>
-	<span class="c1"># as long as scenario 2 is involved, strand_flip will return TRUE</span>
-	<span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;strand_flip&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">flip1</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">flip2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">flip2</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">flip1</span><span class="p">)</span>
-	<span class="c1"># remove other cases, eg, tri-allelic, one dataset is A C, the other is A G, for example.</span>
-	<span class="n">exact_match</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">ref1</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">ref2</span><span class="p">)</span> 
-	<span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]][</span><span class="err">!</span><span class="p">(</span><span class="n">exact_match</span> <span class="o">|</span> <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;sign_flip&quot;</span><span class="p">]]</span> <span class="o">|</span> <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;strand_flip&quot;</span><span class="p">]])]</span> <span class="o">=</span> <span class="n">F</span>
-	<span class="k">return</span><span class="p">(</span><span class="n">snp</span><span class="p">)</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="construct-eqtl-data-frame">
-<h3>2) Construct eQTL data frame<a class="headerlink" href="#construct-eqtl-data-frame" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">eqtl</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">eqtl</span><span class="p">){</span>
-  <span class="n">rows</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">eqtl</span><span class="p">)</span>
-  <span class="nb">chr</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
-  <span class="n">pos</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
-  <span class="n">a1</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
-  <span class="n">a2</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
-  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">rows</span><span class="p">){</span>
-    <span class="n">split1</span> <span class="o">=</span> <span class="n">str_split</span><span class="p">(</span><span class="n">eqtl</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
-    <span class="n">split2</span> <span class="o">=</span> <span class="n">str_split</span><span class="p">(</span><span class="n">split1</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-    <span class="nb">chr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">split1</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split2</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">a1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split2</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">a2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split2</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">3</span><span class="p">]</span>
-
-  <span class="p">}</span>
-  <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">eqtl</span><span class="p">,</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">)</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="remove-duplicate-variants">
-<h3>3) Remove Duplicate variants<a class="headerlink" href="#remove-duplicate-variants" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">remove</span><span class="o">.</span><span class="n">dup</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">df</span><span class="p">){</span>
-  <span class="n">df</span> <span class="o">=</span> <span class="n">df</span> <span class="o">%&gt;%</span> <span class="n">arrange</span><span class="p">(</span><span class="n">PosGRCh37</span><span class="p">,</span> <span class="o">-</span><span class="n">N</span><span class="p">)</span>
-  <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">df</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">),]</span>
-  <span class="k">return</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="construct-signal-clusters-ld-r-2-threshold-0-5">
-<h3>4) Construct signal clusters (LD <span class="math notranslate nohighlight">\(R^{2}\)</span> threshold = 0.5)<a class="headerlink" href="#construct-signal-clusters-ld-r-2-threshold-0-5" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">greedy</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nb">len</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
-  <span class="n">r2</span> <span class="o">=</span> <span class="mf">0.5</span>
-  <span class="n">c_r2</span> <span class="o">=</span> <span class="mi">1</span>
-  <span class="n">ids</span> <span class="o">=</span> <span class="n">vector</span><span class="p">()</span>
-  <span class="n">first</span> <span class="o">=</span> <span class="mi">1</span>
-  <span class="n">less</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nb">max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
-    <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="nb">max</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">which</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">ids</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="p">}</span>
-    
-    
-    <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span> <span class="p">{</span>
-      <span class="n">new_r2</span> <span class="o">=</span> <span class="p">(</span><span class="n">ld_f2</span><span class="p">[</span><span class="n">ids</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">idx</span><span class="p">])</span> <span class="o">^</span> <span class="mi">2</span>
-      <span class="c1"># print(new_r2)</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">new_r2</span> <span class="o">&lt;</span> <span class="n">r2</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">less</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">break</span>
-      <span class="p">}</span>
-      <span class="k">else</span><span class="p">{</span>
-        <span class="n">c_r2</span> <span class="o">=</span> <span class="n">new_r2</span>
-      <span class="p">}</span>
-      
-    <span class="p">}</span>
-    
-    <span class="k">if</span> <span class="p">(</span><span class="n">less</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">-</span> <span class="nb">max</span>
-      <span class="k">break</span>
-    <span class="p">}</span>
-    
-    <span class="k">if</span> <span class="p">(</span><span class="n">first</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">ids</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="p">}</span>
-    
-    <span class="n">alpha</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">first</span> <span class="o">=</span> <span class="mi">0</span>
-    
-  <span class="p">}</span>
-  <span class="k">return</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">c_r2</span><span class="p">))</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="workflow">
-<h2>Workflow:<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="step-1-extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
-<h3>Step 1: Extract common SNPS between the GWAS summary statistics and eQTL data<a class="headerlink" href="#step-1-extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># eqtl</span>
-<span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
-<span class="n">eqtl</span> <span class="o">=</span> <span class="n">gene</span><span class="o">.</span><span class="kp">name</span>
-
-<span class="c1"># colnames</span>
-<span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/scaled/gene&quot;</span><span class="p">)</span>
-<span class="n">var</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">gene</span><span class="p">)</span>
-
-<span class="c1">#ld</span>
-<span class="n">ld</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
-
-<span class="c1"># initial filter of gwas variants that are in eqtl</span>
-<span class="n">gwas_filter</span> <span class="o">=</span> <span class="n">gwas</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">gwas</span><span class="err">$</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">var</span><span class="p">),]</span>
-
-<span class="c1"># create eqtl df</span>
-<span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
-
-<span class="c1"># allele flip</span>
-<span class="n">f_gwas</span> <span class="o">=</span> <span class="n">gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">chr</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="nb">chr</span> <span class="o">&amp;</span> <span class="n">PosGRCh37</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="n">pos</span><span class="p">)</span>
-<span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">pos</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">)</span>
-
-<span class="c1"># check if there are duplicate pos</span>
-<span class="n">length</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">))</span>
-
-<span class="c1"># multiple snps with same pos</span>
-<span class="n">dup</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="n">group_by</span><span class="p">(</span><span class="n">PosGRCh37</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">n</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> 
-
-<span class="n">f_gwas</span> <span class="o">=</span> <span class="n">remove</span><span class="o">.</span><span class="n">dup</span><span class="p">(</span><span class="n">f_gwas</span><span class="p">)</span>
-
-<span class="n">qc</span> <span class="o">=</span> <span class="n">allele</span><span class="o">.</span><span class="n">qc</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">,</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">,</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">)</span>
-<span class="n">keep</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">)</span>
-<span class="n">sign</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">)</span>
-<span class="n">strand</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">)</span>
-
-<span class="c1"># sign flip</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">z</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">z</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
-
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span>
-
-<span class="c1"># remove ambigiuous </span>
-<span class="k">if</span> <span class="p">(</span> <span class="nb">sum</span><span class="p">(</span><span class="err">!</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">,]</span>
-  <span class="n">f_gwas</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">,]</span>
-<span class="p">}</span>
-
-<span class="c1"># lds filtered</span>
-<span class="n">eqtl_id</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">var</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
-<span class="n">ld_f</span> <span class="o">=</span> <span class="n">ld</span><span class="p">[</span><span class="n">eqtl_id</span><span class="p">,</span> <span class="n">eqtl_id</span><span class="p">]</span>
-
-<span class="c1"># ld missing</span>
-<span class="n">miss</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">ld_f</span><span class="p">),</span> <span class="n">arr</span><span class="o">.</span><span class="n">ind</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
-
-<span class="n">miss_r</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span><span class="err">$</span><span class="n">row</span><span class="p">)</span>
-<span class="n">miss_c</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span><span class="err">$</span><span class="n">col</span><span class="p">)</span>
-
-<span class="n">total_miss</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">union</span><span class="p">(</span><span class="n">miss_r</span><span class="p">,</span><span class="n">miss_c</span><span class="p">))</span>
-
-<span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">total_miss</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span> 
-<span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="n">total_miss</span><span class="p">,]</span>
-<span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">}</span>
-
-<span class="c1"># rename ids</span>
-
-<span class="n">f_gwas</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">paste</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="nb">chr</span><span class="p">,</span> <span class="n">paste</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span>
-
-<span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">total_miss</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f</span><span class="p">[</span><span class="o">-</span><span class="n">total_miss</span><span class="p">,]</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[,</span><span class="o">-</span><span class="n">total_miss</span><span class="p">]</span>
-<span class="n">dim</span><span class="p">(</span><span class="n">ld_f2</span><span class="p">)</span>
-<span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f</span><span class="p">}</span>
-
-<span class="n">miss</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">ld_f2</span><span class="p">),</span> <span class="n">arr</span><span class="o">.</span><span class="n">ind</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
-
-<span class="c1"># remove multi-allelic snps that aren&#39;t present in both eqtl and gwas </span>
-
-<span class="n">idx</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span> <span class="o">%</span><span class="n">notin</span><span class="o">%</span> <span class="n">f_gwas</span><span class="err">$</span><span class="nb">id</span><span class="p">)</span>
-<span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
-<span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="n">idx</span><span class="p">,]</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[</span><span class="o">-</span><span class="n">idx</span><span class="p">,]</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[,</span><span class="o">-</span><span class="n">idx</span><span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="step-2-obtain-snp-pips-from-gwas-summary-statistics-using-susie-linear-regression">
-<h3>Step 2: Obtain SNP PIPs from GWAS summary statistics using SuSiE linear regression<a class="headerlink" href="#step-2-obtain-snp-pips-from-gwas-summary-statistics-using-susie-linear-regression" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">susie_results</span> <span class="o">=</span> <span class="n">susieR</span><span class="p">::</span><span class="n">susie_rss</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">z</span><span class="p">,</span><span class="n">R</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">,</span> <span class="n">check_prior</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">eqtl</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">sumstats</span><span class="o">-</span><span class="n">file</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">ld</span><span class="o">-</span><span class="n">region</span> <span class="o">..</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># susieR::susie_plot(susie_results,&quot;PIP&quot;)</span>
-<span class="c1"># susie_results$z = f_gwas.f$z</span>
-<span class="c1"># susieR::susie_plot(susie_results,&quot;z_original&quot;)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">gwas</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">sumstats</span><span class="o">-</span><span class="n">file</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">ld</span><span class="o">-</span><span class="n">region</span> <span class="o">..</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">gwas</span><span class="o">.</span><span class="n">annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="p">,</span><span class="n">susie_results</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
-<span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">gwas</span><span class="o">.</span><span class="n">annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;gwas.pip.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">enloc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">eqtl</span><span class="o">-</span><span class="n">pip</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">gwas</span><span class="o">-</span><span class="n">pip</span> <span class="o">..</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="step-3-construct-signal-clusters-using-eqtl-snp-pips">
-<h3>Step 3: Construct signal clusters using eQTL SNP PIPs<a class="headerlink" href="#step-3-construct-signal-clusters-using-eqtl-snp-pips" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="o">=</span> <span class="n">eqtl</span><span class="err">$</span><span class="n">pip</span><span class="p">[</span><span class="n">o_id</span><span class="p">]</span>
-<span class="n">eqtl_annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">pip</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span><span class="o">.</span><span class="kp">name</span><span class="p">,</span><span class="n">cluster</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">total_snps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-
-<span class="n">clusters</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">grp</span> <span class="o">=</span> <span class="n">numeric</span><span class="p">(),</span> <span class="n">total_snp</span> <span class="o">=</span> <span class="n">character</span><span class="p">(),</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="n">numeric</span><span class="p">(),</span> <span class="n">avg_r</span> <span class="o">=</span> <span class="n">numeric</span><span class="p">())</span>
-<span class="n">zero</span> <span class="o">=</span> <span class="n">vector</span><span class="p">()</span>
-<span class="k">for</span><span class="p">(</span><span class="n">al</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">){</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
-    <span class="n">alpha</span><span class="p">[,</span><span class="n">zero</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="p">}</span>
-  <span class="n">a</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">al</span><span class="p">,])</span>
-  <span class="k">for</span><span class="p">(</span><span class="n">snp</span> <span class="ow">in</span> <span class="n">a</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]){</span>
-    <span class="n">zero</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">zero</span><span class="p">,</span><span class="n">snp</span><span class="p">)</span>
-    <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">cluster</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">al</span>
-    <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">cluster_pip</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="mi">2</span><span class="p">]]</span>
-    <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">total_snps</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="p">[[</span><span class="mi">1</span><span class="p">]])</span>
-  <span class="p">}</span> 
-  <span class="n">clusters</span> <span class="o">=</span> <span class="n">rbind</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">grp</span> <span class="o">=</span> <span class="n">al</span><span class="p">,</span> <span class="n">total_snp</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">avg_r</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="mi">3</span><span class="p">]]))</span>
-<span class="p">}</span>
-
-<span class="n">eqtl_annot</span> <span class="o">=</span> <span class="n">eqtl_annot</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">cluster</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="n">mutate</span><span class="p">(</span><span class="n">annot</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">@=</span><span class="si">%e</span><span class="s2">[</span><span class="si">%e</span><span class="s2">:</span><span class="si">%d</span><span class="s2">]&quot;</span><span class="p">,</span><span class="n">gene</span><span class="p">,</span><span class="n">cluster</span><span class="p">,</span><span class="n">pip</span><span class="p">,</span><span class="n">cluster_pip</span><span class="p">,</span><span class="n">total_snps</span><span class="p">))</span> <span class="o">%&gt;%</span>
-  <span class="n">select</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">eqtl</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">annot</span><span class="p">))</span>  
-
-<span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">eqtl_annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;eqtl.annot.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="step-4-colocalization-with-fastenloc">
-<h2>Step 4: Colocalization with FastEnloc<a class="headerlink" href="#step-4-colocalization-with-fastenloc" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">gzip</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span>
-<span class="n">gzip</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span>
-<span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> 
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="minimal-working-example">
-<h2>Minimal Working Example:<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># eqtl</span>
-<span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
-<span class="n">eqtl</span> <span class="o">=</span> <span class="n">m_ENSG00000159640</span>
-
-<span class="c1"># colnames</span>
-<span class="n">load</span><span class="p">(</span><span class="s2">&quot;geneTpmResidualsAgeGenderAdj_rename.ENSG00000159640.transformed_XY.RData&quot;</span><span class="p">)</span>
-<span class="n">var</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">scaled_ENSG00000159640</span><span class="p">[[</span><span class="mi">1</span><span class="p">]])</span>
-
-<span class="c1">#ld</span>
-<span class="n">ld</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
-
-<span class="c1"># initial filter of gwas variants that are in eqtl</span>
-<span class="n">gwas_filter</span> <span class="o">=</span> <span class="n">gwas</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">gwas</span><span class="err">$</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">var</span><span class="p">),]</span>
-
-<span class="c1"># create eqtl df</span>
-<span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
-
-<span class="c1"># allele flip</span>
-<span class="n">f_gwas</span> <span class="o">=</span> <span class="n">gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">chr</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="nb">chr</span> <span class="o">&amp;</span> <span class="n">PosGRCh37</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="n">pos</span><span class="p">)</span>
-<span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">pos</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">)</span>
-
-<span class="c1"># check if there are duplicate pos</span>
-<span class="n">length</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">))</span>
-
-<span class="c1"># multiple snps with same pos</span>
-<span class="n">dup</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="n">group_by</span><span class="p">(</span><span class="n">PosGRCh37</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">n</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> 
-
-<span class="n">f_gwas</span> <span class="o">=</span> <span class="n">remove</span><span class="o">.</span><span class="n">dup</span><span class="p">(</span><span class="n">f_gwas</span><span class="p">)</span>
-
-<span class="n">qc</span> <span class="o">=</span> <span class="n">allele</span><span class="o">.</span><span class="n">qc</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">,</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">,</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">)</span>
-<span class="n">keep</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">)</span>
-<span class="n">sign</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">)</span>
-<span class="n">strand</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">)</span>
-
-<span class="c1"># sign flip</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">z</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">z</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
-
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span>
-<span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span>
-
-<span class="c1"># remove ambigiuous </span>
-<span class="k">if</span> <span class="p">(</span> <span class="nb">sum</span><span class="p">(</span><span class="err">!</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">,]</span>
-  <span class="n">f_gwas</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">,]</span>
-<span class="p">}</span>
-
-<span class="c1"># lds filtered</span>
-<span class="n">eqtl_id</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">var</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
-<span class="n">ld_f</span> <span class="o">=</span> <span class="n">ld</span><span class="p">[</span><span class="n">eqtl_id</span><span class="p">,</span> <span class="n">eqtl_id</span><span class="p">]</span>
-
-<span class="c1"># ld missing</span>
-<span class="n">miss</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">ld_f</span><span class="p">),</span> <span class="n">arr</span><span class="o">.</span><span class="n">ind</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
-
-<span class="n">miss_r</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span><span class="err">$</span><span class="n">row</span><span class="p">)</span>
-<span class="n">miss_c</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span><span class="err">$</span><span class="n">col</span><span class="p">)</span>
-
-<span class="n">total_miss</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">union</span><span class="p">(</span><span class="n">miss_r</span><span class="p">,</span><span class="n">miss_c</span><span class="p">))</span>
-
-<span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">total_miss</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span> 
-<span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="n">total_miss</span><span class="p">,]</span>
-<span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">}</span>
-
-<span class="c1"># rename ids</span>
-
-<span class="n">f_gwas</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">paste</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="nb">chr</span><span class="p">,</span> <span class="n">paste</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span>
-
-<span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">total_miss</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f</span><span class="p">[</span><span class="o">-</span><span class="n">total_miss</span><span class="p">,]</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[,</span><span class="o">-</span><span class="n">total_miss</span><span class="p">]</span>
-<span class="n">dim</span><span class="p">(</span><span class="n">ld_f2</span><span class="p">)</span>
-<span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f</span><span class="p">}</span>
-
-<span class="n">miss</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">ld_f2</span><span class="p">),</span> <span class="n">arr</span><span class="o">.</span><span class="n">ind</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
-
-<span class="c1"># remove multi-allelic snps that aren&#39;t present in both eqtl and gwas </span>
-
-<span class="n">idx</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span> <span class="o">%</span><span class="n">notin</span><span class="o">%</span> <span class="n">f_gwas</span><span class="err">$</span><span class="nb">id</span><span class="p">)</span>
-<span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
-<span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="o">-</span><span class="n">idx</span><span class="p">,]</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[</span><span class="o">-</span><span class="n">idx</span><span class="p">,]</span>
-<span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[,</span><span class="o">-</span><span class="n">idx</span><span class="p">]</span>
-<span class="p">}</span>
-
-<span class="n">susie_results</span> <span class="o">=</span> <span class="n">susieR</span><span class="p">::</span><span class="n">susie_rss</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">z</span><span class="p">,</span><span class="n">R</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">,</span> <span class="n">check_prior</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
-<span class="n">gwas</span><span class="o">.</span><span class="n">annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="p">,</span><span class="n">susie_results</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
-<span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">gwas</span><span class="o">.</span><span class="n">annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;gwas.pip.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
-
-<span class="n">pip</span> <span class="o">=</span> <span class="n">eqtl</span><span class="err">$</span><span class="n">pip</span><span class="p">[</span><span class="n">o_id</span><span class="p">]</span>
-<span class="n">eqtl_annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">pip</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="n">gene</span> <span class="o">=</span><span class="s2">&quot; ENSG00000159640&quot;</span><span class="p">,</span><span class="n">cluster</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">total_snps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-
-<span class="n">clusters</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">grp</span> <span class="o">=</span> <span class="n">numeric</span><span class="p">(),</span> <span class="n">total_snp</span> <span class="o">=</span> <span class="n">character</span><span class="p">(),</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="n">numeric</span><span class="p">(),</span> <span class="n">avg_r</span> <span class="o">=</span> <span class="n">numeric</span><span class="p">())</span>
-<span class="n">zero</span> <span class="o">=</span> <span class="n">vector</span><span class="p">()</span>
-<span class="k">for</span><span class="p">(</span><span class="n">al</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">){</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
-    <span class="n">alpha</span><span class="p">[,</span><span class="n">zero</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-  <span class="p">}</span>
-  <span class="n">a</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">al</span><span class="p">,])</span>
-  <span class="k">for</span><span class="p">(</span><span class="n">snp</span> <span class="ow">in</span> <span class="n">a</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]){</span>
-    <span class="n">zero</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">zero</span><span class="p">,</span><span class="n">snp</span><span class="p">)</span>
-    <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">cluster</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">al</span>
-    <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">cluster_pip</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="mi">2</span><span class="p">]]</span>
-    <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">total_snps</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="p">[[</span><span class="mi">1</span><span class="p">]])</span>
-  <span class="p">}</span> 
-  <span class="n">clusters</span> <span class="o">=</span> <span class="n">rbind</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">grp</span> <span class="o">=</span> <span class="n">al</span><span class="p">,</span> <span class="n">total_snp</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">avg_r</span> <span class="o">=</span> <span class="n">a</span><span class="p">[[</span><span class="mi">3</span><span class="p">]]))</span>
-<span class="p">}</span>
-
-<span class="n">eqtl_annot</span> <span class="o">=</span> <span class="n">eqtl_annot</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">cluster</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="n">mutate</span><span class="p">(</span><span class="n">annot</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">@=</span><span class="si">%e</span><span class="s2">[</span><span class="si">%e</span><span class="s2">:</span><span class="si">%d</span><span class="s2">]&quot;</span><span class="p">,</span><span class="n">gene</span><span class="p">,</span><span class="n">cluster</span><span class="p">,</span><span class="n">pip</span><span class="p">,</span><span class="n">cluster_pip</span><span class="p">,</span><span class="n">total_snps</span><span class="p">))</span> <span class="o">%&gt;%</span>
-  <span class="n">select</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">eqtl</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">annot</span><span class="p">))</span>  
-
-<span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">eqtl_annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;ENSG00000159640.annot.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">gzip</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span>
-<span class="n">gzip</span> <span class="n">ENSG00000159640</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span>
-<span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">ENSG00000159640</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<p>Check</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="kn">susieR:</span><span class="p">:</span><span class="n">susie_plot</span><span class="p">(</span><span class="n">susie_results</span><span class="p">,</span><span class="s2">&quot;PIP&quot;</span><span class="p">)</span>
-<span class="n">susie_results</span><span class="err">$</span><span class="n">z</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">z</span>
-<span class="kn">susieR:</span><span class="p">:</span><span class="n">susie_plot</span><span class="p">(</span><span class="n">susie_results</span><span class="p">,</span><span class="s2">&quot;z_original&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">eqtl_annot</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="summary">
-<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="n">enloc</span><span class="o">.</span><span class="n">enrich</span><span class="o">.</span><span class="n">out</span>
@@ -1203,8 +799,285 @@
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
 </div>
 </div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="step-0-data-formatting">
+<h3>Step 0: data formatting<a class="headerlink" href="#step-0-data-formatting" title="Permalink to this headline">¶</a></h3>
+<section id="extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
+<h4>Extract common SNPS between the GWAS summary statistics and eQTL data<a class="headerlink" href="#extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">merger</span><span class="p">]</span>
+<span class="c1"># eQTL summary statistics as a list of RData</span>
+<span class="c1"># FIXME: to replace later</span>
+<span class="kn">parameter:</span> <span class="n">eqtl_sumstats</span> <span class="o">=</span> <span class="n">path</span> 
+<span class="c1"># GWAS summary stats in gz format</span>
+<span class="kn">parameter:</span> <span class="n">gwas_sumstats</span> <span class="o">=</span> <span class="n">path</span> 
+<span class="kn">input:</span> <span class="n">eqtl_sumstats</span><span class="p">,</span> <span class="n">gwas_sumstats</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">eqtl_sumstats</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">.standardized.gz&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">gwas_sumstats</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">.standardized.gz&quot;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span>
+
+    <span class="c1">###</span>
+    <span class="c1"># functions</span>
+    <span class="c1">###</span>
+
+    <span class="n">allele</span><span class="o">.</span><span class="n">qc</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">ref1</span><span class="p">,</span><span class="n">ref2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1"># a1 and a2 are the first data-set</span>
+        <span class="c1"># ref1 and ref2 are the 2nd data-set</span>
+        <span class="c1"># Make all the alleles into upper-case, as A,T,C,G:</span>
+            <span class="n">a1</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">a1</span><span class="p">)</span>
+            <span class="n">a2</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">a2</span><span class="p">)</span>
+            <span class="n">ref1</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">ref1</span><span class="p">)</span>
+            <span class="n">ref2</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">ref2</span><span class="p">)</span>
+        <span class="c1"># Strand flip, to change the allele representation in the 2nd data-set</span>
+        <span class="n">strand_flip</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">flip</span> <span class="o">=</span> <span class="n">ref</span>
+            <span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;T&quot;</span>
+            <span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;T&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+            <span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;G&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
+            <span class="n">flip</span><span class="p">[</span><span class="n">ref</span> <span class="o">==</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>
+            <span class="n">flip</span>
+        <span class="p">}</span>
+        <span class="n">flip1</span> <span class="o">=</span> <span class="n">strand_flip</span><span class="p">(</span><span class="n">ref1</span><span class="p">)</span>
+        <span class="n">flip2</span> <span class="o">=</span> <span class="n">strand_flip</span><span class="p">(</span><span class="n">ref2</span><span class="p">)</span>
+        <span class="n">snp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="c1"># Remove strand ambiguous SNPs (scenario 3)</span>
+        <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="err">!</span><span class="p">((</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;A&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;T&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;T&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;A&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;C&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;G&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span><span class="o">==</span><span class="s2">&quot;G&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span><span class="o">==</span><span class="s2">&quot;C&quot;</span><span class="p">))</span>
+        <span class="c1"># Remove non-ATCG coding</span>
+        <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]][</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span> <span class="o">&amp;</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;T&quot;</span> <span class="o">&amp;</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;G&quot;</span> <span class="o">&amp;</span> <span class="n">a1</span> <span class="o">!=</span> <span class="s2">&quot;C&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="n">F</span>
+        <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]][</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;T&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;G&quot;</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">!=</span> <span class="s2">&quot;C&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="n">F</span>
+        <span class="c1"># as long as scenario 1 is involved, sign_flip will return TRUE</span>
+        <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;sign_flip&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">ref2</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">ref1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">flip2</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">flip1</span><span class="p">)</span>
+        <span class="c1"># as long as scenario 2 is involved, strand_flip will return TRUE</span>
+        <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;strand_flip&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">flip1</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">flip2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">flip2</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">flip1</span><span class="p">)</span>
+        <span class="c1"># remove other cases, eg, tri-allelic, one dataset is A C, the other is A G, for example.</span>
+        <span class="n">exact_match</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span> <span class="o">==</span> <span class="n">ref1</span> <span class="o">&amp;</span> <span class="n">a2</span> <span class="o">==</span> <span class="n">ref2</span><span class="p">)</span> 
+        <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;keep&quot;</span><span class="p">]][</span><span class="err">!</span><span class="p">(</span><span class="n">exact_match</span> <span class="o">|</span> <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;sign_flip&quot;</span><span class="p">]]</span> <span class="o">|</span> <span class="n">snp</span><span class="p">[[</span><span class="s2">&quot;strand_flip&quot;</span><span class="p">]])]</span> <span class="o">=</span> <span class="n">F</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">snp</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Extract information from RData</span>
+    <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">eqtl</span><span class="p">){</span>
+      <span class="n">rows</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">eqtl</span><span class="p">)</span>
+      <span class="nb">chr</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="n">pos</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="n">a1</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="n">a2</span> <span class="o">=</span> <span class="n">vector</span><span class="p">(</span><span class="n">length</span> <span class="o">=</span> <span class="n">rows</span><span class="p">)</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">rows</span><span class="p">){</span>
+        <span class="n">split1</span> <span class="o">=</span> <span class="n">str_split</span><span class="p">(</span><span class="n">eqtl</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+        <span class="n">split2</span> <span class="o">=</span> <span class="n">str_split</span><span class="p">(</span><span class="n">split1</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="nb">chr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span> <span class="n">split1</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split2</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">a1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split2</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">a2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">split2</span><span class="p">[[</span><span class="mi">1</span><span class="p">]][</span><span class="mi">3</span><span class="p">]</span>
+
+      <span class="p">}</span>
+      <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">eqtl</span><span class="p">,</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="n">remove</span><span class="o">.</span><span class="n">dup</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">df</span><span class="p">){</span>
+      <span class="n">df</span> <span class="o">=</span> <span class="n">df</span> <span class="o">%&gt;%</span> <span class="n">arrange</span><span class="p">(</span><span class="n">PosGRCh37</span><span class="p">,</span> <span class="o">-</span><span class="n">N</span><span class="p">)</span>
+      <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">df</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">),]</span>
+      <span class="k">return</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="p">}</span>
+  
+    <span class="c1">###</span>
+    <span class="c1"># Code</span>
+    <span class="c1">###</span>
+    <span class="c1"># eqtl</span>
+    <span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
+    <span class="n">eqtl</span> <span class="o">=</span> <span class="n">gene</span><span class="o">.</span><span class="kp">name</span>
+
+    <span class="c1">#ld</span>
+    <span class="n">ld</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
+    <span class="c1"># initial filter of gwas variants that are in eqtl</span>
+    <span class="n">gwas_filter</span> <span class="o">=</span> <span class="n">gwas</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">gwas</span><span class="err">$</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">var</span><span class="p">),]</span>
+
+    <span class="c1"># create eqtl df</span>
+    <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+    <span class="c1"># allele flip</span>
+    <span class="n">f_gwas</span> <span class="o">=</span> <span class="n">gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">chr</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="nb">chr</span> <span class="o">&amp;</span> <span class="n">PosGRCh37</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">pos</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">)</span>
+
+    <span class="c1"># check if there are duplicate pos</span>
+    <span class="n">length</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">PosGRCh37</span><span class="p">))</span>
+
+    <span class="c1"># multiple snps with same pos</span>
+    <span class="n">dup</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="n">group_by</span><span class="p">(</span><span class="n">PosGRCh37</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">n</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> 
+
+    <span class="n">f_gwas</span> <span class="o">=</span> <span class="n">remove</span><span class="o">.</span><span class="n">dup</span><span class="p">(</span><span class="n">f_gwas</span><span class="p">)</span>
+
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">allele</span><span class="o">.</span><span class="n">qc</span><span class="p">(</span><span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">,</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">,</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">,</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">)</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">)</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">)</span>
+    <span class="n">strand</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">)</span>
+
+    <span class="c1"># sign flip</span>
+    <span class="n">f_gwas</span><span class="err">$</span><span class="n">z</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">f_gwas</span><span class="err">$</span><span class="n">z</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
+    <span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
+    <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">sign_flip</span><span class="p">]</span>
+
+    <span class="n">f_gwas</span><span class="err">$</span><span class="n">testedAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a1</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span>
+    <span class="n">f_gwas</span><span class="err">$</span><span class="n">otherAllele</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">a2</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">strand_flip</span><span class="p">]</span>
+
+    <span class="c1"># remove ambigiuous </span>
+    <span class="k">if</span> <span class="p">(</span> <span class="nb">sum</span><span class="p">(</span><span class="err">!</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">,]</span>
+      <span class="n">f_gwas</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="p">[</span><span class="n">qc</span><span class="err">$</span><span class="n">keep</span><span class="p">,]</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-common-snps-between-the-summary-statistics-and-ld">
+<h4>Extract common SNPS between the summary statistics and LD<a class="headerlink" href="#extract-common-snps-between-the-summary-statistics-and-ld" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eqtl_1</span><span class="p">,</span> <span class="n">gwas_1</span> <span class="p">(</span><span class="nb">filter</span> <span class="n">LD</span> <span class="n">file</span> <span class="ow">and</span> <span class="n">sumstat</span> <span class="n">file</span><span class="p">)]</span>
+<span class="kn">parameter:</span> <span class="n">sumstat_file</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># LD and region information: chr, start, end, LD file</span>
+<span class="kn">paramter:</span> <span class="n">ld_region</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">sumstat_file</span><span class="p">,</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s1">&#39;ld_region&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sumstat_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">.z.rds&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">sumstat_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">.ld.rds&quot;</span>
+<span class="kn">R:</span>
+    <span class="c1"># FIXME: need to filter both ways for sumstats and for LD</span>
+    <span class="c1"># lds filtered</span>
+  
+    <span class="n">eqtl_id</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">var</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
+    <span class="n">ld_f</span> <span class="o">=</span> <span class="n">ld</span><span class="p">[</span><span class="n">eqtl_id</span><span class="p">,</span> <span class="n">eqtl_id</span><span class="p">]</span>
+
+    <span class="c1"># ld missing</span>
+    <span class="n">miss</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">ld_f</span><span class="p">),</span> <span class="n">arr</span><span class="o">.</span><span class="n">ind</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
+    <span class="n">miss_r</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span><span class="err">$</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">miss_c</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span><span class="err">$</span><span class="n">col</span><span class="p">)</span>
+
+    <span class="n">total_miss</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">union</span><span class="p">(</span><span class="n">miss_r</span><span class="p">,</span><span class="n">miss_c</span><span class="p">))</span>
+    <span class="c1"># FIXME: LD should not have missing data if properly processed by our pipeline</span>
+    <span class="c1"># In the future we should throw an error when it happens</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">total_miss</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
+    <span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f</span><span class="p">[</span><span class="o">-</span><span class="n">total_miss</span><span class="p">,]</span>
+    <span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">[,</span><span class="o">-</span><span class="n">total_miss</span><span class="p">]</span>
+    <span class="n">dim</span><span class="p">(</span><span class="n">ld_f2</span><span class="p">)</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="n">ld_f2</span> <span class="o">=</span> <span class="n">ld_f</span><span class="p">}</span>
+    
+    <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f_gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-1-fine-mapping">
+<h3>Step 1: fine-mapping<a class="headerlink" href="#step-1-fine-mapping" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eqtl_2</span><span class="p">,</span> <span class="n">gwas_2</span> <span class="p">(</span><span class="n">finemapping</span><span class="p">)]</span>
+<span class="c1"># FIXME: RDS file should have included region information</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">nn</span><span class="si">}</span><span class="s2">.susieR.rds&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">nn</span><span class="si">}</span><span class="s2">.susieR_plot.rds&quot;</span>
+<span class="kn">R:</span>
+    <span class="n">susie_results</span> <span class="o">=</span> <span class="n">susieR</span><span class="p">::</span><span class="n">susie_rss</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">z</span><span class="p">,</span><span class="n">R</span> <span class="o">=</span> <span class="n">ld_f2</span><span class="p">,</span> <span class="n">check_prior</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+    <span class="n">susieR</span><span class="p">::</span><span class="n">susie_plot</span><span class="p">(</span><span class="n">susie_results</span><span class="p">,</span><span class="s2">&quot;PIP&quot;</span><span class="p">)</span>
+    <span class="n">susie_results</span><span class="err">$</span><span class="n">z</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">z</span>
+    <span class="n">susieR</span><span class="p">::</span><span class="n">susie_plot</span><span class="p">(</span><span class="n">susie_results</span><span class="p">,</span><span class="s2">&quot;z_original&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-fine-mapping-results-processing">
+<h3>Step 2: fine-mapping results processing<a class="headerlink" href="#step-2-fine-mapping-results-processing" title="Permalink to this headline">¶</a></h3>
+<section id="construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">
+<h4>Construct eQTL annotation file using eQTL SNP PIPs and credible sets<a class="headerlink" href="#construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eqtl_3</span> <span class="p">(</span><span class="n">create</span> <span class="n">signal</span> <span class="n">cluster</span> <span class="n">using</span> <span class="n">CS</span><span class="p">)]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">nn</span><span class="si">}</span><span class="s2">.enloc_annot.gz&quot;</span>
+<span class="kn">R:</span>
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">eqtl</span><span class="p">[[</span><span class="s2">&quot;sets&quot;</span><span class="p">]][[</span><span class="s2">&quot;cs&quot;</span><span class="p">]][[</span><span class="s2">&quot;L1&quot;</span><span class="p">]]</span>
+    <span class="n">o_id</span> <span class="o">=</span> <span class="n">which</span><span class="p">(</span><span class="n">var</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="err">$</span><span class="n">eqtl</span><span class="p">)</span>
+    <span class="n">pip</span> <span class="o">=</span> <span class="n">eqtl</span><span class="err">$</span><span class="n">pip</span><span class="p">[</span><span class="n">o_id</span><span class="p">]</span>
+    <span class="n">eqtl_annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">eqtl_id</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">pip</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span><span class="o">.</span><span class="kp">name</span><span class="p">,</span><span class="n">cluster</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">cluster_pip</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">total_snps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">snp</span> <span class="ow">in</span> <span class="n">cs</span><span class="p">){</span>
+      <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">cluster</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+      <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">cluster_pip</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqtl</span><span class="p">[[</span><span class="s2">&quot;sets&quot;</span><span class="p">]][[</span><span class="s2">&quot;coverage&quot;</span><span class="p">]]</span>
+       <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">total_snps</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="n">eqtl_annot3</span> <span class="o">=</span> <span class="n">eqtl_annot</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">cluster</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">%&gt;%</span> 
+      <span class="n">mutate</span><span class="p">(</span><span class="n">annot</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">@=</span><span class="si">%e</span><span class="s2">[</span><span class="si">%e</span><span class="s2">:</span><span class="si">%d</span><span class="s2">]&quot;</span><span class="p">,</span><span class="n">gene</span><span class="p">,</span><span class="n">cluster</span><span class="p">,</span><span class="n">pip</span><span class="p">,</span><span class="n">cluster_pip</span><span class="p">,</span><span class="n">total_snps</span><span class="p">))</span> <span class="o">%&gt;%</span>
+      <span class="n">select</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">eqtl</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">annot</span><span class="p">))</span>
+
+    <span class="c1"># FIXME: write to a zip file</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">eqtl_annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;eqtl.annot.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="export-gwas-pip">
+<h4>Export GWAS PIP<a class="headerlink" href="#export-gwas-pip" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">gwas_3</span> <span class="p">(</span><span class="nb">format</span> <span class="n">PIP</span> <span class="n">into</span> <span class="n">enloc</span> <span class="n">GWAS</span> <span class="nb">input</span><span class="p">)]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">nn</span><span class="si">}</span><span class="s2">.enloc_gwas.gz&quot;</span>
+<span class="kn">R:</span>
+    <span class="n">gwas</span><span class="o">.</span><span class="n">annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="p">,</span><span class="n">susie_results</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">gwas</span><span class="o">.</span><span class="n">annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;gwas.pip.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+<span class="kn">bash:</span>
+    <span class="n">perl</span> <span class="n">format2torus</span><span class="o">.</span><span class="n">pl</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">--</span><span class="n">best</span> <span class="o">&gt;</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-3-colocalization-with-fastenloc">
+<h3>Step 3: Colocalization with FastEnloc<a class="headerlink" href="#step-3-colocalization-with-fastenloc" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">enloc</span><span class="p">]</span>
+<span class="c1"># eQTL summary statistics as a list of RData</span>
+<span class="c1"># FIXME: to replace later</span>
+<span class="kn">parameter:</span> <span class="n">eqtl_pip</span> <span class="o">=</span> <span class="n">path</span> 
+<span class="c1"># GWAS summary stats in gz format</span>
+<span class="kn">parameter:</span> <span class="n">gwas_pip</span> <span class="o">=</span> <span class="n">path</span> 
+<span class="kn">input:</span> <span class="n">eqtl_pip</span><span class="p">,</span> <span class="n">gwas_pip</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">eqtl_pip</span><span class="si">:</span><span class="s2">bnn</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">gwas_pip</span><span class="si">:</span><span class="s2">bnn</span><span class="si">}</span><span class="s2">.xx.gz&quot;</span>
+<span class="kn">bash:</span>
+    <span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

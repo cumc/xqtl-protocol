@@ -4,9 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
-    <title>Multivariate SuSiE and FastENLOC &#8212; ADSP-FG Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multivariate SuSiE and ENLOC model &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -395,7 +394,7 @@
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Multivariate SuSiE and FastENLOC
+     Multivariate SuSiE and ENLOC model
     </a>
    </li>
   </ul>
@@ -536,6 +535,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods-overview">
+   Methods overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#input">
    Input
   </a>
@@ -544,18 +548,6 @@
   <a class="reference internal nav-link" href="#output">
    Output
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#method">
-   Method
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#allele-flip">
-     Allele Flip
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#minimal-working-example">
@@ -636,13 +628,17 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="multivariate-susie-and-fastenloc">
-<h1>Multivariate SuSiE and FastENLOC<a class="headerlink" href="#multivariate-susie-and-fastenloc" title="Permalink to this headline">¶</a></h1>
-<section id="aim">
+  <div class="tex2jax_ignore mathjax_ignore section" id="multivariate-susie-and-enloc-model">
+<h1>Multivariate SuSiE and ENLOC model<a class="headerlink" href="#multivariate-susie-and-enloc-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="aim">
 <h2>Aim<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
-<p>This notebook aims to demonstrate a workflow of generating posterior inclusion probabilities (PIPs) from GWAS summary statistics using SuSiE linear regression and construsting SNP signal clusters from global eQTL analysis data obtained from multivariate SuSiE models.</p>
-</section>
-<section id="input">
+<p>This notebook aims to demonstrate a workflow of generating posterior inclusion probabilities (PIPs) from GWAS summary statistics using SuSiE regression and construsting SNP signal clusters from global eQTL analysis data obtained from multivariate SuSiE models.</p>
+</div>
+<div class="section" id="methods-overview">
+<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
+<p>This procedure assumes that molecular phenotype summary statistics and GWAS summary statistics are aligned and harmonized to have consistent allele coding (see <span class="xref myst">this module</span> for implementation details). Both molecular phenotype QTL and GWAS should be fine-mapped beforehand using mvSusiE or SuSiE. We further assume (and require) that molecular phenotype and GWAS data come from the same population ancestry. Violations from this assumption may not cause an error in the analysis computational workflow but the results obtained may not be valid.</p>
+</div>
+<div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>GWAS Summary Statistics with the following columns:</p></li>
@@ -669,8 +665,8 @@
 <ol class="simple">
 <li><p>LD correlation matrix</p></li>
 </ol>
-</section>
-<section id="output">
+</div>
+<div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>Intermediate files:</p>
 <ol class="simple">
@@ -696,8 +692,7 @@
 <p>Final Outputs:</p>
 <ol class="simple">
 <li><p>Enrichment analysis result prefix.enloc.enrich.rst: estimated enrichment parameters and standard errors.</p></li>
-<li><p>Signal-level colocalization result prefix.enloc.sig.out: the main output from the colocalization analysis with the following format</p></li>
-</ol>
+<li><p>Signal-level colocalization result prefix.enloc.sig.out: the main output from the colocalization analysis with the following format</p>
 <ul class="simple">
 <li><p>column 1: signal cluster name (from eQTL analysis)</p></li>
 <li><p>column 2: number of member SNPs</p></li>
@@ -706,9 +701,8 @@
 <li><p>column 5: cluster PIP of GWAS hits (with eQTL prior)</p></li>
 <li><p>column 6: regional colocalization probability (RCP)</p></li>
 </ul>
-<ol class="simple">
-<li><p>SNP-level colocalization result prefix.enloc.snp.out: SNP-level colocalization output with the following form at</p></li>
-</ol>
+</li>
+<li><p>SNP-level colocalization result prefix.enloc.snp.out: SNP-level colocalization output with the following form at</p>
 <ul class="simple">
 <li><p>column 1: signal cluster name</p></li>
 <li><p>column 2: SNP name</p></li>
@@ -717,24 +711,17 @@
 <li><p>column 5: SNP-level PIP of GWAS (with eQTL prior)</p></li>
 <li><p>column 6: SNP-level colocalization probability</p></li>
 </ul>
-<ol class="simple">
-<li><p>Sorted list of colocalization signals with
-<code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-grk6</span> <span class="pre">prefix.enloc.sig.out</span></code></p></li>
+</li>
+<li><p>Sorted list of colocalization signals</p></li>
 </ol>
-</section>
-<section id="method">
-<h2>Method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h2>
-<section id="allele-flip">
-<h3>Allele Flip<a class="headerlink" href="#allele-flip" title="Permalink to this headline">¶</a></h3>
 <p>Takes into consideration 3 situations:</p>
 <ol class="simple">
 <li><p>“Major” and “minor” alleles flipped</p></li>
 <li><p>Different strand but same variant</p></li>
 <li><p>Remove variants with A/T and C/G alleles due to ambiguity</p></li>
 </ol>
-</section>
-</section>
-<section id="minimal-working-example">
+</div>
+<div class="section" id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -776,7 +763,7 @@
 </div>
 </div>
 </div>
-<section id="summary">
+<div class="section" id="summary">
 <h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -799,9 +786,9 @@
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="command-interface">
+</div>
+</div>
+<div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -810,8 +797,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="implementation">
+</div>
+<div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -822,9 +809,9 @@
 </div>
 </div>
 </div>
-<section id="step-0-data-formatting">
+<div class="section" id="step-0-data-formatting">
 <h3>Step 0: data formatting<a class="headerlink" href="#step-0-data-formatting" title="Permalink to this headline">¶</a></h3>
-<section id="extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
+<div class="section" id="extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
 <h4>Extract common SNPS between the GWAS summary statistics and eQTL data<a class="headerlink" href="#extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -905,6 +892,12 @@
     <span class="c1">###</span>
     <span class="c1"># Code</span>
     <span class="c1">###</span>
+    
+    <span class="c1"># gene regions: </span>
+    <span class="c1"># 1 = ENSG00000203710</span>
+    <span class="c1"># 2 = ENSG00000064687</span>
+    <span class="c1"># 3 = ENSG00000203710</span>
+    
     <span class="c1"># eqtl</span>
     <span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
     <span class="n">eqtl</span> <span class="o">=</span> <span class="n">gene</span><span class="o">.</span><span class="kp">name</span>
@@ -912,10 +905,11 @@
     <span class="c1">#ld</span>
     <span class="n">ld</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
     <span class="c1"># initial filter of gwas variants that are in eqtl</span>
+    <span class="n">gwas</span> <span class="o">=</span> <span class="n">gwas_sumstats</span>
     <span class="n">gwas_filter</span> <span class="o">=</span> <span class="n">gwas</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">gwas</span><span class="err">$</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">var</span><span class="p">),]</span>
 
     <span class="c1"># create eqtl df</span>
-    <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+    <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">eqtl</span><span class="err">$</span><span class="n">var</span><span class="p">)</span>
 
     <span class="c1"># allele flip</span>
     <span class="n">f_gwas</span> <span class="o">=</span> <span class="n">gwas</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">chr</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="nb">chr</span> <span class="o">&amp;</span> <span class="n">PosGRCh37</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">df</span><span class="err">$</span><span class="n">pos</span><span class="p">)</span>
@@ -951,8 +945,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="extract-common-snps-between-the-summary-statistics-and-ld">
+</div>
+<div class="section" id="extract-common-snps-between-the-summary-statistics-and-ld">
 <h4>Extract common SNPS between the summary statistics and LD<a class="headerlink" href="#extract-common-snps-between-the-summary-statistics-and-ld" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -990,9 +984,9 @@
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="step-1-fine-mapping">
+</div>
+</div>
+<div class="section" id="step-1-fine-mapping">
 <h3>Step 1: fine-mapping<a class="headerlink" href="#step-1-fine-mapping" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1008,10 +1002,10 @@
 </div>
 </div>
 </div>
-</section>
-<section id="step-2-fine-mapping-results-processing">
+</div>
+<div class="section" id="step-2-fine-mapping-results-processing">
 <h3>Step 2: fine-mapping results processing<a class="headerlink" href="#step-2-fine-mapping-results-processing" title="Permalink to this headline">¶</a></h3>
-<section id="construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">
+<div class="section" id="construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">
 <h4>Construct eQTL annotation file using eQTL SNP PIPs and credible sets<a class="headerlink" href="#construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1029,35 +1023,57 @@
        <span class="n">eqtl_annot</span><span class="err">$</span><span class="n">total_snps</span><span class="p">[</span><span class="n">snp</span><span class="p">]</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">cs</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="n">eqtl_annot3</span> <span class="o">=</span> <span class="n">eqtl_annot</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">cluster</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">%&gt;%</span> 
+    <span class="n">eqtl_annot1</span> <span class="o">=</span> <span class="n">eqtl_annot</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">cluster</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">%&gt;%</span> 
       <span class="n">mutate</span><span class="p">(</span><span class="n">annot</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%d</span><span class="s2">@=</span><span class="si">%e</span><span class="s2">[</span><span class="si">%e</span><span class="s2">:</span><span class="si">%d</span><span class="s2">]&quot;</span><span class="p">,</span><span class="n">gene</span><span class="p">,</span><span class="n">cluster</span><span class="p">,</span><span class="n">pip</span><span class="p">,</span><span class="n">cluster_pip</span><span class="p">,</span><span class="n">total_snps</span><span class="p">))</span> <span class="o">%&gt;%</span>
       <span class="n">select</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">eqtl</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">a2</span><span class="p">,</span><span class="n">annot</span><span class="p">))</span>
+      
+    
+    <span class="c1"># FIXME: repeats whole process (extracting+fine-mapping+cs creation) 3 times before this next step </span>
+    <span class="n">eqtl_annot_comb</span> <span class="o">=</span> <span class="n">rbind</span><span class="p">(</span><span class="n">eqtl_annot3</span><span class="p">,</span> <span class="n">eqtl_annot1</span><span class="p">,</span> <span class="n">eqtl_annot2</span><span class="p">)</span>
 
     <span class="c1"># FIXME: write to a zip file</span>
-    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">eqtl_annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;eqtl.annot.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">eqtl_annot_comb</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;eqtl.annot.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">T</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="export-gwas-pip">
+</div>
+<div class="section" id="export-gwas-pip">
 <h4>Export GWAS PIP<a class="headerlink" href="#export-gwas-pip" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">gwas_3</span> <span class="p">(</span><span class="nb">format</span> <span class="n">PIP</span> <span class="n">into</span> <span class="n">enloc</span> <span class="n">GWAS</span> <span class="nb">input</span><span class="p">)]</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">nn</span><span class="si">}</span><span class="s2">.enloc_gwas.gz&quot;</span>
 <span class="kn">R:</span>
-    <span class="n">gwas</span><span class="o">.</span><span class="n">annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span><span class="p">,</span><span class="n">susie_results</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
-    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">gwas</span><span class="o">.</span><span class="n">annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;gwas.pip.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+    <span class="n">gwas_annot1</span> <span class="o">=</span> <span class="n">f_gwas</span><span class="o">.</span><span class="n">f</span> <span class="o">%&gt;%</span> <span class="n">mutate</span><span class="p">(</span><span class="n">pip</span> <span class="o">=</span> <span class="n">susie_results</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
+    
+    <span class="c1"># FIXME: repeat whole process (extracting common snps + fine-mapping) 3 times before the next steps</span>
+    
+    <span class="n">gwas_annot_comb</span> <span class="o">=</span> <span class="n">rbind</span><span class="p">(</span><span class="n">gwas_annot3</span><span class="p">,</span> <span class="n">gwas_annot1</span><span class="p">,</span> <span class="n">gwas_annot2</span><span class="p">)</span>
+    <span class="n">gwas_loc_annot</span> <span class="o">=</span> <span class="n">gwas_annot_comb</span> <span class="o">%&gt;%</span> <span class="n">select</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">chr</span><span class="p">,</span> <span class="n">PosGRCh37</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">gwas_loc_annot</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;loc.gwas.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+
+<span class="kn">bash:</span>    
+    <span class="n">perl</span> <span class="n">format2torus</span><span class="o">.</span><span class="n">pl</span> <span class="n">loc</span><span class="o">.</span><span class="n">gwas</span><span class="o">.</span><span class="n">txt</span> <span class="o">&gt;</span> <span class="n">loc2</span><span class="o">.</span><span class="n">gwas</span><span class="o">.</span><span class="n">txt</span>
+    
+<span class="kn">R:</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">::</span><span class="n">fread</span><span class="p">(</span><span class="s2">&quot;loc2.gwas.txt&quot;</span><span class="p">)</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;V2&quot;</span><span class="p">]]</span>
+    
+    <span class="n">gwas_annot_comb2</span> <span class="o">=</span> <span class="n">gwas_annot_comb</span> <span class="o">%&gt;%</span> <span class="n">select</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="nb">chr</span><span class="p">,</span> <span class="n">PosGRCh37</span><span class="p">,</span><span class="n">pip</span><span class="p">)</span>
+    <span class="n">gwas_annot_comb2</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">gwas_annot_comb2</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">select</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">pip</span><span class="p">)</span>
+    
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">gwas_annot_comb2</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;gwas.pip.txt&quot;</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+
 <span class="kn">bash:</span>
     <span class="n">perl</span> <span class="n">format2torus</span><span class="o">.</span><span class="n">pl</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">--</span><span class="n">best</span> <span class="o">&gt;</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="step-3-colocalization-with-fastenloc">
+</div>
+</div>
+<div class="section" id="step-3-colocalization-with-fastenloc">
 <h3>Step 3: Colocalization with FastEnloc<a class="headerlink" href="#step-3-colocalization-with-fastenloc" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1070,14 +1086,16 @@
 <span class="kn">input:</span> <span class="n">eqtl_pip</span><span class="p">,</span> <span class="n">gwas_pip</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">eqtl_pip</span><span class="si">:</span><span class="s2">bnn</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">gwas_pip</span><span class="si">:</span><span class="s2">bnn</span><span class="si">}</span><span class="s2">.xx.gz&quot;</span>
 <span class="kn">bash:</span>
-    <span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> 
+    <span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">sort</span> <span class="o">-</span><span class="n">grk6</span> <span class="n">prefix</span><span class="o">.</span><span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">out</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">--</span><span class="n">best</span> <span class="o">&gt;</span> <span class="n">prefix</span><span class="o">.</span><span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">sorted</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">prefix</span><span class="o">.</span><span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">out</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Genotype VCF file quality control &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -395,7 +394,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
-     Multivariate SuSiE and FastENLOC
+     Multivariate SuSiE and ENLOC model
     </a>
    </li>
   </ul>
@@ -598,10 +597,10 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="genotype-vcf-file-quality-control">
+  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-vcf-file-quality-control">
 <h1>Genotype VCF file quality control<a class="headerlink" href="#genotype-vcf-file-quality-control" title="Permalink to this headline">¶</a></h1>
 <p>This implements some recommendations from UK Biobank on <a class="reference external" href="https://www.medrxiv.org/content/10.1101/2020.11.02.20222232v1.full-text">exome sequence data quality control</a>.</p>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The goal of this module is to perform QC on VCF files, including</p>
 <ol class="simple">
@@ -611,12 +610,12 @@
 <li><p>Summary statistics before and after QC, in particular the ts/tv ratio, to assess the effectiveness of QC.</p></li>
 </ol>
 <p>3 and 4 above are for explorative analysis on the overall quality assessment of genotype data in the VCF files. We annotate known and novel variants because ts/tv are expected to be different between known and novel variants, and is important QC metric to assess the effectiveness of our QC.</p>
-<section id="multi-allelic-sites">
+<div class="section" id="multi-allelic-sites">
 <h3>Multi-allelic sites<a class="headerlink" href="#multi-allelic-sites" title="Permalink to this headline">¶</a></h3>
 <p>Mult-allelic sites can be problematic in many ways for downstreams analysis, even of they are handled in terms of formatting after QC. We provide an optional workflow module to keep only bi-allelic sites from data, although by default we will include these sites in the VCF file we generate.</p>
-</section>
-</section>
-<section id="default-vcf-qc-filters">
+</div>
+</div>
+<div class="section" id="default-vcf-qc-filters">
 <h2>Default VCF QC filters<a class="headerlink" href="#default-vcf-qc-filters" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Genotype depth filters: SNPs DP&gt;10 and Indels DP&gt;10 for indels.</p></li>
@@ -628,12 +627,12 @@
 <li><p>Genotype quality GQ&gt;20.</p></li>
 </ol>
 <p>Filtering are done with <code class="docutils literal notranslate"><span class="pre">bcftools</span></code>. Here is a <a class="reference external" href="https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b">useful cheatsheet from github user &#64;elowy01</a>.</p>
-</section>
-<section id="a-note-on-ts-tv-summary-from-vcf-genotype-data">
+</div>
+<div class="section" id="a-note-on-ts-tv-summary-from-vcf-genotype-data">
 <h2>A note on TS/TV summary from VCF genotype data<a class="headerlink" href="#a-note-on-ts-tv-summary-from-vcf-genotype-data" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">bcftools</span> <span class="pre">stats</span></code> command provides useful summary statistics including TS/TV ratio, which is routinely used as a quality measure of variant calls. With dbSNP based annotation of novel and known variants, <code class="docutils literal notranslate"><span class="pre">bcftools</span></code> can compute TS/TV for novel and known variants at variant level, and at sample level. It should be noted that variant level TS/TV does not take sample genotype into consideration – it simply counts the TS and TV event for observed SNPs in the data. Other tools, such as <code class="docutils literal notranslate"><span class="pre">snpsift</span></code>, implements variant level TS/TV by counting TS and TV events in sample genotypes and compute the ratio after summing up TS and TV across all samples. See <a class="reference external" href="https://github.com/samtools/bcftools/issues/1526">here</a> some discussions on this issue. We provide these TS/TV calculations before and after QC but users should be aware of the difference when interpreting the results.</p>
-</section>
-<section id="input">
+</div>
+<div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>The target <code class="docutils literal notranslate"><span class="pre">VCF</span></code> file</p>
@@ -644,8 +643,8 @@
 <li><p>dbSNP database in <code class="docutils literal notranslate"><span class="pre">VCF</span></code> format</p></li>
 <li><p>A reference sequence <code class="docutils literal notranslate"><span class="pre">fasta</span></code> file</p></li>
 </ol>
-</section>
-<section id="output">
+</div>
+<div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>QC-ed genotype data in VCF and in PLINK format</p></li>
@@ -655,8 +654,8 @@
 </ul>
 </li>
 </ol>
-</section>
-<section id="minimal-working-example">
+</div>
+<div class="section" id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>The MWE is generated via</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bcftools</span> <span class="n">query</span> <span class="o">-</span><span class="n">l</span> <span class="n">get</span><span class="o">-</span><span class="n">dosage</span><span class="o">.</span><span class="n">ALL</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">40</span> <span class="o">&gt;</span> <span class="n">MWE_sample_list</span>
@@ -727,8 +726,8 @@ grep Ts/Tv MWE_genotype.leftnorm.filtered.novel_variant.snipsift_tstv <span clas
 </div>
 </div>
 </div>
-</section>
-<section id="command-interface">
+</div>
+<div class="section" id="command-interface">
 <h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -803,8 +802,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="global-parameters">
+</div>
+<div class="section" id="global-parameters">
 <h2>Global parameters<a class="headerlink" href="#global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -829,8 +828,8 @@ from sos.utils import expand_size
 </div>
 </div>
 </div>
-</section>
-<section id="annotation-of-known-and-novel-variants">
+</div>
+<div class="section" id="annotation-of-known-and-novel-variants">
 <h2>Annotation of known and novel variants<a class="headerlink" href="#annotation-of-known-and-novel-variants" title="Permalink to this headline">¶</a></h2>
 <p>The known variant reference can be downloaded from <a class="reference external" href="https://ftp.ncbi.nlm.nih.gov/snp/organisms//human_9606_b150_GRCh38p7/VCF/00-All.vcf.gz">https://ftp.ncbi.nlm.nih.gov/snp/organisms//human_9606_b150_GRCh38p7/VCF/00-All.vcf.gz</a>.</p>
 <p>The procedure/rationale is <a class="reference external" href="https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html">explained in this post</a>.</p>
@@ -865,8 +864,8 @@ bash: <span class="nv">container</span> <span class="o">=</span> container, <spa
 </div>
 </div>
 </div>
-</section>
-<section id="genotype-qc">
+</div>
+<div class="section" id="genotype-qc">
 <h2>Genotype QC<a class="headerlink" href="#genotype-qc" title="Permalink to this headline">¶</a></h2>
 <p>This step handles multi-allelic sites and annotate variants to known and novel. We add an RS ID to variants in dbSNP. Variants without rsID are considered novel variants.</p>
 <div class="cell docutils container">
@@ -963,8 +962,8 @@ bash: <span class="nv">container</span> <span class="o">=</span> container, <spa
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

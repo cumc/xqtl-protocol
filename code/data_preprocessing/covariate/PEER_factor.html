@@ -567,6 +567,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mwe-with-pca-input">
+   MWE with PCA input
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#command-interface">
    Command interface
   </a>
@@ -757,6 +762,29 @@ Exporting results ... Done.
 </div>
 </div>
 </div>
+<div class="section" id="mwe-with-pca-input">
+<h2>MWE with PCA input<a class="headerlink" href="#mwe-with-pca-input" title="Permalink to this headline">¶</a></h2>
+<p>In our pipeline, it is designed to include the pca as part of our cov input. This can be achieved by the merge_covariate step</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_covariate</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">pcaFile</span> <span class="n">AC</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">AC</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">rds</span> \
+    <span class="o">--</span><span class="n">covFile</span> <span class="n">AC</span><span class="o">.</span><span class="n">APEX</span><span class="o">.</span><span class="n">cov</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">demo</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">PEER</span><span class="o">.</span><span class="n">sif</span> <span class="o">-</span><span class="n">J</span> <span class="mi">1</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">&amp;</span>
+
+<span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PEER</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">annotated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">covFile</span> <span class="n">output</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">APEX</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">demo</span> <span class="o">-</span><span class="n">N</span> <span class="mi">3</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">PEER</span><span class="o">.</span><span class="n">sif</span> <span class="o">-</span><span class="n">J</span> <span class="mi">1</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
@@ -824,12 +852,8 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># The molecular phenotype matrix</span>
-<span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># The covariate file</span>
 <span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># The PCA file</span>
-<span class="kn">parameter:</span> <span class="n">pcaFile</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -863,7 +887,42 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">merge_pca_covariate</span><span class="p">]</span>
+<span class="c1"># The PCA file. an RDS file as the output of the pca module</span>
+<span class="kn">parameter:</span> <span class="n">pcaFile</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">input:</span> <span class="n">pcaFile</span><span class="p">,</span> <span class="n">covFile</span>
+<span class="kn">output:</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.pca.cov.gz&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tibble&quot;</span><span class="p">)</span>
+        <span class="n">library</span><span class="p">(</span><span class="s2">&quot;readr&quot;</span><span class="p">)</span>
+        <span class="n">pca_output</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;$[_input[0]]&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">pc_scores</span>
+        <span class="n">mtx</span> <span class="o">=</span> <span class="n">pca_output</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;PC&quot;</span><span class="p">))</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
+        <span class="n">colnames</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">pca_output</span><span class="err">$</span><span class="n">IID</span>
+        <span class="n">mtx</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$[_input[1]]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1">## Retaining only the overlapped samples</span>
+        <span class="nb">int</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">cov</span><span class="p">),</span><span class="n">colnames</span><span class="p">(</span><span class="n">mtx</span><span class="p">))</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">cov</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">mtx</span> <span class="o">=</span> <span class="n">mtx</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">bind_rows</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span><span class="n">mtx</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PEER</span><span class="p">]</span>
+<span class="c1"># The molecular phenotype matrix</span>
+<span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">covFile</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER.cov.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.PEER_diagnosis.pdf&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -995,16 +1054,16 @@ Sections
      <span class="n">pdf</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[1]}</span><span class="s2">&quot;</span><span class="p">)</span>
      <span class="n">invisible</span><span class="p">(</span><span class="n">PEER_plotModel_adapted</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
      <span class="n">invisible</span><span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">off</span><span class="p">())</span>
-    
+    <span class="n">t</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>
     <span class="c1"># Write 4 numeric results</span>
-    <span class="n">WriteTable</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[0]:d}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;$</span><span class="si">{_output[0]:b}</span><span class="s2">&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>  
+    <span class="n">WriteTable</span><span class="p">(</span><span class="n">t</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">&quot;${_output[0]:an}&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>  
     <span class="n">WriteTable</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="s2">&quot;${_output[0]:bn}.peer_weights.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
     <span class="n">WriteTable</span><span class="p">(</span><span class="n">precision</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="s2">&quot;${_output[0]:bn}.peer_precisions.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
     <span class="n">WriteTable</span><span class="p">(</span><span class="n">resid</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="s2">&quot;${_output[0]:bn}.peer_residuals.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
     <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;Done.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
   
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">gzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+    <span class="n">gzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

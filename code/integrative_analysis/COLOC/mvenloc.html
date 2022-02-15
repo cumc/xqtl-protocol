@@ -641,8 +641,7 @@
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
-<li><p>GWAS Summary Statistics with the following columns:</p></li>
-</ol>
+<li><p>GWAS Summary Statistics with the following columns:</p>
 <ul class="simple">
 <li><p>chr: chromosome number</p></li>
 <li><p>bp: base pair position</p></li>
@@ -652,9 +651,8 @@
 <li><p>se: standard error of beta</p></li>
 <li><p>z: z score</p></li>
 </ul>
-<ol class="simple">
-<li><p>eQTL data from multivariate SuSiE model with the following columns:</p></li>
-</ol>
+</li>
+<li><p>eQTL data from multivariate SuSiE model with the following columns:</p>
 <ul class="simple">
 <li><p>chr: chromosome number</p></li>
 <li><p>bp: base pair position</p></li>
@@ -662,7 +660,7 @@
 <li><p>a2: other allele</p></li>
 <li><p>pip: posterior inclusion probability</p></li>
 </ul>
-<ol class="simple">
+</li>
 <li><p>LD correlation matrix</p></li>
 </ol>
 </div>
@@ -670,25 +668,25 @@
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>Intermediate files:</p>
 <ol class="simple">
-<li><p>GWAS PIP file with the following columns</p></li>
-</ol>
+<li><p>GWAS PIP file with the following columns</p>
 <ul class="simple">
 <li><p>var_id</p></li>
 <li><p>ld_block</p></li>
 <li><p>snp_pip</p></li>
 <li><p>block_pip</p></li>
 </ul>
-<ol class="simple">
-<li><p>eQTL annotation file with the following columns</p></li>
-</ol>
+</li>
+<li><p>eQTL annotation file with the following columns</p>
 <ul class="simple">
 <li><p>chr</p></li>
 <li><p>bp</p></li>
 <li><p>var_id</p></li>
 <li><p>a1</p></li>
 <li><p>a2</p></li>
-<li><p>annotations, in the form: gene:cs_num&#64;tissue=snp_pip[cs_pip:cs_total_snps]</p></li>
+<li><p>annotations, in the format: <code class="docutils literal notranslate"><span class="pre">gene:cs_num&#64;tissue=snp_pip[cs_pip:cs_total_snps]</span></code></p></li>
 </ul>
+</li>
+</ol>
 <p>Final Outputs:</p>
 <ol class="simple">
 <li><p>Enrichment analysis result prefix.enloc.enrich.rst: estimated enrichment parameters and standard errors.</p></li>
@@ -817,7 +815,6 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">merger</span><span class="p">]</span>
 <span class="c1"># eQTL summary statistics as a list of RData</span>
-<span class="c1"># FIXME: to replace later</span>
 <span class="kn">parameter:</span> <span class="n">eqtl_sumstats</span> <span class="o">=</span> <span class="n">path</span> 
 <span class="c1"># GWAS summary stats in gz format</span>
 <span class="kn">parameter:</span> <span class="n">gwas_sumstats</span> <span class="o">=</span> <span class="n">path</span> 
@@ -899,11 +896,8 @@
     <span class="c1"># 3 = ENSG00000203710</span>
     
     <span class="c1"># eqtl</span>
-    <span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
-    <span class="n">eqtl</span> <span class="o">=</span> <span class="n">gene</span><span class="o">.</span><span class="kp">name</span>
+    <span class="n">gene</span><span class="o">.</span><span class="kp">name</span> <span class="o">=</span> <span class="n">scan</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">what</span><span class="o">=</span><span class="s1">&#39;character&#39;</span><span class="p">)</span>
 
-    <span class="c1">#ld</span>
-    <span class="n">ld</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">choose</span><span class="p">())</span>
     <span class="c1"># initial filter of gwas variants that are in eqtl</span>
     <span class="n">gwas</span> <span class="o">=</span> <span class="n">gwas_sumstats</span>
     <span class="n">gwas_filter</span> <span class="o">=</span> <span class="n">gwas</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">gwas</span><span class="err">$</span><span class="nb">id</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">var</span><span class="p">),]</span>

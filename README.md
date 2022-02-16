@@ -50,12 +50,12 @@ Contributors
 - Amanda Tsai, Department of Biostatistics, Columbia University  
 - Liucheng Shi, Department of Biostatistics, Columbia University
 
-Project leader
+Brain xQTL project leader
 
 - Philip De Jager, Department of Neurology, Columbia University
 
-Brain xQTL methods and protocol
+Brain xQTL methods and data integration work group
 
-- Gao Wang (group leader), Department of Neurology, Columbia University
+- Gao Wang (work group leader), Department of Neurology, Columbia University
 - Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University

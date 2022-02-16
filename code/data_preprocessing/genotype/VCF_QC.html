@@ -567,8 +567,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#running-in-parallel-q2">
-   Running in Parallel q2
+  <a class="reference internal nav-link" href="#running-in-parallel">
+   Running in Parallel
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -728,8 +728,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="running-in-parallel-q2">
-<h2>Running in Parallel q2<a class="headerlink" href="#running-in-parallel-q2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="running-in-parallel">
+<h2>Running in Parallel<a class="headerlink" href="#running-in-parallel" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="err">```</span>
@@ -954,7 +954,9 @@ Sections
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="s2">&quot;leftnorm&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">bi_allelic</span> <span class="k">else</span> <span class="s2">&quot;biallelic&quot;</span><span class="si">}{</span><span class="s2">&quot;.snp&quot;</span> <span class="k">if</span> <span class="n">snp_only</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.vcf.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span><span class="o">=</span><span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+        <span class="c1"># split multiallelic sites into biallelic records </span>
         <span class="err">$</span><span class="p">{</span><span class="s1">&#39;bcftools norm -m-any&#39;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">bi_allelic</span> <span class="k">else</span> <span class="s1">&#39;bcftools view -m2 -M2&#39;</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;-v snps&#39;</span> <span class="k">if</span> <span class="n">snp_only</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">|</span>\
+        <span class="c1"># when incorrect or missing REF allele is encountered: warn (w), no left normalization is done.</span>
         <span class="n">bcftools</span> <span class="n">norm</span> <span class="o">-</span><span class="n">d</span> <span class="n">exact</span> <span class="o">-</span><span class="n">N</span> <span class="o">--</span><span class="n">check</span><span class="o">-</span><span class="n">ref</span> <span class="n">w</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">reference_genome</span><span class="p">}</span>  <span class="o">-</span><span class="n">Oz</span> <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> <span class="o">|</span>\
         <span class="n">bcftools</span> <span class="o">+</span><span class="n">fill</span><span class="o">-</span><span class="kp">tags</span> <span class="o">--</span> <span class="o">-</span><span class="n">t</span> <span class="nb">all</span><span class="p">,</span><span class="n">F_MISSING</span><span class="p">,</span><span class="s1">&#39;VD=sum(DP)&#39;</span> <span class="o">|</span> \
         <span class="n">bcftools</span> <span class="n">annotate</span> <span class="o">-</span><span class="n">x</span> <span class="n">ID</span> <span class="o">-</span><span class="n">I</span> <span class="o">+</span><span class="s1">&#39;%CHROM:%POS:%REF:%ALT&#39;</span> <span class="o">|</span> \

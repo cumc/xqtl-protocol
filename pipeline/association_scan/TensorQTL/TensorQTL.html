@@ -1,0 +1,865 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>TensorQTL QTL calling pipeline &#8212; ADSP-FG Project</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="APEX QTL calling pipeline" href="../APEX/APEX.html" />
+    <link rel="prev" title="cisQTL analysis workflows" href="../cisQTL_scan.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   xQTL analysis pipeline
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Complete Pipelines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
+   Bulk RNA-seq eQTL analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">
+   RNA-seq Calling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/apa_calling.html">
+   APA Calling
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
+     GWAS data QC workflow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data formatting workflows
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/normalization.html">
+     Molecular phenotype normalization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data reformat
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/PEER_factor.html">
+     Factor analysis using PEER
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/remove_covariates.html">
+     Computing covariate residuals
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     TensorQTL QTL calling pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../APEX/APEX.html">
+     APEX QTL calling pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
+     MASH analysis pipeline with data-driven prior matrices
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
+     Multivariate colocalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_merger.html">
+   Summary statistics merger
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH/NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/pipeline/association_scan/TensorQTL/TensorQTL.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fpipeline/association_scan/TensorQTL/TensorQTL.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/pipeline/association_scan/TensorQTL/TensorQTL.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   TensorQTL QTL calling pipeline
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pre-requisites">
+     Pre-requisites
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input-and-output">
+   Input and Output
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input">
+     Input
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output">
+     Output
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command interface
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#working-example">
+   Working example
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-parameter-settings">
+   Global parameter settings
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#qtl-sumstat-generation">
+     QTL Sumstat generation
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cis-qtl-sumstat-generation-via-tensorqtl">
+     Cis QTL Sumstat generation via tensorQTL
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#trans-qtl-sumstat-generation-via-tensorqtl">
+     Trans QTL Sumstat generation via tensorQTL
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="tensorqtl-qtl-calling-pipeline">
+<h1>TensorQTL QTL calling pipeline<a class="headerlink" href="#tensorqtl-qtl-calling-pipeline" title="Permalink to this headline">¶</a></h1>
+<p>This pipeline conduct QTL association study using tensorQTL.</p>
+<p><img alt="Blank diagram-10.png" src="pipeline/association_scan/TensorQTL/attachment:8073388f-23bf-4c8e-ae4f-5efcec3df68e.png" /></p>
+<section id="pre-requisites">
+<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
+<p>This pipeline require the tensorQTL, fastparquet, and R:Tidyverse. A singularity container is provided along with the mwe</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="input-and-output">
+<h1>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h1>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--molecular-pheno</span></code>, The bed.gz file containing the table describing the molecular phenotype. It shall also have a tbi index accompaning it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">genotype_list</span></code> a list of whole genome plink file for each chromosome</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grm_list</span></code> is a file containing list of grm matrixs that generated by the GRM module of this pipeline.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covariate</span></code> is a file with #id + samples name as colnames and each row a cov/factor/pc. Generated beforehand from the data_processing sections</p></li>
+</ul>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>A sets of sumstat files for each chromosome, one of which is the long table documenting the norminal QTL associations for each snps.</p>
+<p>At the moment the generation of gene based QTL signal was disabled to avoid the breaking of the pipeline when all of the QTL association signal given are NAs</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="command-interface">
+<h1>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="working-example">
+<h1>Working example<a class="headerlink" href="#working-example" title="Permalink to this headline">¶</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="global-parameter-settings">
+<h1>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this headline">¶</a></h1>
+<p>The section outlined the parameters that can be set in the command interface.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># Path to the input molecular phenotype file, per chrm, in bed.gz format.</span>
+<span class="kn">parameter:</span> <span class="n">molecular_pheno_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Covariate file, in similar format as the molecular_pheno</span>
+<span class="kn">parameter:</span> <span class="n">covariate</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Genotype file in plink trio format, per chrm</span>
+<span class="kn">parameter:</span> <span class="n">genotype_file_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># An optional subset of region list containing a column of ENSG gene_id to limit the analysis</span>
+<span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+<span class="c1"># Path to the work directory of the analysis.</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+<span class="c1"># Specify the number of jobs per run.</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Container option for software to run the analysis: docker or singularity</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="c1"># Prefix for the analysis output</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s1">&#39;ROSMAP&#39;</span>
+
+
+<span class="c1"># Specify the scanning window for the up and downstream radius to analyze around the region of interest, in units of bp</span>
+<span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1000000&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">molecular_pheno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">molecular_pheno_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">geno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_file_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">input_inv</span> <span class="o">=</span> <span class="n">molecular_pheno_chr_inv</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">geno_chr_inv</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#chr&quot;</span><span class="p">)</span>
+<span class="n">input_inv</span> <span class="o">=</span> <span class="n">input_inv</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="qtl-sumstat-generation">
+<h2>QTL Sumstat generation<a class="headerlink" href="#qtl-sumstat-generation" title="Permalink to this headline">¶</a></h2>
+<p>This step generate the cis-QTL summary statistics and vcov (covariate-adjusted LD) files for downstream analysis from summary statistics. The analysis is done per chromosome to reduce running time.</p>
+</section>
+<section id="cis-qtl-sumstat-generation-via-tensorqtl">
+<h2>Cis QTL Sumstat generation via tensorQTL<a class="headerlink" href="#cis-qtl-sumstat-generation-via-tensorqtl" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_cis_1</span><span class="p">]</span>
+<span class="kn">input:</span>  <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.cis_qtl_pairs.</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.parquet&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.emprical.cis_sumstats.txt&#39;</span><span class="p">,</span>
+        <span class="n">long_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.norminal.cis_long_table.txt&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;12h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;40G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span><span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">touch</span>  <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">time_stamp</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">tensorqtl</span>
+    <span class="kn">from</span> <span class="nn">tensorqtl</span> <span class="kn">import</span> <span class="n">genotypeio</span><span class="p">,</span> <span class="n">cis</span><span class="p">,</span> <span class="n">trans</span>
+    <span class="c1">## Defineing parameter</span>
+    <span class="n">plink_prefix_path</span> <span class="o">=</span> <span class="err">$</span><span class="p">[</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span><span class="n">nr</span><span class="p">]</span>
+    <span class="n">expression_bed</span> <span class="o">=</span> <span class="err">$</span><span class="p">[</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span><span class="n">r</span><span class="p">]</span>
+    <span class="n">covariates_file</span> <span class="o">=</span> <span class="s2">&quot;$[covariate]&quot;</span>
+    <span class="n">Prefix</span> <span class="o">=</span> <span class="s2">&quot;$[_output[0]:nnn]&quot;</span>
+    <span class="c1">## Loading Data</span>
+    <span class="n">phenotype_df</span><span class="p">,</span> <span class="n">phenotype_pos_df</span> <span class="o">=</span> <span class="n">tensorqtl</span><span class="o">.</span><span class="n">read_phenotype_bed</span><span class="p">(</span><span class="n">expression_bed</span><span class="p">)</span>
+    <span class="c1">### Filter by the optional keep gene</span>
+    <span class="c1">##if $[region_list].is_file():</span>
+    <span class="c1">##    region = pd.read_csv(&quot;$[region_list]&quot;,&quot;\t&quot;)</span>
+    <span class="c1">##    keep_gene = region[&quot;gene_ID&quot;].to_list()</span>
+    <span class="c1">##    phenotype_df = phenotype_df.query(&#39;gene_ID  in keep_gene&#39;)</span>
+    <span class="c1">##    phenotype_pos_df = phenotype_pos_df.query(&#39;gene_ID  in keep_gene&#39;)</span>
+
+    <span class="n">covariates_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">covariates_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">genotypeio</span><span class="o">.</span><span class="n">PlinkReader</span><span class="p">(</span><span class="n">plink_prefix_path</span><span class="p">)</span>
+    <span class="n">genotype_df</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">load_genotypes</span><span class="p">()</span>
+    <span class="n">variant_df</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">bim</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;snp&#39;</span><span class="p">)[[</span><span class="s1">&#39;chrom&#39;</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">]]</span>
+    <span class="c1">## Retaining only common samples</span>
+    <span class="n">phenotype_df</span> <span class="o">=</span> <span class="n">phenotype_df</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+    <span class="n">phenotype_df</span> <span class="o">=</span> <span class="n">phenotype_df</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">genotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
+    <span class="n">covariates_df</span> <span class="o">=</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="c1">## cis-QTL mapping: nominal associations for all variant-phenotype pairs</span>
+    <span class="n">cis</span><span class="o">.</span><span class="n">map_nominal</span><span class="p">(</span><span class="n">genotype_df</span><span class="p">,</span> <span class="n">variant_df</span><span class="p">,</span>
+                <span class="n">phenotype_df</span><span class="p">,</span>
+                <span class="n">phenotype_pos_df</span><span class="p">,</span>
+                <span class="n">Prefix</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">=</span><span class="n">covariates_df</span><span class="p">)</span>
+
+    <span class="c1">## Load the parquet and save it as txt</span>
+    <span class="n">pairs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">)</span>
+    <span class="n">pairs_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;pval&quot;</span>
+    <span class="n">pairs_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;beta&quot;</span>
+    <span class="n">pairs_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;se&quot;</span>
+    <span class="n">pairs_df</span> <span class="o">=</span> <span class="n">pairs_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">alt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]))</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">chrom</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">pairs_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[2]]&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">cis_df</span> <span class="o">=</span> <span class="n">cis</span><span class="o">.</span><span class="n">map_cis</span><span class="p">(</span><span class="n">genotype_df</span><span class="p">,</span> <span class="n">variant_df</span><span class="p">,</span> 
+                     <span class="n">phenotype_df</span><span class="p">,</span>
+                     <span class="n">phenotype_pos_df</span><span class="p">,</span>
+                     <span class="n">covariates_df</span><span class="o">=</span><span class="n">covariates_df</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+    <span class="n">cis_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span>
+    <span class="n">cis_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[1]]&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="trans-qtl-sumstat-generation-via-tensorqtl">
+<h2>Trans QTL Sumstat generation via tensorQTL<a class="headerlink" href="#trans-qtl-sumstat-generation-via-tensorqtl" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_trans_1</span><span class="p">]</span>
+<span class="kn">input:</span>  <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.trans_sumstats.txt&#39;</span>
+<span class="kn">parameter:</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="kn">parameter:</span> <span class="n">pval_threshold</span> <span class="o">=</span> <span class="mf">1e-5</span>
+<span class="kn">parameter:</span> <span class="n">maf_threshold</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;12h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;40G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span><span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">touch</span>  <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">time_stamp</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span><span class="n">container</span> 
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">tensorqtl</span>
+    <span class="kn">from</span> <span class="nn">tensorqtl</span> <span class="kn">import</span> <span class="n">genotypeio</span><span class="p">,</span> <span class="n">cis</span><span class="p">,</span> <span class="n">trans</span>
+    <span class="c1">## Defineing parameter</span>
+    <span class="n">plink_prefix_path</span> <span class="o">=</span> <span class="err">$</span><span class="p">[</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span><span class="n">nr</span><span class="p">]</span>
+    <span class="n">expression_bed</span> <span class="o">=</span> <span class="err">$</span><span class="p">[</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span><span class="n">r</span><span class="p">]</span>
+    <span class="n">covariates_file</span> <span class="o">=</span> <span class="s2">&quot;$[covariate]&quot;</span>
+    <span class="n">Prefix</span> <span class="o">=</span> <span class="s2">&quot;$[_output[0]:nnn]&quot;</span>
+    <span class="c1">## Loading Data</span>
+    <span class="n">phenotype_df</span><span class="p">,</span> <span class="n">phenotype_pos_df</span> <span class="o">=</span> <span class="n">tensorqtl</span><span class="o">.</span><span class="n">read_phenotype_bed</span><span class="p">(</span><span class="n">expression_bed</span><span class="p">)</span>
+
+
+    <span class="c1">##### Filter by the optional keep gene</span>
+    <span class="c1">##if $[region_list].is_file():</span>
+    <span class="c1">##    region = pd.read_csv(&quot;$[region_list]&quot;,&quot;\t&quot;)</span>
+    <span class="c1">##    keep_gene = region[&quot;gene_ID&quot;].to_list()</span>
+    <span class="c1">##    phenotype_df = phenotype_df.query(&#39;gene_ID  in keep_gene&#39;)</span>
+    <span class="c1">##    phenotype_pos_df = phenotype_pos_df.query(&#39;gene_ID  in keep_gene&#39;)</span>
+
+
+    <span class="n">covariates_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">covariates_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">genotypeio</span><span class="o">.</span><span class="n">PlinkReader</span><span class="p">(</span><span class="n">plink_prefix_path</span><span class="p">)</span>
+    <span class="n">genotype_df</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">load_genotypes</span><span class="p">()</span>
+    <span class="n">variant_df</span> <span class="o">=</span> <span class="n">pr</span><span class="o">.</span><span class="n">bim</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;snp&#39;</span><span class="p">)[[</span><span class="s1">&#39;chrom&#39;</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">]]</span>
+    <span class="c1">## Retaining only common samples</span>
+    <span class="n">phenotype_df</span> <span class="o">=</span> <span class="n">phenotype_df</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
+    <span class="n">covariates_df</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="c1">## Trans analysis</span>
+    <span class="n">trans_df</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">map_trans</span><span class="p">(</span><span class="n">genotype_df</span><span class="p">,</span> <span class="n">phenotype_df</span><span class="p">,</span> <span class="n">covariates_df</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="err">$</span><span class="p">[</span><span class="n">batch_size</span><span class="p">],</span>
+                           <span class="n">return_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pval_threshold</span><span class="o">=</span><span class="err">$</span><span class="p">[</span><span class="n">pval_threshold</span><span class="p">],</span> <span class="n">maf_threshold</span><span class="o">=</span><span class="err">$</span><span class="p">[</span><span class="n">maf_threshold</span><span class="p">])</span>
+    <span class="c1">## Filter out cis signal</span>
+    <span class="n">trans_df</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">filter_cis</span><span class="p">(</span><span class="n">trans_df</span><span class="p">,</span> <span class="n">phenotype_pos_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">variant_df</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="err">$</span><span class="p">[</span><span class="n">window</span><span class="p">])</span>
+    <span class="c1">## Output</span>
+    <span class="n">trans_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;gene_ID&quot;</span>
+    <span class="n">trans_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;pval&quot;</span>
+    <span class="n">trans_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;beta&quot;</span>
+    <span class="n">trans_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;se&quot;</span>
+    <span class="n">trans_df</span> <span class="o">=</span> <span class="n">pairs_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">alt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]))</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;variant_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">variant_id</span><span class="p">:</span><span class="n">variant_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">trans_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_cis_2</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;TensorQTL_cis_1&quot;</span><span class="p">)[</span><span class="s2">&quot;long_table&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.TensorQTL_recipe.tsv&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">csv</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+    <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;#chr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]],</span>
+    <span class="s2">&quot;sumstat_dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]</span>
+    <span class="p">})</span>
+    <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_trans_2</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.TensorQTL_recipe.tsv&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">csv</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+    <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;#chr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]],</span>
+    <span class="s2">&quot;sumstat_dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]</span>
+    <span class="p">})</span>
+    <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            kernelName: "sos",
+            path: "./pipeline/association_scan/TensorQTL"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../cisQTL_scan.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">cisQTL analysis workflows</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../APEX/APEX.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">APEX QTL calling pipeline</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+        
+            &copy; Copyright 2021, ADSP-FG xQTL methods and data integration subgroup.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

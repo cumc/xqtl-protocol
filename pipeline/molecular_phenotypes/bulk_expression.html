@@ -1,0 +1,1176 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>RNA-seq Calling &#8212; ADSP-FG Project</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="scRNA-seq expression calling" href="scnuc_expression.html" />
+    <link rel="prev" title="Bulk RNA-seq eQTL analysis" href="../complete_analysis/eQTL_analysis.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   xQTL analysis pipeline
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Complete Pipelines
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../complete_analysis/eQTL_analysis.html">
+   Bulk RNA-seq eQTL analysis
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   RNA-seq Calling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="apa_calling.html">
+   APA Calling
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">
+     GWAS data QC workflow
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data formatting workflows
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/phenotype/normalization.html">
+     Molecular phenotype normalization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data reformat
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/covariate/PEER_factor.html">
+     Factor analysis using PEER
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../data_preprocessing/covariate/remove_covariates.html">
+     Computing covariate residuals
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../association_scan/cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL calling pipeline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../association_scan/APEX/APEX.html">
+     APEX QTL calling pipeline
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../association_scan/transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../multivariate/MASH/mashr.html">
+     MASH analysis pipeline with data-driven prior matrices
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../integrative_analysis/colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/COLOC/fastenloc.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/COLOC/mvenloc.html">
+     Multivariate colocalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../integrative_analysis/functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/summary_stats_merger.html">
+   Summary statistics merger
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH/NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/pipeline/molecular_phenotypes/bulk_expression.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fpipeline/molecular_phenotypes/bulk_expression.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/pipeline/molecular_phenotypes/bulk_expression.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods-overview">
+   Methods overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup-and-global-parameters">
+   Setup and global parameters:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-0-1-optional-generating-indexing-file-for-star">
+   Step 0.1: (Optional) Generating indexing file for
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     STAR
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-inputs">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-output">
+     Step Output:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-0-2-optional-generating-indexing-file-for-rsem">
+   Step 0.2: (Optional) Generating indexing file for
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RSEM
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-outputs">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-0-3-qc-before-alignment">
+   Step 0.3: QC before alignment
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-1-remove-adaptor-through-trimmomatic">
+   Step 1: Remove adaptor through
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Trimmomatic
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-2-alignment-through-star">
+   Step 2: Alignment through
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     STAR
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id6">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id7">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-3-mark-duplicates-reads-through-picard">
+   Step 3: Mark duplicates reads through
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     Picard
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id8">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id9">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-4-post-aligment-qc-through-rna-seqc">
+   Step 4: Post aligment QC through
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RNA-SeQC
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id10">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id11">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#step-5-quantify-expression-through-rsem">
+   Step 5: Quantify expression through
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     RSEM
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id12">
+     Step Inputs:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id13">
+     Step Outputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="rna-seq-calling">
+<h1>RNA-seq Calling<a class="headerlink" href="#rna-seq-calling" title="Permalink to this headline">¶</a></h1>
+<p>This pipeline aims to call the RNA-seq data (Step 1 to 4) as well as transcript quantification (Step 5) from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. The whole pipeline is aligned with <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">GTEx</a>. Please refer two <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail.</p>
+<section id="methods-overview">
+<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
+<p><img alt="RNA quantification pipeline" src="../../_images/rna_quantification.png" /></p>
+</section>
+<section id="setup-and-global-parameters">
+<h2>Setup and global parameters:<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
+<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">wd</span>
+<span class="c1"># For cluster jobs, number commands to run per job</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Wall clock time expected</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
+<span class="c1"># Memory expected</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
+<span class="c1"># Number of threads</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># Software container option</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="c1"># Raw data:</span>
+<span class="kn">parameter:</span> <span class="n">fastq1_raw</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">fastq2_raw</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">fastq_raw</span> <span class="o">=</span> <span class="p">[</span><span class="n">fastq1_raw</span><span class="p">,</span><span class="n">fastq2_raw</span><span class="p">]</span>
+<span class="c1"># Sample id, name of the analysis?</span>
+<span class="kn">parameter:</span> <span class="n">sample_id</span> <span class="o">=</span> <span class="nb">str</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">bulk_expression</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run bulk_expression.ipynb
+               [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  STAR_indexing
+  RMES_indexing
+  RNA_qc
+  Remove_adaptor
+  STAR_align
+  Picard_QC
+  RNA_QC
+  RSEM
+
+Global Workflow Options:
+  --wd VAL (as path, required)
+                        The output directory for generated files. MUST BE FULL
+                        PATH
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16384
+                        Memory expected
+  --numThreads 8 (as int)
+                        Number of threads
+  --container-rna-calling VAL (as str, required)
+                        Software container option
+  --STAR-index VAL (as path, required)
+                        The directory for STAR index
+  --RMES-index VAL (as path, required)
+                        The directory for RMES index
+  --fastq1-raw VAL (as path, required)
+                        Raw data:
+  --fastq2-raw VAL (as path, required)
+  --sample-id VAL (as path, required)
+                        Sample id
+
+Sections
+  STAR_indexing:
+    Workflow Options:
+      --STAR-index-dir VAL (as path, required)
+                        Output directory:
+      --gtf VAL (as path, required)
+                        Reference genome
+      --fasta VAL (as path, required)
+      --sjdbOverhang VAL (as int, required)
+                        Length:
+  RMES_indexing:
+    Workflow Options:
+      --RMES-index-dir VAL (as path, required)
+                        Output directory:
+      --gtf VAL (as path, required)
+                        Reference genome
+      --fasta VAL (as path, required)
+  RNA_qc:
+  Remove_adaptor:
+    Workflow Options:
+      --soft-dir VAL (as path, required)
+                        Path to the software:
+      --adapter VAL (as str, required)
+                        Path to the reference adaptors:
+  STAR_align:
+    Workflow Options:
+      --fastq1-clean VAL (as path, required)
+  Picard_QC:
+    Workflow Options:
+      --STAR-bam VAL (as path, required)
+                        OUtput from STAR:
+  RNA_QC:
+    Workflow Options:
+      --STAR-bam VAL (as path, required)
+                        Output from STAR:
+      --gtf VAL (as path, required)
+                        Reference genome
+  RSEM:
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-0-1-optional-generating-indexing-file-for-star">
+<h2>Step 0.1: (Optional) Generating indexing file for <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#step-0-1-optional-generating-indexing-file-for-star" title="Permalink to this headline">¶</a></h2>
+<p>This step generate the indexing file for STAR alignment. This file just need to generate once and can be re-used.</p>
+<section id="step-inputs">
+<h3>Step Inputs:<a class="headerlink" href="#step-inputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STAR_index_dir</span></code>: a path to the output.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence. Both of them needs to be unzipped</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</p></li>
+</ul>
+</section>
+<section id="step-output">
+<h3>Step Output:<a class="headerlink" href="#step-output" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">STAR_index_dir</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">STAR</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="step-0-2-optional-generating-indexing-file-for-rsem">
+<h2>Step 0.2: (Optional) Generating indexing file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#step-0-2-optional-generating-indexing-file-for-rsem" title="Permalink to this headline">¶</a></h2>
+<p>This step generate the indexing file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code>. This file just need to generate once.</p>
+<section id="id1">
+<h3>Step Inputs:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RSEM_index_dir</span></code>: a path to the output.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</p></li>
+</ul>
+</section>
+<section id="step-outputs">
+<h3>Step Outputs:<a class="headerlink" href="#step-outputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">RSEM_index_dir</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="step-0-3-qc-before-alignment">
+<h2>Step 0.3: QC before alignment<a class="headerlink" href="#step-0-3-qc-before-alignment" title="Permalink to this headline">¶</a></h2>
+<p><strong>FIXME</strong> This software need to be install.</p>
+<p>This step utilize <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> and will generate two QC report in <code class="docutils literal notranslate"><span class="pre">html</span></code> format</p>
+<section id="id2">
+<h3>Step Inputs:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fastq1_raw</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_raw</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Step Outputs:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Two <code class="docutils literal notranslate"><span class="pre">html</span></code> file for QC report</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">fastqc_report</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;fastq_raw&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_fastq_raw</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">_fastqc.html&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_fastq_raw</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">_fastqc/fastqc_data.txt&#39;</span> 
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span><span class="o">=</span><span class="n">container</span>
+    <span class="n">fastqc</span> <span class="err">$</span><span class="p">{</span><span class="n">_fastq_raw</span><span class="p">}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">d</span><span class="p">}</span>
+    <span class="n">unzip</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">zip</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-1-remove-adaptor-through-trimmomatic">
+<h2>Step 1: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code><a class="headerlink" href="#step-1-remove-adaptor-through-trimmomatic" title="Permalink to this headline">¶</a></h2>
+<p>Documentation: <a class="reference external" href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a></p>
+<p><strong>FIXME</strong> This step is form the workflow at Boston. and not in GTEx pipeline. Also, this software need to be install.</p>
+<section id="id4">
+<h3>Step Inputs:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fastq1_raw</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_raw</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soft_dir</span></code>: directory for the software</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adapter</span></code>: <strong>string</strong> for the adapter reference file.</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Step Outputs:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Two paired <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file for alignment</p></li>
+<li><p>Two unpaired <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Remove_adaptor</span><span class="p">]</span>
+<span class="c1"># Path to the software:</span>
+<span class="kn">parameter:</span> <span class="n">soft_dir</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Path to the reference adaptors:</span>
+<span class="kn">parameter:</span> <span class="n">adapter_file</span> <span class="o">=</span> <span class="s2">&quot;TruSeq3-PE.fa&quot;</span>
+<span class="kn">parameter:</span> <span class="n">maximum_mismatch_count</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="kn">parameter:</span> <span class="n">palindrome_clip_threshold</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="kn">parameter:</span> <span class="n">simple_clip_threshold</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Other parameters (i.e. leading, trailing ... )</span>
+<span class="kn">input:</span> <span class="n">fastq1_raw</span><span class="p">,</span> <span class="n">fastq2_raw</span>
+<span class="kn">output:</span> <span class="n">fq_1</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_paired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span>
+        <span class="n">fq_1_up</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_unpaired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span>
+        <span class="n">fq_2</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_paired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">,</span>
+        <span class="n">fq_2_up</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">_unpaired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;10G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="err">$</span><span class="p">{</span><span class="n">soft_dir</span><span class="p">}</span><span class="o">/</span><span class="n">trimmomatic</span><span class="o">-</span><span class="mf">0.39</span><span class="o">.</span><span class="n">jar</span> <span class="n">PE</span> <span class="o">-</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
+                            <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
+                            <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> \
+                            <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
+                            <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> \
+                            <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span> \
+                            <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span> \
+                            <span class="n">ILLUMINACLIP</span><span class="p">:</span><span class="err">$</span><span class="p">{</span><span class="n">adapter_file</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">maximum_mismatch_count</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">palindrome_clip_threshold</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">simple_clip_threshold</span><span class="p">}</span> \
+                            <span class="n">LEADING</span><span class="p">:</span><span class="mi">3</span> <span class="n">TRAILING</span><span class="p">:</span><span class="mi">3</span> <span class="n">SLIDINGWINDOW</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="mi">20</span> <span class="n">MINLEN</span><span class="p">:</span><span class="mi">50</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-2-alignment-through-star">
+<h2>Step 2: Alignment through <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#step-2-alignment-through-star" title="Permalink to this headline">¶</a></h2>
+<p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">STAR</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_STAR.py">Script in docker</a></p>
+<p>This step is the main step for <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment.</p>
+<section id="id6">
+<h3>Step Inputs:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fastq1_clean</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2_clean</span></code>: paths to clean <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file from Step 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STAR_index</span></code>: directory for the STAR aligment index</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Step Outputs:<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>bam file output <code class="docutils literal notranslate"><span class="pre">${wd}/{sample_id}.Aligned.sortedByCoord.out.bam</span></code>, will be used in step 3 and 4</p></li>
+<li><p>bam file output <code class="docutils literal notranslate"><span class="pre">${wd}/{sample_id}.Aligned.toTranscriptome.out.bam</span></code>, will be used in step 5</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">STAR_align</span><span class="p">]</span>
+<span class="c1"># STAR indexing file</span>
+<span class="kn">parameter:</span> <span class="n">STAR_index</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Alignment parameter</span>
+<span class="kn">parameter:</span> <span class="n">outFilterMultimapNmax</span> <span class="o">=</span> <span class="mi">20</span> 
+<span class="kn">parameter:</span> <span class="n">alignSJoverhangMin</span> <span class="o">=</span> <span class="mi">8</span> 
+<span class="kn">parameter:</span> <span class="n">alignSJDBoverhangMin</span> <span class="o">=</span> <span class="mi">1</span> 
+<span class="kn">parameter:</span> <span class="n">outFilterMismatchNmax</span> <span class="o">=</span> <span class="mi">999</span> 
+<span class="kn">parameter:</span> <span class="n">outFilterMismatchNoverLmax</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="kn">parameter:</span> <span class="n">alignIntronMin</span> <span class="o">=</span> <span class="mi">20</span> 
+<span class="kn">parameter:</span> <span class="n">alignIntronMax</span> <span class="o">=</span> <span class="mi">1000000</span> 
+<span class="kn">parameter:</span> <span class="n">alignMatesGapMax</span> <span class="o">=</span> <span class="mi">1000000</span> 
+<span class="kn">parameter:</span> <span class="n">outFilterType</span> <span class="o">=</span>  <span class="s2">&quot;BySJout&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">outFilterScoreMinOverLread</span> <span class="o">=</span> <span class="mf">0.33</span> 
+<span class="kn">parameter:</span> <span class="n">outFilterMatchNminOverLread</span> <span class="o">=</span> <span class="mf">0.33</span> 
+<span class="kn">parameter:</span> <span class="n">limitSjdbInsertNsj</span> <span class="o">=</span> <span class="mi">1200000</span> 
+<span class="kn">parameter:</span> <span class="n">outSAMstrandField</span> <span class="o">=</span> <span class="s2">&quot;intronMotif&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">outFilterIntronMotifs</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">alignSoftClipAtReferenceEnds</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">quantMode</span> <span class="o">=</span> <span class="s2">&quot;TranscriptomeSAM GeneCounts&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">outSAMattrRGline</span> <span class="o">=</span> <span class="s2">&quot;ID:rg1 SM:sm1&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">outSAMattributes</span> <span class="o">=</span> <span class="s2">&quot;NH HI AS nM NM ch&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">chimSegmentMin</span> <span class="o">=</span> <span class="mi">15</span> 
+<span class="kn">parameter:</span> <span class="n">chimJunctionOverhangMin</span> <span class="o">=</span> <span class="mi">15</span> 
+<span class="kn">parameter:</span> <span class="n">chimOutType</span> <span class="o">=</span>  <span class="s2">&quot;Junctions WithinBAM SoftClip&quot;</span> 
+<span class="kn">parameter:</span> <span class="n">chimMainSegmentMultNmax</span> <span class="o">=</span> <span class="mi">1</span> 
+
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Remove_adaptor&quot;</span><span class="p">)[</span><span class="s2">&quot;fq_1&quot;</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Remove_adaptor&quot;</span><span class="p">)[</span><span class="s2">&quot;fq_2&quot;</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="n">cord_bam</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.out.bam&#39;</span><span class="p">,</span>
+        <span class="n">trans_bam</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">.Aligned.toTranscriptome.out.bam&#39;</span>
+
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;40G&quot;</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">run_STAR</span><span class="o">.</span><span class="n">py</span> \
+        <span class="err">$</span><span class="p">{</span><span class="n">STAR_index</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> <span class="err">$</span><span class="p">{</span><span class="n">sample_id</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">output_dir</span> <span class="err">$</span><span class="p">{</span><span class="n">wd</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterMultimapNmax</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterMultimapNmax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">alignSJoverhangMin</span> <span class="err">$</span><span class="p">{</span><span class="n">alignSJoverhangMin</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">alignSJDBoverhangMin</span> <span class="err">$</span><span class="p">{</span><span class="n">alignSJDBoverhangMin</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterMismatchNmax</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterMismatchNmax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterMismatchNoverLmax</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterMismatchNoverLmax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">alignIntronMin</span> <span class="err">$</span><span class="p">{</span><span class="n">alignIntronMin</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">alignIntronMax</span> <span class="err">$</span><span class="p">{</span><span class="n">alignIntronMax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">alignMatesGapMax</span> <span class="err">$</span><span class="p">{</span><span class="n">alignMatesGapMax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterType</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterType</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterScoreMinOverLread</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterScoreMinOverLread</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterMatchNminOverLread</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterMatchNminOverLread</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">limitSjdbInsertNsj</span> <span class="err">$</span><span class="p">{</span><span class="n">limitSjdbInsertNsj</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outSAMstrandField</span> <span class="err">$</span><span class="p">{</span><span class="n">outSAMstrandField</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outFilterIntronMotifs</span> <span class="err">$</span><span class="p">{</span><span class="n">outFilterIntronMotifs</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">alignSoftClipAtReferenceEnds</span> <span class="err">$</span><span class="p">{</span><span class="n">alignSoftClipAtReferenceEnds</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">quantMode</span> <span class="err">$</span><span class="p">{</span><span class="n">quantMode</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outSAMattrRGline</span> <span class="err">$</span><span class="p">{</span><span class="n">outSAMattrRGline</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">outSAMattributes</span> <span class="err">$</span><span class="p">{</span><span class="n">outSAMattributes</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">chimSegmentMin</span> <span class="err">$</span><span class="p">{</span><span class="n">chimSegmentMin</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">chimJunctionOverhangMin</span> <span class="err">$</span><span class="p">{</span><span class="n">chimJunctionOverhangMin</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">chimOutType</span> <span class="err">$</span><span class="p">{</span><span class="n">chimOutType</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">chimMainSegmentMultNmax</span> <span class="err">$</span><span class="p">{</span><span class="n">chimMainSegmentMultNmax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-3-mark-duplicates-reads-through-picard">
+<h2>Step 3: Mark duplicates reads through <code class="docutils literal notranslate"><span class="pre">Picard</span></code><a class="headerlink" href="#step-3-mark-duplicates-reads-through-picard" title="Permalink to this headline">¶</a></h2>
+<p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">MarkDuplicates</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_MarkDuplicates.py">Script in docker</a></p>
+<p>This step is the first QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment. This step maily remove duplications in <code class="docutils literal notranslate"><span class="pre">bam</span></code> file output by STAR.</p>
+<section id="id8">
+<h3>Step Inputs:<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STAR_bam</span></code>: path to the output in Step 2.</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3>Step Outputs:<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>A new <code class="docutils literal notranslate"><span class="pre">.bam</span></code> file with duplication  marked with the hexadecimal value of <code class="docutils literal notranslate"><span class="pre">0x0400</span></code>, which corresponds to a decimal value of 1024</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Picard_QC</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align&quot;</span><span class="p">)[</span><span class="s2">&quot;cord_bam&quot;</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/$</span><span class="si">{</span><span class="n">sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.out.patched.md.bam&#39;</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+        <span class="n">run_MarkDuplicates</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">sample_id</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-4-post-aligment-qc-through-rna-seqc">
+<h2>Step 4: Post aligment QC through <code class="docutils literal notranslate"><span class="pre">RNA-SeQC</span></code><a class="headerlink" href="#step-4-post-aligment-qc-through-rna-seqc" title="Permalink to this headline">¶</a></h2>
+<p>Documentation : <a class="reference external" href="https://github.com/getzlab/rnaseqc">RNA-SeQC</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_rnaseqc.py">Script in docker</a></p>
+<p><strong>FIXME</strong></p>
+<p>This step is second QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment.</p>
+<section id="id10">
+<h3>Step Inputs:<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">QC_bam</span></code>: path to the output in Step 3.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code>: reference genome <code class="docutils literal notranslate"><span class="pre">.gtf</span></code> file</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>Step Outputs:<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p>need to fill</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">RNA_QC</span><span class="p">]</span>
+<span class="c1"># Output from STAR:</span>
+<span class="kn">parameter:</span> <span class="n">QC_bam</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Reference genome</span>
+<span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
+
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;Picard_QC&quot;</span><span class="p">)</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span>
+    <span class="n">python3</span> <span class="n">run_rnaseqc</span><span class="o">.</span><span class="n">py</span> \
+        <span class="err">$</span><span class="p">{</span><span class="n">gtf</span><span class="p">}</span>
+        <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> \
+        <span class="err">$</span><span class="p">{</span><span class="n">sample_id</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">stranded</span> <span class="n">rf</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-5-quantify-expression-through-rsem">
+<h2>Step 5: Quantify expression through <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#step-5-quantify-expression-through-rsem" title="Permalink to this headline">¶</a></h2>
+<p>Documentation : <a class="reference external" href="https://deweylab.github.io/RSEM/rsem-calculate-expression.html">RSEM</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_RSEM.py">Script in docker</a></p>
+<p>This step generate the expression matrix from STAR output. Estimate gene and isoform expression from RNA-Seq data are generated.</p>
+<section id="id12">
+<h3>Step Inputs:<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STAR_tras</span></code>: path to the output in Step 2.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSEM_index</span></code>: path to RSEM index</p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>Step Outputs:<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<p>need to fill</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">RSEM</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align&quot;</span><span class="p">)[</span><span class="s2">&quot;trans_bam&quot;</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/RSEM_output/final_log&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">run_RSEM</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">max_frag_len</span> <span class="mi">1000</span> \
+        <span class="o">--</span><span class="n">estimate_rspd</span> <span class="n">true</span> \
+        <span class="o">--</span><span class="n">is_stranded</span> <span class="n">true</span> \
+        <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
+        <span class="err">$</span><span class="p">{</span><span class="n">RSEM_index</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">a</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">sample_id</span><span class="p">}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">d</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            kernelName: "sos",
+            path: "./pipeline/molecular_phenotypes"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../complete_analysis/eQTL_analysis.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Bulk RNA-seq eQTL analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="scnuc_expression.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">scRNA-seq expression calling</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+        
+            &copy; Copyright 2021, ADSP-FG xQTL methods and data integration subgroup.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

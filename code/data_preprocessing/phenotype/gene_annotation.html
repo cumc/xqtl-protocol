@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Gene coordinate annotation &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -587,13 +588,13 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="gene-coordinate-annotation">
+  <section class="tex2jax_ignore mathjax_ignore" id="gene-coordinate-annotation">
 <h1>Gene coordinate annotation<a class="headerlink" href="#gene-coordinate-annotation" title="Permalink to this headline">¶</a></h1>
 <p>This workflow adds genomic coordinate annotation to gene-level molecular phenotype files generated, eg in GCT format, converting them to <code class="docutils literal notranslate"><span class="pre">bed</span></code> format.</p>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This pipeline is based on <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py"><code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>, as demonstrated here</a>.</p>
-<div class="section" id="alternative-implementation">
+<section id="alternative-implementation">
 <h3>Alternative implementation<a class="headerlink" href="#alternative-implementation" title="Permalink to this headline">¶</a></h3>
 <p>Previously we use <code class="docutils literal notranslate"><span class="pre">biomaRt</span></code> package in R instead of code from <code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>. The core function calls are:</p>
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span>    <span class="n">ensembl</span> <span class="o">=</span> <span class="nf">useEnsembl</span><span class="p">(</span><span class="n">biomart</span> <span class="o">=</span> <span class="s">&quot;ensembl&quot;</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s">&quot;hsapiens_gene_ensembl&quot;</span><span class="p">,</span> <span class="n">version</span> <span class="o">=</span> <span class="s">&quot;$[ensembl_version]&quot;</span><span class="p">)</span>
@@ -601,9 +602,9 @@
 </pre></div>
 </div>
 <p>We require ENSEMBL version to be specified explicitly in this pipeline. As of 2021 for the Brain xQTL project, we use ENSEMBL version 103.</p>
-</div>
-</div>
-<div class="section" id="input">
+</section>
+</section>
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Molecular phenotype data with the first column being ENSEMBL ID and other columns being sample names.</p></li>
@@ -621,12 +622,12 @@
 </ul>
 </li>
 </ol>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>Molecular phenotype data in <code class="docutils literal notranslate"><span class="pre">bed</span></code> format.</p>
-</div>
-<div class="section" id="minimal-working-example">
+</section>
+<section id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>The MWE is uploaded to the <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk">Google Drive</a></p>
 <div class="cell docutils container">
@@ -634,15 +635,15 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotate_coord</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">pheno_log2cpm</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">data</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="nb">id</span><span class="o">-</span><span class="nb">type</span> <span class="n">gene_name</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="command-interface">
+</section>
+<section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -726,8 +727,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="implementation-using-pyqtl">
+</section>
+<section id="implementation-using-pyqtl">
 <h2>Implementation using <code class="docutils literal notranslate"><span class="pre">pyqtl</span></code><a class="headerlink" href="#implementation-using-pyqtl" title="Permalink to this headline">¶</a></h2>
 <p>Implementation based on <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py">GTEx pipeline</a>.</p>
 <div class="cell docutils container">
@@ -770,8 +771,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="implementation-using-biomart">
+</section>
+<section id="implementation-using-biomart">
 <h2>Implementation using biomaRt<a class="headerlink" href="#implementation-using-biomart" title="Permalink to this headline">¶</a></h2>
 <p>This workflow adds the annotations of chr pos(TSS where start = end -1) and gene_ID to the <code class="docutils literal notranslate"><span class="pre">bed</span></code> file. <strong>This workflow is obsolete</strong>.</p>
 <div class="cell docutils container">
@@ -808,8 +809,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

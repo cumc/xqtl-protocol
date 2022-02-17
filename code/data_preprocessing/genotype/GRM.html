@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Genomic relationship matrices &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -581,22 +580,22 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="genomic-relationship-matrices">
+  <div class="tex2jax_ignore mathjax_ignore section" id="genomic-relationship-matrices">
 <h1>Genomic relationship matrices<a class="headerlink" href="#genomic-relationship-matrices" title="Permalink to this headline">¶</a></h1>
 <p>This workflow generates genomic relationship matrices (GRM) under the leave-one-chromosome-out (LOCO) theme.</p>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>For each chromosome, we compute a GRM using data excluding this chromosome. Computation is implemented using <code class="docutils literal notranslate"><span class="pre">GCTA</span></code> software package.</p>
-</section>
-<section id="input">
+</div>
+<div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>This workflow expects <strong>per chromosome</strong> genotype data in <code class="docutils literal notranslate"><span class="pre">PLINK</span> <span class="pre">1.0</span></code> format. We provide <span class="xref myst">some genotype formatting workflows</span> to help convert other genotype formats to the required PLINK format. Notice that common variants (minor allele frequency &gt; 1% or 5%) are recommended to use for computing GRM.</p>
-</section>
-<section id="output">
+</div>
+<div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>GRM per LOCO, in formats compatible with downstreams analysis including <span class="xref myst">LMM using APEX</span>.</p>
-</section>
-<section id="example">
+</div>
+<div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -608,8 +607,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="command-interface">
+</div>
+<div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -668,10 +667,12 @@ Sections
 <span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">paths</span>
+<span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">paths</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="c1">## Code below are copied from genotype_formatting.ipynb. Change should be made to codes in that document and sync with this chunk.</span>
+<span class="kn">import</span> <span class="nn">sos</span>
+<span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="k">def</span> <span class="nf">get_genotype_file</span><span class="p">(</span><span class="n">geno_file_paths</span><span class="p">):</span>
@@ -699,7 +700,7 @@ Sections
         <span class="k">if</span> <span class="n">chrom</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;chr&#39;</span><span class="p">):</span>
             <span class="n">chrom</span> <span class="o">=</span> <span class="n">chrom</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
         <span class="k">return</span> <span class="n">chrom</span>
-    <span class="c1"># Inputs are either VCF or bed, or a vector of them</span>
+    <span class="c1"># Inputs are either VCF or bed, or a vector of them </span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">geno_file_paths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">valid_geno_file</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geno_file_paths</span><span class="p">]):</span>
             <span class="k">return</span> <span class="n">paths</span><span class="p">(</span><span class="n">geno_file_paths</span><span class="p">)</span>
@@ -709,25 +710,23 @@ Sections
     <span class="n">geno_file</span> <span class="o">=</span> <span class="n">geno_file_paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">valid_geno_file</span><span class="p">(</span><span class="n">geno_file</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">path</span><span class="p">(</span><span class="n">geno_file</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">else</span><span class="p">:</span> 
         <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">geno_file</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">]):</span>
-            <span class="k">return</span> <span class="n">paths</span><span class="p">([</span><span class="n">complete_geno_path</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">geno_file</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">paths</span><span class="p">([</span><span class="n">complete_geno_path</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geno_file</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">])</span>
         <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">]):</span>
             <span class="n">genos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">format_chrom</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">path</span><span class="p">(</span><span class="n">complete_geno_path</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geno_file</span><span class="p">)))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">units</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geno_file</span><span class="si">}</span><span class="s2"> should contain one column of files, or two columns of chr number and corresponding file name&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geno_file</span><span class="si">}</span><span class="s2"> should contain one column of file names, or two columns of chrom number and corresponding file name&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">genos</span>
-
-<span class="n">genotypes</span> <span class="o">=</span> <span class="n">get_genotype_file</span><span class="p">(</span><span class="n">genotype_list</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">genotypes</span><span class="p">,</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">genotype_list</span><span class="si">}</span><span class="s2"> should contain two columns of chrom number and corresponding file&quot;</span><span class="p">)</span>
+                        
+<span class="n">genotypes</span> <span class="o">=</span> <span class="n">get_genotype_file</span><span class="p">(</span><span class="n">genoFile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="generate-loco-file-list">
+</div>
+<div class="section" id="generate-loco-file-list">
 <h2>Generate LOCO file list<a class="headerlink" href="#generate-loco-file-list" title="Permalink to this headline">¶</a></h2>
 <p>This step generates a list of bfiles that are used by <code class="docutils literal notranslate"><span class="pre">gcta</span></code> to generate the GRM. eg,:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">AC_per_chrom_plink</span><span class="o">/</span><span class="n">AC_chr1</span>
@@ -753,8 +752,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="compute-loco-grm">
+</div>
+<div class="section" id="compute-loco-grm">
 <h2>Compute LOCO-GRM<a class="headerlink" href="#compute-loco-grm" title="Permalink to this headline">¶</a></h2>
 <p>This step can take a while. We recommend using genotype data of common variants to perform this analysis.</p>
 <div class="cell docutils container">
@@ -772,8 +771,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="format-output-for-apex">
+</div>
+<div class="section" id="format-output-for-apex">
 <h2>Format output for APEX<a class="headerlink" href="#format-output-for-apex" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -818,8 +817,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

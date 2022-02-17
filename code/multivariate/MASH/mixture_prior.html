@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A multivariate EBNM approach for mixture multivariate distribution estimate &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -588,22 +587,22 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="a-multivariate-ebnm-approach-for-mixture-multivariate-distribution-estimate">
+  <div class="tex2jax_ignore mathjax_ignore section" id="a-multivariate-ebnm-approach-for-mixture-multivariate-distribution-estimate">
 <h1>A multivariate EBNM approach for mixture multivariate distribution estimate<a class="headerlink" href="#a-multivariate-ebnm-approach-for-mixture-multivariate-distribution-estimate" title="Permalink to this headline">¶</a></h1>
 <p>This is a truncated version from the bioworkflow/mixture_prior analysis, the steps where mixture components were generated are removed to not duplicate with that of the mashr_flashr_workflow.</p>
 <p>An earlier version of the approach is outlined in Urbut et al 2019. This workflow implements a few improvements including using additional EBMF methods as well as the new <code class="docutils literal notranslate"><span class="pre">udr</span></code> package to fit the mixture model.</p>
-<section id="overview-of-approach">
+<div class="section" id="overview-of-approach">
 <h2>Overview of approach<a class="headerlink" href="#overview-of-approach" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>A workflow step is provided to merge PLINK univariate association analysis results to RDS files for extracting effect estimate samples</p></li>
 <li><p>Estimated effects are analyzed by FLASH and PCA to extract patterns of sharing</p></li>
 <li><p>Estimate the weights for patterns extracted from previous step</p></li>
 </ol>
-</section>
-<section id="minimal-working-example">
+</div>
+<div class="section" id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>To see the input requirements and output data formats, please <a class="reference external" href="https://drive.google.com/file/d/1838xUOQuWTszQ0WJGXNiJMszY05cw3RS/view?usp=sharing">download a minimal working example here</a>, and run the following:</p>
-<section id="merge-univariate-results">
+<div class="section" id="merge-univariate-results">
 <h3>Merge univariate results<a class="headerlink" href="#merge-univariate-results" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mixture_prior</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge</span> \
     <span class="o">--</span><span class="n">analysis</span><span class="o">-</span><span class="n">units</span> <span class="o">&lt;</span><span class="n">FIXME</span><span class="o">&gt;</span> \
@@ -611,8 +610,8 @@
     <span class="o">--</span><span class="n">name</span> <span class="n">gtex_mixture</span>
 </pre></div>
 </div>
-</section>
-<section id="select-and-merge-univariate-effects">
+</div>
+<div class="section" id="select-and-merge-univariate-effects">
 <h3>Select and merge univariate effects<a class="headerlink" href="#select-and-merge-univariate-effects" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">data</span>
 <span class="n">cd</span> <span class="err">$</span><span class="n">m</span> <span class="o">&amp;&amp;</span> <span class="n">ls</span> <span class="o">*.</span><span class="n">rds</span> <span class="o">|</span> <span class="n">sed</span> <span class="s1">&#39;s/\.rds//g&#39;</span> <span class="o">&gt;</span> <span class="n">analysis_units</span><span class="o">.</span><span class="n">txt</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="o">-</span>
@@ -621,8 +620,8 @@
         <span class="o">--</span><span class="n">datadir</span> <span class="err">$</span><span class="n">m</span> <span class="o">--</span><span class="n">name</span> <span class="err">`</span><span class="n">basename</span> <span class="err">$</span><span class="n">m</span><span class="err">`</span>
 </pre></div>
 </div>
-</section>
-<section id="perform-mixture-model-fitting">
+</div>
+<div class="section" id="perform-mixture-model-fitting">
 <h3>Perform mixture model fitting<a class="headerlink" href="#perform-mixture-model-fitting" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mixture_prior</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">ud</span> \
     <span class="o">--</span><span class="n">datadir</span> <span class="err">$</span><span class="n">m</span> <span class="o">--</span><span class="n">name</span> <span class="err">`</span><span class="n">basename</span> <span class="err">$</span><span class="n">m</span><span class="err">`</span> <span class="o">&amp;&gt;</span> <span class="n">ed_</span><span class="err">$</span><span class="n">m</span><span class="o">.</span><span class="n">log</span>
@@ -632,16 +631,16 @@
     <span class="o">--</span><span class="n">datadir</span> <span class="err">$</span><span class="n">m</span> <span class="o">--</span><span class="n">name</span> <span class="err">`</span><span class="n">basename</span> <span class="err">$</span><span class="n">m</span><span class="err">`</span> <span class="o">&amp;&gt;</span> <span class="n">bovy_</span><span class="err">$</span><span class="n">m</span><span class="o">.</span><span class="n">log</span>
 </pre></div>
 </div>
-</section>
-<section id="plot-results">
+</div>
+<div class="section" id="plot-results">
 <h3>Plot results<a class="headerlink" href="#plot-results" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mixture_prior</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plot_U</span> <span class="o">--</span><span class="n">model</span><span class="o">-</span><span class="n">data</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">mixture_model</span><span class="o">.</span><span class="n">rds</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span>
 </pre></div>
 </div>
 <p>Notice that for production use, each <code class="docutils literal notranslate"><span class="pre">sos</span> <span class="pre">run</span></code> command should be submitted to the cluster as a job.</p>
-</section>
-</section>
-<section id="global-parameters">
+</div>
+</div>
+<div class="section" id="global-parameters">
 <h2>Global parameters<a class="headerlink" href="#global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -666,8 +665,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="fit-mixture-model">
+</div>
+<div class="section" id="fit-mixture-model">
 <h2>Fit mixture model<a class="headerlink" href="#fit-mixture-model" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -788,8 +787,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="plot-patterns-of-sharing">
+</div>
+<div class="section" id="plot-patterns-of-sharing">
 <h2>Plot patterns of sharing<a class="headerlink" href="#plot-patterns-of-sharing" title="Permalink to this headline">¶</a></h2>
 <p>This is a simple utility function that takes the output from the pipeline above and make some heatmap to show major patterns of multivariate effects. The plots will be ordered by their mixture weights.</p>
 <div class="cell docutils container">
@@ -878,8 +877,8 @@
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

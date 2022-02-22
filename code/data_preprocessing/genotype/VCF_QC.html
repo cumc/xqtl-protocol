@@ -623,13 +623,13 @@
 <div class="section" id="default-vcf-qc-filters">
 <h2>Default VCF QC filters<a class="headerlink" href="#default-vcf-qc-filters" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
-<li><p>Genotype depth filters: SNPs DP&gt;10 and Indels DP&gt;10 for indels.</p></li>
+<li><p>Genotype depth filters: For WES data, UK Biobank recommends <strong>SNPs DP&gt;10 and Indels DP&gt;10 for indels.</strong> However we think for WGS we can be less stringent, or simply rely on GQ. Users can set it to 1 eg, <code class="docutils literal notranslate"><span class="pre">--DP</span> <span class="pre">1</span> <span class="pre">--DP-indel</span> <span class="pre">1</span> </code></p></li>
+<li><p>Genotype quality GQ&gt;20.</p></li>
 <li><p>At least one sample per site passed the allele balance threshold &gt;= 0.15 for SNPs and &gt;=0.20 for indels (heterozygous variants).</p>
 <ul class="simple">
 <li><p>Allele balance is calculated for heterozygotes as the number of bases supporting the least-represented allele over the total number of base observations.</p></li>
 </ul>
 </li>
-<li><p>Genotype quality GQ&gt;20.</p></li>
 </ol>
 <p>Filtering are done with <code class="docutils literal notranslate"><span class="pre">bcftools</span></code>. Here is a <a class="reference external" href="https://gist.github.com/elowy01/93922762e131d7abd3c7e8e166a74a0b">useful cheatsheet from github user &#64;elowy01</a>.</p>
 </div>
@@ -827,7 +827,6 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># input can either be 1 vcf genoFile, or a list of vcf genoFile.</span>
 <span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">paths</span>
-
 <span class="c1"># Workdir</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Number of threads</span>
@@ -843,6 +842,7 @@ Sections
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="kn">parameter:</span> <span class="n">add_chr</span> <span class="o">=</span> <span class="kc">False</span>
+
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="k">def</span> <span class="nf">get_genotype_file</span><span class="p">(</span><span class="n">geno_file_paths</span><span class="p">):</span>
     <span class="c1">#</span>
@@ -889,7 +889,7 @@ Sections
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">geno_file</span><span class="si">}</span><span class="s2"> should contain one column of file names, or two columns of chrom number and corresponding file name&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">genos</span>
     
-<span class="n">genoFile</span> <span class="o">=</span> <span class="n">get_genotype_file</span><span class="p">(</span><span class="n">genoFile_list</span><span class="p">)</span>
+<span class="n">genoFile</span> <span class="o">=</span> <span class="n">get_genotype_file</span><span class="p">(</span><span class="n">genoFile</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">add_chr</span><span class="p">:</span>
     <span class="n">genoFile</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.add_chr.vcf.gz&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">genoFile</span><span class="p">]</span>
 </pre></div>
@@ -899,7 +899,7 @@ Sections
 </div>
 <div class="section" id="annotation-of-known-and-novel-variants">
 <h2>Annotation of known and novel variants<a class="headerlink" href="#annotation-of-known-and-novel-variants" title="Permalink to this headline">¶</a></h2>
-<p>The known variant reference can be downloaded from <a class="reference external" href="https://ftp.ncbi.nlm.nih.gov/snp/organisms//human_9606_b150_GRCh38p7/VCF/00-All.vcf.gz">https://ftp.ncbi.nlm.nih.gov/snp/organisms//human_9606_b150_GRCh38p7/VCF/00-All.vcf.gz</a>.</p>
+<p>The known variant reference can be downloaded from <a class="reference external" href="https://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/00-All.vcf.gz">https://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/00-All.vcf.gz</a>.</p>
 <p>The procedure/rationale is <a class="reference external" href="https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html">explained in this post</a>.</p>
 <p>It takes ~1hr for <code class="docutils literal notranslate"><span class="pre">rename_chrs</span></code> to complete. For every hour it can produce ~13Gb of data, please set the –walltime parameter according to the size of your input files.</p>
 <div class="cell docutils container">
@@ -924,10 +924,10 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">dbsnp_annotate</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">genoFile</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s2">nn</span><span class="si">}</span><span class="s2">.variants.gz&quot;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span><span class="o">=</span><span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">bcftools</span> <span class="n">query</span>  <span class="o">-</span><span class="sa">f</span><span class="s1">&#39;%CHROM</span><span class="se">\t</span><span class="s1">%POS</span><span class="se">\t</span><span class="s1">%ID</span><span class="se">\t</span><span class="s1">%REF</span><span class="se">\t</span><span class="s1">%ALT</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>  <span class="o">|</span> \
-        <span class="n">awk</span> <span class="s1">&#39;BEGIN{OFS=&quot;</span><span class="se">\t</span><span class="s1">&quot;;} {if (length ($4) &gt; length ($5)) {print $1,$2,$2+ (length ($4) - 1),$3} else {print $1,$2, $2 + (length ($4) -1 ),$3}}&#39;</span> <span class="o">|</span> \
+        <span class="n">awk</span> <span class="s1">&#39;BEGIN{OFS=&quot;</span><span class="se">\t</span><span class="s1">&quot;;} {if (length ($4) &gt; length ($5)) {print $1,$2,$2+ (length ($4) - 1),$3} else {print $1,$2, $2 + (length ($5) -1 ),$3}}&#39;</span> <span class="o">|</span> \
         <span class="n">bgzip</span> <span class="o">-</span><span class="n">c</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -973,6 +973,8 @@ Sections
 <span class="c1"># Maximum missingess per-variant</span>
 <span class="kn">parameter:</span> <span class="n">geno_filter</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="c1"># Sample level QC - read depth (DP) to filter out SNPs below this value</span>
+<span class="c1"># Default to 10, with WES data in mind </span>
+<span class="c1"># But for WGS, setting it to 2 may be fine considering the WGS may have low DP but the GQ filter should be good enough</span>
 <span class="kn">parameter:</span> <span class="n">DP_snp</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="c1"># Sample level QC - genotype quality (GQ) of specific sample. This measure tells you how confident we are that the genotype we assigned to a particular sample is correct</span>
 <span class="kn">parameter:</span> <span class="n">GQ</span> <span class="o">=</span> <span class="mi">20</span>
@@ -1010,6 +1012,7 @@ Sections
         <span class="o">--</span><span class="n">vcf</span><span class="o">-</span><span class="n">half</span><span class="o">-</span><span class="n">call</span> <span class="n">m</span> \
         <span class="o">--</span><span class="n">vcf</span><span class="o">-</span><span class="n">require</span><span class="o">-</span><span class="n">gt</span> \
         <span class="o">--</span><span class="n">allow</span><span class="o">-</span><span class="n">extra</span><span class="o">-</span><span class="nb">chr</span> \
+        <span class="o">--</span><span class="n">freqx</span> <span class="n">gz</span> \
         <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span>
     <span class="n">echo</span> <span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2"> successfully generated&quot;</span>
 </pre></div>

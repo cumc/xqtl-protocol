@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TensorQTL QTL calling pipeline &#8212; ADSP-FG Project</title>
+    <title>TensorQTL QTL association testing &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,7 +51,7 @@
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="APEX QTL calling pipeline" href="../APEX/APEX.html" />
+    <link rel="next" title="APEX QTL association testing" href="../APEX/APEX.html" />
     <link rel="prev" title="cisQTL analysis workflows" href="../cisQTL_scan.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -282,12 +282,12 @@
   <ul class="current">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     TensorQTL QTL calling pipeline
+     TensorQTL QTL association testing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../APEX/APEX.html">
-     APEX QTL calling pipeline
+     APEX QTL association testing
     </a>
    </li>
   </ul>
@@ -543,19 +543,7 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   TensorQTL QTL calling pipeline
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pre-requisites">
-     Pre-requisites
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input-and-output">
-   Input and Output
+   TensorQTL QTL association testing
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -574,17 +562,17 @@
   <a class="reference internal nav-link" href="#command-interface">
    Command interface
   </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#working-example">
-   Working example
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#global-parameter-settings">
-   Global parameter settings
-  </a>
   <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example">
+     Example
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#global-parameter-settings">
+     Global parameter settings
+    </a>
+   </li>
    <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#qtl-sumstat-generation">
      QTL Sumstat generation
@@ -613,41 +601,92 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="tensorqtl-qtl-calling-pipeline">
-<h1>TensorQTL QTL calling pipeline<a class="headerlink" href="#tensorqtl-qtl-calling-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>This pipeline conduct QTL association study using tensorQTL.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="tensorqtl-qtl-association-testing">
+<h1>TensorQTL QTL association testing<a class="headerlink" href="#tensorqtl-qtl-association-testing" title="Permalink to this headline">¶</a></h1>
+<p>This pipeline conduct QTL association tests using tensorQTL.</p>
 <p><img alt="Blank diagram-10.png" src="code/association_scan/TensorQTL/attachment:8073388f-23bf-4c8e-ae4f-5efcec3df68e.png" /></p>
-<div class="section" id="pre-requisites">
-<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
-<p>This pipeline require the tensorQTL, fastparquet, and R:Tidyverse. A singularity container is provided along with the mwe</p>
-</div>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="input-and-output">
-<h1>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">--molecular-pheno</span></code>, The bed.gz file containing the table describing the molecular phenotype. It shall also have a tbi index accompaning it.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">genotype_list</span></code> a list of whole genome plink file for each chromosome</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">grm_list</span></code> is a file containing list of grm matrixs that generated by the GRM module of this pipeline.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">covariate</span></code> is a file with #id + samples name as colnames and each row a cov/factor/pc. Generated beforehand from the data_processing sections</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covariate</span></code> is a file with #id + samples name as colnames and each row a covariate: fixed and known covariates as well as hidden covariates recovered from factor analysis.</p></li>
 </ul>
 </div>
 <div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<p>A sets of sumstat files for each chromosome, one of which is the long table documenting the norminal QTL associations for each snps.</p>
+<p>A sets of summary statistics files for each chromosome, for both nomial significance for each test, as well as region (gene) level association evidence.</p>
+<p><strong>FIXME: please fix the statement below</strong></p>
 <p>At the moment the generation of gene based QTL signal was disabled to avoid the breaking of the pipeline when all of the QTL association signal given are NAs</p>
 </div>
 </div>
 <div class="tex2jax_ignore mathjax_ignore section" id="command-interface">
 <h1>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">TensorQTL</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="working-example">
-<h1>Working example<a class="headerlink" href="#working-example" title="Permalink to this headline">¶</a></h1>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="global-parameter-settings">
-<h1>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this headline">¶</a></h1>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR: Notebook JSON is invalid: %s
+usage: sos run TensorQTL.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  TensorQTL_cis
+  TensorQTL_trans
+
+Global Workflow Options:
+  --molecular-pheno-list VAL (as path, required)
+                        Path to the input molecular phenotype file, per chrm, in
+                        bed.gz format.
+  --covariate VAL (as path, required)
+                        Covariate file, in similar format as the molecular_pheno
+  --genotype-file-list VAL (as path, required)
+                        Genotype file in plink trio format, per chrm
+  --region-list . (as path)
+                        An optional subset of region list containing a column of
+                        ENSG gene_id to limit the analysis
+  --wd . (as path)
+                        Path to the work directory of the analysis.
+  --job-size 2 (as int)
+                        Specify the number of jobs per run.
+  --container &#39;&#39;
+                        Container option for software to run the analysis:
+                        docker or singularity
+  --name ROSMAP
+                        Prefix for the analysis output
+  --window 1000000 (as list)
+                        Specify the scanning window for the up and downstream
+                        radius to analyze around the region of interest, in
+                        units of bp
+
+Sections
+  TensorQTL_cis_1:
+  TensorQTL_trans_1:
+    Workflow Options:
+      --batch-size 10000 (as int)
+      --pval-threshold 1e-05 (as float)
+      --maf-threshold 0.05 (as float)
+  TensorQTL_cis_2:
+  TensorQTL_trans_2:
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p><strong>FIXME: add it</strong></p>
+</div>
+<div class="section" id="global-parameter-settings">
+<h2>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this headline">¶</a></h2>
 <p>The section outlined the parameters that can be set in the command interface.</p>
+<p><strong>FIXME: same comments as in APEX.ipynb</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -660,7 +699,7 @@
 <span class="c1"># An optional subset of region list containing a column of ENSG gene_id to limit the analysis</span>
 <span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
 <span class="c1"># Path to the work directory of the analysis.</span>
-<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
 <span class="c1"># Specify the number of jobs per run.</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Container option for software to run the analysis: docker or singularity</span>
@@ -681,18 +720,20 @@
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="qtl-sumstat-generation">
 <h2>QTL Sumstat generation<a class="headerlink" href="#qtl-sumstat-generation" title="Permalink to this headline">¶</a></h2>
 <p>This step generate the cis-QTL summary statistics and vcov (covariate-adjusted LD) files for downstream analysis from summary statistics. The analysis is done per chromosome to reduce running time.</p>
 </div>
 <div class="section" id="cis-qtl-sumstat-generation-via-tensorqtl">
 <h2>Cis QTL Sumstat generation via tensorQTL<a class="headerlink" href="#cis-qtl-sumstat-generation-via-tensorqtl" title="Permalink to this headline">¶</a></h2>
+<p><strong>FIXME: we shoud be able to consolidate cis and trans steps</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_cis_1</span><span class="p">]</span>
 <span class="kn">input:</span>  <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.cis_qtl_pairs.</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.parquet&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.emprical.cis_sumstats.txt&#39;</span><span class="p">,</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.cis_qtl_pairs.</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.parquet&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.emprical.cis_sumstats.txt&#39;</span><span class="p">,</span>
         <span class="n">long_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.norminal.cis_long_table.txt&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;12h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;40G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span><span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
@@ -813,11 +854,12 @@
 </div>
 </div>
 </div>
+<p><strong>FIXME: we can consolidate these steps. I’ll take a look myself after we have the MWE test</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_cis_2</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;TensorQTL_cis_1&quot;</span><span class="p">)[</span><span class="s2">&quot;long_table&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.TensorQTL_recipe.tsv&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.TensorQTL_recipe.tsv&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="kn">import</span> <span class="nn">csv</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
@@ -834,7 +876,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_trans_2</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.TensorQTL_recipe.tsv&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.TensorQTL_recipe.tsv&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="kn">import</span> <span class="nn">csv</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
@@ -885,7 +927,7 @@
     <a class='right-next' id="next-link" href="../APEX/APEX.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">APEX QTL calling pipeline</p>
+        <p class="prev-next-title">APEX QTL association testing</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

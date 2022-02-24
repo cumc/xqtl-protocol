@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>APEX QTL calling pipeline &#8212; ADSP-FG Project</title>
+    <title>APEX QTL association testing &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -52,7 +52,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="transQTL analysis workflows" href="../transQTL_scan.html" />
-    <link rel="prev" title="TensorQTL QTL calling pipeline" href="../TensorQTL/TensorQTL.html" />
+    <link rel="prev" title="TensorQTL QTL association testing" href="../TensorQTL/TensorQTL.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -282,12 +282,12 @@
   <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="../TensorQTL/TensorQTL.html">
-     TensorQTL QTL calling pipeline
+     TensorQTL QTL association testing
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     APEX QTL calling pipeline
+     APEX QTL association testing
     </a>
    </li>
   </ul>
@@ -541,61 +541,40 @@
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   APEX QTL calling pipeline
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input">
+   Input
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pre-requisites">
-     Pre-requisites
-    </a>
-   </li>
-  </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input-and-output">
-   Input and Output
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input">
-     Input
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#output">
-     Output
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#command-interface">
-     Command interface
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#working-example-tbd">
-     Working example (TBD)
-    </a>
-   </li>
-  </ul>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command interface
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   Example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#global-parameter-settings">
    Global parameter settings
   </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lmm-regression">
-     LMM Regression
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#qtl-sumstat-generation">
-     QTL Sumstat generation
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lmm-regression">
+   LMM Regression
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#qtl-asscoiation-testing">
+   QTL asscoiation testing
+  </a>
  </li>
 </ul>
 
@@ -608,41 +587,91 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="apex-qtl-calling-pipeline">
-<h1>APEX QTL calling pipeline<a class="headerlink" href="#apex-qtl-calling-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>This notebook Document a prototype workflow for using the Apex to conduct analysis. It aims to replicate the workflow as shown in the following figures:</p>
-<p><img alt="Screen Shot 2021-07-14 at 2.35.29 PM.png" src="code/association_scan/APEX/attachment:bf5e8d34-427a-4202-9576-85405e50f488.png" /></p>
-<p><img alt="Blank diagram-8.png" src="code/association_scan/APEX/attachment:370133db-3213-4248-a324-461393dbe51f.png" /></p>
-<div class="section" id="pre-requisites">
-<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
-<p>This pipeline require the apex toolkits, tabix, bgzip, and R:Tidyverse. A singularity container is provided along with the mwe</p>
-</div>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="input-and-output">
-<h1>Input and Output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="apex-qtl-association-testing">
+<h1>APEX QTL association testing<a class="headerlink" href="#apex-qtl-association-testing" title="Permalink to this headline">¶</a></h1>
+<p>This notebook implements a workflow for using the APEX to conduct analysis. APEX implements a linear mixed model for association testing. This is potentially useful for analysis with related individuals.</p>
+<p><strong>FIXME: cite APEX paper</strong></p>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--molecular-pheno</span></code>, The bed.gz file containing the table describing the molecular phenotype. It shall also have a tbi index accompaning it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--molecular-pheno</span></code>, The <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> file containing the table describing the molecular phenotype. It should have a companion index file in <code class="docutils literal notranslate"><span class="pre">tbi</span></code> format.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">genotype_list</span></code> a list of whole genome vcf file for each chromosome, those vcf are converted beforehand from plink trio in the data_processing sections</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">grm_list</span></code> is a file containing list of grm matrixs that generated by the GRM module of this pipeline.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">covariate</span></code> is a file with #id + samples name as colnames and each row a cov/factor/pc. Generated beforehand from the data_processing sections</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">covariate</span></code> is a file with #id + samples name as colnames and each row a covariate: fixed and known covariates as well as hidden covariates recovered from factor analysis.</p></li>
 </ul>
 </div>
 <div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<p>A sets of sumstat files for each chromosome, one of which is the long table documenting the norminal QTL associations for each snps.</p>
+<p>A sets of summary statistics files for each chromosome, for both nomial significance for each test, as well as region (gene) level association evidence.</p>
 </div>
 <div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">APEX</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
 </div>
-<div class="section" id="working-example-tbd">
-<h2>Working example (TBD)<a class="headerlink" href="#working-example-tbd" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run APEX.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  LMM_null
+  APEX_cis
+  cis
+  APEX_trans
+  trans
+
+Global Workflow Options:
+  --molecular-pheno-list VAL (as path, required)
+                        Path to the input molecular phenotype file, per chrm, in
+                        bed.gz format.
+  --covariate VAL (as path, required)
+                        Covariate file, in similar format as the molecular_pheno
+  --genotype-file-list VAL (as path, required)
+                        Genotype file in vcf format, per chrm
+  --grm-list VAL (as path, required)
+                        grm file in pairwise table format , per chrm
+  --cwd . (as path)
+                        Path to the work directory of the analysis.
+  --job-size 2 (as int)
+                        Specify the number of jobs per run.
+  --container &#39;&#39;
+                        Container option for software to run the analysis:
+                        docker or singularity
+  --name ROSMAP
+                        Prefix for the analysis output
+  --window 1000000 (as list)
+                        Specify the scanning window for the up and downstream
+                        radius to analyze around the region of interest, in
+                        units of bp
+
+Sections
+  APEX_*_1, LMM_null:
+  APEX_cis_2, cis:
+  APEX_trans_2, trans:
+    Workflow Options:
+      --keep-gene &#39;&#39;
+  APEX_*_3:
+  APEX_*_4:
+</pre></div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="global-parameter-settings">
-<h1>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this headline">¶</a></h1>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p><strong>FIXME</strong></p>
+</div>
+<div class="section" id="global-parameter-settings">
+<h2>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this headline">¶</a></h2>
 <p>The section outlined the parameters that can be set in the command interface.</p>
+<p><strong>FIXME: please revisit this input list for various default parameter setting, in particular the list of genotypes to load. You can copy and paste the genotype load code from genotype_reformatting for now. I’ll repurpose the LDtools package to include those codes in the future so we dont have to copy them over and over again.</strong></p>
+<p><strong>FIXME: can we combine APEX_3 and APEX_4</strong>?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -654,11 +683,8 @@
 <span class="kn">parameter:</span> <span class="n">genotype_file_list</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># grm file in pairwise table format , per chrm</span>
 <span class="kn">parameter:</span> <span class="n">grm_list</span> <span class="o">=</span> <span class="n">path</span>
-
-
-
 <span class="c1"># Path to the work directory of the analysis.</span>
-<span class="kn">parameter:</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
 <span class="c1"># Specify the number of jobs per run.</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Container option for software to run the analysis: docker or singularity</span>
@@ -667,8 +693,6 @@
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s1">&#39;ROSMAP&#39;</span>
 <span class="c1"># Specify the scanning window for the up and downstream radius to analyze around the region of interest, in units of bp</span>
 <span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1000000&#39;</span><span class="p">]</span>
-
-
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">molecular_pheno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">molecular_pheno_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -680,15 +704,20 @@
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="lmm-regression">
 <h2>LMM Regression<a class="headerlink" href="#lmm-regression" title="Permalink to this headline">¶</a></h2>
-<p>This step are done to precompute and store a) LMM null models and trait residuals and b) spline terms for LMM genotypic variances to speed up downstream analysis</p>
+<p>This step are done to precompute and store:</p>
+<ol class="simple">
+<li><p>LMM null models and trait residuals</p></li>
+<li><p>spline terms for LMM genotypic variances to speed up downstream analysis</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_</span><span class="o">*</span><span class="n">_1</span><span class="p">,</span><span class="n">LMM</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_</span><span class="o">*</span><span class="n">_1</span><span class="p">,</span> <span class="n">LMM_null</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
 <span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">100000</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.theta.gz&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.theta.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;12h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">apex</span> <span class="n">lmm</span> <span class="o">--</span><span class="n">vcf</span> <span class="err">$</span><span class="p">[</span><span class="n">_input_inv</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> \
@@ -702,12 +731,12 @@
 </div>
 </div>
 </div>
-<div class="section" id="qtl-sumstat-generation">
-<h2>QTL Sumstat generation<a class="headerlink" href="#qtl-sumstat-generation" title="Permalink to this headline">¶</a></h2>
-<p>This step generate the cis-QTL summary statistics and for downstream analysis from summary statistics. The analysis is done per chromosome to reduce running time.</p>
+<div class="section" id="qtl-asscoiation-testing">
+<h2>QTL asscoiation testing<a class="headerlink" href="#qtl-asscoiation-testing" title="Permalink to this headline">¶</a></h2>
+<p>This step generate the cis-QTL and trans-QTL summary statistics and for downstream analysis from summary statistics. The analysis is done per chromosome to reduce running time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_cis_2</span><span class="p">,</span><span class="n">cis</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_cis_2</span><span class="p">,</span> <span class="n">cis</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
 <span class="kn">output:</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.cis_long_table.txt.gz&#39;</span><span class="p">,</span>
        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.cis_gene_table.txt.gz&#39;</span><span class="p">,</span>
@@ -727,7 +756,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_trans_2</span><span class="p">,</span><span class="n">trans</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_trans_2</span><span class="p">,</span> <span class="n">trans</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">keep_gene</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">input:</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.trans_long_table.txt.gz&#39;</span><span class="p">,</span>
@@ -768,7 +797,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">APEX_</span><span class="o">*</span><span class="n">_4</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.APEX_QTL_recipe.tsv&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.APEX_QTL_recipe.tsv&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
     <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -812,7 +841,7 @@
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">TensorQTL QTL calling pipeline</p>
+            <p class="prev-next-title">TensorQTL QTL association testing</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="../transQTL_scan.html" title="next page">

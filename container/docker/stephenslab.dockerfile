@@ -19,6 +19,14 @@ R --slave -e "devtools::install_github('hadley/devtools', ref='cran')" &&
 RUN R --slave -e "for (p in c('abind','data.table', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
 RUN R --slave -e "devtools::install_github('stephenslab/udr')"
+# Add tabix to accomodate the new susie interface
+RUN cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.12/htslib-1.12.tar.bz2 -O htslib-1.12.tar.bz2 && \
+    tar -xjvf htslib-1.12.tar.bz2 && \
+    cd htslib-1.12 && \
+    ./configure --prefix=/usr/local/bin && \
+    make && \
+    make install && \
+    cp tabix bgzip htsfile /usr/local/bin && rm -rf /tmp/htslib*
 RUN echo "cd /tmp" >> /entrypoint.sh
 RUN echo "exec /bin/bash "$@"" >> /entrypoint.sh
 RUN chmod u+x /entrypoint.sh

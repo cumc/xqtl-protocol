@@ -11,23 +11,36 @@ LC_ALL=C.UTF-8
 LANG=C.UTF-8
 
 su -  root # USER root
-apt-get update && apt-get install -y python2 && apt-get clean && \
+apt-get update && apt-get install -y python2 && \
+apt-get install -y build-essential wget \
+libncurses5-dev zlib1g-dev libbz2-dev liblzma-dev libcurl3-dev && \
+apt-get clean && \
 apt-get autoremove -y && \
 rm -rf /var/lib/{apt,dpkg,cache,log}/
 curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 python2 get-pip.py
 python2.7 -m pip install numpy scipy
-R -e "install.packages(c('doParallel', 'VIM', 'BiocManager'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
-Rscript -e 'BiocManager::install("preprocessCore")'
+R -e "install.packages(c('doParallel', 'BiocManager'), dependencies=TRUE, repos='http://cran.rstudio.com/')"
+Rscript -e 'BiocManager::install("impute")'
 conda install -y -c bioconda/label/cf201901 bedtools
-
+cd /usr/src
+wget https://github.com/samtools/samtools/releases/download/1.10/samtools-1.10.tar.bz2 && \
+tar jxf samtools-1.10.tar.bz2 && \
+rm samtools-1.10.tar.bz2 && \
+cd samtools-1.10 && \
+./configure --prefix $(pwd) && \
+make
+PATH=${PATH}:/usr/src/samtools-1.10
 # Dapars scripts
 for i in DaPars_Extract_Anno.py Dapars2_Multi_Sample.py gtf2bed12.py; do wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/${i} \
 && mv ${i} /usr/local/bin/ && chmod +x /usr/local/bin/${i}; done
 %environment
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
+export PATH=${PATH}:/usr/src/samtools-1.10
 %runscript
+cd /usr/src
 exec /bin/bash "$@"
 %startscript
+cd /usr/src
 exec /bin/bash "$@"

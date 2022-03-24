@@ -104,7 +104,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../complete_analysis/eQTL_analysis.html">
-   Bulk RNA-seq eQTL analysis
+   Bulk RNA-seq eQTL analysis-external bed input.
   </a>
  </li>
 </ul>
@@ -574,6 +574,11 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#memory-usage">
+   Memory usage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#example-command">
    Example command
   </a>
@@ -623,7 +628,7 @@
 <div class="section" id="pre-requisites">
 <h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
 <p>Make sure you install the pre-requisited before running this notebook:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">LDtools</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cugg</span>
 </pre></div>
 </div>
 </div>
@@ -705,7 +710,7 @@
 <li><p>the input files can be from multiple directory and from different format. The input paths must follow the rules related to Unix shell. the format is to pair the column names with keys (CHR, POS, A0, A1, SNP, STAT, SE, P). if not provided, the column names of the input file will be considered as the default keys.</p></li>
 <li><p>The input summary statistic file cannot have duplicated chr:pos</p></li>
 <li><p>The input summary statstic file cannot have # in its header
--<code class="docutils literal notranslate"><span class="pre">ID</span></code> in yml is a unique identifier for each SNP. The default are CHR,POS. These duplicated identifier will only keep the first one in the file.</p></li>
+-<code class="docutils literal notranslate"><span class="pre">ID</span></code> in yml is the rule to generate a unique identifier for each SNP, the content of ID shall be a combination of CHR, POS, A0, A1,SNP .etc but not the actual column names. ID can not take existing id columns in the original file.</p></li>
 </ul>
 </li>
 </ul>
@@ -732,6 +737,11 @@
 <li><p>The generated sumstat files will be in gz format.</p></li>
 </ul>
 </div>
+<div class="section" id="memory-usage">
+<h2>Memory usage<a class="headerlink" href="#memory-usage" title="Permalink to this headline">¶</a></h2>
+<p>For merging two sumstat with ~85000 rows and of size of ~5MB, 1 GB of memory is needed</p>
+<p>For merging two sumstat with ~2000000 rows and of size of ~1 GB, at least 50 GB of memory is needed.</p>
+</div>
 <div class="section" id="example-command">
 <h2>Example command<a class="headerlink" href="#example-command" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">./</span><span class="n">summary_stats_merger</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">data</span> <span class="o">--</span><span class="n">yml_list</span> <span class="n">data</span><span class="o">/</span><span class="n">yml_list</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">ambiguous</span> <span class="o">--</span><span class="n">intersect</span>
@@ -751,7 +761,18 @@
 <span class="c1"># if add --intersect parameter, output intersect SNPs in all input files.</span>
 <span class="kn">parameter:</span> <span class="n">intersect</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># Containers that contains the necessary packages</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># For cluster jobs, number commands to run per job</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Walltime </span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;5h&#39;</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;3G&#39;</span>
+<span class="c1"># The directory of the output sumstat</span>
+<span class="kn">parameter:</span> <span class="n">sumstat_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">sumstat_path</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">sumstat_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;#chr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="kp">name</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">sumstat_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;#chr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">time</span>
 </pre></div>
 </div>
 </div>
@@ -762,22 +783,23 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">default_1</span> <span class="p">(</span><span class="n">export</span> <span class="n">utils</span> <span class="n">script</span><span class="p">)]</span>
-<span class="kn">depends:</span> <span class="n">Py_Module</span><span class="p">(</span><span class="s1">&#39;LDtools&#39;</span><span class="p">)</span>
+<span class="kn">depends:</span> <span class="n">Py_Module</span><span class="p">(</span><span class="s1">&#39;cugg&#39;</span><span class="p">)</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/utils.py&#39;</span>
 <span class="kn">report:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/utils.py&#39;</span>
-
     <span class="kn">import</span> <span class="nn">os</span>
-    <span class="kn">from</span> <span class="nn">LDtools.sumstat</span> <span class="kn">import</span> <span class="n">read_sumstat</span>
-    <span class="kn">from</span> <span class="nn">LDtools.utils</span> <span class="kn">import</span> <span class="o">*</span>
-    <span class="k">def</span> <span class="nf">merge_sumstats</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span><span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">from</span> <span class="nn">cugg.sumstat</span> <span class="kn">import</span> <span class="n">read_sumstat</span>
+    <span class="kn">from</span> <span class="nn">cugg.utils</span> <span class="kn">import</span> <span class="o">*</span>
+    <span class="c1">## To be added in cugg packages</span>
+    <span class="c1">## Running functions</span>
+    <span class="k">def</span> <span class="nf">unify_sumstat</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span><span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">):</span>
         <span class="c1">#parse yaml</span>
         <span class="n">yml</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">yml</span><span class="p">)</span>
         <span class="n">input_dict</span> <span class="o">=</span> <span class="n">parse_input</span><span class="p">(</span><span class="n">yml</span><span class="p">[</span><span class="s1">&#39;INPUT&#39;</span><span class="p">])</span>
         <span class="n">target_dict</span> <span class="o">=</span> <span class="n">parse_input</span><span class="p">(</span><span class="n">yml</span><span class="p">[</span><span class="s1">&#39;TARGET&#39;</span><span class="p">])</span>
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">yml</span><span class="p">[</span><span class="s1">&#39;OUTPUT&#39;</span><span class="p">]</span>
-
         <span class="n">input_dict</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">target_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">target_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">lst_sumstats_file</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+        <span class="n">lst_sumstats_file</span> <span class="o">=</span> <span class="p">[</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total number of sumstats: &#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">))</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;There are duplicated names in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">))</span>
@@ -786,7 +808,7 @@
         <span class="n">lst_sumstats</span> <span class="o">=</span> <span class="p">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">i</span><span class="p">):</span><span class="n">read_sumstat</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">input_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">nqs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1">#check duplicated indels and remove them.</span>
-        <span class="n">subject</span> <span class="o">=</span> <span class="n">check_indels</span><span class="p">(</span><span class="n">lst_sumstats</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">target_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">])])</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="n">check_indels</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">target_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">],</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">query</span> <span class="ow">in</span> <span class="n">lst_sumstats</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="c1">#check duplicated indels and remove them.</span>
             <span class="n">query</span> <span class="o">=</span> <span class="n">check_indels</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -798,31 +820,65 @@
             <span class="c1">#get common snps</span>
             <span class="n">common_snps</span> <span class="o">=</span> <span class="nb">set</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">set</span><span class="p">(</span><span class="n">nq</span><span class="o">.</span><span class="n">SNP</span><span class="p">)</span> <span class="k">for</span> <span class="n">nq</span> <span class="ow">in</span> <span class="n">nqs</span><span class="p">])</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total number of common SNPs: &#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">common_snps</span><span class="p">))</span>
-            <span class="c1">#write out new smustats</span>
-            <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">):</span>
+            <span class="c1">#write out new sumstats</span>
+            <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span><span class="p">,</span><span class="kp">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">,</span><span class="n">Theme</span><span class="p">):</span>
                 <span class="n">sumstats</span> <span class="o">=</span> <span class="n">nq</span><span class="p">[</span><span class="n">nq</span><span class="o">.</span><span class="n">SNP</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">common_snps</span><span class="p">)]</span>
-                <span class="n">sumstats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+                <span class="n">sumstats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">output_sumstats</span><span class="p">,</span><span class="n">nq</span><span class="p">,</span><span class="kp">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lst_sumstats_file</span><span class="p">,</span><span class="n">nqs</span><span class="p">,</span><span class="n">Theme</span><span class="p">):</span>
                 <span class="c1">#output match SNPs with target SNPs.</span>
-                <span class="n">nq</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All are done!!!&#39;</span><span class="p">)</span>
+                <span class="n">sumstats</span><span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="n">ss_2_vcf</span><span class="p">(</span><span class="n">nq</span><span class="p">,</span><span class="kp">name</span><span class="p">)</span>
+                <span class="n">sumstats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">output_sumstats</span><span class="p">),</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All are done&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">default_2</span> <span class="p">(</span><span class="n">merge</span> <span class="n">sumstats</span><span class="p">)]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">default_2</span> <span class="p">(</span><span class="n">unify</span> <span class="n">sumstats</span><span class="p">)]</span>
 <span class="kn">depends:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/utils.py&#39;</span>
 <span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;yml_path&quot;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="nb">input</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/utils.py&#39;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stdout&#39;</span>
-
     <span class="n">yml</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_yml_path[1]}</span><span class="s2">&quot;</span>
     <span class="n">keep_ambiguous</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">keep_ambiguous</span><span class="p">}</span>
     <span class="n">intersect</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">intersect</span><span class="p">}</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">)</span>
-    <span class="n">merge_sumstats</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">)</span>
+    <span class="n">unify_sumstat</span><span class="p">(</span><span class="n">yml</span><span class="p">,</span> <span class="n">keep_ambiguous</span><span class="p">,</span><span class="n">intersect</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">sumstat_to_vcf_1</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;sumstat_path&quot;</span>
+<span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">:</span><span class="s1">an</span><span class="si">}</span><span class="s1">.vcf&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_sumstat_path</span><span class="p">]</span>
+<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stdout&#39;</span>
+    <span class="kn">from</span> <span class="nn">cugg.sumstat</span> <span class="kn">import</span> <span class="n">ss_2_vcf</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">sumstat_path_list</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_sumstat_path</span><span class="p">}</span>
+    <span class="kp">name</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="kp">name</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sumstat_path_list</span><span class="p">,</span><span class="kp">name</span><span class="p">):</span>
+        <span class="n">sumstats</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sumstats</span><span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="n">ss_2_vcf</span><span class="p">(</span><span class="n">sumstats</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">:</span><span class="s1">an</span><span class="si">}</span><span class="s1">.vcf&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">sumstats</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">:</span><span class="s1">an</span><span class="si">}</span><span class="s1">.vcf&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">sumstat_to_vcf_2</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.merged.vcf.gz&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stdout&#39;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">};</span> <span class="n">do</span>
+    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="n">i</span> 
+    <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">vcf</span> <span class="o">-</span><span class="n">f</span>  <span class="err">$</span><span class="n">i</span><span class="o">.</span><span class="n">gz</span><span class="p">;</span> <span class="n">done</span>
+    <span class="n">bcftools</span> <span class="n">merge</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">}</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">samples</span>  <span class="o">-</span><span class="n">Oz</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">a</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

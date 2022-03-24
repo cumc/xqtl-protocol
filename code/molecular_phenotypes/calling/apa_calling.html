@@ -104,7 +104,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
-   Bulk RNA-seq eQTL analysis
+   Bulk RNA-seq eQTL analysis-external bed input.
   </a>
  </li>
 </ul>
@@ -630,11 +630,6 @@
      Step 3: Run Dapars2 main to calculate PDUIs
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-4-impute-missing-values">
-     Step 4: Impute missing values
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -658,13 +653,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-2-dapars2-main">
-     Step 2: Dapars2 Main
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#step-3-impute">
-     Step 3: Impute
+    <a class="reference internal nav-link" href="#step-3-dapars2-main">
+     Step 3: Dapars2 Main
     </a>
    </li>
   </ul>
@@ -1009,60 +999,6 @@ Sections
 </div>
 </div>
 </div>
-<div class="section" id="step-4-impute-missing-values">
-<h3>Step 4: Impute missing values<a class="headerlink" href="#step-4-impute-missing-values" title="Permalink to this headline">¶</a></h3>
-<p>This step impute the missing value in PDUI matrix and return the Imputed one</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dapars result Imputation </span>
-<span class="p">[</span><span class="n">APAimpute</span><span class="p">]</span>
-<span class="c1"># Input path</span>
-<span class="c1"># parameter: dapars_raw = </span>
-<span class="kn">parameter:</span> <span class="n">chrlist</span> <span class="o">=</span> <span class="nb">list</span>
-<span class="c1"># Default k neighbours. Set k = 0 will train the k in a data-driven manner</span>
-<span class="kn">parameter:</span> <span class="n">knn</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="kn">input:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Wigfiles_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">/Dapars_result_result_temp.</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="kn">output:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/Dapars_result_imputed_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">.txt&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">chrlist</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-
-<span class="o">.</span><span class="n">libPaths</span><span class="p">(</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;/usr/local/lib/R/site-library&#39;</span> <span class="p">,</span> <span class="s1">&#39;/usr/lib/R/site-library&#39;</span><span class="p">,</span> <span class="s1">&#39;/usr/lib/R/library&#39;</span><span class="p">,</span> <span class="o">.</span><span class="n">libPaths</span><span class="p">()))</span>
-<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">dplyr</span><span class="p">))</span>
-<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">tidyr</span><span class="p">))</span>
-<span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">require</span><span class="p">(</span><span class="n">impute</span><span class="p">))</span>
-
-
- <span class="c1"># Read the data</span>
-    <span class="n">input_dir</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
-  
-
-    <span class="n">dapars_result</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">::</span><span class="n">fread</span><span class="p">(</span><span class="n">input_dir</span><span class="p">)</span> <span class="c1">## much faster than read.table</span>
-    <span class="n">tmp</span> <span class="o">=</span> <span class="n">dapars_result</span><span class="p">[,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">dapars_result</span> <span class="o">=</span> <span class="n">dapars_result</span><span class="p">[,</span><span class="o">-</span><span class="n">c</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">)]</span>
-    <span class="n">rownames</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">)</span> <span class="o">=</span> <span class="n">dapars_result</span><span class="p">[,</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">dapars_result</span> <span class="o">=</span> <span class="n">dapars_result</span><span class="p">[,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">dapars_result</span> <span class="o">=</span> <span class="n">dapars_result</span><span class="p">[,</span><span class="n">colMeans</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mf">0.8</span><span class="p">]</span>
-    <span class="n">dapars_result</span> <span class="o">=</span> <span class="n">dapars_result</span><span class="p">[</span><span class="n">rowMeans</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,]</span>
-    <span class="n">tmp_vec</span> <span class="o">=</span> <span class="n">rownames</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">)</span>
-  
-    <span class="n">class</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">)</span> <span class="o">=</span> <span class="s2">&quot;numeric&quot;</span>
-  
-    <span class="n">dapars_impute</span> <span class="o">=</span> <span class="n">impute</span><span class="o">.</span><span class="n">knn</span><span class="p">(</span><span class="n">dapars_result</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">dapars_impute</span><span class="err">$</span><span class="n">data</span><span class="p">)</span>
-  
-    <span class="k">for</span> <span class="p">(</span><span class="n">gene</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">nrow</span><span class="p">(</span><span class="n">df</span><span class="p">))</span> <span class="p">{</span>
-      <span class="n">mat</span> <span class="o">=</span> <span class="n">apply</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">gene</span><span class="p">,],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">ties</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;average&quot;</span><span class="p">)</span>
-      <span class="n">mat</span> <span class="o">=</span> <span class="n">qnorm</span><span class="p">(</span><span class="n">mat</span><span class="o">/</span> <span class="p">(</span><span class="n">ncol</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
-      <span class="n">df</span><span class="p">[</span><span class="n">gene</span><span class="p">,</span> <span class="p">]</span> <span class="o">=</span> <span class="n">mat</span>
-  <span class="p">}</span>
-  
-    <span class="n">df</span><span class="err">$</span><span class="n">Gene</span> <span class="o">=</span> <span class="n">tmp_vec</span>
-    <span class="n">final_data</span> <span class="o">&lt;-</span> <span class="n">inner_join</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">tmp</span><span class="p">)</span>
-    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">final_data</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div class="section" id="analysis-demo">
 <h2>Analysis demo<a class="headerlink" href="#analysis-demo" title="Permalink to this headline">¶</a></h2>
@@ -1166,8 +1102,8 @@ INFO: Workflow APAconfig (ID=wdc3865265bf562ea) is executed successfully with 1 
 </div>
 </div>
 </div>
-<div class="section" id="step-2-dapars2-main">
-<h3>Step 2: Dapars2 Main<a class="headerlink" href="#step-2-dapars2-main" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="step-3-dapars2-main">
+<h3>Step 3: Dapars2 Main<a class="headerlink" href="#step-3-dapars2-main" title="Permalink to this headline">¶</a></h3>
 <p>Note: the example is a truncated version, which just have coverage in chr1,chr11 and chr12</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1232,40 +1168,6 @@ INFO: Workflow APAmain (ID=w28477dad0713d81d) is executed successfully with 1 co
         └── Each_processor_3UTR_Result_8.txt
 
 2 directories, 14 files
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="step-3-impute">
-<h3>Step 3: Impute<a class="headerlink" href="#step-3-impute" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAimpute</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">APAimpute</span>: Dapars result Imputation
-Warning message:
-package ‘VIM’ was built under R version 4.0.5 
-[1] &quot;Use k = 5 for imputation&quot;
-Error in preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  : 
-  ERROR; return code from pthread_create() is 22
-In addition: Warning message:
-In preprocessCore::normalize.quantiles(as.matrix(imputed_full_data),  :
-  NAs introduced by coercion
-Execution halted
-ERROR: APAimpute (id=9d62c6b78d820375) returns an error.
-ERROR: [APAimpute]: [0]: Executing script in Singularity returns an error (exitcode=1).
-The script has been saved to /home/ls3751/.sos/a23a325a1ed7f8c9/singularity_run_19849.R. To reproduce the error please run:
-<span class=" -Color -Color-Green">singularity exec  /mnt/mfs/statgen/ls3751/container/dapars2.sif Rscript /home/ls3751/.sos/a23a325a1ed7f8c9/singularity_run_19849.R</span>
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

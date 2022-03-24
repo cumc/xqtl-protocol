@@ -7,7 +7,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         libbz2-dev \
         libhdf5-dev \
         libncurses5-dev \
-        default-jdk && \
+        default-jdk \
+	git && \
     apt-get clean && \
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/

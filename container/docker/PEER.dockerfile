@@ -50,6 +50,8 @@ RUN tar -xzf R-3.5.1.tar.gz && cd R-3.5.1 && ./configure --prefix=/usr/lib/R/ --
 	cd .. && rm -rf R-3.5.1*
 RUN wget https://github.com/downloads/PMBio/peer/R_peer_source_1.3.tgz && R CMD INSTALL R_peer_source_1.3.tgz && rm -f R_peer_source_1.3.tgz
 RUN R --slave -e 'install.packages(c("dplyr", "tibble", "readr", "modelr", "purrr"), repos="http://cran.rstudio.com/")'
+RUN R --slave -e 'devtools::install_github("bioFAM/MOFA2", build_opts = c("--no-resave-data --no-build-vignettes"))'
+RUN pip install mofapy2
 RUN echo "exec /bin/bash "$@"" >> /entrypoint.sh
 RUN chmod u+x /entrypoint.sh
 CMD /bin/bash /entrypoint.sh

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Stratified LD Score Regression &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -601,12 +602,12 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="stratified-ld-score-regression">
+  <section class="tex2jax_ignore mathjax_ignore" id="stratified-ld-score-regression">
 <h1>Stratified LD Score Regression<a class="headerlink" href="#stratified-ld-score-regression" title="Permalink to this headline">¶</a></h1>
 <p>This notebook implements the pipepline of <a class="reference external" href="https://github.com/bulik/ldsc/wiki">S-LDSC</a> for LD score and functional enrichment analysis. It is written by Anmol Singh (<a class="reference external" href="mailto:singh&#46;anmol&#37;&#52;&#48;columbia&#46;edu">singh<span>&#46;</span>anmol<span>&#64;</span>columbia<span>&#46;</span>edu</a>), with input from Dr. Gao Wang.</p>
 <p><strong>FIXME: the initial draft is complete but pending Gao’s review and documentation with minimal working example</strong></p>
 <p>The pipeline is developed to integrate GWAS summary statistics data, annotation data, and LD reference panel data to compute functional enrichment for each of the epigenomic annotations that the user provides using the S-LDSC model. We will first start off with an introduction, instructions to set up, and the minimal working examples. Then the workflow code that can be run using SoS on any data will be at the end.</p>
-<div class="section" id="a-brief-review-on-stratified-ld-score-regression">
+<section id="a-brief-review-on-stratified-ld-score-regression">
 <h2>A brief review on Stratified LD score regression<a class="headerlink" href="#a-brief-review-on-stratified-ld-score-regression" title="Permalink to this headline">¶</a></h2>
 <p>Here I briefly review LD Score Regression and what it is used for. For more in depth information on LD Score Regression please read the following three papers:</p>
 <ol class="simple">
@@ -616,15 +617,15 @@
 </ol>
 <p>As stated in Sullivan et al 2015, confounding factors and polygenic effects can cause inflated test statistics and other methods cannot distinguish between inflation from confounding bias and a true signal. LD Score Regression (LDSC) is a technique that aims to identify the impact of confounding factors and polygenic effects using information from GWAS summary statistics.</p>
 <p>This approach involves using regression to mesaure the relationship between Linkage Disequilibrium (LD) scores and test statistics of SNPs from the GWAS summary statistics. Variants in LD with a “causal” variant show an elevation in test statistics in association analysis proportional to their LD (measured by <span class="math notranslate nohighlight">\(r^2\)</span>) with the causal variant within a certain window size (could be 1 cM, 1kB, etc.). In contrast, inflation from confounders such as population stratification that occur purely from genetic drift will not correlate with LD. For a polygenic trait, SNPs with a high LD score will have more significant χ2 statistics on average than SNPs with a low LD score. Thus, if we regress the <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics from GWAS against LD Score, the intercept minus one is an estimator of the mean contribution of confounding bias to the inflation in the test statistics. The regression model is known as LD Score regression.</p>
-<div class="section" id="ldsc-model">
+<section id="ldsc-model">
 <h3>LDSC model<a class="headerlink" href="#ldsc-model" title="Permalink to this headline">¶</a></h3>
 <p>Under a polygenic assumption, in which effect sizes for variants are drawn independently from distributions with variance proportional to  <span class="math notranslate nohighlight">\(1/(p(1-p))\)</span> where p is the minor allele frequency (MAF), the expected <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic of variant j is:</p>
 <div class="math notranslate nohighlight">
 \[E[\chi^2|l_j] = Nh^2l_j/M + Na + 1 \quad (1)\]</div>
 <p>where <span class="math notranslate nohighlight">\(N\)</span> is the sample size; <span class="math notranslate nohighlight">\(M\)</span> is the number of SNPs, such that <span class="math notranslate nohighlight">\(h^2/M\)</span> is the average heritability explained per SNP; <span class="math notranslate nohighlight">\(a\)</span> measures the contribution of confounding biases, such as cryptic relatedness and population stratification; and <span class="math notranslate nohighlight">\(l_j = \sum_k r^2_{jk}\)</span> is the LD Score of variant <span class="math notranslate nohighlight">\(j\)</span>, which measures the amount of genetic variation tagged by <span class="math notranslate nohighlight">\(j\)</span>. A full derivation of this equation is provided in the Supplementary Note of Sullivan et al (2015). An alternative derivation is provided in Supplementary Note of Zhu and Stephens (2017) AoAS.</p>
 <p>From this we can see that LD Score regression can be used to compute SNP-based heritability for a phenotype or trait, from GWAS summary statistics and does not require genotype information like other methods such as REML do.</p>
-</div>
-<div class="section" id="stratified-ldsc">
+</section>
+<section id="stratified-ldsc">
 <h3>Stratified LDSC<a class="headerlink" href="#stratified-ldsc" title="Permalink to this headline">¶</a></h3>
 <p>Heritability is the proportion of phenotypic variation (VP) that is due to variation in genetic values (VG) and thus can tell us how much of the difference in observed phenotypes in a sample is due to difference in genetics in the sample. It can also be extended to analyze partitioned heritability for a phenotype/trait split over categories.</p>
 <p>For Partitioned Heritability or Stratified LD Score Regression (S-LDSC) more power is added to our analysis by leveraging LD Score information as well as using SNPs that haven’t reached Genome Wide Significance to partition heritability for a trait over categories which many other methods do not do.</p>
@@ -636,9 +637,9 @@
 \[E[\chi^2_j] = N\sum_CT_Cl(j,C) + Na + 1 \quad (2)\]</div>
 <p>where <span class="math notranslate nohighlight">\(N\)</span> is sample size, C indexes categories, <span class="math notranslate nohighlight">\(ℓ(j, C)\)</span> is the LD score of SNP j with respect to category <span class="math notranslate nohighlight">\(l(j,C) = \sum_{k\epsilon C} r^2_{jk}\)</span>, <span class="math notranslate nohighlight">\(a\)</span> is a term that measures the contribution of confounding biases, and if the categories are disjoint, <span class="math notranslate nohighlight">\(\tau_C\)</span> is the per-SNP heritability in category <span class="math notranslate nohighlight">\(C\)</span>; if the categories overlap, then the per-SNP heritability of SNP j is <span class="math notranslate nohighlight">\(\sum_{C:j\epsilon C} \tau_C\)</span>.  Equation 2 allows us to estimate <span class="math notranslate nohighlight">\(\tau_C\)</span> via a (computationally simple) multiple regression of <span class="math notranslate nohighlight">\(\chi^2\)</span> against <span class="math notranslate nohighlight">\(ℓ(j, C)\)</span>, for either a quantitative or case-control study.</p>
 <p>To see how these methods have been applied to real world data as well as a further discussion on methods and comparisons to other methods please read the three papers listed at the top of the document.</p>
-</div>
-</div>
-<div class="section" id="command-interface">
+</section>
+</section>
+<section id="command-interface">
 <h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -728,8 +729,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="make-annotation-file">
+</section>
+<section id="make-annotation-file">
 <h2>Make Annotation File<a class="headerlink" href="#make-annotation-file" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -749,8 +750,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="munge-summary-statistics-option-1-no-signed-summary-statistic">
+</section>
+<section id="munge-summary-statistics-option-1-no-signed-summary-statistic">
 <h2>Munge Summary Statistics (Option 1: No Signed Summary Statistic)<a class="headerlink" href="#munge-summary-statistics-option-1-no-signed-summary-statistic" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -773,8 +774,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="munge-summary-statistics-option-2-no-signed-summary-statistic">
+</section>
+<section id="munge-summary-statistics-option-2-no-signed-summary-statistic">
 <h2>Munge Summary Statistics (Option 2: No Signed Summary Statistic)<a class="headerlink" href="#munge-summary-statistics-option-2-no-signed-summary-statistic" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -796,8 +797,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="calculate-ld-scores">
+</section>
+<section id="calculate-ld-scores">
 <h2>Calculate LD Scores<a class="headerlink" href="#calculate-ld-scores" title="Permalink to this headline">¶</a></h2>
 <p><strong>Make sure to delete SNP,CHR, and BP columns from annotation files if they are present otherwise this code will not work. Before deleting, if these columns are present, make sure that the annotation file is sorted.</strong></p>
 <div class="cell docutils container">
@@ -821,8 +822,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="calculate-functional-enrichment-using-annotations">
+</section>
+<section id="calculate-functional-enrichment-using-annotations">
 <h2>Calculate Functional Enrichment using Annotations<a class="headerlink" href="#calculate-functional-enrichment-using-annotations" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -846,8 +847,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

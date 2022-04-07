@@ -17,7 +17,7 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 
 ### Data and software
 
-- Minimal working examples are available through request to access [this Google Drive folder](https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed).
+- Minimal working examples are available through request to access [this Google Drive folder](https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd=Ya8sB2ed).
 - Under the folder above you can find `singularity` image release for software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
 
 ### Organization of the resource
@@ -50,9 +50,10 @@ Contributors
 - Amanda Tsai, Department of Biostatistics, Columbia University  
 - Liucheng Shi, Department of Biostatistics, Columbia University
 
-Brain xQTL project leader
+Brain xQTL project leadership
 
 - Philip De Jager, Department of Neurology, Columbia University
+- Carlos Crunchaga, Department of Psychiatry, Neurology and Genetics, Washington University in St. Louis
 
 Brain xQTL methods and data integration work group
 

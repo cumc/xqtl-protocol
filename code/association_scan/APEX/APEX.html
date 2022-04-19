@@ -98,13 +98,18 @@
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Complete Pipelines
+  Command Generator
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../complete_analysis/eQTL_analysis.html">
-   Bulk RNA-seq eQTL analysis-external bed input.
+  <a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">
+   RNA-seq calling and QC
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
+   Bulk RNA-seq eQTL analysis
   </a>
  </li>
 </ul>
@@ -698,7 +703,7 @@ Sections
 <span class="n">molecular_pheno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">molecular_pheno_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">geno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_file_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">grm_chr_inv</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">grm_list</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">input_inv</span> <span class="o">=</span> <span class="n">molecular_pheno_chr_inv</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">geno_chr_inv</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#chr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">grm_chr_inv</span><span class="p">,</span><span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#chr&quot;</span><span class="p">)</span>
+<span class="n">input_inv</span> <span class="o">=</span> <span class="n">molecular_pheno_chr_inv</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">geno_chr_inv</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">grm_chr_inv</span><span class="p">,</span><span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
 <span class="n">input_inv</span> <span class="o">=</span> <span class="n">input_inv</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -801,7 +806,7 @@ Sections
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
     <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;#chr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]],</span>
+    <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]],</span>
     <span class="s2">&quot;sumstat_dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]</span>
     <span class="p">})</span>
     <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>

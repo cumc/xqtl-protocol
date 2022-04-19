@@ -98,13 +98,18 @@
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Complete Pipelines
+  Command Generator
  </span>
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../complete_analysis/eQTL_analysis.html">
-   Bulk RNA-seq eQTL analysis-external bed input.
+  <a class="reference internal" href="../commands_generator/bulk_expression_commands.html">
+   RNA-seq calling and QC
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">
+   Bulk RNA-seq eQTL analysis
   </a>
  </li>
 </ul>
@@ -863,6 +868,7 @@
             <span class="c1">#under the same chr:pos or gene:chr:pos. match A0 and A1 by exact, flip, reverse, or flip+reverse.</span>
             <span class="c1">#if duplicated chr_pos or gene_chr_pos exist, run a recursive match for each pair of them between query and subject.</span>
             <span class="n">nq</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">snps_match</span><span class="p">(</span><span class="n">query</span><span class="p">,</span><span class="n">subject</span><span class="p">,</span><span class="n">keep_ambiguous</span><span class="p">)</span>
+            <span class="n">nq</span> <span class="o">=</span> <span class="n">nq</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="o">~</span><span class="n">nq</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span> <span class="c1"># Remove duplicated columns due to order of columns difference in subject and query</span>
             <span class="n">nqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nq</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">intersect</span><span class="p">:</span>
             <span class="c1">#get common snps</span>
@@ -920,6 +926,7 @@
         <span class="n">fix_header</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SNP&quot;</span><span class="p">,</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span><span class="s2">&quot;A0&quot;</span><span class="p">,</span><span class="s2">&quot;POS&quot;</span><span class="p">,</span><span class="s2">&quot;CHR&quot;</span><span class="p">,</span><span class="s2">&quot;STAT&quot;</span><span class="p">,</span><span class="s2">&quot;SE&quot;</span><span class="p">,</span><span class="s2">&quot;P&quot;</span><span class="p">]</span>
         <span class="n">header_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="s2">&quot;GENE&quot;</span> <span class="ow">in</span> <span class="n">ss_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ss_df</span><span class="p">[</span><span class="s1">&#39;GENE&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">ss_df</span><span class="p">[</span><span class="s1">&#39;SNP&#39;</span><span class="p">]</span>
             <span class="n">df</span><span class="p">[</span><span class="s1">&#39;INFO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;GENE=&quot;</span> <span class="o">+</span> <span class="n">ss_df</span><span class="p">[</span><span class="s2">&quot;GENE&quot;</span><span class="p">]</span>
             <span class="n">fix_header</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GENE&quot;</span><span class="p">,</span><span class="s2">&quot;SNP&quot;</span><span class="p">,</span><span class="s2">&quot;A1&quot;</span><span class="p">,</span><span class="s2">&quot;A0&quot;</span><span class="p">,</span><span class="s2">&quot;POS&quot;</span><span class="p">,</span><span class="s2">&quot;CHR&quot;</span><span class="p">,</span><span class="s2">&quot;STAT&quot;</span><span class="p">,</span><span class="s2">&quot;SE&quot;</span><span class="p">,</span><span class="s2">&quot;P&quot;</span><span class="p">]</span>
             <span class="n">header_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;##INFO=&lt;ID=GENE,Number=1,Type=String,Description=&quot;The name of genes&quot;&gt;&#39;</span><span class="p">]</span>
@@ -968,7 +975,7 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">};</span> <span class="n">do</span>
     <span class="n">bgzip</span> <span class="o">-</span><span class="n">k</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="n">i</span> 
     <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">vcf</span> <span class="o">-</span><span class="n">f</span>  <span class="err">$</span><span class="n">i</span><span class="o">.</span><span class="n">gz</span><span class="p">;</span> <span class="n">done</span>
-    <span class="n">bcftools</span> <span class="n">merge</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s1">.gz&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">])}</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">samples</span>  <span class="o">-</span><span class="n">Oz</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">a</span><span class="p">}</span>
+    <span class="n">bcftools</span> <span class="n">merge</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s1">.gz&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">])}</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">samples</span> <span class="o">-</span><span class="n">m</span> <span class="nb">id</span>  <span class="o">-</span><span class="n">Oz</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">a</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

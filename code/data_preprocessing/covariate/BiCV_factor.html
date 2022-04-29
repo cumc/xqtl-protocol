@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Factor analysis using Bi-Cross validation &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -577,9 +578,9 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="factor-analysis-using-bi-cross-validation">
+  <section class="tex2jax_ignore mathjax_ignore" id="factor-analysis-using-bi-cross-validation">
 <h1>Factor analysis using Bi-Cross validation<a class="headerlink" href="#factor-analysis-using-bi-cross-validation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This module use an implement of the following paper</p>
 <blockquote>
@@ -591,22 +592,22 @@
 Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin
 bioRxiv 2020.12.18.423490; doi: <a class="reference external" href="https://doi.org/10.1101/2020.12.18.423490">https://doi.org/10.1101/2020.12.18.423490</a></p>
 </div></blockquote>
-</div>
-<div class="section" id="input-and-output">
+</section>
+<section id="input-and-output">
 <h2>Input and output<a class="headerlink" href="#input-and-output" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>An indexed bed.gz file with the same format as <span class="xref myst">PEER factor analysis</span>.</p></li>
 <li><p>A cov file with the same format as <span class="xref myst">PEER factor analysis</span>.</p></li>
 <li><p>An indexed vcf.gz file.</p></li>
 </ol>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>A cov.gz file with the same format as <span class="xref myst">PEER factor analysis</span>.</p></li>
 </ol>
-</div>
-<div class="section" id="minimal-working-example">
+</section>
+<section id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>An MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1yjTwoO0DYGi-J9ouMsh9fHKfDmsXJ_4I?usp=sharing">google drive</a></p>
 <div class="cell docutils container">
@@ -639,12 +640,20 @@ bioRxiv 2020.12.18.423490; doi: <a class="reference external" href="https://doi.
 <span class="c1"># Software container option</span>
 <span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="c1"># N PEER factors</span>
-<span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">30</span>
-
-<span class="c1"># Default values from PEER:</span>
-<span class="c1">## The number of max iteration</span>
-
+<span class="c1"># N factors, if not specify, calculated based on sample size according to GTeX</span>
+<span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index_col</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;#chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">150</span><span class="p">:</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">250</span><span class="p">:</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">350</span><span class="p">:</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">45</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="c1">## The number of iteration</span>
 <span class="kn">parameter:</span> <span class="n">iteration</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 </div>
@@ -693,8 +702,8 @@ bioRxiv 2020.12.18.423490; doi: <a class="reference external" href="https://doi.
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

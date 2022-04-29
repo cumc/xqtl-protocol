@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>RNA-seq calling and QC &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -626,7 +627,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="rna-seq-calling-and-qc">
+  <section class="tex2jax_ignore mathjax_ignore" id="rna-seq-calling-and-qc">
 <h1>RNA-seq calling and QC<a class="headerlink" href="#rna-seq-calling-and-qc" title="Permalink to this headline">¶</a></h1>
 <p>This document shows the use of various modules to prepare reference data, perform RNA-seq calling, expression level quantification and quality control. In particular,</p>
 <ol class="simple">
@@ -646,7 +647,7 @@
 </li>
 <li><p>parameters:</p>
 <ul class="simple">
-<li><p>flag <code class="docutils literal notranslate"><span class="pre">--is-stranded</span></code> or <code class="docutils literal notranslate"><span class="pre">--no-is-stranded</span></code> : whether the rna seq data intended to be called is stranded or not.</p></li>
+<li><p>flag <code class="docutils literal notranslate"><span class="pre">--stranded</span></code> or <code class="docutils literal notranslate"><span class="pre">--no-stranded</span></code> : whether the rna seq data intended to be called is stranded or not.</p></li>
 <li><p>flag <code class="docutils literal notranslate"><span class="pre">--pair-ended</span></code> or <code class="docutils literal notranslate"><span class="pre">--no-pair-ended</span></code> : whether the rna seq data intended to be called is paired-ended or not.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--exe_dir</span></code> : diretory to the workflow notebook</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">--sample-participant-lookup</span></code> : a sample participant lookup table with the first column being sample ID and second column being the cooresponding sample ids in the genotype file</p></li>
@@ -698,7 +699,7 @@ Sections
   ref_data_2:
   gene_annotation:
     Workflow Options:
-      --[no-]is-stranded (required)
+      --[no-]stranded (required)
   indexing:
   fastqc:
   rnaseqc:
@@ -828,7 +829,7 @@ Sections
     <span class="o">--</span><span class="n">cwd</span> <span class="o">./</span> \
     <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">reference_data</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">txt</span>  \
     <span class="o">--</span><span class="n">fasta</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">adapters</span><span class="o">-</span><span class="n">etc</span>  <span class="s2">&quot;TruSeq3-PE.fa&quot;</span> \
-    <span class="o">--</span><span class="ow">is</span><span class="o">-</span><span class="n">stranded</span> \
+    <span class="o">--</span><span class="n">stranded</span> \
     <span class="o">--</span><span class="ow">is</span><span class="o">-</span><span class="n">paired</span><span class="o">-</span><span class="n">end</span> <span class="o">&gt;</span> <span class="n">example_script</span>
 </pre></div>
 </div>
@@ -862,7 +863,7 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/reference_data.ipynb gene_annota
         --hg-gtf /mnt/mfs/statgen/xqtl_workflow_testing/phenotype_master_control/reference_data/Homo_sapiens.GRCh38.103.chr.gtf \
         --hg-reference /mnt/mfs/statgen/xqtl_workflow_testing/phenotype_master_control/reference_data/GRCh38_full_analysis_set_plus_decoy_hla /mnt/mfs/statgen/xqtl_workflow_testing/phenotype_master_control/reference_data/Homo_sapiens.GRCh38.103.chr /mnt/mfs/statgen/xqtl_workflow_testing/phenotype_master_control/reference_data/ERCC92 /mnt/mfs/statgen/xqtl_workflow_testing/phenotype_master_control/reference_data/ERCC92.noALT_noHLA_noDecoy_ERCC.fasta \
         --container /mnt/mfs/statgen/containers/rna_quantification.sif \
-        --is-stranded  -J 50 -c csg.yml -q csg,q
+        --stranded  -J 50 -c csg.yml -q csg,q
 
 
 
@@ -1041,9 +1042,9 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/bulk_expression_normalization.ip
 </div>
 </div>
 </div>
-<div class="section" id="download-process-and-index-reference-data-first-time-use">
+<section id="download-process-and-index-reference-data-first-time-use">
 <h2>Download, Process, and index reference data (first time use)<a class="headerlink" href="#download-process-and-index-reference-data-first-time-use" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="download-reference-and-annotation-data-first-time-use">
+<section id="download-reference-and-annotation-data-first-time-use">
 <h3>Download reference and annotation data (first time use)<a class="headerlink" href="#download-reference-and-annotation-data-first-time-use" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1059,8 +1060,8 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/bulk_expression_normalization.ip
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="reformat-reference-and-annotation-data-first-time-use">
+</section>
+<section id="reformat-reference-and-annotation-data-first-time-use">
 <h3>Reformat reference and annotation data (first time use)<a class="headerlink" href="#reformat-reference-and-annotation-data-first-time-use" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1078,7 +1079,7 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/bulk_expression_normalization.ip
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">**</span><span class="n">Notice</span><span class="p">:</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">know</span> <span class="k">if</span> <span class="n">your</span> <span class="n">RNA</span><span class="o">-</span><span class="n">seq</span> <span class="n">data</span> <span class="ow">is</span> <span class="n">stranded</span> <span class="ow">or</span> <span class="n">unstranded</span><span class="o">.</span> <span class="n">If</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">stranded</span><span class="p">,</span> <span class="n">you</span> <span class="n">should</span> <span class="n">add</span> <span class="err">`</span><span class="o">--</span><span class="ow">is</span><span class="o">-</span><span class="n">stranded</span><span class="err">`</span> <span class="n">to</span> <span class="n">the</span> <span class="n">command</span> <span class="n">below</span><span class="o">.**</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">**</span><span class="n">Notice</span><span class="p">:</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">know</span> <span class="k">if</span> <span class="n">your</span> <span class="n">RNA</span><span class="o">-</span><span class="n">seq</span> <span class="n">data</span> <span class="ow">is</span> <span class="n">stranded</span> <span class="ow">or</span> <span class="n">unstranded</span><span class="o">.</span> <span class="n">If</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">stranded</span><span class="p">,</span> <span class="n">you</span> <span class="n">should</span> <span class="n">add</span> <span class="err">`</span><span class="o">--</span><span class="n">stranded</span><span class="err">`</span> <span class="n">to</span> <span class="n">the</span> <span class="n">command</span> <span class="n">below</span><span class="o">.**</span>
 </pre></div>
 </div>
 </div>
@@ -1086,9 +1087,9 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/bulk_expression_normalization.ip
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">gene_annotation</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">is_stranded</span> <span class="o">=</span> <span class="nb">bool</span>
+<span class="kn">parameter:</span> <span class="n">stranded</span> <span class="o">=</span> <span class="nb">bool</span>
 <span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;ref_data_1&quot;</span><span class="p">),</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;ref_data_2&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.reformatted.ERCC.gtf&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.reformatted.</span><span class="si">{</span><span class="s2">&quot;.collapse_only&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.gene.ERCC.gtf&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.reformatted.ERCC.gtf&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.reformatted</span><span class="si">{</span><span class="s2">&quot;.collapse_only&quot;</span> <span class="k">if</span> <span class="n">stranded</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.gene.ERCC.gtf&#39;</span>
 <span class="kn">report:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">gene_annotation</span> \
             <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">d</span><span class="p">]</span> \
@@ -1096,13 +1097,13 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/bulk_expression_normalization.ip
             <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
             <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">4</span><span class="p">]]</span> \
             <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_rnaquant</span><span class="p">]</span> \
-            <span class="err">$</span><span class="p">[</span><span class="s2">&quot;--is-stranded&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;--no-is-stranded&quot;</span><span class="p">]</span>  <span class="err">$</span><span class="p">[</span><span class="n">submission</span> <span class="k">if</span> <span class="n">yml</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span>
+            <span class="err">$</span><span class="p">[</span><span class="s2">&quot;--stranded&quot;</span> <span class="k">if</span> <span class="n">stranded</span> <span class="k">else</span> <span class="s2">&quot;--no-stranded&quot;</span><span class="p">]</span>  <span class="err">$</span><span class="p">[</span><span class="n">submission</span> <span class="k">if</span> <span class="n">yml</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="generation-of-index-first-time-only">
+</section>
+<section id="generation-of-index-first-time-only">
 <h3>Generation of Index (First time only)<a class="headerlink" href="#generation-of-index-first-time-only" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1142,9 +1143,9 @@ sos run /home/hs3163/GIT/xqtl-pipeline/pipeline/bulk_expression_normalization.ip
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="perform-data-quality-summary-via-fastqc">
+</section>
+</section>
+<section id="perform-data-quality-summary-via-fastqc">
 <h2>Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code><a class="headerlink" href="#perform-data-quality-summary-via-fastqc" title="Permalink to this headline">¶</a></h2>
 <p><strong>You need to figure out from fastqc results what adapter reference sequence to use for <code class="docutils literal notranslate"><span class="pre">--fasta_with_adapters_etc</span></code>. See section Step 1 below for details</strong>. We chose <code class="docutils literal notranslate"><span class="pre">--fasta_with_adapters_etc</span> <span class="pre">TruSeq3-PE.fa</span></code> for our toy example.</p>
 <ul class="simple">
@@ -1170,10 +1171,10 @@ It is assumed that all studies that were ran in one run are using the same adapt
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="multi-sample-rna-seq-calling-qc-and-normalizations-automatically-for-every-studies-using-the-same-set-of-ref-index-gtf">
+</section>
+<section id="multi-sample-rna-seq-calling-qc-and-normalizations-automatically-for-every-studies-using-the-same-set-of-ref-index-gtf">
 <h2>Multi-sample RNA-seq Calling, QC, and normalizations (Automatically for every studies using the same set of ref/index/gtf)<a class="headerlink" href="#multi-sample-rna-seq-calling-qc-and-normalizations-automatically-for-every-studies-using-the-same-set-of-ref-index-gtf" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="call-gene-level-rna-expression-via-rnaseqc">
+<section id="call-gene-level-rna-expression-via-rnaseqc">
 <h3>Call gene-level RNA expression via <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code><a class="headerlink" href="#call-gene-level-rna-expression-via-rnaseqc" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1198,14 +1199,14 @@ It is assumed that all studies that were ran in one run are using the same adapt
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="call-transcript-level-rna-expression-via-rsem">
+</section>
+<section id="call-transcript-level-rna-expression-via-rsem">
 <h3>Call transcript level RNA expression via <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#call-transcript-level-rna-expression-via-rsem" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">RSEM</span><span class="p">]</span>
 <span class="kn">parameter:</span><span class="n">fasta_with_adapters_etc</span> <span class="o">=</span> <span class="s2">&quot;TruSeq3-PE.fa&quot;</span>
-<span class="kn">parameter:</span> <span class="n">is_paired_end</span> <span class="o">=</span> <span class="nb">bool</span>
+<span class="kn">parameter:</span> <span class="n">paired_end</span> <span class="o">=</span> <span class="nb">bool</span>
 <span class="kn">input:</span>  <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;indexing&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;indexing&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.rsem_transcripts_expected_count.txt.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.rsem_transcripts_tpm.txt.gz&#39;</span><span class="p">,</span>
@@ -1224,14 +1225,14 @@ It is assumed that all studies that were ran in one run are using the same adapt
             <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">d</span><span class="p">]</span> \
             <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_rnaquant</span><span class="p">]</span> \ 
             <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span> \
-            <span class="err">$</span><span class="p">[</span><span class="s2">&quot;--is_paired_end&quot;</span> <span class="k">if</span> <span class="n">is_paired_end</span> <span class="k">else</span> <span class="s2">&quot; &quot;</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="n">submission</span> <span class="k">if</span> <span class="n">yml</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span>
+            <span class="err">$</span><span class="p">[</span><span class="s2">&quot;--paired_end&quot;</span> <span class="k">if</span> <span class="n">paired_end</span> <span class="k">else</span> <span class="s2">&quot; &quot;</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="n">submission</span> <span class="k">if</span> <span class="n">yml</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="multi-sample-rna-seq-qc-for-every-set-of-samples">
+</section>
+</section>
+<section id="multi-sample-rna-seq-qc-for-every-set-of-samples">
 <h2>Multi-sample RNA-seq QC (For every set of samples)<a class="headerlink" href="#multi-sample-rna-seq-qc-for-every-set-of-samples" title="Permalink to this headline">¶</a></h2>
 <p>We need to use a different MWE data-set that contains multiple samples – here is the <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk">Google Drive link</a>.</p>
 <div class="cell docutils container">
@@ -1266,8 +1267,8 @@ It is assumed that all studies that were ran in one run are using the same adapt
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="multi-sample-read-count-normalization-for-every-set-of-samples">
+</section>
+<section id="multi-sample-read-count-normalization-for-every-set-of-samples">
 <h2>Multi-sample read count normalization (For every set of samples)<a class="headerlink" href="#multi-sample-read-count-normalization-for-every-set-of-samples" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1295,8 +1296,8 @@ It is assumed that all studies that were ran in one run are using the same adapt
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

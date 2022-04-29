@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Genotype data formatting &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -629,10 +630,10 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-formatting">
+  <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-formatting">
 <h1>Genotype data formatting<a class="headerlink" href="#genotype-data-formatting" title="Permalink to this headline">¶</a></h1>
 <p>This module implements a collection of workflows used to format genotype data.</p>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>The module streamlines conversion between PLINK and VCF formats (possibly more to add), specifically:</p>
 <ol class="simple">
@@ -640,8 +641,8 @@
 <li><p>Split data (by specified input, by chromosomes, by genes)</p></li>
 <li><p>Merge data (by specified input, by chromosomes)</p></li>
 </ol>
-</div>
-<div class="section" id="input">
+</section>
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>Depending on the analysis task, input files are specified in one of the following formats:</p>
 <ol class="simple">
@@ -650,15 +651,15 @@
 <li><p>A singular column file containing a list of VCF or PLINK bed file</p></li>
 <li><p>A two column file containing a list of per chromosome VCF or PLINK bed file where the first column is chrom and 2nd column is file name</p></li>
 </ol>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>Genotype data after reformatting.</p>
-</div>
-<div class="section" id="examples">
+</section>
+<section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>Minimal working example data-set as well as the singularity container <code class="docutils literal notranslate"><span class="pre">bioinfo.sif</span></code> can be downloaded from <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed">Google Drive</a>.</p>
-<div class="section" id="plink-file-merger">
+<section id="plink-file-merger">
 <h3>PLINK file merger<a class="headerlink" href="#plink-file-merger" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
     <span class="o">--</span><span class="n">genoFile</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1</span><span class="o">.</span><span class="n">bed</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr6</span><span class="o">.</span><span class="n">bed</span> \
@@ -667,15 +668,15 @@
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="split-by-genes">
+</section>
+<section id="split-by-genes">
 <h3>Split by genes<a class="headerlink" href="#split-by-genes" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="command-interface">
+</section>
+</section>
+<section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -815,8 +816,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="plink-to-vcf">
+</section>
+<section id="plink-to-vcf">
 <h2>PLINK to VCF<a class="headerlink" href="#plink-to-vcf" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -825,25 +826,23 @@ Sections
     <span class="n">genoFile</span> <span class="o">=</span> <span class="n">genoFile</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
 <span class="kn">input:</span> <span class="n">genoFile</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.vcf.gz&#39;</span><span class="p">,</span> 
-        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.vcf.gz.tbi&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.vcf.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
     <span class="n">plink</span> <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">recode</span> <span class="n">vcf</span><span class="o">-</span><span class="n">iid</span>  \
-        <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">nn</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">memory</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span><span class="o">/</span><span class="mf">1e06</span><span class="p">}</span> <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="nb">chr</span> <span class="n">chrMT</span>
 
-    <span class="n">bgzip</span> <span class="o">-</span><span class="n">l</span> <span class="mi">9</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span>
-
-    <span class="n">tabix</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="n">p</span> <span class="n">vcf</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+    <span class="n">bgzip</span> <span class="o">-</span><span class="n">l</span> <span class="mi">9</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span>
+    <span class="n">tabix</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="n">p</span> <span class="n">vcf</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="vcf-to-plink">
+</section>
+<section id="vcf-to-plink">
 <h2>VCF to PLINK<a class="headerlink" href="#vcf-to-plink" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -866,8 +865,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="split-plink-by-genes">
+</section>
+<section id="split-plink-by-genes">
 <h2>Split PLINK by genes<a class="headerlink" href="#split-plink-by-genes" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -892,8 +891,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="split-plink-by-chromosome">
+</section>
+<section id="split-plink-by-chromosome">
 <h2>Split PLINK by Chromosome<a class="headerlink" href="#split-plink-by-chromosome" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -910,7 +909,7 @@ Sections
     <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span> \
     <span class="o">--</span><span class="nb">chr</span> <span class="err">$</span><span class="p">[</span><span class="n">_chrom</span><span class="p">]</span> \
-    <span class="o">--</span><span class="n">allow</span><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sex</span> <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="nb">chr</span> <span class="n">chrMT</span>  <span class="o">||</span> <span class="n">true</span> 
+    <span class="o">--</span><span class="n">allow</span><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sex</span>  <span class="o">||</span> <span class="n">true</span> 
 </pre></div>
 </div>
 </div>
@@ -943,7 +942,7 @@ Sections
     <span class="kn">import</span> <span class="nn">csv</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
     <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]],</span>
+    <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]],</span>
     <span class="s2">&quot;dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]</span>
     <span class="p">})</span>
     <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
@@ -951,12 +950,12 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="split-vcf-by-chromosome">
+</section>
+<section id="split-vcf-by-chromosome">
 <h2>Split VCF by Chromosome<a class="headerlink" href="#split-vcf-by-chromosome" title="Permalink to this headline">¶</a></h2>
 <p><strong>FIXME: add this as needed</strong></p>
-</div>
-<div class="section" id="merge-plink-files">
+</section>
+<section id="merge-plink-files">
 <h2>Merge PLINK files<a class="headerlink" href="#merge-plink-files" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -983,8 +982,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="merge-vcf-files">
+</section>
+<section id="merge-vcf-files">
 <h2>Merge VCF files<a class="headerlink" href="#merge-vcf-files" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1002,8 +1001,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>MASH analysis pipeline with data-driven prior matrices &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -644,7 +645,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="mash-analysis-pipeline-with-data-driven-prior-matrices">
+  <section class="tex2jax_ignore mathjax_ignore" id="mash-analysis-pipeline-with-data-driven-prior-matrices">
 <h1>MASH analysis pipeline with data-driven prior matrices<a class="headerlink" href="#mash-analysis-pipeline-with-data-driven-prior-matrices" title="Permalink to this headline">¶</a></h1>
 <p>This notebook is a pipeline written in SoS to run <code class="docutils literal notranslate"><span class="pre">flashr</span> <span class="pre">+</span> <span class="pre">mashr</span></code> for multivariate analysis described in Urbut et al (2019). This pipeline was last applied to analyze GTEx V8 eQTL data, although it can be used as is to perform similar multivariate analysis for other association studies.</p>
 <p><em>Version: 2021.02.28 by Gao Wang and Yuxin Zou</em></p>
@@ -716,11 +717,11 @@
 <td>2018-05-30</td>
 <td>Add mashr_flashr workflow</td></tr></table></div></div>
 </div>
-<div class="section" id="data-overview">
+<section id="data-overview">
 <h2>Data overview<a class="headerlink" href="#data-overview" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">fastqtl</span></code> summary statistics data were obtained from dbGaP (data on CRI at UChicago Genetic Medicine). It has 49 tissues. [more description to come]</p>
-</div>
-<div class="section" id="preparing-mash-input">
+</section>
+<section id="preparing-mash-input">
 <h2>Preparing MASH input<a class="headerlink" href="#preparing-mash-input" title="Permalink to this headline">¶</a></h2>
 <p>Using an established workflow (which takes 33hrs to run on a cluster system as configured by <code class="docutils literal notranslate"><span class="pre">midway2.yml</span></code>; see inside <code class="docutils literal notranslate"><span class="pre">fastqtl_to_mash.ipynb</span></code> for a note on computing environment),</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INPUT_DIR</span><span class="o">=/</span><span class="n">project</span><span class="o">/</span><span class="n">compbio</span><span class="o">/</span><span class="n">GTEx_dbGaP</span><span class="o">/</span><span class="n">GTEx_Analysis_2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">05</span><span class="n">_v8</span><span class="o">/</span><span class="n">eqtl</span><span class="o">/</span><span class="n">GTEx_Analysis_v8_eQTL_all_associations</span>
@@ -729,7 +730,7 @@
 </pre></div>
 </div>
 <p>As a result of command above I obtained the “mashable” data-set in the same format <a class="reference external" href="https://stephenslab.github.io/gtexresults/gtexdata.html">as described here</a>.</p>
-<div class="section" id="some-data-integrity-check">
+<section id="some-data-integrity-check">
 <h3>Some data integrity check<a class="headerlink" href="#some-data-integrity-check" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>Check if I get the same number of groups (genes) at the end of HDF5 data conversion:</p></li>
@@ -741,8 +742,8 @@
 </pre></div>
 </div>
 <p>The results agreed on Whole Blood sample (the original data has a header thus one line more than the H5 version). We should be good (since the pipeline reported success for all other files).</p>
-</div>
-<div class="section" id="data-job-summary">
+</section>
+<section id="data-job-summary">
 <h3>Data &amp; job summary<a class="headerlink" href="#data-job-summary" title="Permalink to this headline">¶</a></h3>
 <p>The command above took 33 hours on UChicago RCC <code class="docutils literal notranslate"><span class="pre">midway2</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">MW</span><span class="p">]</span> <span class="n">cat</span> <span class="n">FastQTLSumStats</span><span class="o">.</span><span class="n">log</span>
@@ -756,9 +757,9 @@
 </div>
 <p>We have 15636 groups without missing data in any tissue. This will be used to train the MASH model.</p>
 <p>The “mashable” data file is <code class="docutils literal notranslate"><span class="pre">FastQTLSumStats.mash.rds</span></code>, 124Mb serialized R file.</p>
-</div>
-</div>
-<div class="section" id="multivariate-adaptive-shrinkage-mash-analysis-of-eqtl-data">
+</section>
+</section>
+<section id="multivariate-adaptive-shrinkage-mash-analysis-of-eqtl-data">
 <h2>Multivariate adaptive shrinkage (MASH) analysis of eQTL data<a class="headerlink" href="#multivariate-adaptive-shrinkage-mash-analysis-of-eqtl-data" title="Permalink to this headline">¶</a></h2>
 <p>Below is a “blackbox” implementation of the <code class="docutils literal notranslate"><span class="pre">mashr</span></code> eQTL workflow – blackbox in the sense that you can run this pipeline as an executable, without thinking too much about it, if you see your problem fits our GTEx analysis scheme. However when reading it as a notebook it is a good source of information to help developing your own <code class="docutils literal notranslate"><span class="pre">mashr</span></code> analysis procedures.</p>
 <p>Since the submission to biorxiv of Urbut 2017 we have improved implementation of MASH algorithm and made a new R package, <a class="reference external" href="https://github.com/stephenslab/mashr"><code class="docutils literal notranslate"><span class="pre">mashr</span></code></a>. Major improvements compared to Urbut 2019 are:</p>
@@ -776,7 +777,7 @@ sos run workflows/mashr_flashr_workflow.ipynb mash <span class="nv">$JOB_OPT</sp
 </pre></div>
 </div>
 <p><strong>FIXME: add comments on submitting jobs to HPC. Here we use the UChicago RCC cluster but other users can similarly configure their computating system to run the pipeline on HPC.</strong></p>
-<div class="section" id="global-parameter-settings">
+<section id="global-parameter-settings">
 <h3>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -810,8 +811,8 @@ sos run workflows/mashr_flashr_workflow.ipynb mash <span class="nv">$JOB_OPT</sp
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="command-interface">
+</section>
+<section id="command-interface">
 <h3>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -922,9 +923,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="factor-analyses">
+</section>
+</section>
+<section id="factor-analyses">
 <h2>Factor analyses<a class="headerlink" href="#factor-analyses" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -992,7 +993,7 @@ Sections
 </div>
 </div>
 </div>
-<div class="section" id="estimate-residual-variance">
+<section id="estimate-residual-variance">
 <h3>Estimate residual variance<a class="headerlink" href="#estimate-residual-variance" title="Permalink to this headline">¶</a></h3>
 <p>FIXME: add some narratives here explaining what we do in each method.</p>
 <div class="cell docutils container">
@@ -1165,8 +1166,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="compute-mash-priors">
+</section>
+<section id="compute-mash-priors">
 <h3>Compute MASH priors<a class="headerlink" href="#compute-mash-priors" title="Permalink to this headline">¶</a></h3>
 <p>Main reference are our <code class="docutils literal notranslate"><span class="pre">mashr</span></code> vignettes <a class="reference external" href="https://stephenslab.github.io/mashr/articles/eQTL_outline.html">this for mashr eQTL outline</a> and <a class="reference external" href="https://github.com/stephenslab/mashr/blob/master/vignettes/flash_mash.Rmd">this for using FLASH prior</a>.</p>
 <p>The outcome of this workflow should be found under <code class="docutils literal notranslate"><span class="pre">./mashr_flashr_workflow_output</span></code> folder (can be configured). File names have pattern <code class="docutils literal notranslate"><span class="pre">*.mash_model_*.rds</span></code>. They can be used to computer posterior for input list of gene-SNP pairs (see next section).</p>
@@ -1197,9 +1198,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="mashr-mixture-model-fitting">
+</section>
+</section>
+<section id="mashr-mixture-model-fitting">
 <h2><code class="docutils literal notranslate"><span class="pre">mashr</span></code> mixture model fitting<a class="headerlink" href="#mashr-mixture-model-fitting" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1221,7 +1222,7 @@ Sections
 </div>
 </div>
 </div>
-<div class="section" id="optional-posterior-computations">
+<section id="optional-posterior-computations">
 <h3>Optional posterior computations<a class="headerlink" href="#optional-posterior-computations" title="Permalink to this headline">¶</a></h3>
 <p>Additionally provide posterior for the “strong” set in MASH input data.</p>
 <div class="cell docutils container">
@@ -1250,9 +1251,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="compute-mash-posteriors">
+</section>
+</section>
+<section id="compute-mash-posteriors">
 <h2>Compute MASH posteriors<a class="headerlink" href="#compute-mash-posteriors" title="Permalink to this headline">¶</a></h2>
 <p>In the GTEx V6 paper we assumed one eQTL per gene and applied the model learned above to those SNPs. Under that assumption, the input data for posterior calculation will be the <code class="docutils literal notranslate"><span class="pre">dat$strong.*</span></code> matrices.
 It is a fairly straightforward procedure as shown in <a class="reference external" href="https://stephenslab.github.io/mashr/articles/eQTL_outline.html">this vignette</a>.</p>
@@ -1262,7 +1263,7 @@ and computes posterior for each chunk. It is therefore suited for running in par
 <span class="n">DATA_DIR</span><span class="o">=/</span><span class="n">project</span><span class="o">/</span><span class="n">compbio</span><span class="o">/</span><span class="n">GTEx_eQTL</span><span class="o">/</span><span class="n">independent_eQTL</span>
 <span class="n">sos</span> <span class="n">run</span> <span class="n">workflows</span><span class="o">/</span><span class="n">mashr_flashr_workflow</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">posterior</span> \
     <span class="err">$</span><span class="n">JOB_OPT</span> \
-    <span class="o">--</span><span class="n">posterior</span><span class="o">-</span><span class="nb">input</span> <span class="err">$</span><span class="n">DATA_DIR</span><span class="o">/</span><span class="n">DAPG_pip_gt_0</span><span class="o">.</span><span class="mi">01</span><span class="o">-</span><span class="n">AllTissues</span><span class="o">/</span><span class="n">DAPG_pip_gt_0</span><span class="o">.</span><span class="mi">01</span><span class="o">-</span><span class="n">AllTissues</span><span class="o">.*.</span><span class="n">rds</span> \
+    <span class="o">--</span><span class="n">posterior</span><span class="o">-</span><span class="nb">input</span> <span class="err">$</span><span class="n">DATA_DIR</span><span class="o">/</span><span class="n">DAPG_pip_gt_0</span><span class="mf">.01</span><span class="o">-</span><span class="n">AllTissues</span><span class="o">/</span><span class="n">DAPG_pip_gt_0</span><span class="mf">.01</span><span class="o">-</span><span class="n">AllTissues</span><span class="o">.*.</span><span class="n">rds</span> \
                       <span class="err">$</span><span class="n">DATA_DIR</span><span class="o">/</span><span class="n">ConditionalAnalysis_AllTissues</span><span class="o">/</span><span class="n">ConditionalAnalysis_AllTissues</span><span class="o">.*.</span><span class="n">rds</span>
 </pre></div>
 </div>
@@ -1316,7 +1317,7 @@ and computes posterior for each chunk. It is therefore suited for running in par
 </div>
 </div>
 </div>
-<div class="section" id="posterior-results">
+<section id="posterior-results">
 <h3>Posterior results<a class="headerlink" href="#posterior-results" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>The outcome of the <code class="docutils literal notranslate"><span class="pre">[posterior]</span></code> step should produce a number of serialized R objects <code class="docutils literal notranslate"><span class="pre">*.batch_*.posterior.rds</span></code> (can be loaded to R via <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code>) – I chopped data to batches to take advantage of computing in multiple cluster nodes. It should be self-explanary but please let me know otherwise.</p></li>
@@ -1328,9 +1329,9 @@ and computes posterior for each chunk. It is therefore suited for running in par
 </ol>
 </li>
 </ol>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

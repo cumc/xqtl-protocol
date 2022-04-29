@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Fine-mapping with SuSiE model &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -589,10 +590,10 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="fine-mapping-with-susie-model">
+  <section class="tex2jax_ignore mathjax_ignore" id="fine-mapping-with-susie-model">
 <h1>Fine-mapping with SuSiE model<a class="headerlink" href="#fine-mapping-with-susie-model" title="Permalink to this headline">¶</a></h1>
 <p>This notebook conduct fine_mapping with complete data, unlike the susie_RSS module, this module perform analysis on 1 of the theme each time</p>
-<div class="section" id="input">
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>1 region list documenting the regions to be analysised</p></li>
@@ -600,7 +601,7 @@
 <li><p>a list to the path where genotype per gene data stored</p></li>
 </ol>
 <p>By default the input 2 and 3 is the output from the data_preprocessing module.</p>
-<div class="section" id="example-genotype-list">
+<section id="example-genotype-list">
 <h3>Example genotype list<a class="headerlink" href="#example-genotype-list" title="Permalink to this headline">¶</a></h3>
 <p>region        dir
 ENSG00000000457 /mnt/mfs/statgen/xqtl_workflow_testing/demo/genotype_reformmating/demo_per_gene_plink/ENSG00000000457.bed
@@ -611,8 +612,8 @@ ENSG00000001036 /mnt/mfs/statgen/xqtl_workflow_testing/demo/genotype_reformmatin
 ENSG00000001084 /mnt/mfs/statgen/xqtl_workflow_testing/demo/genotype_reformmating/demo_per_gene_plink/ENSG00000001084.bed
 ENSG00000001167 /mnt/mfs/statgen/xqtl_workflow_testing/demo/genotype_reformmating/demo_per_gene_plink/ENSG00000001167.bed
 ENSG00000001460 /mnt/mfs/statgen/xqtl_workflow_testing/demo/genotype_reformmating/demo_per_gene_plink/ENSG00000001460.bed</p>
-</div>
-<div class="section" id="example-phenotype-list">
+</section>
+<section id="example-phenotype-list">
 <h3>Example phenotype list<a class="headerlink" href="#example-phenotype-list" title="Permalink to this headline">¶</a></h3>
 <p>region dir
 ENSG00000000457 /mnt/mfs/statgen/xqtl_workflow_testing/demo/phenotype_reformat/demo.ENSG00000000457.mol_phe.bed.gz
@@ -623,9 +624,9 @@ ENSG00000001036 /mnt/mfs/statgen/xqtl_workflow_testing/demo/phenotype_reformat/d
 ENSG00000001084 /mnt/mfs/statgen/xqtl_workflow_testing/demo/phenotype_reformat/demo.ENSG00000001084.mol_phe.bed.gz
 ENSG00000001167 /mnt/mfs/statgen/xqtl_workflow_testing/demo/phenotype_reformat/demo.ENSG00000001167.mol_phe.bed.gz
 ENSG00000001460 /mnt/mfs/statgen/xqtl_workflow_testing/demo/phenotype_reformat/demo.ENSG00000001460.mol_phe.bed.gz</p>
-</div>
-</div>
-<div class="section" id="output">
+</section>
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>For each analysis unit we output:</p>
 <ol class="simple">
@@ -633,8 +634,8 @@ ENSG00000001460 /mnt/mfs/statgen/xqtl_workflow_testing/demo/phenotype_reformat/d
 <li><p>A vcf file with selected snps
 ES:PIP:CS</p></li>
 </ol>
-</div>
-<div class="section" id="mwe">
+</section>
+<section id="mwe">
 <h2>MWE<a class="headerlink" href="#mwe" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -661,9 +662,12 @@ ES:PIP:CS</p></li>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c1"># Input</span>
-<span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">paths</span>
-<span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># A list of file path for phenotype and covariates, must be in the same order.</span>
+<span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">paths</span>
+<span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">paths</span>
+<span class="c1"># The name associatie with each pheno file and cov file </span>
+<span class="kn">parameter:</span> <span class="n">tissues</span> <span class="o">=</span> <span class="nb">list</span>
 <span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;demo&quot;</span>
@@ -680,14 +684,15 @@ ES:PIP:CS</p></li>
 <span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">20</span>
+
 <span class="c1"># use this function to edit memory string for PLINK input</span>
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="univariate-susie">
+</section>
+<section id="univariate-susie">
 <h2>Univariate SuSiE<a class="headerlink" href="#univariate-susie" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -791,11 +796,12 @@ ES:PIP:CS</p></li>
     <span class="n">geno</span> <span class="o">=</span> <span class="n">read_plink</span><span class="p">(</span><span class="s2">&quot;${path(_genoFile[&quot;</span><span class="n">path</span><span class="s2">&quot;]):n}&quot;</span><span class="p">)</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">filter_X</span><span class="p">(</span><span class="n">geno</span><span class="err">$</span><span class="n">bed</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">imiss</span><span class="p">},</span> <span class="err">$</span><span class="p">{</span><span class="n">maf</span><span class="p">}</span> <span class="p">)</span>
     <span class="c1">### Phenotype</span>
-    <span class="n">phenotype_list</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input[0]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">covar_list</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input[1]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">covar_list</span> <span class="o">=</span> <span class="n">covar_list</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">covar</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">~</span><span class="n">read_delim</span><span class="p">(</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="err">`</span><span class="c1">#id`)%&gt;%na.omit%&gt;%t()))</span>
-    <span class="n">phenotype_list</span> <span class="o">=</span> <span class="n">inner_join</span><span class="p">(</span><span class="n">phenotype_list</span><span class="p">,</span><span class="n">covar_list</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;tissue&quot;</span><span class="p">)</span>
-    <span class="n">phenotype_list</span> <span class="o">=</span> <span class="n">phenotype_list</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">Y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">~</span><span class="n">read_gene_pheno</span><span class="p">(</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr`,start,end,gene_id))%&gt;%t%&gt;%as.matrix))%&gt;%mutate(</span>
+    <span class="n">tissue</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;${&quot;&#39;</span><span class="p">,</span><span class="s1">&#39;&quot;.join(tissue)}&#39;</span><span class="p">)</span>
+    <span class="n">pheno_path</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">covar_path</span> <span class="o">=</span>  <span class="n">c</span><span class="p">(</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">phenotype_list</span> <span class="o">=</span> <span class="n">tibble</span><span class="p">(</span><span class="s2">&quot;tissue&quot;</span> <span class="o">=</span> <span class="n">tissue</span><span class="p">,</span> <span class="s2">&quot;pheno_path&quot;</span> <span class="o">=</span> <span class="n">pheno_path</span><span class="p">,</span> <span class="s2">&quot;covar_path&quot;</span> <span class="o">=</span> <span class="n">covar_path</span> <span class="p">)</span>
+    <span class="n">phenotype_list</span> <span class="o">=</span> <span class="n">phenotype_list</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">covar</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">covar_path</span><span class="p">,</span> <span class="o">~</span><span class="n">read_delim</span><span class="p">(</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="err">`</span><span class="c1">#id`)%&gt;%na.omit%&gt;%t()))</span>
+    <span class="n">phenotype_list</span> <span class="o">=</span> <span class="n">phenotype_list</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="n">Y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">pheno_path</span><span class="p">,</span> <span class="o">~</span><span class="n">read_gene_pheno</span><span class="p">(</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="n">c</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr`,start,end,gene_id))%&gt;%t%&gt;%as.matrix))%&gt;%mutate(</span>
                                             <span class="c1">#### Get residue for each of tissue</span>
                                               <span class="n">Y_resid</span> <span class="o">=</span> <span class="n">map2</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">covar</span><span class="p">,</span><span class="o">~.</span><span class="n">lm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="err">$</span><span class="n">residuals</span><span class="o">%&gt;%</span><span class="n">t</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">))</span>
     
@@ -1210,8 +1216,8 @@ ES:PIP:CS</p></li>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

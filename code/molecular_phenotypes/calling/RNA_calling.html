@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>RNA-seq Calling &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -736,11 +737,11 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="rna-seq-calling">
+  <section class="tex2jax_ignore mathjax_ignore" id="rna-seq-calling">
 <h1>RNA-seq Calling<a class="headerlink" href="#rna-seq-calling" title="Permalink to this headline">¶</a></h1>
-<p>This pipeline aims to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx / TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail.</p>
+<p>This pipeline aims to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx/TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail. The choice of pipeline modules in this project is supported by internal (unpublished) benchmarks from GTEx group.</p>
 <p><strong>Various reference data needs to be prepared before using this workflow</strong>. <span class="xref myst">Here we provide a module</span> to download and prepare the reference data.</p>
-<div class="section" id="methods-overview">
+<section id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -753,7 +754,7 @@
 </div>
 </div>
 <p>The procedure is decribed also in <a class="reference external" href="https://gtexportal.org/home/documentationPage#staticTextAnalysisMethods">GTEx portal</a>. Here is a recap of some important details.</p>
-<div class="section" id="gene-level-quantifications">
+<section id="gene-level-quantifications">
 <h3>Gene-level quantifications<a class="headerlink" href="#gene-level-quantifications" title="Permalink to this headline">¶</a></h3>
 <p>read counts and TPM values were produced with RNA-SeQC v2.4.2 (DeLuca et al., Bioinformatics, 2012 ), using the following read-level filters:</p>
 <ul class="simple">
@@ -763,13 +764,13 @@
 <li><p>Reads were fully contained within exon boundaries. Reads overlapping introns were not counted.</p></li>
 </ul>
 <p>These filters were applied using the “-strictMode” flag in RNA-SeQC. The TPM values have not been normalized or corrected for any covariates.</p>
-</div>
-<div class="section" id="exon-level-quantifications">
+</section>
+<section id="exon-level-quantifications">
 <h3>Exon-level quantifications<a class="headerlink" href="#exon-level-quantifications" title="Permalink to this headline">¶</a></h3>
 <p>for exon-level read counts, if a read overlapped multiple exons, then a fractional value equal to the portion of the read contained within that exon was allotted. Transcript-level quantifications were calculated using RSEM v1.3.0.</p>
-</div>
-</div>
-<div class="section" id="input">
+</section>
+</section>
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>A meta-data file, white space delimited without header, containing 3 columns: sample ID, fastq file 1, fastq file 2:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_1</span> <span class="n">samp1_r1</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span> <span class="n">samp1_r2</span><span class="o">.</span><span class="n">fq</span><span class="o">.</span><span class="n">gz</span>
@@ -778,12 +779,12 @@
 </pre></div>
 </div>
 <p>All the fastq files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <p>TPM count for gene level RNA expression via <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code>, and isoform level RNA expression via <code class="docutils literal notranslate"><span class="pre">RSEM</span></code>.</p>
-</div>
-<div class="section" id="minimal-working-example">
+</section>
+<section id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>A toy <code class="docutils literal notranslate"><span class="pre">fastq</span></code> data can be found on <a class="reference external" href="https://drive.google.com/drive/u/0/folders/11kQv7PXozsKkgeqADH-28bC_kZ-w_oHo">Google Drive</a>.</p>
 <p>To generate <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> report,</p>
@@ -807,7 +808,7 @@
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
@@ -830,8 +831,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="command-interface">
+</section>
+<section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -938,8 +939,8 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="setup-and-global-parameters">
+</section>
+<section id="setup-and-global-parameters">
 <h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -951,7 +952,7 @@ Sections
 <span class="c1"># Raw data directory, default to the same directory as sample list</span>
 <span class="kn">parameter:</span> <span class="n">data_dir</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="c1"># Is the RNA-seq data stranded</span>
-<span class="kn">parameter:</span> <span class="n">is_stranded</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">parameter:</span> <span class="n">stranded</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># Is the RNA-seq data pair-end</span>
 <span class="kn">parameter:</span> <span class="n">is_paired_end</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
@@ -991,17 +992,17 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="step-0-qc-before-alignment">
+</section>
+<section id="step-0-qc-before-alignment">
 <h2>Step 0: QC before alignment<a class="headerlink" href="#step-0-qc-before-alignment" title="Permalink to this headline">¶</a></h2>
 <p>This step utilize <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> and will generate two QC report in <code class="docutils literal notranslate"><span class="pre">html</span></code> format</p>
-<div class="section" id="step-inputs">
+<section id="step-inputs">
 <h3>Step Inputs<a class="headerlink" href="#step-inputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">fastq1</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
 </ul>
-</div>
-<div class="section" id="step-outputs">
+</section>
+<section id="step-outputs">
 <h3>Step Outputs<a class="headerlink" href="#step-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Two <code class="docutils literal notranslate"><span class="pre">html</span></code> file for QC report</p></li>
@@ -1019,12 +1020,12 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-1-remove-adaptor-through-trimmomatic">
+</section>
+</section>
+<section id="step-1-remove-adaptor-through-trimmomatic">
 <h2>Step 1: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code><a class="headerlink" href="#step-1-remove-adaptor-through-trimmomatic" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a></p>
-<div class="section" id="id1">
+<section id="id1">
 <h3>Step Inputs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">software_dir</span></code>: directory for the software</p></li>
@@ -1035,8 +1036,8 @@ Sections
 …”, and the various RNA library preparations are not currently included.</p>
 </div></blockquote>
 <p>We have <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> workflow previously defined and executed. Users should decide what fasta adapter reference to use based on <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> results (or their own knowledge).</p>
-</div>
-<div class="section" id="id2">
+</section>
+<section id="id2">
 <h3>Step Outputs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Two paired <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file for alignment</p></li>
@@ -1080,20 +1081,20 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-2-alignment-through-star">
+</section>
+</section>
+<section id="step-2-alignment-through-star">
 <h2>Step 2: Alignment through <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#step-2-alignment-through-star" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">STAR</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_STAR.py">Script in docker</a></p>
-<p>This step is the main step for <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment.</p>
-<div class="section" id="id3">
+<p>This <a class="reference external" href="https://www.nature.com/articles/nmeth.4106">benchmark paper on aligners</a> justifies STAR as a good trade-off between accuracy and cost. STAR is also suited for splicing data analyses.</p>
+<section id="id3">
 <h3>Step Inputs<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>paths to clean <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file from Step 1.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_index</span></code>: directory for the STAR aligment index</p></li>
 </ul>
-</div>
-<div class="section" id="id4">
+</section>
+<section id="id4">
 <h3>Step Outputs<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>bam file output <code class="docutils literal notranslate"><span class="pre">${cwd}/{sample_id}.Aligned.sortedByCoord.bam</span></code>, will be used in step 3 and 4</p></li>
@@ -1168,19 +1169,19 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-3-mark-duplicates-reads-through-picard">
+</section>
+</section>
+<section id="step-3-mark-duplicates-reads-through-picard">
 <h2>Step 3: Mark duplicates reads through <code class="docutils literal notranslate"><span class="pre">Picard</span></code><a class="headerlink" href="#step-3-mark-duplicates-reads-through-picard" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">MarkDuplicates</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_MarkDuplicates.py">Script in docker</a></p>
 <p>This step is the first QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment. This step maily remove duplications in <code class="docutils literal notranslate"><span class="pre">bam</span></code> file output by STAR.</p>
-<div class="section" id="id5">
+<section id="id5">
 <h3>Step Inputs:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">STAR_bam</span></code>: path to the output in Step 2.</p></li>
 </ul>
-</div>
-<div class="section" id="id6">
+</section>
+<section id="id6">
 <h3>Step Outputs:<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>A new <code class="docutils literal notranslate"><span class="pre">.bam</span></code> file with duplication marked with the hexadecimal value of <code class="docutils literal notranslate"><span class="pre">0x0400</span></code>, which corresponds to a decimal value of 1024</p></li>
@@ -1198,20 +1199,20 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-4-post-aligment-qc-through-rna-seqc">
+</section>
+</section>
+<section id="step-4-post-aligment-qc-through-rna-seqc">
 <h2>Step 4: Post aligment QC through <code class="docutils literal notranslate"><span class="pre">RNA-SeQC</span></code><a class="headerlink" href="#step-4-post-aligment-qc-through-rna-seqc" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://github.com/getzlab/rnaseqc">RNA-SeQC</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_rnaseqc.py">Script in docker</a></p>
 <p>This step is second QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment. It will perform RNA-seq quantification as well.</p>
-<div class="section" id="id7">
+<section id="id7">
 <h3>Step Inputs<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">QC_bam</span></code>: path to the output in Step 3.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code>: reference genome <code class="docutils literal notranslate"><span class="pre">.gtf</span></code> file, this gtf file need to have the same chr name format as the index used to generate the bam file and must be on collapsed gene gtf</p></li>
 </ul>
-</div>
-<div class="section" id="id8">
+</section>
+<section id="id8">
 <h3>Step Outputs<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>The following output files are generated in the output directory you provide:</p>
 <ul class="simple">
@@ -1222,8 +1223,8 @@ Sections
 <li><p>{sample}.fragmentSizes.txt : A list of fragment sizes recorded, if a BED file was provided</p></li>
 <li><p>{sample}.coverage.tsv : A tab-delimited list of (Gene ID, Transcript ID, Mean Coverage, Coverage Std, Coverage CV) tuples for all transcripts encountered in the GTF.</p></li>
 </ul>
-</div>
-<div class="section" id="stranded-option">
+</section>
+<section id="stranded-option">
 <h3><code class="docutils literal notranslate"><span class="pre">stranded</span></code> option<a class="headerlink" href="#stranded-option" title="Permalink to this headline">¶</a></h3>
 <p>If you have strand-specific data, specify the library type. There are four library types:</p>
 <p>Paired reads:</p>
@@ -1309,20 +1310,20 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="step-5-quantify-expression-through-rsem">
+</section>
+</section>
+<section id="step-5-quantify-expression-through-rsem">
 <h2>Step 5: Quantify expression through <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#step-5-quantify-expression-through-rsem" title="Permalink to this headline">¶</a></h2>
 <p>Documentation : <a class="reference external" href="https://deweylab.github.io/RSEM/rsem-calculate-expression.html">RSEM</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_RSEM.py">Script in docker</a></p>
 <p>This step generate the expression matrix from STAR output. Estimate gene and isoform expression from RNA-Seq data are generated.</p>
-<div class="section" id="step-input">
+<section id="step-input">
 <h3>Step Input<a class="headerlink" href="#step-input" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>transcript-level BAM file: path to the output of Step 3.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RSEM_index</span></code>: path to RSEM index</p></li>
 </ul>
-</div>
-<div class="section" id="id9">
+</section>
+<section id="id9">
 <h3>Step Outputs<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>Please see the output section of <a class="reference external" href="https://deweylab.github.io/RSEM/rsem-calculate-expression.html">https://deweylab.github.io/RSEM/rsem-calculate-expression.html</a></p>
 <div class="cell docutils container">
@@ -1330,7 +1331,7 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rsem_call_3</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="kn">parameter:</span> <span class="n">is_pair_ended</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">parameter:</span> <span class="n">paired_end</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.isoforms.results&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.genes.results&#39;</span>
@@ -1340,8 +1341,8 @@ Sections
         <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">d</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="err">$</span><span class="p">{</span><span class="n">max_frag_len</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">estimate_rspd</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">estimate_rspd</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">paired_end</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_paired_end</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">paired_end</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">paired_end</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -1374,9 +1375,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

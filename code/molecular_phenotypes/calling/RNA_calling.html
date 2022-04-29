@@ -756,7 +756,7 @@
 <p>The procedure is decribed also in <a class="reference external" href="https://gtexportal.org/home/documentationPage#staticTextAnalysisMethods">GTEx portal</a>. Here is a recap of some important details.</p>
 <section id="gene-level-quantifications">
 <h3>Gene-level quantifications<a class="headerlink" href="#gene-level-quantifications" title="Permalink to this headline">¶</a></h3>
-<p>read counts and TPM values were produced with RNA-SeQC v2.4.2 (DeLuca et al., Bioinformatics, 2012 ), using the following read-level filters:</p>
+<p>read counts and TPM values were produced with RNA-SeQC 2 v2.4.2 (Graubert et al., Bioinformatics, 2021 ), using the following read-level filters:</p>
 <ul class="simple">
 <li><p>Reads were uniquely mapped (corresponding to a mapping quality of 255 for START BAMs).</p></li>
 <li><p>Reads were aligned in proper pairs.</p></li>
@@ -799,12 +799,12 @@
 </div>
 </div>
 </div>
-<p><strong>You need to figure out from fastqc results what adapter reference sequence to use. See section Step 1 below for details</strong>. Here we choose <code class="docutils literal notranslate"><span class="pre">--fasta_with_adapters_etc</span> <span class="pre">TruSeq3-PE.fa</span></code> for our toy example. To call gene-level RNA expression using <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code>,</p>
+<p><strong>You need to figure out from fastqc results what adapter reference sequence to use. See section Step 1 below for details</strong>. Here we choose <code class="docutils literal notranslate"><span class="pre">--fasta-with-adapters-etc</span> <span class="pre">TruSeq3-PE.fa</span></code> for our toy example. To call gene-level RNA expression using <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code>,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rnaseqc_call</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> \
-    <span class="o">--</span><span class="n">fasta_with_adapters_etc</span> <span class="n">TruSeq3</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span> \
+    <span class="o">--</span><span class="n">fasta</span><span class="o">-</span><span class="k">with</span><span class="o">-</span><span class="n">adapters</span><span class="o">-</span><span class="n">etc</span> <span class="n">TruSeq3</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
@@ -826,7 +826,7 @@
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">RSEM_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span> <span class="o">--</span><span class="n">is_paired_end</span> <span class="o">&amp;</span>
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span> <span class="o">--</span><span class="n">paired</span><span class="o">-</span><span class="n">end</span>
 </pre></div>
 </div>
 </div>
@@ -953,8 +953,6 @@ Sections
 <span class="kn">parameter:</span> <span class="n">data_dir</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="c1"># Is the RNA-seq data stranded</span>
 <span class="kn">parameter:</span> <span class="n">stranded</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1"># Is the RNA-seq data pair-end</span>
-<span class="kn">parameter:</span> <span class="n">is_paired_end</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -1331,6 +1329,7 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rsem_call_3</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="c1"># Is the RNA-seq data pair-end</span>
 <span class="kn">parameter:</span> <span class="n">paired_end</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>

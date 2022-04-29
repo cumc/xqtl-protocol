@@ -14,7 +14,7 @@ RUN P2R_VERSION=d74be015e8f54d662b96c6c2a52a614746f9030d
 RUN wget https://github.com/gabraham/plink2R/archive/${P2R_VERSION}.zip && \
 unzip ${P2R_VERSION}.zip && \
 R --slave -e "install.packages('plink2R-${P2R_VERSION}/plink2R/',repos=NULL)" && \
-R --slave -e "devtools::install_github('stephenslab/susieR', ref='cran')" && \
+R --slave -e "devtools::install_github('stephenslab/susieR')" && \
 R --slave -e "devtools::install_github('hadley/devtools', ref='cran')" &&
 RUN R --slave -e "for (p in c('abind','data.table', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"

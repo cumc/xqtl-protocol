@@ -44,7 +44,7 @@ chmod a+x /usr/local/bin/fastp
 # STAR v2.7.10a
 RUN cd /opt && \
     wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz && \
-    tar -xf 2.7.10a.tar.gz && rm 2.7.9a.tar.gz
+    tar -xf 2.7.10a.tar.gz && rm 2.7.10a.tar.gz
 ENV PATH /opt/STAR-2.7.10a/bin/Linux_x86_64_static:$PATH
 
 # RSEM v1.3.3

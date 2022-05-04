@@ -607,8 +607,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-common-variants">
-     For common variants
+    <a class="reference internal nav-link" href="#for-common-and-infrequent-variants">
+     For common and infrequent variants
     </a>
    </li>
   </ul>
@@ -710,13 +710,13 @@
 </div>
 </div>
 </div>
-<p>Variant level and sample level QC on unrelated individuals using MAF&gt;5% variants, in preparation for PCA analysis:</p>
+<p>Variant level and sample level QC on unrelated individuals using MAF&gt;1% variants, in preparation for PCA analysis:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
     <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.01</span> \
     <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
@@ -846,19 +846,20 @@
 </div>
 <p>To fully illustrate how PCA and PCA based QC is done on sample with <strong>multiple populations (a more complicated but potentially very useful setting)</strong>, please try out the example documented in the <span class="xref myst">PCA analysis module</span> with a different example data-set.</p>
 </section>
-<section id="for-common-variants">
-<h3>For common variants<a class="headerlink" href="#for-common-variants" title="Permalink to this headline">¶</a></h3>
-<p>Additionally, we provide a version with variants having sample minor allele frequency MAF &gt; 1%, for the sake of convenience focusing our analysis on common variants:</p>
+<section id="for-common-and-infrequent-variants">
+<h3>For common and infrequent variants<a class="headerlink" href="#for-common-and-infrequent-variants" title="Permalink to this headline">¶</a></h3>
+<p>Additionally, we provide a version with variants having sample minor allele count MAC &gt;= 5, for the sake of convenience focusing our single variant analysis:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">maf</span><span class="o">=</span><span class="s2">&quot;01&quot;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">mac</span><span class="o">=</span><span class="s2">&quot;5&quot;</span>
 
 <span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
     <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.</span><span class="err">$</span><span class="n">maf</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="err">$</span><span class="n">mac</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_mac</span><span class="err">$</span><span class="n">mac</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 
 <span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
@@ -867,20 +868,20 @@
     <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> \
     <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bim</span> \
     <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_mac</span><span class="err">$</span><span class="n">mac</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 
 <span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
     <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
                <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype_final</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">chr1_chr6_20220110_qced_maf0p</span><span class="err">$</span><span class="n">maf</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">chr1_chr6_20220110_qced_mac</span><span class="err">$</span><span class="n">mac</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>FIXME: still need to add in section for VCF formatted file processing</strong></p>
+<p><strong>FIXME: still need to add in section for VCF formatted file processing after PCA</strong></p>
 </section>
 </section>
 <section id="genomic-relationship-matrix">

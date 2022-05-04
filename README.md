@@ -6,13 +6,13 @@ Developed for reproducible QTL analysis for the NIH/NIA Alzheimer's Disease Sequ
 
 ### Standardized reference data
 
-Reference data are standardized and curated by the ADSP FGC Standardization Workgroup. Please find reference data specifications on [ADSP Dashboard](https://www.niagads.org/adsp/content/adspgcadgenomeresources-v2pdf).
+Reference data are standardized and curated by the ADSP FGC Standardization Workgroup in coordination with [NIAGCADS](https://www.nia.nih.gov/research/ad-genetics). Please find reference data specifications on [ADSP Dashboard](https://www.niagads.org/adsp/content/adspgcadgenomeresources-v2pdf).
 
 ### Pipeline execution
 
 Pipelines in this repository are written in the [Script of Scripts (SoS) workflow language](https://vatlab.github.io/sos-docs/). Like most other workflow languages, SoS workflows can **distribute and execute computing jobs directly in High Performance Computing cluster**. It can also use **containers (Docker or Singularity)** to help with setting up computational environment and improve reproducibility. Unlike most other workflow languages, SoS workflows are created using SoS Notebooks (based on Ipython Notebook and developed in [Jupyter](https://jupyter.org/)) which allow for both **scientific narrative and pipeline scripts in the same document**. Unlike typical Jupyter Notebooks intended for interactive data analysis, SoS workflows written in Jupyter Notebooks can be executed directly as command line scripts either on a local computer or in a HPC environment. 
 
-We provide this [toy example for running SoS pipeline on a typical HPC cluster environment](https://github.com/cumc/xqtl-pipeline/blob/main/pipeline/misc/Job_Example.ipynb). First time users are encouraged to try it out in order to help setting up the computational environment necessary to run the QTL analysis.
+We provide this [toy example for running SoS pipeline on a typical HPC cluster environment](https://github.com/cumc/xqtl-pipeline/blob/main/code/misc/Job_Example.ipynb). First time users are encouraged to try it out in order to help setting up the computational environment necessary to run the QTL analysis.
 
 ### Source code
 
@@ -21,7 +21,7 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 
 ### Software container and minimal working example data
 
-- Minimal working examples are available through request to access [this Google Drive folder](https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd=Ya8sB2ed).
+- Minimal working examples are available through request to access [this Google Drive folder](https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed).
 - Under the folder above you can find `singularity` image release for software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
 
 ### Organization of the resource

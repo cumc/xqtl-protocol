@@ -39,7 +39,7 @@ RUN cd /opt && \
 RUN cd /opt && \
     wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.9a.tar.gz && \
     tar -xf 2.7.9a.tar.gz && rm 2.7.9a.tar.gz
-ENV PATH /opt/STAR-2.7.8a/bin/Linux_x86_64_static:$PATH
+ENV PATH /opt/STAR-2.7.9a/bin/Linux_x86_64_static:$PATH
 
 # RSEM v1.3.3
 RUN cd /opt && \

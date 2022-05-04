@@ -597,11 +597,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#region-list-generation">
-   Region List generation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#implementation-using-pyqtl">
    Implementation using
    <code class="docutils literal notranslate">
@@ -629,10 +624,11 @@
                 
   <section class="tex2jax_ignore mathjax_ignore" id="gene-coordinate-annotation">
 <h1>Gene coordinate annotation<a class="headerlink" href="#gene-coordinate-annotation" title="Permalink to this headline">¶</a></h1>
-<p>This workflow adds genomic coordinate annotation to gene-level molecular phenotype files generated, eg in GCT format, converting them to <code class="docutils literal notranslate"><span class="pre">bed</span></code> format.</p>
+<p>This workflow adds genomic coordinate annotation to gene-level molecular phenotype files generated in <code class="docutils literal notranslate"><span class="pre">gct</span></code> format and convert them to <code class="docutils literal notranslate"><span class="pre">bed</span></code> format for downstreams analysis.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This pipeline is based on <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py"><code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>, as demonstrated here</a>.</p>
+<p><strong>FIXME: please explain here what we do with gene symbol vs gene ID</strong></p>
 <section id="alternative-implementation">
 <h3>Alternative implementation<a class="headerlink" href="#alternative-implementation" title="Permalink to this headline">¶</a></h3>
 <p>Previously we use <code class="docutils literal notranslate"><span class="pre">biomaRt</span></code> package in R instead of code from <code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>. The core function calls are:</p>
@@ -646,10 +642,10 @@
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
-<li><p>Molecular phenotype data with the first column being ENSEMBL ID and other columns being sample names.</p></li>
+<li><p>Molecular phenotype data in <code class="docutils literal notranslate"><span class="pre">gct</span></code> format, with the first column being ENSEMBL ID and other columns being sample names.</p></li>
 <li><p>GTF for collapsed gene model</p>
 <ul class="simple">
-<li><p>the gene names must be consistent with the GCT matrices (eg ENSG00000000003 vs. ENSG00000000003.1 will not work)</p></li>
+<li><p>the gene names must be consistent with the molecular phenotype data matrices (eg ENSG00000000003 vs. ENSG00000000003.1 will not work)</p></li>
 </ul>
 </li>
 <li><p>(Optional) Meta-data to match between sample names in expression data and genotype files</p>
@@ -740,14 +736,6 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">normalization_r2</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># Work directory &amp; output directory</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
@@ -766,39 +754,6 @@ Sections
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="region-list-generation">
-<h2>Region List generation<a class="headerlink" href="#region-list-generation" title="Permalink to this headline">¶</a></h2>
-<p>To partitioning the data by genes require a region list file which:
-1. have 5 columns: chr,start,end,gene_id,gene_name
-2. have the same gene as or less gene than that of the bed file
-Input:
-1. A gtf file used to generated the bed
-2. A phenotype bed file, must have a gene_id column indicating the name of genes.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">region_list_generation</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">annotation_gtf</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.region_list&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>  
-<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="kn">import</span> <span class="nn">qtl.io</span>
-    <span class="c1"># get the five column data</span>
-    <span class="n">bed_template_df_id</span> <span class="o">=</span> <span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span><span class="n">phenotype_id</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span> <span class="p">)</span>
-    <span class="n">bed_template_df_name</span> <span class="o">=</span> <span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span><span class="n">phenotype_id</span> <span class="o">=</span> <span class="s2">&quot;gene_name&quot;</span> <span class="p">)</span>
-    <span class="n">bed_template_df</span> <span class="o">=</span> <span class="n">bed_template_df_id</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">bed_template_df_name</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
-    <span class="c1"># retaining only somatic chromosome</span>
-    <span class="n">bed_template_df</span> <span class="o">=</span> <span class="n">bed_template_df</span><span class="p">[</span><span class="n">bed_template_df</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;chr&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">23</span><span class="p">))])]</span>
-    <span class="n">bed_template_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">,</span><span class="s2">&quot;gene_id&quot;</span><span class="p">,</span><span class="s2">&quot;gene_name&quot;</span><span class="p">]</span>
-    <span class="n">pheno</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="c1"># Retaining only the genes in the data</span>
-    <span class="n">region_list</span> <span class="o">=</span> <span class="n">bed_template_df</span><span class="p">[</span><span class="n">bed_template_df</span><span class="o">.</span><span class="err">$</span><span class="p">{</span><span class="n">phenotype_id_type</span><span class="p">}</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pheno</span><span class="o">.</span><span class="n">gene_id</span><span class="p">)]</span>
-    <span class="n">region_list</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Quantifying alternative splicing from RNA-seq data &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -165,7 +166,7 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../apa.html">
-   APA calling
+   Splicing events calling
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -644,19 +645,19 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="quantifying-alternative-splicing-from-rna-seq-data">
+  <section class="tex2jax_ignore mathjax_ignore" id="quantifying-alternative-splicing-from-rna-seq-data">
 <h1>Quantifying alternative splicing from RNA-seq data<a class="headerlink" href="#quantifying-alternative-splicing-from-rna-seq-data" title="Permalink to this headline">¶</a></h1>
 <p>This pipeline implements our pipeline to call alternative splicing events from RNA-seq data, using <a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> and <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx/TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail. The choice of pipeline modules in this project is supported by internal (unpublished) benchmarks from GTEx group.</p>
 <p><strong>Various reference data needs to be prepared before using this workflow</strong>. <span class="xref myst">Here we provide a module</span> to download and prepare the reference data.</p>
-<div class="section" id="methods-overview">
+<section id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
 <p>There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> For an illustration on different events. We will apply two methods to quantify alternative splicing:</p>
 <ol class="simple">
 <li><p><a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> that quantifies each specific event. In particular the exon skipping event which is used also in GTEx sQTL analysis.</p></li>
 <li><p><a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> to quantify the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events. The method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.</p></li>
 </ol>
-</div>
-<div class="section" id="input">
+</section>
+<section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>A meta-data file, white space delimited without header, containing 2 columns: sample ID, BAM file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_1</span> <span class="n">samp1</span><span class="o">.</span><span class="n">bam</span>
@@ -665,18 +666,18 @@
 </pre></div>
 </div>
 <p>All the BAM files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
-</div>
-<div class="section" id="output">
+</section>
+<section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code>: counts for each intron cluster within a gene, as well as intron usage ratio</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">psichomics</span></code>: …</p></li>
 </ul>
-</div>
-<div class="section" id="minimal-working-example">
+</section>
+<section id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>A toy <code class="docutils literal notranslate"><span class="pre">BAM</span></code> data can be found on …</p>
-<div class="section" id="for-leafcutter">
+<section id="for-leafcutter">
 <h3>For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#for-leafcutter" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -689,8 +690,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="for-psichomics">
+</section>
+<section id="for-psichomics">
 <h3>For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#for-psichomics" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -703,9 +704,9 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="command-interface">
+</section>
+</section>
+<section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -714,8 +715,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="setup-and-global-parameters">
+</section>
+<section id="setup-and-global-parameters">
 <h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -763,8 +764,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="leafcutter">
+</section>
+<section id="leafcutter">
 <h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="https://davidaknowles.github.io/leafcutter/index.html"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a>. The choices of regtool parameters are <a class="reference external" href="https://github.com/davidaknowles/leafcutter/issues/127">discussed here</a>.</p>
 <div class="cell docutils container">
@@ -797,12 +798,12 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="psichomics">
+</section>
+<section id="psichomics">
 <h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="http://bioconductor.org/packages/release/bioc/html/psichomics.html"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></p>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

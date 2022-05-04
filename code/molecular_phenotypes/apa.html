@@ -4,8 +4,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>APA calling &#8212; ADSP-FG Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Splicing events calling &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -165,7 +166,7 @@
  </li>
  <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
-   APA calling
+   Splicing events calling
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -558,49 +559,6 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
-            </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prerequisite">
-   Prerequisite
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#generate-the-3-utr-region">
-   Generate the 3’UTR region
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#convert-bam-files-into-wig-files-and-flagstate-files">
-   Convert bam files into wig files and flagstate files
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#compile-config-files">
-   Compile config files
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#use-dapars2-to-quantify-apa-events">
-   Use Dapars2 to quantify APA events
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#use-peer-to-estimate-cofounders">
-   Use PEER to estimate cofounders
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#impute-missing-values-and-quality-check">
-   Impute missing values and quality check
-  </a>
- </li>
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -609,102 +567,17 @@
         
               <div>
                 
-  <div class="section" id="apa-calling">
-<h1>APA calling<a class="headerlink" href="#apa-calling" title="Permalink to this headline">¶</a></h1>
-<p>This document shows the use of various modules to prepare reference data, perform APA calling, Peer correction and imputation. In particular,</p>
+  <section id="splicing-events-calling">
+<h1>Splicing events calling<a class="headerlink" href="#splicing-events-calling" title="Permalink to this headline">¶</a></h1>
+<p>This document shows the use of modules to perm splicing QTL analysis. In particular,</p>
 <ul class="simple">
-<li><p>apa_calling.ipynb</p></li>
+<li><p>splicing_calling.ipynb</p></li>
 <li><p>PEER_factor.ipynb</p></li>
 </ul>
-<p>A minimal working example is available on <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1H6PfQjU44Sk0NEz_l_qzsP0Bqai2jv2_">Google Drive</a>.</p>
-<div class="section" id="prerequisite">
-<h2>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h2>
-<p>Make sure you have the comprehensive gene annotation files on the reference chromosomes (gtf).</p>
-</div>
-<div class="section" id="generate-the-3-utr-region">
-<h2>Generate the 3’UTR region<a class="headerlink" href="#generate-the-3-utr-region" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">UTR_reference</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">hg_gtf</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v39</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">gtf</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2_final</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="convert-bam-files-into-wig-files-and-flagstate-files">
-<h2>Convert bam files into wig files and flagstate files<a class="headerlink" href="#convert-bam-files-into-wig-files-and-flagstate-files" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">bam2tools</span> \
-    <span class="o">--</span><span class="n">n</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">7</span> <span class="mi">8</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2_final</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="compile-config-files">
-<h2>Compile config files<a class="headerlink" href="#compile-config-files" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAconfig</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">rosmap</span><span class="o">/</span><span class="n">dlpfcTissue</span><span class="o">/</span><span class="n">batch0</span> \
-    <span class="o">--</span><span class="n">bfile</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">rosmap</span><span class="o">/</span><span class="n">dlpfcTissue</span><span class="o">/</span><span class="n">batch0</span> \
-    <span class="o">--</span><span class="n">annotation</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v39</span><span class="o">.</span><span class="n">annotation_3UTR</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2_final</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="use-dapars2-to-quantify-apa-events">
-<h2>Use Dapars2 to quantify APA events<a class="headerlink" href="#use-dapars2-to-quantify-apa-events" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAmain</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">rosmap</span><span class="o">/</span><span class="n">dlpfcTissue</span><span class="o">/</span><span class="n">batch0</span> \
-    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr21</span> <span class="n">chr14</span> <span class="n">chr1</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2_final</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="use-peer-to-estimate-cofounders">
-<h2>Use PEER to estimate cofounders<a class="headerlink" href="#use-peer-to-estimate-cofounders" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PEER</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
-    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">annotated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">covFile</span> <span class="n">output</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">APEX</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">demo</span> <span class="o">-</span><span class="n">N</span> <span class="mi">3</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">PEER</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="impute-missing-values-and-quality-check">
-<h2>Impute missing values and quality check<a class="headerlink" href="#impute-missing-values-and-quality-check" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">molecular_phenotypes</span><span class="o">/</span><span class="n">calling</span><span class="o">/</span><span class="n">apa_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APAimpute</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">MWE_dapars2</span><span class="o">/</span><span class="n">Output</span> \
-    <span class="o">--</span><span class="n">cov</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">example</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">txt</span>
-    <span class="o">--</span><span class="n">chrlist</span> <span class="n">chr1</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">dapars2</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+<p>A minimal working example is available on …</p>
 <div class="toctree-wrapper compound">
 </div>
-</div>
+</section>
 
     <script type="text/x-thebe-config">
     {

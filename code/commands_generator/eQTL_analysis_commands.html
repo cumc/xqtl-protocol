@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Bulk RNA-seq eQTL analysis &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -165,7 +166,7 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../molecular_phenotypes/apa.html">
-   APA calling
+   Splicing events calling
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -621,7 +622,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="bulk-rna-seq-eqtl-analysis">
+  <section class="tex2jax_ignore mathjax_ignore" id="bulk-rna-seq-eqtl-analysis">
 <h1>Bulk RNA-seq eQTL analysis<a class="headerlink" href="#bulk-rna-seq-eqtl-analysis" title="Permalink to this headline">¶</a></h1>
 <p>This notebook provide a master control on the XQTL workflow so it can automate the work before data preprocessing on multiple data collection as proposed.</p>
 <p>This master control notebook is mainly to serve the 8 tissues snuc_bulk_expression analysis, but should be functional on all analysis where expression data an</p>
@@ -668,7 +669,7 @@ covariate_file
 </div>
 </div>
 </div>
-<div class="section" id="example-for-running-the-workflow">
+<section id="example-for-running-the-workflow">
 <h2>Example for running the workflow<a class="headerlink" href="#example-for-running-the-workflow" title="Permalink to this headline">¶</a></h2>
 <p>This will run the workflow from via several submission and save the output to nohup.out</p>
 <div class="cell docutils container">
@@ -832,10 +833,10 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="data-preprocessing">
+</section>
+<section id="data-preprocessing">
 <h2>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="genotype-preprocessing-once-for-all-tissues">
+<section id="genotype-preprocessing-once-for-all-tissues">
 <h3>Genotype Preprocessing (Once for all tissues)<a class="headerlink" href="#genotype-preprocessing-once-for-all-tissues" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -921,7 +922,7 @@ covariate_file
 <span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;plink_QC&quot;</span><span class="p">)</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.plink_files_list.txt&#39;</span>
 <span class="kn">report:</span>  <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">{</span><span class="mf">1.</span><span class="o">.</span><span class="mi">22</span><span class="p">}</span> <span class="p">;</span> <span class="n">do</span> <span class="n">echo</span> <span class="nb">chr</span><span class="err">$</span><span class="n">i</span><span class="p">;</span> <span class="n">done</span> <span class="o">&gt;</span> <span class="n">vcf_chr_list</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">{</span><span class="mf">1..22</span><span class="p">}</span> <span class="p">;</span> <span class="n">do</span> <span class="n">echo</span> <span class="nb">chr</span><span class="err">$</span><span class="n">i</span><span class="p">;</span> <span class="n">done</span> <span class="o">&gt;</span> <span class="n">vcf_chr_list</span>
         <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">//</span><span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_chrom</span> \
             <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">]</span> \
             <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">:</span><span class="n">d</span><span class="p">]</span> \
@@ -981,8 +982,8 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="molecular-phenotype-processing">
+</section>
+<section id="molecular-phenotype-processing">
 <h3>Molecular Phenotype Processing<a class="headerlink" href="#molecular-phenotype-processing" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1049,8 +1050,8 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="genotype-processing">
+</section>
+<section id="genotype-processing">
 <h3>Genotype Processing<a class="headerlink" href="#genotype-processing" title="Permalink to this headline">¶</a></h3>
 <p>Since genotype is shared among the eight tissue, the QC of whole genome file is not needed. Only pca needed to be run again.</p>
 <div class="cell docutils container">
@@ -1128,9 +1129,9 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="factor-analysis">
+</section>
+</section>
+<section id="factor-analysis">
 <h2>Factor analysis<a class="headerlink" href="#factor-analysis" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1235,8 +1236,8 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="association-scan">
+</section>
+<section id="association-scan">
 <h2>Association scan<a class="headerlink" href="#association-scan" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1272,8 +1273,8 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="susie">
+</section>
+<section id="susie">
 <h2>SuSiE<a class="headerlink" href="#susie" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1293,8 +1294,8 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sumstat-merger">
+</section>
+<section id="sumstat-merger">
 <h2>Sumstat Merger<a class="headerlink" href="#sumstat-merger" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1330,8 +1331,8 @@ covariate_file
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {

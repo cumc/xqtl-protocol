@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>RNA-seq calling and QC &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -165,7 +166,7 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="apa.html">
-   APA calling
+   Splicing events calling
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -629,7 +630,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="rna-seq-calling-and-qc">
+  <section class="tex2jax_ignore mathjax_ignore" id="rna-seq-calling-and-qc">
 <h1>RNA-seq calling and QC<a class="headerlink" href="#rna-seq-calling-and-qc" title="Permalink to this headline">¶</a></h1>
 <p>This document shows the use of various modules to prepare reference data, perform RNA-seq calling, expression level quantification and quality control, and finally normalization. In particular,</p>
 <ol class="simple">
@@ -639,7 +640,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">bulk_expression_normalization.ipynb</span></code></p></li>
 </ol>
 <p>This protocol is meant for generating the expression phenotype for eQTL studies, although a subset of the steps can be equally useful for preparing the data for eg differential gene expression analysis. A minimal working example is available on <a class="reference external" href="https://drive.google.com/drive/u/0/folders/11kQv7PXozsKkgeqADH-28bC_kZ-w_oHo">Google Drive</a>.</p>
-<div class="section" id="download-reference-data-first-time-use">
+<section id="download-reference-data-first-time-use">
 <h2>Download reference data (first time use)<a class="headerlink" href="#download-reference-data-first-time-use" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -650,8 +651,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="reformat-reference-data-first-time-use">
+</section>
+<section id="reformat-reference-data-first-time-use">
 <h2>Reformat reference data (first time use)<a class="headerlink" href="#reformat-reference-data-first-time-use" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -670,22 +671,22 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">gene_annotation</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> \
     <span class="o">--</span><span class="n">ercc</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">ERCC92</span><span class="o">.</span><span class="n">gtf</span> \
-    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="n">stranded</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="index-reference-data">
+</section>
+<section id="index-reference-data">
 <h2>Index reference data<a class="headerlink" href="#index-reference-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_index</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> \
     <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
@@ -697,15 +698,15 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">RSEM_index</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> \
     <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="perform-data-quality-summary-via-fastqc">
+</section>
+<section id="perform-data-quality-summary-via-fastqc">
 <h2>Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code><a class="headerlink" href="#perform-data-quality-summary-via-fastqc" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -718,8 +719,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="call-gene-level-rna-expression-via-rnaseqc">
+</section>
+<section id="call-gene-level-rna-expression-via-rnaseqc">
 <h2>Call gene-level RNA expression via <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code><a class="headerlink" href="#call-gene-level-rna-expression-via-rnaseqc" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -729,15 +730,15 @@
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
     <span class="o">--</span><span class="n">fasta_with_adapters_etc</span> <span class="n">TruSeq3</span><span class="o">-</span><span class="n">PE</span><span class="o">.</span><span class="n">fa</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="call-transcript-level-rna-expression-via-rsem">
+</section>
+<section id="call-transcript-level-rna-expression-via-rsem">
 <h2>Call transcript level RNA expression via <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#call-transcript-level-rna-expression-via-rsem" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -754,8 +755,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="multi-sample-rna-seq-qc">
+</section>
+<section id="multi-sample-rna-seq-qc">
 <h2>Multi-sample RNA-seq QC<a class="headerlink" href="#multi-sample-rna-seq-qc" title="Permalink to this headline">¶</a></h2>
 <p>We need to use a different MWE data-set that contains multiple samples – here is the <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk">Google Drive link</a>.</p>
 <div class="cell docutils container">
@@ -769,8 +770,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="multi-sample-read-count-normalization">
+</section>
+<section id="multi-sample-read-count-normalization">
 <h2>Multi-sample read count normalization<a class="headerlink" href="#multi-sample-read-count-normalization" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -778,7 +779,7 @@
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
     <span class="o">--</span><span class="n">tpm</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tpm</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">counts</span><span class="o">-</span><span class="n">gct</span> <span class="n">data</span><span class="o">/</span><span class="n">mwe</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">geneCount</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
     <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">data</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">count</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">1</span>
@@ -786,10 +787,10 @@
 </div>
 </div>
 </div>
-</div>
+</section>
 <div class="toctree-wrapper compound">
 </div>
-</div>
+</section>
 
     <script type="text/x-thebe-config">
     {

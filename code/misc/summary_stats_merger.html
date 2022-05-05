@@ -144,7 +144,7 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">
-     RNA-seq Calling
+     Quantifying expression from RNA-seq data
     </a>
    </li>
    <li class="toctree-l2">
@@ -166,7 +166,7 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../molecular_phenotypes/apa.html">
-   Splicing events calling
+   APA calling
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -753,11 +753,38 @@
 </section>
 <section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<p>new summary statistic files with common SNPs in all input files. the sign of statistics has been corrected to make it consistent in different data.</p>
+<p>New summary statistic files with common SNPs in all input files. the sign of statistics has been corrected to make it consistent in different data.</p>
 <ul class="simple">
 <li><p>for each input sumstat file, a qced version will be generated.</p></li>
-<li><p>The generated sumstat files will have header as “CHR  ,   POS  ,   A0   ,   A1    ,  SNP   ,  STAT ,   SE    ,  P” regardless of input header</p></li>
+<li><p>The generated sumstat files will have header as “CHR,  POS,  A0, A1, SNP , STAT ,   SE, P” regardless of input header</p></li>
 <li><p>The generated sumstat files will be in gz format.</p></li>
+</ul>
+<p>The header of actual output sumstat depends on the yml specification provided in the yml. However, all of them will have the column of <code class="docutils literal notranslate"><span class="pre">ID,</span> <span class="pre">CHR,</span> <span class="pre">POS,</span> <span class="pre">A0,</span> <span class="pre">A1,</span> <span class="pre">SNP,</span> <span class="pre">STAT,</span> <span class="pre">SE,</span> <span class="pre">P</span></code>.</p>
+<p>For example, when the input sumstat is from TensorQTL, the column specification is:</p>
+<ul class="simple">
+<li><p>GENE: Molecular trait identifier.(gene)</p></li>
+<li><p>CHR: Variant chromosome.</p></li>
+<li><p>POS: Variant chromosomal position (basepairs).</p></li>
+<li><p>A0: Variant reference allele (A, C, T, or G).</p></li>
+<li><p>A1: Variant alternate allele.</p></li>
+<li><p>TSS_D: Distance of the SNP to the gene transcription start site (TSS)</p></li>
+<li><p>AF: The allele frequency of this SNPs</p></li>
+<li><p>MA_SAMPLES: Number of samples carrying the minor allele</p></li>
+<li><p>MA_COUNT: Total number of minor alleles across individuals</p></li>
+<li><p>P: Nominal P-value from linear regression</p></li>
+<li><p>STAT: Slope of the linear regression</p></li>
+<li><p>SE: Standard error of beta</p></li>
+</ul>
+<p>when the input sumstat is from APEX, the column specification is:</p>
+<ul class="simple">
+<li><p>GENE: Molecular trait identifier.(gene)</p></li>
+<li><p>CHR: Variant chromosome.</p></li>
+<li><p>POS: Variant chromosomal position (basepairs).</p></li>
+<li><p>A0: Variant reference allele (A, C, T, or G).</p></li>
+<li><p>A1: Variant alternate allele.</p></li>
+<li><p>P: Nominal P-value from linear regression</p></li>
+<li><p>STAT: Slope of the linear regression</p></li>
+<li><p>SE: Standard error of beta</p></li>
 </ul>
 </section>
 <section id="memory-usage">
@@ -910,7 +937,6 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">default_2</span> <span class="p">(</span><span class="n">unify</span> <span class="n">sumstats</span><span class="p">)]</span>
 <span class="kn">depends:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/utils.py&#39;</span>
 <span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s2">&quot;yml_path&quot;</span>
-<span class="kn">output:</span> 
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="nb">input</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/utils.py&#39;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_yml_path</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/output.stdout&#39;</span>
     <span class="n">yml</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_yml_path[1]}</span><span class="s2">&quot;</span>

@@ -5,7 +5,6 @@ su -  root # USER root
 RUN R --slave -e "install.packages(c('rlang', 'RcppEigen','devtools','BiocManager','data.table'))"
 RUN R --slave -e "devtools::install_github('stephenslab/flashr')"
 RUN R --slave -e "devtools::install_github('willwerscheid/flashier')"
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 RUN apt-get --assume-yes update
 RUN apt-get --assume-yes install libgsl0-dev
 RUN R --slave -e "devtools::install_github('stephenslab/mashr')"

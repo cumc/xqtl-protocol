@@ -13,9 +13,9 @@ bash: expand = True
 parameter: config = path
 parameter: out_dir = path('container/singularity')
 bash: expand = True, stderr = f'{config}.stderr', stdout = f'{config}.stdout'
-  rm -f {out_dir}/{config:n}.sif
-  singularity build --fakeroot {out_dir}/{config:n}.sif {config}
-  md5sum {out_dir}/{config:n}.sif > {out_dir}/{config:n}.md5
+  rm -f {out_dir}/{config:bn}.sif
+  singularity build --fakeroot {out_dir}/{config:bn}.sif {config}
+  md5sum {out_dir}/{config:bn}.sif > {out_dir}/{config:bn}.md5
 
 [build, default_2]
 input: group_by = 'all'

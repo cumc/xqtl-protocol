@@ -35,11 +35,17 @@ RUN cd /opt && \
     tar -xf samtools-1.11.tar.bz2 && rm samtools-1.11.tar.bz2 && cd samtools-1.11 && \
     ./configure --with-htslib=/opt/htslib-1.11 && make && make install && make clean
 
-# STAR v2.7.9a
+# fastp
+wget http://opengene.org/fastp/fastp.0.23.2
+mv fastp.0.23.2 /usr/local/bin/fastp
+chmod a+x /usr/local/bin/fastp
+
+
+# STAR v2.7.10a
 RUN cd /opt && \
-    wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.9a.tar.gz && \
-    tar -xf 2.7.9a.tar.gz && rm 2.7.9a.tar.gz
-ENV PATH /opt/STAR-2.7.9a/bin/Linux_x86_64_static:$PATH
+    wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz && \
+    tar -xf 2.7.10a.tar.gz && rm 2.7.10a.tar.gz
+ENV PATH /opt/STAR-2.7.10a/bin/Linux_x86_64_static:$PATH
 
 # RSEM v1.3.3
 RUN cd /opt && \

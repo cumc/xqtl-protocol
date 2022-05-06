@@ -40,11 +40,17 @@ wget --no-check-certificate https://github.com/samtools/samtools/releases/downlo
 tar -xf samtools-1.11.tar.bz2 && rm samtools-1.11.tar.bz2 && cd samtools-1.11 && \
 ./configure --with-htslib=/opt/htslib-1.11 && make && make install && make clean
 
-# STAR v2.7.9a
+# fastp
+wget http://opengene.org/fastp/fastp.0.23.2
+mv fastp.0.23.2 /usr/local/bin/fastp
+chmod a+x /usr/local/bin/fastp
+
+
+# STAR v2.7.10a
 cd /opt && \
-wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.9a.tar.gz && \
-tar -xf 2.7.9a.tar.gz && rm 2.7.9a.tar.gz
-PATH=/opt/STAR-2.7.9a/bin/Linux_x86_64_static:$PATH
+wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz && \
+tar -xf 2.7.10a.tar.gz && rm 2.7.10a.tar.gz
+PATH=/opt/STAR-2.7.10a/bin/Linux_x86_64_static:$PATH
 
 # RSEM v1.3.3
 cd /opt && \
@@ -141,7 +147,7 @@ cd gffread-0.12.7 && make release && \
 mv gffread  /usr/local/bin/ && \
 cd .. && rm -r gffread* v0.12.7*
 %environment
-export PATH=/opt/STAR-2.7.9a/bin/Linux_x86_64_static:$PATH
+export PATH=/opt/STAR-2.7.10a/bin/Linux_x86_64_static:$PATH
 export PATH=/opt/RSEM-1.3.3:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib/bamtools:$LD_LIBRARY_PATH
 export GTEX_PIPELINE=3481dd43b2e8a33cc217155483ce25d5255aafa9

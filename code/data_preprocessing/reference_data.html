@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reference data standardization &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -144,7 +143,7 @@
   <ul>
    <li class="toctree-l2">
     <a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">
-     RNA-seq Calling
+     Quantifying expression from RNA-seq data
     </a>
    </li>
    <li class="toctree-l2">
@@ -166,7 +165,7 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../molecular_phenotypes/apa.html">
-   Splicing events calling
+   APA calling
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
   <label for="toctree-checkbox-2">
@@ -681,11 +680,11 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="reference-data-standardization">
+  <div class="tex2jax_ignore mathjax_ignore section" id="reference-data-standardization">
 <h1>Reference data standardization<a class="headerlink" href="#reference-data-standardization" title="Permalink to this headline">¶</a></h1>
 <p>This module provides reference data download, indexing and preprocessing (if necessary), in preparation for use throughout the pipeline.</p>
 <p>We have included the PDF document compiled by data standardization subgroup in the <a class="reference external" href="https://drive.google.com/file/d/1R5sw5o8vqk_mbQQb4CGmtH3ldu1T3Vu0/view?usp=sharing">on Google Drive</a> as well as on <a class="reference external" href="https://www.niagads.org/adsp/content/adspgcadgenomeresources-v2pdf">ADSP Dashboard</a>. It contains the reference data to use for the project.</p>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This module is based on the <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">TOPMed workflow from Broad</a>. The reference data after we process it (details see Methods section and the rest of the analysis) can be found <a class="reference external" href="https://drive.google.com/drive/folders/19fmoII8yS7XE7HFcMU4OfvC2bL1zMD_P">in this folder on Google Drive</a>. Specifically, the list of reference files to be used are:</p>
 <ol class="simple">
@@ -694,40 +693,40 @@
 <li><p>Everything under <code class="docutils literal notranslate"><span class="pre">STAR_Index</span></code> folder</p></li>
 <li><p>Everything under <code class="docutils literal notranslate"><span class="pre">RSEM_Index</span></code> folder</p></li>
 </ol>
-</section>
-<section id="methods">
+</div>
+<div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <p>Workflows implemented include:</p>
-<section id="convert-transcript-feature-file-gff3-to-gtf">
+<div class="section" id="convert-transcript-feature-file-gff3-to-gtf">
 <h3>Convert transcript feature file gff3 to gtf<a class="headerlink" href="#convert-transcript-feature-file-gff3-to-gtf" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Input: an uncompressed gff3 file.(i.e. can be view via cat)</p></li>
 <li><p>Output: a gtf file.</p></li>
 </ul>
-</section>
-<section id="collapse-transcript-features-into-genes">
+</div>
+<div class="section" id="collapse-transcript-features-into-genes">
 <h3>Collapse transcript features into genes<a class="headerlink" href="#collapse-transcript-features-into-genes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Input: a gtf file.</p></li>
 <li><p>Output: a gtf file with collapesed gene model.</p></li>
 </ul>
-</section>
-<section id="generate-star-index-based-on-gtf-and-reference-fasta">
+</div>
+<div class="section" id="generate-star-index-based-on-gtf-and-reference-fasta">
 <h3>Generate STAR index based on gtf and reference fasta<a class="headerlink" href="#generate-star-index-based-on-gtf-and-reference-fasta" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Input: a gtf file and an acompanying fasta file.</p></li>
 <li><p>Output: A folder of STAR index.</p></li>
 </ul>
-</section>
-<section id="generate-rsem-index-based-on-gtf-and-reference-fasta">
+</div>
+<div class="section" id="generate-rsem-index-based-on-gtf-and-reference-fasta">
 <h3>Generate RSEM index based on gtf and reference fasta<a class="headerlink" href="#generate-rsem-index-based-on-gtf-and-reference-fasta" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Input: a gtf file and an acompanying fasta file.</p></li>
 <li><p>Output: A folder of RSEM index.</p></li>
 </ul>
-</section>
-</section>
-<section id="example-commands">
+</div>
+</div>
+<div class="section" id="example-commands">
 <h2>Example commands<a class="headerlink" href="#example-commands" title="Permalink to this headline">¶</a></h2>
 <p>To download reference data:</p>
 <div class="cell docutils container">
@@ -768,7 +767,7 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">gene_annotation</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> \
     <span class="o">--</span><span class="n">ercc</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">ERCC92</span><span class="o">.</span><span class="n">gtf</span> \
-    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="n">stranded</span>
 </pre></div>
@@ -782,7 +781,7 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_index</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> \
     <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
@@ -796,15 +795,15 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">RSEM_index</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> \
     <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">reference</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="command-interface">
+</div>
+<div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -912,15 +911,15 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="data-download">
+</div>
+<div class="section" id="data-download">
 <h2>Data download<a class="headerlink" href="#data-download" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">download_hg_reference</span><span class="p">]</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/GRCh38_full_analysis_set_plus_decoy_hla.fa&quot;</span>
 <span class="kn">download:</span> <span class="n">dest_dir</span> <span class="o">=</span> <span class="n">cwd</span>
-    <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="mf">.1000</span><span class="n">genomes</span><span class="o">.</span><span class="n">ebi</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">vol1</span><span class="o">/</span><span class="n">ftp</span><span class="o">/</span><span class="n">technical</span><span class="o">/</span><span class="n">reference</span><span class="o">/</span><span class="n">GRCh38_reference_genome</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">fa</span>
+    <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="mi">1000</span><span class="n">genomes</span><span class="o">.</span><span class="n">ebi</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="o">/</span><span class="n">vol1</span><span class="o">/</span><span class="n">ftp</span><span class="o">/</span><span class="n">technical</span><span class="o">/</span><span class="n">reference</span><span class="o">/</span><span class="n">GRCh38_reference_genome</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">fa</span>
 </pre></div>
 </div>
 </div>
@@ -930,7 +929,7 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">download_gene_annotation</span><span class="p">]</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/Homo_sapiens.GRCh38.103.chr.gtf&quot;</span>
 <span class="kn">download:</span> <span class="n">dest_dir</span> <span class="o">=</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">decompress</span><span class="o">=</span><span class="kc">True</span>
-    <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">ensembl</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">release</span><span class="o">-</span><span class="mi">103</span><span class="o">/</span><span class="n">gtf</span><span class="o">/</span><span class="n">homo_sapiens</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">ensembl</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">release</span><span class="o">-</span><span class="mi">103</span><span class="o">/</span><span class="n">gtf</span><span class="o">/</span><span class="n">homo_sapiens</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 </div>
@@ -945,8 +944,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="gff3-to-gtf-formatting">
+</div>
+<div class="section" id="gff3-to-gtf-formatting">
 <h2>GFF3 to GTF formatting<a class="headerlink" href="#gff3-to-gtf-formatting" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -961,8 +960,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="hg-reference-file-preprocessing">
+</div>
+<div class="section" id="hg-reference-file-preprocessing">
 <h2>HG reference file preprocessing<a class="headerlink" href="#hg-reference-file-preprocessing" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Remove the HLA/ALT/Decoy record from the fasta – because none of the downstreams RNA-seq calling pipeline component can handle them properly.</p></li>
@@ -1021,8 +1020,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="transcript-and-gene-model-reference-processing">
+</div>
+<div class="section" id="transcript-and-gene-model-reference-processing">
 <h2>Transcript and gene model reference processing<a class="headerlink" href="#transcript-and-gene-model-reference-processing" title="Permalink to this headline">¶</a></h2>
 <p>This step modify the <code class="docutils literal notranslate"><span class="pre">gtf</span></code> file for following reasons:</p>
 <ol class="simple">
@@ -1136,19 +1135,19 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="generating-index-file-for-star">
+</div>
+<div class="section" id="generating-index-file-for-star">
 <h2>Generating index file for <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#generating-index-file-for-star" title="Permalink to this headline">¶</a></h2>
 <p>This step generate the index file for STAR alignment. This file just need to generate once and can be re-used.</p>
 <p><strong>At least 40GB of memory is needed</strong>.</p>
-<section id="step-inputs">
+<div class="section" id="step-inputs">
 <h3>Step Inputs<a class="headerlink" href="#step-inputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence. Both of them needs to be unzipped. <code class="docutils literal notranslate"><span class="pre">gtf</span></code> should be the one prior to collapse by gene.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads. We use 100 here as recommended by the TOPMed pipeline. See here for <a class="reference external" href="https://groups.google.com/g/rna-star/c/h9oh10UlvhI/m/BfSPGivUHmsJ">some additional discussions</a>.</p></li>
 </ul>
-</section>
-<section id="step-output">
+</div>
+<div class="section" id="step-output">
 <h3>Step Output<a class="headerlink" href="#step-output" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">{cwd}/STAR_index</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">STAR</span></code></p></li>
@@ -1183,19 +1182,19 @@ Sections
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="generating-index-file-for-rsem">
+</div>
+</div>
+<div class="section" id="generating-index-file-for-rsem">
 <h2>Generating index file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#generating-index-file-for-rsem" title="Permalink to this headline">¶</a></h2>
 <p>This step generate the indexing file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code>. This file just need to generate once.</p>
-<section id="id1">
+<div class="section" id="id1">
 <h3>Step Inputs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence. <code class="docutils literal notranslate"><span class="pre">gtf</span></code> should be the one prior to collapse by gene.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</p></li>
 </ul>
-</section>
-<section id="step-outputs">
+</div>
+<div class="section" id="step-outputs">
 <h3>Step Outputs<a class="headerlink" href="#step-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">RSEM_index_dir</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></p></li>
@@ -1221,9 +1220,9 @@ Sections
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

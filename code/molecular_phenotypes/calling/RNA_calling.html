@@ -737,10 +737,10 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#stranded-option">
+    <a class="reference internal nav-link" href="#strand-option">
      <code class="docutils literal notranslate">
       <span class="pre">
-       stranded
+       strand
       </span>
      </code>
      option
@@ -873,9 +873,7 @@
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="o">./</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="o">./</span><span class="n">RSEM_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">container</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">--</span><span class="n">ref_flat</span> <span class="n">ref_data</span><span class="o">/</span><span class="n">gtf_ref</span><span class="o">.</span><span class="n">flat</span> \
-    <span class="o">--</span><span class="n">riboIntervals</span>  \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">16</span><span class="n">G</span> <span class="o">-</span><span class="n">n</span> <span class="o">&amp;</span>
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">16</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
@@ -886,6 +884,126 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run RNA_calling.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  fastqc
+  rnaseqc_call
+  rsem_call
+  fastp_trim_adaptor
+  trimmomatic
+  STAR_align
+
+Global Workflow Options:
+  --cwd VAL (as path, required)
+                        The output directory for generated files. MUST BE FULL
+                        PATH
+  --samples VAL (as path, required)
+                        Sample meta data list
+  --data-dir  path(f&quot;{samples:d}&quot;)
+
+                        Raw data directory, default to the same directory as
+                        sample list
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16G
+                        Memory expected
+  --numThreads 8 (as int)
+                        Number of threads
+  --container &#39;&#39;
+                        Software container option
+  --java-mem 8G
+                        Memory for Java virtual mechine (`picard`)
+
+Sections
+  fastqc:
+  rnaseqc_call_1, rsem_call_1, fastp_trim_adaptor:
+    Workflow Options:
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 20 (as int)
+                        the mean quality requirement option for cut_front
+      --trailing 20 (as int)
+                        the mean quality requirement option for cut_tail
+      --min-len 15 (as int)
+                        reads shorter than length_required will be discarded
+  trimmomatic:
+    Workflow Options:
+      --software-jar &#39;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&#39;
+                        Path to the software. Default set to using our
+                        rna_quantification.sif image
+      --fasta-with-adapters-etc VAL (as str, required)
+                        Illumina clip setting Path to the reference adaptors
+      --seed-mismatches 2 (as int)
+      --palindrome-clip-threshold 30 (as int)
+      --simple-clip-threshold 10 (as int)
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 3 (as int)
+                        Other settings
+      --trailing 3 (as int)
+      --min-len 50 (as int)
+  rnaseqc_call_2, rsem_call_2, STAR_align:
+    Workflow Options:
+      --STAR-index VAL (as path, required)
+                        STAR indexing file
+      --ref-flat VAL (as path, required)
+      --riboIntervals VAL (as path, required)
+      --outFilterMultimapNmax 20 (as int)
+                        Alignment parameter
+      --alignSJoverhangMin 8 (as int)
+      --alignSJDBoverhangMin 1 (as int)
+      --outFilterMismatchNmax 999 (as int)
+      --outFilterMismatchNoverLmax 0.1 (as float)
+      --alignIntronMin 20 (as int)
+      --alignIntronMax 1000000 (as int)
+      --alignMatesGapMax 1000000 (as int)
+      --outFilterType BySJout
+      --outFilterScoreMinOverLread 0.33 (as float)
+      --outFilterMatchNminOverLread 0.33 (as float)
+      --limitSjdbInsertNsj 1200000 (as int)
+      --outSAMstrandField intronMotif
+      --outFilterIntronMotifs None
+      --alignSoftClipAtReferenceEnds Yes
+      --quantMode TranscriptomeSAM GeneCounts (as list)
+      --outSAMattrRGline ID:rg1 SM:sm1 (as list)
+      --outSAMattributes NH HI AS nM NM ch (as list)
+      --chimSegmentMin 15 (as int)
+      --chimJunctionOverhangMin 15 (as int)
+      --chimOutType Junctions WithinBAM SoftClip (as list)
+      --chimMainSegmentMultNmax 1 (as int)
+  rnaseqc_call_3:
+    Workflow Options:
+      --reference-fasta VAL (as path, required)
+  rnaseqc_call_4:
+    Workflow Options:
+      --gtf VAL (as path, required)
+                        Reference gene model
+      --strand &#39;&#39;
+                        Default empty for unstranded. Options are fr or rf
+  rnaseqc_call_5:
+  rsem_call_3:
+    Workflow Options:
+      --RSEM-index VAL (as path, required)
+      --max-frag-len 1000 (as int)
+      --[no-]paired-end (default to False)
+      --strand &#39;&#39;
+                        Default empty for unstranded. Options are fr or rf
+  rsem_call_4:
+  rsem_call_5, rnaseqc_call_6:
+  rsem_call_6:
 </pre></div>
 </div>
 </div>
@@ -915,15 +1033,8 @@
 <span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="c1"># Java Memeory: The memory set for java mechine</span>
-<span class="kn">parameter:</span> <span class="n">java_mem</span> <span class="o">=</span> <span class="mi">3</span>
-
-
-
-
-
-
-
+<span class="c1"># Memory for Java virtual mechine (`picard`)</span>
+<span class="kn">parameter:</span> <span class="n">java_mem</span> <span class="o">=</span> <span class="s2">&quot;8G&quot;</span>
 
 <span class="k">def</span> <span class="nf">get_samples</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">os</span>
@@ -1068,7 +1179,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">trimmomatic</span><span class="p">]</span>
 <span class="c1"># Path to the software. Default set to using our rna_quantification.sif image</span>
-<span class="kn">parameter:</span> <span class="n">software_jar</span> <span class="o">=</span> <span class="s2">&quot;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&quot;</span>
+<span class="kn">parameter:</span> <span class="n">trimmomatic_jar</span> <span class="o">=</span> <span class="s2">&quot;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&quot;</span>
 <span class="c1"># Illumina clip setting</span>
 <span class="c1"># Path to the reference adaptors</span>
 <span class="kn">parameter:</span> <span class="n">fasta_with_adapters_etc</span> <span class="o">=</span> <span class="nb">str</span>
@@ -1089,7 +1200,7 @@
         <span class="n">fq_2_up</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">_unpaired_</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="err">$</span><span class="p">{</span><span class="n">software_jar</span><span class="p">}</span> <span class="n">PE</span> <span class="o">-</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
+    <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">trimmomatic_jar</span><span class="p">}</span> <span class="n">PE</span> <span class="o">-</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
@@ -1126,8 +1237,12 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_2</span><span class="p">,</span> <span class="n">rsem_call_2</span><span class="p">,</span> <span class="n">STAR_align</span><span class="p">]</span>
 <span class="c1"># STAR indexing file</span>
 <span class="kn">parameter:</span> <span class="n">STAR_index</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">parameter:</span> <span class="n">ref_flat</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">parameter:</span> <span class="n">riboIntervals</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Path to flat reference file, for computing QC metric</span>
+<span class="kn">parameter:</span> <span class="n">ref_flat</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="c1"># Path to ribosomal intervals file, for computiong QC metric</span>
+<span class="kn">parameter:</span> <span class="n">riboIntervals</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="c1"># Path to the software. Default set to using our rna_quantification.sif image</span>
+<span class="kn">parameter:</span> <span class="n">picard_jar</span> <span class="o">=</span> <span class="s2">&quot;/opt/picard-tools/picard.jar&quot;</span>
 <span class="c1"># Alignment parameter</span>
 <span class="kn">parameter:</span> <span class="n">outFilterMultimapNmax</span> <span class="o">=</span> <span class="mi">20</span> 
 <span class="kn">parameter:</span> <span class="n">alignSJoverhangMin</span> <span class="o">=</span> <span class="mi">8</span> 
@@ -1193,7 +1308,7 @@
 
 
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-        <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span><span class="n">G</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">picard</span><span class="o">.</span><span class="n">jar</span> <span class="n">CollectMultipleMetrics</span> \
+        <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">picard_jar</span><span class="p">}</span> <span class="n">CollectMultipleMetrics</span> \
             <span class="o">-</span><span class="n">REFERENCE_SEQUENCE</span> <span class="err">$</span><span class="p">{</span><span class="n">reference_fasta</span><span class="p">}</span> \
             <span class="o">-</span><span class="n">PROGRAM</span> <span class="n">CollectAlignmentSummaryMetrics</span> \
             <span class="o">-</span><span class="n">PROGRAM</span> <span class="n">CollectInsertSizeMetrics</span> \
@@ -1205,7 +1320,9 @@
             <span class="o">-</span><span class="n">INPUT</span>  <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;cord_bam&quot;</span><span class="p">]}</span> \
             <span class="o">-</span><span class="n">OUTPUT</span>  <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span><span class="n">nnn</span><span class="p">}</span>
 
-        <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span><span class="n">G</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">picard</span><span class="o">.</span><span class="n">jar</span> <span class="n">CollectRnaSeqMetrics</span> \
+<span class="n">stop_if</span><span class="p">(</span><span class="ow">not</span> <span class="n">ref_flat</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="n">riboIntervals</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
+<span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+        <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">picard_jar</span><span class="p">}</span> <span class="n">CollectRnaSeqMetrics</span> \
             <span class="o">-</span><span class="n">REF_FLAT</span> <span class="err">$</span><span class="p">{</span><span class="n">ref_flat</span><span class="p">}</span> \
             <span class="o">-</span><span class="n">RIBOSOMAL_INTERVALS</span> <span class="err">$</span><span class="p">{</span><span class="n">riboIntervals</span><span class="p">}</span> \
             <span class="o">-</span><span class="n">STRAND_SPECIFICITY</span> <span class="n">NONE</span> \
@@ -1239,12 +1356,14 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_3</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">reference_fasta</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Path to the software. Default set to using our rna_quantification.sif image</span>
+<span class="kn">parameter:</span> <span class="n">picard_jar</span> <span class="o">=</span> <span class="s2">&quot;/opt/picard-tools/picard.jar&quot;</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.out.md.bam&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.metrics&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     
-        <span class="n">java</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span><span class="n">g</span> <span class="o">-</span><span class="n">jar</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">picard</span><span class="o">.</span><span class="n">jar</span> <span class="n">MarkDuplicates</span> \
+        <span class="n">java</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span> <span class="o">-</span><span class="n">jar</span> <span class="err">$</span><span class="p">{</span><span class="n">picard_jar</span><span class="p">}</span> <span class="n">MarkDuplicates</span> \
             <span class="o">-</span><span class="n">I</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;cord_bam&quot;</span><span class="p">]}</span>  \
             <span class="o">-</span><span class="n">O</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
             <span class="o">-</span><span class="n">PROGRAM_RECORD_ID</span> <span class="n">null</span> \
@@ -1288,8 +1407,8 @@
 <li><p>{sample}.coverage.tsv : A tab-delimited list of (Gene ID, Transcript ID, Mean Coverage, Coverage Std, Coverage CV) tuples for all transcripts encountered in the GTF.</p></li>
 </ul>
 </section>
-<section id="stranded-option">
-<h3><code class="docutils literal notranslate"><span class="pre">stranded</span></code> option<a class="headerlink" href="#stranded-option" title="Permalink to this headline">¶</a></h3>
+<section id="strand-option">
+<h3><code class="docutils literal notranslate"><span class="pre">strand</span></code> option<a class="headerlink" href="#strand-option" title="Permalink to this headline">¶</a></h3>
 <p>If you have strand-specific data, specify the library type <code class="docutils literal notranslate"><span class="pre">rf</span></code> or <code class="docutils literal notranslate"><span class="pre">fr</span></code>. Please refer to <a class="reference external" href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-022-04572-7">Signal et al (2022)</a> for an explanation what these library types mean. <strong>If you are not sure about the strandedness of your data, you can use the <a class="reference external" href="https://github.com/betsig/how_are_we_stranded_here">how_are_we_stranded_here</a> project to test and report strandedness of RNA-seq fastq files.</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1297,7 +1416,7 @@
 <span class="c1"># Reference gene model</span>
 <span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Default empty for unstranded. Options are fr or rf</span>
-<span class="kn">parameter:</span> <span class="n">stranded</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.gene_tpm.gct.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.gene_reads.gct.gz&#39;</span><span class="p">,</span>
@@ -1310,7 +1429,7 @@
         <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">a</span><span class="p">}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_sample_id</span><span class="p">}</span><span class="o">.</span><span class="n">rnaseqc</span> \
         <span class="o">-</span><span class="n">o</span> <span class="o">./</span> \
-        <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">stranded</span><span class="p">)</span> <span class="k">if</span> <span class="n">stranded</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+        <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">strand</span><span class="p">)</span> <span class="k">if</span> <span class="n">strand</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1387,7 +1506,7 @@
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="kn">parameter:</span> <span class="n">paired_end</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="c1"># Default empty for unstranded. Options are fr or rf</span>
-<span class="kn">parameter:</span> <span class="n">stranded</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="n">is_paired_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.isoforms.results&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.genes.results&#39;</span>
@@ -1398,7 +1517,7 @@
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="err">$</span><span class="p">{</span><span class="n">max_frag_len</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">estimate_rspd</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">estimate_rspd</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">paired_end</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">paired_end</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">stranded</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">strand</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>
 </div>

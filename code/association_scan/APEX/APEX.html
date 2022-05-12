@@ -680,43 +680,51 @@
 
 Workflows:
   LMM_null
-  APEX_cis
   cis
-  APEX_trans
   trans
 
 Global Workflow Options:
-  --molecular-pheno-list VAL (as path, required)
-                        Path to the input molecular phenotype file, per chrm, in
-                        bed.gz format.
-  --covariate VAL (as path, required)
-                        Covariate file, in similar format as the molecular_pheno
-  --genotype-file-list VAL (as path, required)
-                        Genotype file in vcf format, per chrm
-  --grm-list VAL (as path, required)
-                        grm file in pairwise table format , per chrm
+  --phenotype-list VAL (as path, required)
+                        Path to the input molecular phenotype file, per chrom,
+                        in bed.gz format.
+  --covariate-file VAL (as path, required)
+                        Covariate file
+  --genotype-list VAL (as path, required)
+                        Genotype file in VCF format, per chrom
+  --grm-list . (as path)
+                        GRM file in plain text format, per chrom, for leave one
+                        chrom out analysis
+  --[no-]LMM (default to False)
+                        Use LMM or not
+  --[no-]rankNormal (default to False)
+                        Whether or not to apply rank normalization
   --cwd . (as path)
                         Path to the work directory of the analysis.
-  --job-size 2 (as int)
-                        Specify the number of jobs per run.
   --container &#39;&#39;
                         Container option for software to run the analysis:
                         docker or singularity
-  --name ROSMAP
+  --name  f&quot;{phenotype_list:bn}_{covariate_file:bn}&quot;
+
                         Prefix for the analysis output
-  --window 1000000 (as list)
+  --window 1000000 (as int)
                         Specify the scanning window for the up and downstream
                         radius to analyze around the region of interest, in
                         units of bp
+  --numThreads 1 (as int)
+                        Number of threads
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+  --mem 80G
 
 Sections
-  APEX_*_1, LMM_null:
-  APEX_cis_2, cis:
-  APEX_trans_2, trans:
+  LMM_null:
+  cis_1:
+  trans_1:
     Workflow Options:
       --keep-gene &#39;&#39;
-  APEX_*_3:
-  APEX_*_4:
+  *_2:
+  *_3:
 </pre></div>
 </div>
 </div>
@@ -819,17 +827,16 @@ Sections
 <span class="k">if</span> <span class="n">LMM</span><span class="p">:</span>
     <span class="n">sos_run</span><span class="p">(</span><span class="s2">&quot;LMM_null&quot;</span><span class="p">)</span>
 <span class="kn">input:</span> <span class="n">input_inv</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="kn">output:</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.cis_long_table.txt.gz&#39;</span><span class="p">,</span>
-       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.cis_gene_table.txt.gz&#39;</span><span class="p">,</span>
-       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">path</span><span class="p">(</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.cis_sumstats.txt.gz&#39;</span>
-<span class="kn">parameter:</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.theta.gz&#39;</span><span class="p">)</span>
+<span class="kn">output:</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.cis_long_table.txt.gz&#39;</span><span class="p">,</span>
+       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.cis_gene_table.txt.gz&#39;</span><span class="p">,</span>
+       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.cis_sumstats.txt.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span><span class="o">=</span><span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">apex</span> <span class="n">cis</span> <span class="err">$</span><span class="p">[</span><span class="s2">&quot;--rankNormal&quot;</span> <span class="k">if</span> <span class="n">rankNormal</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">--</span><span class="n">vcf</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> \
     <span class="o">--</span><span class="n">bed</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
     <span class="o">--</span><span class="n">cov</span> <span class="err">$</span><span class="p">[</span><span class="n">covariate</span><span class="p">]</span> \
     <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">nnn</span><span class="p">]</span> \
-    <span class="o">--</span><span class="n">long</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--theta </span><span class="si">{</span><span class="n">theta</span><span class="si">}</span><span class="s1"> --grm </span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> \
+    <span class="o">--</span><span class="n">long</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--theta </span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.theta.gz --grm </span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> \
     <span class="o">--</span><span class="n">window</span> <span class="err">$</span><span class="p">[</span><span class="n">window</span><span class="p">]</span> \
     <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">[</span><span class="n">numThreads</span><span class="p">]</span>
 </pre></div>
@@ -843,8 +850,8 @@ Sections
     <span class="n">sos_run</span><span class="p">(</span><span class="s2">&quot;LMM_null&quot;</span><span class="p">)</span>
 <span class="kn">parameter:</span> <span class="n">keep_gene</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">input:</span> <span class="n">input_inv</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.trans_long_table.txt.gz&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.trans_gene_table.txt.gz&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.trans_long_table.txt.gz&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}{</span><span class="s2">&quot;.LMM&quot;</span> <span class="k">if</span> <span class="n">LMM</span> <span class="k">else</span> <span class="s2">&quot;.OLS&quot;</span><span class="si">}</span><span class="s1">.trans_gene_table.txt.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span><span class="o">=</span><span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">apex</span> <span class="n">trans</span> <span class="err">$</span><span class="p">[</span><span class="s2">&quot;--rankNormal&quot;</span> <span class="k">if</span> <span class="n">rankNormal</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">--</span><span class="n">vcf</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> \

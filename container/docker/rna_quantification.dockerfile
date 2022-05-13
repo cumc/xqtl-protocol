@@ -35,6 +35,9 @@ RUN cd /opt && \
     tar -xf samtools-1.11.tar.bz2 && rm samtools-1.11.tar.bz2 && cd samtools-1.11 && \
     ./configure --with-htslib=/opt/htslib-1.11 && make && make install && make clean
 
+# multiQC
+RUN pip install multiqc
+
 # fastp
 wget http://opengene.org/fastp/fastp.0.23.2
 mv fastp.0.23.2 /usr/local/bin/fastp

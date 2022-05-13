@@ -581,6 +581,16 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#strand-option">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     strand
+    </span>
+   </code>
+   option
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#input">
    Input
   </a>
@@ -735,16 +745,6 @@
      Step Outputs
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#strand-option">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       strand
-      </span>
-     </code>
-     option
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -818,6 +818,10 @@
 <p>for exon-level read counts, if a read overlapped multiple exons, then a fractional value equal to the portion of the read contained within that exon was allotted. Transcript-level quantifications were calculated using RSEM v1.3.0.</p>
 </div>
 </div>
+<div class="section" id="strand-option">
+<h2><code class="docutils literal notranslate"><span class="pre">strand</span></code> option<a class="headerlink" href="#strand-option" title="Permalink to this headline">¶</a></h2>
+<p>Some steps requires you specify strand option via <code class="docutils literal notranslate"><span class="pre">--strand</span></code> and should be one of<code class="docutils literal notranslate"><span class="pre">rf</span></code>, <code class="docutils literal notranslate"><span class="pre">fr</span></code> or <code class="docutils literal notranslate"><span class="pre">unstranded</span></code>. Please refer to <a class="reference external" href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-022-04572-7">Signal et al (2022)</a> for an explanation what these library types mean. <strong>If you are not sure about the strandedness of your data, you can use the <a class="reference external" href="https://github.com/betsig/how_are_we_stranded_here">how_are_we_stranded_here</a> project to test and report strandedness of RNA-seq fastq files.</strong></p>
+</div>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>A meta-data file, white space delimited without header, containing 3 columns: sample ID, fastq file 1, fastq file 2:</p>
@@ -860,7 +864,8 @@ The <code class="docutils literal notranslate"><span class="pre">--mem</span> <s
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span> \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span> <span class="o">-</span><span class="n">J</span> <span class="mi">3</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span>     
+    <span class="o">--</span><span class="n">strand</span> <span class="n">unstranded</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
@@ -879,7 +884,8 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span> \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span> <span class="o">-</span><span class="n">J</span> <span class="mi">3</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span>     
+    <span class="o">--</span><span class="n">strand</span> <span class="n">unstranded</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
@@ -890,6 +896,136 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run RNA_calling.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  fastqc
+  fastp_trim_adaptor
+  trimmomatic
+  STAR_align
+  rnaseqc_call
+  rsem_call
+  picard_qc
+
+Global Workflow Options:
+  --cwd VAL (as path, required)
+                        The output directory for generated files. MUST BE FULL
+                        PATH
+  --samples VAL (as path, required)
+                        Sample meta data list
+  --data-dir  path(f&quot;{samples:d}&quot;)
+
+                        Raw data directory, default to the same directory as
+                        sample list
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16G
+                        Memory expected
+  --java-mem 3G
+                        Memory for Java virtual mechine (`picard`)
+  --numThreads 8 (as int)
+                        Number of threads
+  --container &#39;&#39;
+                        Software container option
+  --gtf VAL (as path, required)
+                        Reference gene model
+
+Sections
+  fastqc:
+  fastp_trim_adaptor:
+    Workflow Options:
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 20 (as int)
+                        the mean quality requirement option for cut_front
+      --trailing 20 (as int)
+                        the mean quality requirement option for cut_tail
+      --min-len 15 (as int)
+                        reads shorter than length_required will be discarded
+  trimmomatic:
+    Workflow Options:
+      --trimmomatic-jar &#39;/opt/Trimmomatic-0.39/trimmomatic-0.39.jar&#39;
+                        Path to the software. Default set to using our
+                        rna_quantification.sif image
+      --fasta-with-adapters-etc VAL (as str, required)
+                        Illumina clip setting Path to the reference adaptors
+      --seed-mismatches 2 (as int)
+      --palindrome-clip-threshold 30 (as int)
+      --simple-clip-threshold 10 (as int)
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 3 (as int)
+                        Other settings
+      --trailing 3 (as int)
+      --min-len 50 (as int)
+  STAR_align:
+    Workflow Options:
+      --STAR-index VAL (as path, required)
+                        STAR indexing file
+      --outFilterMultimapNmax 20 (as int)
+                        Alignment parameter
+      --alignSJoverhangMin 8 (as int)
+      --alignSJDBoverhangMin 1 (as int)
+      --outFilterMismatchNmax 999 (as int)
+      --outFilterMismatchNoverLmax 0.1 (as float)
+      --alignIntronMin 20 (as int)
+      --alignIntronMax 1000000 (as int)
+      --alignMatesGapMax 1000000 (as int)
+      --outFilterType BySJout
+      --outFilterScoreMinOverLread 0.33 (as float)
+      --outFilterMatchNminOverLread 0.33 (as float)
+      --limitSjdbInsertNsj 1200000 (as int)
+      --outSAMstrandField intronMotif
+      --outFilterIntronMotifs None
+      --alignSoftClipAtReferenceEnds Yes
+      --quantMode TranscriptomeSAM GeneCounts (as list)
+      --outSAMattrRGline ID:rg1 SM:sm1 (as list)
+      --outSAMattributes NH HI AS nM NM ch (as list)
+      --chimSegmentMin 15 (as int)
+      --chimJunctionOverhangMin 15 (as int)
+      --chimOutType Junctions WithinBAM SoftClip (as list)
+      --chimMainSegmentMultNmax 1 (as int)
+  rnaseqc_call_1, rsem_call_1, picard_qc:
+    Workflow Options:
+      --ref-flat . (as path)
+                        Path to flat reference file, for computing QC metric
+      --picard-jar &#39;/opt/picard-tools/picard.jar&#39;
+                        Path to the software. Default set to using our
+                        rna_quantification.sif image
+      --reference-fasta VAL (as path, required)
+                        The fasta reference file used to generate star index
+      --optical-distance 100 (as int)
+                        For the patterned flowcell models (HiSeq X), change to
+                        2500
+  rnaseqc_call_2:
+    Workflow Options:
+      --strand VAL (as str, required)
+                        Options are fr or rf or unstranded
+  rnaseqc_call_3:
+  rsem_call_2:
+    Workflow Options:
+      --RSEM-index VAL (as path, required)
+      --max-frag-len 1000 (as int)
+      --strand VAL (as str, required)
+                        Options are fr or rf or unstranded
+  rsem_call_3:
+  rsem_call_4, rnaseqc_call_4:
+  rsem_call_5, rnaseqc_call_5:
+    Workflow Options:
+      --ref-flat . (as path)
+                        Path to flat reference file, for computing QC metric
 </pre></div>
 </div>
 </div>
@@ -1332,16 +1468,12 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
 <li><p>{sample}.fragmentSizes.txt : A list of fragment sizes recorded, if a BED file was provided</p></li>
 <li><p>{sample}.coverage.tsv : A tab-delimited list of (Gene ID, Transcript ID, Mean Coverage, Coverage Std, Coverage CV) tuples for all transcripts encountered in the GTF.</p></li>
 </ul>
-</div>
-<div class="section" id="strand-option">
-<h3><code class="docutils literal notranslate"><span class="pre">strand</span></code> option<a class="headerlink" href="#strand-option" title="Permalink to this headline">¶</a></h3>
-<p>If you have strand-specific data, specify the library type <code class="docutils literal notranslate"><span class="pre">rf</span></code> or <code class="docutils literal notranslate"><span class="pre">fr</span></code>. Please refer to <a class="reference external" href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-022-04572-7">Signal et al (2022)</a> for an explanation what these library types mean. <strong>If you are not sure about the strandedness of your data, you can use the <a class="reference external" href="https://github.com/betsig/how_are_we_stranded_here">how_are_we_stranded_here</a> project to test and report strandedness of RNA-seq fastq files.</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_2</span><span class="p">]</span>
-
-<span class="c1"># Default empty for unstranded. Options are fr or rf</span>
-<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># Options are fr or rf or unstranded</span>
+<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="n">stop_if</span><span class="p">(</span><span class="n">strand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;unstranded&quot;</span><span class="p">],</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;``--strand`` option should be ``fr``, ``rf`` or ``unstranded``&quot;</span><span class="p">)</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.gene_tpm.gct.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.gene_reads.gct.gz&#39;</span><span class="p">,</span>
@@ -1355,7 +1487,7 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
         <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;md_bam&quot;</span><span class="p">]:</span><span class="n">a</span><span class="p">}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_sample_id</span><span class="p">}</span><span class="o">.</span><span class="n">rnaseqc</span> \
         <span class="o">-</span><span class="n">o</span> <span class="o">./</span> \
-        <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">strand</span><span class="p">)</span> <span class="k">if</span> <span class="n">strand</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+        <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">strand</span><span class="p">)</span> <span class="k">if</span> <span class="n">strand</span> <span class="o">!=</span> <span class="s2">&quot;unstranded&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1431,8 +1563,9 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rsem_call_2</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="c1"># Default empty for unstranded. Options are fr or rf</span>
-<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># Options are fr or rf or unstranded</span>
+<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="n">stop_if</span><span class="p">(</span><span class="n">strand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;unstranded&quot;</span><span class="p">],</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;``--strand`` option should be ``fr``, ``rf`` or ``unstranded``&quot;</span><span class="p">)</span>
 <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align&quot;</span><span class="p">),</span>  <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span> <span class="c1"># After star there will only be two output per sample id, regardless of paired/unpaired</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.isoforms.results&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.genes.results&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.stat/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.cnt&#39;</span>
@@ -1443,7 +1576,7 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="err">$</span><span class="p">{</span><span class="n">max_frag_len</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">estimate_rspd</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">estimate_rspd</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">paired_end</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_paired_end</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">strand</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">strand</span> <span class="o">!=</span> <span class="s2">&quot;unstranded&quot;</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>
 </div>

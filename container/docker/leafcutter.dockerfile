@@ -1,4 +1,4 @@
-FROM gaow/base-notebook AS spython-base
+FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun
 ENV PATH=/opt/samtools-1.11:$PATH
 ENV PATH=/opt/htslib-1.11:$PATH

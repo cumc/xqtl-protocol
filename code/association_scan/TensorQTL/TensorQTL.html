@@ -708,11 +708,13 @@ Global Workflow Options:
   --region-list . (as path)
                         An optional subset of regions of molecular features to
                         analyze
-  --cwd . (as path)
+  --cwd output (as path)
                         Path to the work directory of the analysis.
   --name  f&quot;{phenotype_list:bn}_{covariate_file:bn}&quot;
 
                         Prefix for the analysis output
+  --MAC 0 (as int)
+                        Minor allele count cutoff
   --job-size 1 (as int)
                         For cluster jobs, number commands to run per job
   --container &#39;&#39;
@@ -725,9 +727,10 @@ Global Workflow Options:
                         Number of threads
   --walltime 12h
   --mem 16G
-  --MAC 0 (as int)
-  --maf-threshold  MAC/(2*N)
+  --maf-threshold  MAC/(2.0*N)
 
+                        Minor allele frequency cutoff. It will overwrite minor
+                        allele cutoff.
 
 Sections
   cis_1:
@@ -735,8 +738,7 @@ Sections
     Workflow Options:
       --batch-size 10000 (as int)
       --pval-threshold 1e-05 (as float)
-  cis_2:
-  trans_2:
+  *_2:
 </pre></div>
 </div>
 </div>
@@ -770,9 +772,11 @@ Sections
 <span class="c1"># An optional subset of regions of molecular features to analyze</span>
 <span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
 <span class="c1"># Path to the work directory of the analysis.</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
 <span class="c1"># Prefix for the analysis output</span>
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">phenotype_list</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">covariate_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c1"># Minor allele count cutoff</span>
+<span class="kn">parameter:</span> <span class="n">MAC</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="c1"># Specify the number of jobs per run.</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Container option for software to run the analysis: docker or singularity</span>
@@ -796,9 +800,10 @@ Sections
 <span class="n">chr_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_inv</span><span class="p">]</span>
 <span class="n">file_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_inv</span><span class="p">]</span>
 
-<span class="kn">parameter:</span> <span class="n">MAC</span> <span class="o">=</span> <span class="mi">0</span>
+
 <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">covariate_file</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># Use the header of covariate file for it being the intersect of geno/pheno/cov.</span>
-<span class="kn">parameter:</span> <span class="n">maf_threshold</span> <span class="o">=</span> <span class="n">MAC</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">N</span><span class="p">)</span>
+<span class="c1"># Minor allele frequency cutoff. It will overwrite minor allele cutoff.</span>
+<span class="kn">parameter:</span> <span class="n">maf_threshold</span> <span class="o">=</span> <span class="n">MAC</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">N</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

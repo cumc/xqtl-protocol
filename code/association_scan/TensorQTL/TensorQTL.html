@@ -930,6 +930,9 @@ Sections
 </div>
 </div>
 </div>
+</section>
+<section id="association-results-processing">
+<h2>Association results processing<a class="headerlink" href="#association-results-processing" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">*</span><span class="n">_2</span><span class="p">]</span>
@@ -973,72 +976,6 @@ Sections
           <span class="s2">&quot;AF&quot;</span><span class="p">:</span> <span class="s2">&quot;af&quot;</span><span class="p">,</span>
           <span class="s2">&quot;GENE&quot;</span><span class="p">:</span> <span class="s2">&quot;gene_ID&quot;</span><span class="p">}),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TensorQTL&quot;</span><span class="p">]</span> <span class="p">)</span>
     <span class="n">data_temp</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
-    <span class="n">column_info_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[1]]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="association-results-processing">
-<h2>Association results processing<a class="headerlink" href="#association-results-processing" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1">#[cis_2]</span>
-<span class="kn">input:</span>  <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/TensorQTL_recipe.tsv&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/TensorQTL_column_info.txt&#39;</span>
-<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="kn">import</span> <span class="nn">csv</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-    <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;#chr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;long_table&quot;</span><span class="p">]:</span><span class="n">r</span><span class="p">,]]],</span>
-    <span class="s2">&quot;sumstat_dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;long_table&quot;</span><span class="p">]:</span><span class="n">r</span><span class="p">,]],</span>
-    <span class="s2">&quot;column_info&quot;</span> <span class="p">:</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">]</span>
-    <span class="p">})</span>
-    <span class="n">column_info_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span> <span class="p">{</span><span class="s2">&quot;ID&quot;</span><span class="p">:</span> <span class="s2">&quot;GENE,CHR,POS,A0,A1&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;CHR&quot;</span><span class="p">:</span> <span class="s2">&quot;chrom&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;POS&quot;</span><span class="p">:</span> <span class="s2">&quot;pos&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;A0&quot;</span><span class="p">:</span> <span class="s2">&quot;ref&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;A1&quot;</span><span class="p">:</span> <span class="s2">&quot;alt&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;SNP&quot;</span><span class="p">:</span> <span class="s2">&quot;variant_id&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;STAT&quot;</span><span class="p">:</span> <span class="s2">&quot;beta&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;SE&quot;</span><span class="p">:</span> <span class="s2">&quot;se&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="s2">&quot;pval&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;TSS_D&quot;</span><span class="p">:</span> <span class="s2">&quot;tss_distance&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;AF&quot;</span><span class="p">:</span> <span class="s2">&quot;af&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;MA_SAMPLES&quot;</span><span class="p">:</span> <span class="s2">&quot;ma_samples&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;MA_COUNT&quot;</span><span class="p">:</span> <span class="s2">&quot;ma_count&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;GENE&quot;</span><span class="p">:</span> <span class="s2">&quot;phenotype_id&quot;</span><span class="p">}),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TensorQTL&quot;</span><span class="p">]</span> <span class="p">)</span>
-    <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
-    <span class="n">column_info_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[1]]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1">#[trans_2]</span>
-<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/TensorQTL_recipe.tsv&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/TensorQTL_column_info.txt&#39;</span>
-<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="kn">import</span> <span class="nn">csv</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-    <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;#chr&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]]],</span>
-    <span class="s2">&quot;sumstat_dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,]],</span>
-    <span class="s2">&quot;column_info&quot;</span> <span class="p">:</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">]</span>
-    <span class="p">})</span>
-    <span class="n">column_info_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span> <span class="p">{</span><span class="s2">&quot;ID&quot;</span><span class="p">:</span> <span class="s2">&quot;GENE,CHR,POS,A0,A1&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;CHR&quot;</span><span class="p">:</span> <span class="s2">&quot;chrom&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;POS&quot;</span><span class="p">:</span> <span class="s2">&quot;pos&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;A0&quot;</span><span class="p">:</span> <span class="s2">&quot;ref&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;A1&quot;</span><span class="p">:</span> <span class="s2">&quot;alt&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;SNP&quot;</span><span class="p">:</span> <span class="s2">&quot;variant_id&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;STAT&quot;</span><span class="p">:</span> <span class="s2">&quot;beta&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;SE&quot;</span><span class="p">:</span> <span class="s2">&quot;se&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="s2">&quot;pval&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;AF&quot;</span><span class="p">:</span> <span class="s2">&quot;af&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;GENE&quot;</span><span class="p">:</span> <span class="s2">&quot;gene_ID&quot;</span><span class="p">}),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TensorQTL&quot;</span><span class="p">]</span> <span class="p">)</span>
-    <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
     <span class="n">column_info_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[1]]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
 </pre></div>
 </div>

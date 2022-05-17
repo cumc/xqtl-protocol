@@ -10,7 +10,27 @@ MAINTAINER Hao Sun
 # Pipeline components
 #-----------------------------
 
-# R packages
+# Get R version
+R --slave -e 'R.Version()'
+
+# leafcutter at commit 63b347a316cc214808b8c734ba181c602e950f06
+conda install -c davidaknowles r-leafcutter
+
+# RSTAN V2.21.1
+R --slave -e 'install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE, versions = "2.21.1")'
+
+# leafcutter at commit 63b347a316cc214808b8c734ba181c602e950f06
+R --slave -e 'remotes::install_github("davidaknowles/leafcutter/leafcutter@63b347a316cc214808b8c734ba181c602e950f06")'
+
+# REGTOOLS at commit 3d007f5698bb97745aa6e2f96f8aed0e6d3c9d0e
+cd /opt && \
+git clone https://github.com/griffithlab/regtools && \
+cd regtools/ && \
+git reset --hard 3d007f5698bb97745aa6e2f96f8aed0e6d3c9d0e && \
+mkdir build && \
+cd build/ && \
+cmake .. && \
+make
 
 # htslib 1.11
 cd /opt && \
@@ -25,22 +45,6 @@ wget --no-check-certificate https://github.com/samtools/samtools/releases/downlo
 tar -xf samtools-1.11.tar.bz2 && rm samtools-1.11.tar.bz2 && cd samtools-1.11 && \
 ./configure --with-htslib=/opt/htslib-1.11 && make && make install && make clean
 
-# RSTAN V2.21.1
-R --slave -e 'install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE, versions = "2.21.1")'
-
-
-# leafcutter at commit 63b347a316cc214808b8c734ba181c602e950f06
-R --slave -e 'remotes::install_github("davidaknowles/leafcutter/leafcutter@63b347a316cc214808b8c734ba181c602e950f06")'
-
-# REGTOOLS at commit 3d007f5698bb97745aa6e2f96f8aed0e6d3c9d0e
-cd /opt && \
-git clone https://github.com/griffithlab/regtools && \
-cd regtools/ && \
-git reset --hard 3d007f5698bb97745aa6e2f96f8aed0e6d3c9d0e && \
-mkdir build && \
-cd build/ && \
-cmake .. && \
-make
 
 
 %environment

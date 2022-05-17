@@ -755,13 +755,25 @@ Workflows:
   qc
 
 Global Workflow Options:
-  --cwd VAL (as path, required)
+  --cwd output (as path)
                         the output directory for generated files
   --name &#39;&#39;
                         A string to identify your analysis run
   --genoFile  paths
 
                         PLINK binary files
+  --remove-samples . (as path)
+                        The path to the file that contains the list of samples
+                        to remove (format FID, IID)
+  --keep-samples . (as path)
+                        The path to the file that contains the list of samples
+                        to keep (format FID, IID)
+  --keep-variants . (as path)
+                        The path to the file that contains the list of variants
+                        to keep
+  --exclude-variants . (as path)
+                        The path to the file that contains the list of variants
+                        to exclude
   --kinship 0.0625 (as float)
                         Kinship coefficient threshold for related individuals
                         (e.g first degree above 0.25, second degree above 0.125,
@@ -797,19 +809,18 @@ Sections
                         if related individuals are detected
   qc_no_prune, qc_1:    Filter SNPs and select individuals
     Workflow Options:
-      --remove-samples . (as path)
-                        The path to the file that contains the list of samples
-                        to remove (format FID, IID)
-      --keep-samples . (as path)
-                        The path to the file that contains the list of samples
-                        to keep (format FID, IID)
-      --keep-variants . (as path)
-                        The path to the file that contains the list of variants
-                        to keep
-      --maf-filter 0.01 (as float)
-                        minimum MAF filter to use.
+      --maf-filter 0.0 (as float)
+                        minimum MAF filter to use. 0 means do not apply this
+                        filter.
       --maf-max-filter 0.0 (as float)
-                        maximum MAF filter to use
+                        maximum MAF filter to use. 0 means do not apply this
+                        filter.
+      --mac-filter 0.0 (as float)
+                        minimum MAC filter to use. 0 means do not apply this
+                        filter.
+      --mac-max-filter 0.0 (as float)
+                        maximum MAC filter to use. 0 means do not apply this
+                        filter.
       --geno-filter 0.1 (as float)
                         Maximum missingess per-variant
       --mind-filter 0.1 (as float)
@@ -832,7 +843,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># the output directory for generated files</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 <span class="c1"># A string to identify your analysis run</span>
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># PLINK binary files</span>

@@ -691,11 +691,10 @@
 </section>
 <section id="outputs">
 <h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
-<p>Output prefix will be derived from the phenotype and covariate files unless <code class="docutils literal notranslate"><span class="pre">--name</span></code> parameter is specified.</p>
 <section id="main-outputs">
 <h3>Main outputs<a class="headerlink" href="#main-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{name}.PEER.cov</span></code>: result for peer factor covariates</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*.PEER.cov</span></code>: result for peer factor covariates</p></li>
 </ul>
 </section>
 <section id="other-outputs">
@@ -792,6 +791,7 @@ Exporting results ... Done.
 <section id="mwe-with-pca-input">
 <h2>MWE with PCA input<a class="headerlink" href="#mwe-with-pca-input" title="Permalink to this headline">¶</a></h2>
 <p>In our pipeline, it is designed to include the pca as part of our cov input. This can be achieved by the merge_covariate step</p>
+<p><strong>FIXME: complete MWE</strong></p>
 </section>
 <section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
@@ -859,7 +859,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 <span class="c1"># Phenotype File</span>
 <span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
@@ -872,7 +872,6 @@ Sections
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="c1"># Software container option</span>
 <span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># N PEER factors, If do not specify or specified as 0, default values suggested by </span>
 <span class="c1"># GTEx (based on different sample size) will be used</span>
 <span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
@@ -884,12 +883,12 @@ Sections
 <span class="c1">#parameter: Alpha_b = 0.1</span>
 <span class="c1">#parameter: Eps_a = 0.1</span>
 <span class="c1">#parameter: Eps_b = 10.0</span>
-<span class="c1">### Tolarance parameters</span>
+<span class="c1"># Tolarance parameters</span>
 <span class="kn">parameter:</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">0.001</span>
 <span class="c1">#parameter: var_tol = 0.00001</span>
-<span class="c1">## minimum variance explained criteria to drop factors while training</span>
+<span class="c1"># minimum variance explained criteria to drop factors while training</span>
 <span class="kn">parameter:</span> <span class="n">r2_tol</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1">## Convergence mode: Convergence mode for MOFAr &quot;slow&quot;, &quot;medium&quot; or &quot;fast&quot;, corresponding to 1e-5%, 1e-4% or 1e-3% deltaELBO change.</span>
+<span class="c1"># Convergence mode: Convergence mode for MOFAr &quot;slow&quot;, &quot;medium&quot; or &quot;fast&quot;, corresponding to 1e-5%, 1e-4% or 1e-3% deltaELBO change.</span>
 <span class="kn">parameter:</span> <span class="n">convergence_mode</span> <span class="o">=</span> <span class="s2">&quot;fast&quot;</span>
 </pre></div>
 </div>

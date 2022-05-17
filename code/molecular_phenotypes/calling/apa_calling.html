@@ -788,19 +788,22 @@
 
 Workflows:
   UTR_reference
+  bam2tools
+  bam2toolsv1
+  bam2toolsv2
+  bam2toolstmp
   APAconfig
   APAmain
-  APAimpute
 
 Global Workflow Options:
-  --walltime 36h
-  --mem 100G
-  --ncore 22 (as int)
-  --cwd VAL (as path, required)
+  --walltime 400h
+  --mem 200G
+  --ncore 16 (as int)
+  --cwd output (as path)
                         the output directory for generated files
-  --thread 8 (as int)
-                        path to GTF file
-  --job-size 22 (as int)
+  --numThreads 8 (as int)
+                        Number of threads
+  --job-size 1 (as int)
   --container &#39;&#39;
 
 Sections
@@ -808,25 +811,32 @@ Sections
     Workflow Options:
       --hg-gtf VAL (as path, required)
                         gtf file
-  APAconfig:            Calculcate total depth and configuration file
+  bam2tools:
+    Workflow Options:
+      --n 9 (as int)
+  bam2toolsv1:
+    Workflow Options:
+      --sample VAL (as path, required)
+      --tissue VAL (as path, required)
+  bam2toolsv2:
+    Workflow Options:
+      --sample VAL (as path, required)
+      --tissue VAL (as path, required)
+  bam2toolstmp:
+    Workflow Options:
+      --sample VAL (as path, required)
+      --tissue VAL (as path, required)
+  APAconfig:            Generate configuration file
     Workflow Options:
       --bfile VAL (as path, required)
       --annotation VAL (as path, required)
       --least-pass-coverage-percentage 0.3 (as float)
                         Default parameters for Dapars2:
       --coverage-threshold 10 (as int)
-      --no-chr-prefix F
   APAmain:              Call Dapars2 multi_chromosome
     Workflow Options:
-      --no-chr-prefix T
+      --[no-]chr-prefix (default to False)
       --chrlist VAL VAL ... (as type, required)
-  APAimpute:            Dapars result Imputation
-    Workflow Options:
-      --chrlist VAL VAL ... (as type, required)
-                        Input path parameter: dapars_raw =
-      --knn 8 (as int)
-                        Default k neighbours. Set k = 0 will train the k in a
-                        data-driven manner
 </pre></div>
 </div>
 </div>
@@ -841,9 +851,9 @@ Sections
 <span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;200G&#39;</span>
 <span class="kn">parameter:</span> <span class="n">ncore</span> <span class="o">=</span> <span class="mi">16</span>
 <span class="c1"># the output directory for generated files</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># path to GTF file </span>
-<span class="kn">parameter:</span> <span class="n">thread</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="c1"># Number of threads</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 </pre></div>
@@ -886,7 +896,7 @@ Sections
 <span class="kn">parameter:</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">9</span>
 <span class="n">n</span>  <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 <span class="kn">input:</span> <span class="n">for_each</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="kn">import</span> <span class="nn">glob</span>
     <span class="kn">import</span> <span class="nn">os</span>
@@ -903,7 +913,7 @@ Sections
         <span class="n">new_cmd</span> <span class="o">=</span> <span class="s2">&quot;bedtools genomecov -ibam &quot;</span> <span class="o">+</span> <span class="n">filedir</span> <span class="o">+</span> <span class="s2">&quot; -bga -split -trackline&quot;</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out</span>
         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">new_cmd</span><span class="p">)</span>
         <span class="n">out_2</span> <span class="o">=</span> <span class="n">wigpath</span> <span class="o">+</span> <span class="nb">id</span> <span class="o">+</span> <span class="s2">&quot;.flagstat&quot;</span>
-        <span class="n">new_cmd_2</span> <span class="o">=</span> <span class="s2">&quot;samtools flagstat --thread 8 &quot;</span> <span class="o">+</span> <span class="n">filedir</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out_2</span>
+        <span class="n">new_cmd_2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;samtools flagstat --thread </span><span class="si">{</span><span class="n">numThreads</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">filedir</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out_2</span>
         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">new_cmd_2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -914,7 +924,7 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">bam2toolsv1</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">sample</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">tissue</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span><span class="p">,</span> <span class="kp">concurrent</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">concurrent</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="kn">import</span> <span class="nn">os</span>
     <span class="kn">import</span> <span class="nn">multiprocessing</span>
@@ -928,7 +938,7 @@ Sections
         <span class="n">out_2</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="nb">id</span> <span class="o">+</span> <span class="s2">&quot;.flagstat&quot;</span>
         <span class="n">new_cmd</span> <span class="o">=</span> <span class="s2">&quot;bedtools genomecov -ibam &quot;</span> <span class="o">+</span> <span class="n">subject</span> <span class="o">+</span> <span class="s2">&quot; -bga -split -trackline&quot;</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out</span>
         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">new_cmd</span><span class="p">)</span>
-        <span class="n">new_cmd_2</span> <span class="o">=</span> <span class="s2">&quot;samtools flagstat --thread 8 &quot;</span> <span class="o">+</span> <span class="n">subject</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out_2</span>
+        <span class="n">new_cmd_2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;samtools flagstat --thread </span><span class="si">{</span><span class="n">numThreads</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">subject</span> <span class="o">+</span> <span class="s2">&quot; &gt; &quot;</span> <span class="o">+</span> <span class="n">out_2</span>
         <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">new_cmd_2</span><span class="p">)</span>
     
     <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">sample_list</span><span class="p">:</span>
@@ -946,13 +956,13 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">bam2toolsv2</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">sample</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">tissue</span> <span class="o">=</span> <span class="n">path</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">ncore</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{sample}</span><span class="s2">&quot;</span>
     <span class="k">while</span> <span class="n">IFS</span><span class="o">=</span><span class="s1">&#39;,&#39;</span> <span class="n">read</span> <span class="o">-</span><span class="n">r</span> <span class="n">col1</span> <span class="n">col2</span>
     <span class="n">do</span>
       <span class="n">bedtools</span> <span class="n">genomecov</span> <span class="o">-</span><span class="n">ibam</span> <span class="err">$</span><span class="n">col1</span>  <span class="o">-</span><span class="n">bga</span> <span class="o">-</span><span class="n">split</span> <span class="o">-</span><span class="n">trackline</span>  <span class="o">&gt;</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">aqtl_analysis</span><span class="o">/</span><span class="n">wig</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tissue</span><span class="p">}</span><span class="o">/</span><span class="err">$</span><span class="n">col2</span><span class="o">.</span><span class="n">wig</span> <span class="o">&amp;</span>
-      <span class="n">samtools</span> <span class="n">flagstat</span> <span class="o">--</span><span class="n">thread</span> <span class="mi">8</span> <span class="err">$</span><span class="n">col1</span>  <span class="o">&gt;</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">aqtl_analysis</span><span class="o">/</span><span class="n">wig</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tissue</span><span class="p">}</span><span class="o">/</span><span class="err">$</span><span class="n">col2</span><span class="o">.</span><span class="n">flagstat</span> <span class="o">&amp;</span>
+      <span class="n">samtools</span> <span class="n">flagstat</span> <span class="o">--</span><span class="n">thread</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span> <span class="err">$</span><span class="n">col1</span>  <span class="o">&gt;</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">ls3751</span><span class="o">/</span><span class="n">aqtl_analysis</span><span class="o">/</span><span class="n">wig</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">tissue</span><span class="p">}</span><span class="o">/</span><span class="err">$</span><span class="n">col2</span><span class="o">.</span><span class="n">flagstat</span> <span class="o">&amp;</span>
     <span class="n">done</span> <span class="o">&lt;</span> <span class="s2">&quot;$input&quot;</span>
 </pre></div>
 </div>
@@ -1085,7 +1095,7 @@ INFO: Workflow bam2toolsv2 (ID=wdde1442ae33498bb) is executed successfully with 
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Output_result_file=Dapars_result</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Least_pass_coverage_percentage=$</span><span class="si">{</span><span class="n">least_pass_coverage_percentage</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Coverage_threshold=$</span><span class="si">{coverage_threshold}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Num_Threads=$</span><span class="si">{thread}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span> <span class="s2">&quot;Num_Threads=$</span><span class="si">{numThreads}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">config_file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sequencing_depth_file=$</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> 
     <span class="n">config_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>    
 </pre></div>

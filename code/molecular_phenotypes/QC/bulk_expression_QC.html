@@ -735,7 +735,7 @@ Global Workflow Options:
   --counts-gct . (as path)
                         Raw counts file is optional and if available, it will be
                         filtered to match with the TPM file sample and genes
-  --cwd VAL (as path, required)
+  --cwd output (as path)
   --container &#39;&#39;
 
 Sections
@@ -749,7 +749,7 @@ Sections
       --DSFilterPercent 0.05 (as float)
       --topk-genes 100 (as int)
       --cluster-percent 0.6 (as float)
-      --pvalues-cut 0.05 (as float)
+      --pvalue-cutoff 0.05 (as float)
       --cluster-level 5 (as int)
   qc_3:
 </pre></div>
@@ -766,7 +766,7 @@ Sections
 <span class="kn">parameter:</span> <span class="n">tpm_gct</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Raw counts file is optional and if available, it will be filtered to match with the TPM file sample and genes</span>
 <span class="kn">parameter:</span> <span class="n">counts_gct</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 <span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
@@ -834,7 +834,7 @@ Sections
 <span class="kn">parameter:</span> <span class="n">DSFilterPercent</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="kn">parameter:</span> <span class="n">topk_genes</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="kn">parameter:</span> <span class="n">cluster_percent</span> <span class="o">=</span> <span class="mf">0.6</span>
-<span class="kn">parameter:</span> <span class="n">pvalues_cut</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="kn">parameter:</span> <span class="n">pvalue_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="kn">parameter:</span> <span class="n">cluster_level</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bnnn</span><span class="si">}</span><span class="s1">.outlier_removed.tpm.gct.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;30G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -848,7 +848,7 @@ Sections
     <span class="n">RLEFilterPercent</span> <span class="o">&lt;-</span><span class="err">$</span><span class="p">[</span><span class="n">RLEFilterPercent</span><span class="p">]</span>
     <span class="n">DSFilterPercent</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">[</span><span class="n">DSFilterPercent</span><span class="p">]</span>
     <span class="c1">### Hcluster parameter</span>
-    <span class="n">pvalues</span><span class="o">.</span><span class="n">cut</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">[</span><span class="n">pvalues_cut</span><span class="p">]</span>
+    <span class="n">pvalues</span><span class="o">.</span><span class="n">cut</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">[</span><span class="n">pvalue_cutoff</span><span class="p">]</span>
     <span class="n">topk_genes</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">[</span><span class="n">topk_genes</span><span class="p">]</span>
     <span class="n">cluster_percent</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">[</span><span class="n">cluster_percent</span><span class="p">]</span>
     <span class="n">treesNum</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">[</span><span class="n">cluster_level</span><span class="p">]</span>

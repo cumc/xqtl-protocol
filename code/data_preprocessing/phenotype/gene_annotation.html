@@ -699,10 +699,16 @@ Workflows:
   annotate_coord_biomart
 
 Global Workflow Options:
-  --cwd VAL (as path, required)
+  --cwd output (as path)
                         Work directory &amp; output directory
+  --annotation-gtf VAL (as path, required)
+                        gene gtf annotation table
   --phenoFile VAL (as path, required)
                         Molecular phenotype matrix
+  --phenotype-id-type &#39;gene_id&#39;
+                        Whether the input data is named by gene_id or gene_name.
+                        By default it is gene_id, if not, please change it to
+                        gene_name
   --job-size 1 (as int)
                         For cluster jobs, number commands to run per job
   --walltime 5h
@@ -716,17 +722,11 @@ Global Workflow Options:
 Sections
   annotate_coord:
     Workflow Options:
-      --annotation-gtf VAL (as path, required)
-                        gene gtf annotation table
       --sample-participant-lookup . (as path)
                         A file to map sample ID from expression to genotype,
                         must contain two columns, sample_id and participant_id,
                         mapping IDs in the expression files to IDs in the
                         genotype (these can be the same).
-      --phenotype-id-type &#39;gene_id&#39;
-                        Whether the input data is named by gene_id or gene_name.
-                        By default it is gene_id, if not, please change it to
-                        gene_name
   annotate_coord_biomart:
     Workflow Options:
       --ensembl-version VAL (as int, required)
@@ -738,7 +738,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># Work directory &amp; output directory</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 <span class="c1">#  gene gtf annotation table</span>
 <span class="kn">parameter:</span> <span class="n">annotation_gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Molecular phenotype matrix</span>

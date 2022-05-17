@@ -589,6 +589,11 @@
    Minimal working example
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command interface
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -652,15 +657,67 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 </div>
 </div>
 </div>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">BiCV_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run BiCV_factor.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  fake_vcf
+  BiCV
+
+Global Workflow Options:
+  --cwd output (as path)
+                        The output directory for generated files. MUST BE FULL
+                        PATH
+  --phenoFile VAL (as path, required)
+                        The molecular phenotype matrix
+  --covFile . (as path)
+                        The covariate file
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16G
+                        Memory expected
+  --numThreads 8 (as int)
+                        Number of threads
+  --container &#39;&#39;
+                        Software container option
+  --name &#39;&#39;
+  --N 0 (as int)
+                        N factors, if not specify, calculated based on sample
+                        size according to GTeX
+  --iteration 10 (as int)
+                        The number of iteration
+
+Sections
+  fake_vcf:
+  BiCV:
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 <span class="c1"># The molecular phenotype matrix</span>
 <span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># The covariate file</span>
-<span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -674,6 +731,9 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># N factors, if not specify, calculated based on sample size according to GTeX</span>
 <span class="kn">parameter:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># The number of iteration</span>
+<span class="kn">parameter:</span> <span class="n">iteration</span> <span class="o">=</span> <span class="mi">10</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index_col</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;#chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -685,8 +745,6 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
         <span class="n">N</span> <span class="o">=</span> <span class="mi">45</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="mi">60</span>
-<span class="c1">## The number of iteration</span>
-<span class="kn">parameter:</span> <span class="n">iteration</span> <span class="o">=</span> <span class="mi">10</span>
 </pre></div>
 </div>
 </div>

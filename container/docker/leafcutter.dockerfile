@@ -5,6 +5,7 @@ ENV PATH=/opt/htslib-1.11:$PATH
 ENV PATH=/opt/regtools:$PATH
 RUN apt-get update && \
 apt-get install -y --no-install-recommends \
+git-all \
 libboost-all-dev \
 libgsl-dev
 RUN R --slave -e 'install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE, versions = "2.21.1")'

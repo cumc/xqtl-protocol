@@ -2,7 +2,7 @@ FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun
 ENV PATH=/opt/samtools-1.11:$PATH
 ENV PATH=/opt/htslib-1.11:$PATH
-ENV PATH=/opt/regtools:$PATH
+ENV PATH=/opt/regtools/build:$PATH
 RUN apt-get update && \
 apt-get install -y --no-install-recommends \
 git-all \

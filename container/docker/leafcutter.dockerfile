@@ -20,6 +20,7 @@ mkdir build && \
 cd build/ && \
 cmake .. && \
 make
+
 RUN cd /opt && \
 wget --no-check-certificate https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2 && \
 tar -xf htslib-1.11.tar.bz2 && rm htslib-1.11.tar.bz2 && cd htslib-1.11 && \

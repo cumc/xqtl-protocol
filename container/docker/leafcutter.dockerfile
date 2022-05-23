@@ -2,7 +2,7 @@ FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun
 ENV PATH=/opt/samtools-1.11:$PATH
 ENV PATH=/opt/htslib-1.11:$PATH
-ENV PATH=/opt/regtools:$PATH
+ENV PATH=/opt/regtools/build:$PATH
 RUN apt-get update && \
 apt-get install -y --no-install-recommends \
 git-all \
@@ -20,6 +20,7 @@ mkdir build && \
 cd build/ && \
 cmake .. && \
 make
+
 RUN cd /opt && \
 wget --no-check-certificate https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2 && \
 tar -xf htslib-1.11.tar.bz2 && rm htslib-1.11.tar.bz2 && cd htslib-1.11 && \

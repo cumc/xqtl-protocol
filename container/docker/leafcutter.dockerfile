@@ -4,7 +4,6 @@ ENV PATH=/opt/samtools-1.11:$PATH
 ENV PATH=/opt/htslib-1.11:$PATH
 ENV PATH=/opt/regtools/build:$PATH
 ENV PATH=/opt/leafcutter/clustering:$PATH
-ENV alias leafcutter_cluster_regtools.py="python leafcutter_cluster_regtools.py"
 RUN apt-get update && \
 apt-get install -y --no-install-recommends \
 git-all \

@@ -9,6 +9,7 @@ apt-get install -y --no-install-recommends \
 git-all \
 libboost-all-dev \
 libgsl-dev
+RUN pip install sklearn scipy
 RUN R --slave -e 'install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE, versions = "2.21.1")'
 RUN R --slave -e 'install.packages("BiocManager")'
 RUN R --slave -e 'BiocManager::install(c("Biobase","DirichletMultinomial"))'

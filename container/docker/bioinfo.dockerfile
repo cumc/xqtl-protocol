@@ -21,9 +21,9 @@ RUN R --slave -e "install.packages(c('rlang',
 RUN R --slave -e "BiocManager::install('biomaRt')"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
 
-# LDtools package was used for summary stats merger script to handle strand flips
+# cugg package was used for summary stats merger script to handle strand flips
 # QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-RUN pip install qtl LDtools  
+RUN pip install qtl cugg  
                                      
 RUN cd /tmp && wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
     unzip -o  plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/plink*

@@ -584,6 +584,11 @@
    Minumal Working Example
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command Interface
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -640,6 +645,93 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 </div>
 </div>
 </div>
+<p>The default file name can be overwritten by the <code class="docutils literal notranslate"><span class="pre">--name</span></code> parameter, as demonstrated below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">covariate_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_factor_covariate</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+        <span class="o">--</span><span class="n">factorFile</span> <span class="n">ALL</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">BiCV</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">covFile</span> <span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span>  \
+        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="command-interface">
+<h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">covariate_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run covariate_formatting.ipynb
+               [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  merge_pca_covariate
+  compute_residual
+  merge_factor_covariate
+
+Global Workflow Options:
+  --cwd output (as path)
+                        The output directory for generated files.
+  --covFile VAL (as path, required)
+                        The covariate file
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 2G
+                        Memory expected
+  --numThreads 8 (as int)
+                        Number of threads
+  --container &#39;&#39;
+                        Software container option
+  --nCov -1 (as int)
+                        The number of the external covariates to be included, -1
+                        means includs all of them, 0 means include none of them,
+                        but keeping only the header (Basicaaly just formatting
+                        the PCs).
+  --tol-cov -1.0 (as float)
+                        Tolerance of missingness in covariates, -1 means quit,
+                        otherwise for covariate with missing rate larger than
+                        tol_cov will be removed, with missing rate smaller than
+                        tol_cov will be mean_imputed.
+
+Sections
+  merge_pca_covariate:
+    Workflow Options:
+      --pcaFile VAL (as path, required)
+                        The PCA file. an RDS file as the output of the pca
+                        module
+      --k 20 (as int)
+                        The number of PCs to retained, by default is 20, in
+                        pratice should be the number of pc that captured more
+                        than 70% PVE
+      --name  f&#39;{covFile:bn}.{pcaFile:bn}&#39;
+
+  compute_residual_1:
+    Workflow Options:
+      --phenoFile VAL (as path, required)
+                        Path to the input molecular phenotype data.
+      --name  f&#39;{phenoFile:bnn}.{covFile:bn}&#39;
+
+  compute_residual_2:   tabix via samtools
+  merge_factor_covariate:
+    Workflow Options:
+      --factorFile VAL (as path, required)
+      --name  f&#39;{factorFile:bnn}.{covFile:bn}&#39;
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -677,8 +769,14 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <span class="kn">parameter:</span> <span class="n">pcaFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># The number of PCs to retained, by default is 20, in pratice should be the number of pc that captured more than 70% PVE</span>
 <span class="kn">parameter:</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="kn">parameter:</span><span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">pcaFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="c1"># Outliers</span>
+<span class="kn">parameter:</span> <span class="n">outliersFile</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> 
+<span class="kn">parameter:</span> <span class="n">remove_outliers</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1">## stop if no outliersFile was provided.</span>
+<span class="n">stop_if</span><span class="p">(</span><span class="n">remove_outliers</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">outliersFile</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span> <span class="n">msg</span><span class="p">:</span> <span class="s2">&quot;No outliers file specified, please add outliers file or remove the remove-outliers flag&quot;</span><span class="p">)</span>
 <span class="kn">input:</span> <span class="n">pcaFile</span><span class="p">,</span> <span class="n">covFile</span>
-<span class="kn">output:</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">pcaFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.gz&#39;</span>
+<span class="kn">output:</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
         <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
@@ -710,6 +808,11 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
         <span class="n">colnames</span><span class="p">(</span><span class="n">cov</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span>
         <span class="c1">## Retaining only the overlapped samples</span>
         <span class="nb">int</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">cov</span><span class="p">),</span><span class="n">colnames</span><span class="p">(</span><span class="n">mtx</span><span class="p">))</span>
+        <span class="c1">### Removal of outlier if needed</span>
+        <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">remove_outliers</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">]){</span>
+              <span class="n">outlier</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="n">outliersFile</span><span class="p">],</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">col_names</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">)</span><span class="err">$</span><span class="n">X2</span>
+              <span class="nb">int</span> <span class="o">=</span> <span class="n">setdiff</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">outlier</span><span class="p">)</span>
+              <span class="p">}</span>
         <span class="n">cov</span> <span class="o">=</span> <span class="n">cov</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
         <span class="c1"># keep only the desired amount of covariates</span>
         <span class="k">if</span><span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="n">nCov</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">){</span><span class="n">cov</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="err">$</span><span class="p">[</span><span class="n">nCov</span><span class="p">],]}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="n">nCov</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span><span class="n">cov</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">nCov</span><span class="p">],]}</span>
@@ -730,8 +833,9 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">compute_residual_1</span><span class="p">]</span>
 <span class="c1"># Path to the input molecular phenotype data.</span>
 <span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span><span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">phenoFile</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">covFile</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">phenoFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.resid.bed&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.resid.bed&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
 
@@ -739,10 +843,10 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
     <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span>
 
     <span class="n">pheno</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">factor</span><span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">na</span><span class="o">.</span><span class="n">omit</span><span class="p">()</span><span class="c1"># Remove covariates that have na values for issue 199, subject to changes</span>
+    <span class="n">covariate</span><span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> 
 
-    <span class="c1"># Extract samples in both files</span>
-    <span class="n">extraction_sample_list</span> <span class="o">&lt;-</span> <span class="n">intersect</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">pheno</span><span class="p">),</span> <span class="n">colnames</span><span class="p">(</span><span class="n">factor</span><span class="p">))</span> 
+    <span class="c1"># Extract samples in both files (Outliers will be removed in here as they are no longer presented in the header of factor)</span>
+    <span class="n">extraction_sample_list</span> <span class="o">&lt;-</span> <span class="n">intersect</span><span class="p">(</span><span class="n">colnames</span><span class="p">(</span><span class="n">pheno</span><span class="p">),</span> <span class="n">colnames</span><span class="p">(</span><span class="n">covariate</span><span class="p">))</span> 
     
     
     <span class="k">if</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">extraction_sample_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
@@ -755,12 +859,12 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
     <span class="nb">print</span><span class="p">(</span><span class="n">extraction_sample_list</span><span class="p">)</span>
     
     <span class="c1"># Subset the data:</span>
-    <span class="n">factor</span> <span class="o">=</span> <span class="n">factor</span><span class="p">[,</span><span class="n">extraction_sample_list</span><span class="p">]</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
+    <span class="n">covariate</span> <span class="o">=</span> <span class="n">covariate</span><span class="p">[,</span><span class="n">extraction_sample_list</span><span class="p">]</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
     <span class="n">pheno_id</span> <span class="o">=</span> <span class="n">pheno</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">)</span>
-    <span class="n">pheno</span> <span class="o">=</span> <span class="n">pheno</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">factor</span><span class="p">))</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="n">pheno</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">covariate</span><span class="p">))</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">()</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">()</span>
     
     <span class="c1"># Get residual </span>
-    <span class="n">pheno_resid</span> <span class="o">=</span> <span class="o">.</span><span class="n">lm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">factor</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pheno</span><span class="p">)</span><span class="err">$</span><span class="n">residuals</span>
+    <span class="n">pheno_resid</span> <span class="o">=</span> <span class="o">.</span><span class="n">lm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">covariate</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pheno</span><span class="p">)</span><span class="err">$</span><span class="n">residuals</span>
     <span class="n">pheno_output</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">pheno_id</span><span class="p">,</span> <span class="n">pheno_resid</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">())</span>
     <span class="n">pheno_output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -779,8 +883,9 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">merge_factor_covariate</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">factorFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span><span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">factorFile</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">input:</span> <span class="n">factorFile</span><span class="p">,</span> <span class="n">covFile</span>
-<span class="kn">output:</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">factorFile</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.PEER.cov.gz&#39;</span>
+<span class="kn">output:</span>  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.gz&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
         <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>

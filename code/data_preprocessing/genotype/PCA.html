@@ -288,7 +288,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../covariate/covariate_formatting.html">
-     Merge Covariate
+     Covariate data formatting
     </a>
    </li>
   </ul>
@@ -722,7 +722,7 @@
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Genotype in PLINK format: common variants, LD pruned.</p></li>
-<li><p>Phenotype files in text format and must contain a column ‘IID’ for individual ID. Optionally it can contain a column named ‘FID’ for family ID. In this case samples will be matched by both FID and IID. If you do not have a phenotype file you can input a PLINK fam file. The phenotype file can additionally contain population information and possibly disease or other labelling information, to label the PCA plots.</p></li>
+<li><p>Phenotype files in text format and must contain a column ‘IID’ for individual ID. Optionally it can contain a column named ‘FID’ for family ID. <strong>In this case samples will be matched by both FID and IID</strong>. If you do not have a phenotype file you can input a PLINK fam file. The phenotype file can additionally contain population information and possibly disease or other labelling information, to label the PCA plots.</p></li>
 </ol>
 <p>The inputs should be splitted into sets of related and unrelated individuals. Additionally you may want to prepare data per population. See “How to run this workflow” section for more details.</p>
 </section>
@@ -1127,8 +1127,9 @@ Sections
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># Name of the population column in the phenoFile</span>
 <span class="kn">parameter:</span> <span class="n">pop_col</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># Name of the populations (from the population column) you would like to plot and show on the PCA plot</span>
 <span class="kn">parameter:</span> <span class="n">pops</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="c1"># Name of the color label column in the phenoFile; can be the same as population column</span>
+<span class="c1"># Name of the color label column in the phenoFile; can be the same as population column. Can also be a separate column eg a &quot;super population&quot; column as a way to enable you to combine selected populations based on another column.</span>
 <span class="kn">parameter:</span> <span class="n">label_col</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># Number of Principal Components to output (flashpca partial PCA method).</span>
 <span class="kn">parameter:</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">20</span>
@@ -1156,14 +1157,15 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pca_plink</span><span class="p">]</span>
-<span class="c1"># Plink binary file</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># PCA command with PLINK, as a sanity check</span>
+<span class="p">[</span><span class="n">pca_plink</span><span class="p">]</span>
+<span class="c1"># PLINK binary file</span>
 <span class="kn">parameter:</span> <span class="n">genoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="n">genoFile</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">genoFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.pca.eigenvec&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
-    <span class="n">plink</span> <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> <span class="o">--</span><span class="n">pca</span> <span class="mi">30</span>
+    <span class="n">plink</span> <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span> <span class="o">--</span><span class="n">pca</span> <span class="err">$</span><span class="p">{</span><span class="n">k</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

@@ -570,23 +570,6 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#factor-analysis">
-   Factor analysis
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#peer">
-     PEER
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#apex">
-     APEX
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pca">
    PCA
   </a>
@@ -594,6 +577,23 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#merge-covariate">
    Merge covariate
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removal-of-outliers">
+     Removal of outliers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#factor-analysis">
+   Factor Analysis
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#merged-factor-covariates">
+   Merged factor &amp; covariates
   </a>
  </li>
 </ul>
@@ -609,108 +609,144 @@
                 
   <section class="tex2jax_ignore mathjax_ignore" id="covariate-data-preprocessing">
 <h1>Covariate data preprocessing<a class="headerlink" href="#covariate-data-preprocessing" title="Permalink to this headline">¶</a></h1>
-<ol class="simple">
-<li><p><strong>This tutorial are for the factor analysis and PCA modules of the following flowchart</strong></p></li>
-<li><p><strong>Each commands in this tutorials should be run once per theme</strong></p></li>
-</ol>
-<section id="factor-analysis">
-<h2>Factor analysis<a class="headerlink" href="#factor-analysis" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
-<li><p>Factor analysis can be done using one of the following method:PEER &amp; APEX (BiCV).</p></li>
-<li><p>Both factor analysis method can run with or without covariate file input.</p></li>
-<li><p>No need to run both.</p></li>
-</ol>
-<section id="peer">
-<h3>PEER<a class="headerlink" href="#peer" title="Permalink to this headline">¶</a></h3>
-<p>First command is an example for where there is no more external covariate file to be input. ( i.e. the input molecular phenotype is already an residual phenotype )</p>
-<p>Input:</p>
-<ol class="simple">
-<li><p>a molecular phenotype file in bed format</p></li>
-<li><p>(optionally) a covariate file, with each rows a covariate, first column is #id, and each subsquent column a sample</p></li>
-</ol>
+<p>This section documents output from the factor analysis section (colored in orange) of command generator MWE and explained the purpose for each of the command. The file used in this page can be found at <a class="reference external" href="https://drive.google.com/drive/folders/16ZUsciZHqCeeEWwZQR46Hvh5OtS8lFtA?usp=sharing">here</a>.</p>
+<p><strong>Each commands in the factor analysis tutorials will be generated once per theme. The MWE is considered a one theme analysis</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PEER</span> \
-        <span class="o">--</span><span class="n">molecular_pheno</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">annotated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-        <span class="o">--</span><span class="n">wd</span> <span class="o">./</span> \
-        <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">xqtl_pipeline_sif</span><span class="o">/</span><span class="n">PEER</span><span class="o">.</span><span class="n">sif</span> \
-        <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">eqtl_command</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PEER</span> \
-        <span class="o">--</span><span class="n">molecular_pheno</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">PEER</span><span class="o">/</span><span class="n">Example_data</span><span class="o">/</span><span class="n">example_data</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-        <span class="o">--</span><span class="n">covariate_file</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">PEER</span><span class="o">/</span><span class="n">Example_data</span><span class="o">/</span><span class="n">example_cov</span><span class="o">.</span><span class="n">txt</span> \
-        <span class="o">--</span><span class="n">wd</span> <span class="o">./</span> \
-        <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">xqtl_pipeline_sif</span><span class="o">/</span><span class="n">PEER</span><span class="o">.</span><span class="n">sif</span> \
-        <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">&amp;</span>
-</pre></div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="sos_hint">> ../images/eqtl_command.png (254.4 KiB):</div></div><img alt="../../_images/covariate_preprocessing_1_1.png" src="../../_images/covariate_preprocessing_1_1.png" />
 </div>
 </div>
-</div>
-</section>
-<section id="apex">
-<h3>APEX<a class="headerlink" href="#apex" title="Permalink to this headline">¶</a></h3>
-<p>First command is an example for where there is no more external covariate file to be input. ( i.e. the input molecular phenotype is already an residual phenotype )</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">BiCV_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APEX</span> \
-        <span class="o">--</span><span class="n">molecular_pheno</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">annotated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-        <span class="o">--</span><span class="n">genotype_list</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">genotype_reformmating</span><span class="o">/</span><span class="n">demo_vcf_geno</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">vcf_geno_list</span><span class="o">.</span><span class="n">txt</span> \
-        <span class="o">--</span><span class="n">covariate</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">success_example</span><span class="o">/</span><span class="n">testing_no_cov</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Factor_and_Covariate</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">APEX</span><span class="o">.</span><span class="n">cov</span> \
-        <span class="o">--</span><span class="n">wd</span> <span class="o">./</span> \
-        <span class="o">--</span><span class="n">container_apex</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">xqtl_pipeline_sif</span><span class="o">/</span><span class="n">apex</span><span class="o">.</span><span class="n">sif</span> \
-        <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">&amp;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">BiCV_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">APEX</span> \
-        <span class="o">--</span><span class="n">molecular_pheno</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">annotated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-        <span class="o">--</span><span class="n">genotype_list</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">genotype_reformmating</span><span class="o">/</span><span class="n">demo_vcf_geno</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">vcf_geno_list</span><span class="o">.</span><span class="n">txt</span> \
-        <span class="o">--</span><span class="n">wd</span> <span class="o">./</span> \
-        <span class="o">--</span><span class="n">container_apex</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">xqtl_pipeline_sif</span><span class="o">/</span><span class="n">apex</span><span class="o">.</span><span class="n">sif</span> \
-        <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">&amp;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
 <section id="pca">
 <h2>PCA<a class="headerlink" href="#pca" title="Permalink to this headline">¶</a></h2>
-<p>After the factor analysis of the previouse module, the residual expression shall be generated as outlined in the phenotype processing tutorials, and then used for the follwoing PCA analysis</p>
+<p>The PCA was done based on the related/unrelated samples generated by <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/genotype_preprocessing.ipynb">genotyoe preprocessing</a>. PCs was estimated based on the unrelated sample, then the PCs for related sample will be calculated based on the estimated eigen loading from the unrelated sample. The PCs with a cumulative PVE of 70% will be used in determined outliner and used in downstream analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">pca</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span> \
-            <span class="o">--</span><span class="n">container_lmm</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/xqtl_pipeline_sif/flashpcaR.sif&quot;</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
-            <span class="o">--</span><span class="n">unrelated_genotype</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">/</span><span class="n">merge</span><span class="o">.</span><span class="n">mergrd</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
-            <span class="o">--</span><span class="n">related_genotype</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">//</span><span class="n">demo</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">/</span><span class="n">merge</span><span class="o">.</span><span class="n">mergrd</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
-            <span class="o">--</span><span class="n">phenoFile</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">phenotype_reformat</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">exp</span> \
-            <span class="o">--</span><span class="n">label_col</span> <span class="s2">&quot;RACE&quot;</span> \
-            <span class="o">--</span><span class="n">pop_col</span> <span class="s2">&quot;RACE&quot;</span>  <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flashpca</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">flashpcaR</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
+</div>
+</div>
+<p>The uniformly distributed PVE is due to <a class="reference external" href="https://github.com/cumc/brain-xqtl-analysis/blob/main/analysis/Wang_Columbia/snuc_pseudo_bulk/impact_on_pca_pve.ipynb">MAF filtering</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">scree</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="sos_hint">> /mnt/mfs/statgen/snuc_pseudo_bulk/eight_tissue_analysis/MWE/QTL_association/output/data_preprocessing/MWE/pca/MWE.MWE.related.filtered.extracted.pca.projected.scree.png (56.7 KiB):</div></div><img alt="../../_images/covariate_preprocessing_5_1.png" src="../../_images/covariate_preprocessing_5_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">project_samples</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span> \
+        <span class="o">--</span><span class="n">genoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">bed</span> \
+        <span class="o">--</span><span class="n">pca</span><span class="o">-</span><span class="n">model</span>  <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">rds</span> \
+        <span class="o">--</span><span class="n">maha</span><span class="o">-</span><span class="n">k</span> <span class="err">`</span><span class="n">awk</span> <span class="s1">&#39;$3 &lt; 0.7&#39;</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">scree</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span>  <span class="err">`</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">flashpcaR</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="sos_hint">> /mnt/mfs/statgen/snuc_pseudo_bulk/eight_tissue_analysis/MWE/QTL_association/output/data_preprocessing/MWE/pca/MWE.MWE.related.filtered.extracted.pca.projected.pc.png (1.5 MiB):</div></div><img alt="../../_images/covariate_preprocessing_7_1.png" src="../../_images/covariate_preprocessing_7_1.png" />
 </div>
 </div>
 </section>
 <section id="merge-covariate">
 <h2>Merge covariate<a class="headerlink" href="#merge-covariate" title="Permalink to this headline">¶</a></h2>
-<p>The factor_and_covariate file shall be the output from gou-29’s peer and apex module. For the time being, please use the provided input</p>
+<p>This step generate a concatanated principle component + covaraiate (pc-cov) matrixs so that we can use it to generate a residual phenotype, as outlined in the <span class="xref myst">phenotype processing</span> page</p>
+<p>The tolerance for sample-wide NA rate of any covariates/pc are specified by <code class="docutils literal notranslate"><span class="pre">tol_cov</span></code>.  -1 means quit, otherwise for covariate with missing rate larger than tol_cov will be removed, with missing rate smaller than tol_cov will be mean_imputed.</p>
+<p>The first k PCs that satisfied &gt;70% PVE will be merged with the covariates for downstream analysis and for estimating the residual expression in the <code class="docutils literal notranslate"><span class="pre">phenotype_preprocessing</span></code> section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">merge_covariate</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">pca_factor_merge</span> \
-            <span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">merge_factor</span><span class="o">/</span> \
-            <span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> \
-            <span class="o">--</span><span class="n">factor_and_covariate</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">success_example</span><span class="o">/</span><span class="n">testing_no_cov</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Factor_and_Covariate</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">APEX</span><span class="o">.</span><span class="n">cov</span> \
-            <span class="o">--</span><span class="n">PC</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">PCA</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">demo</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">rds</span>  <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">covariate_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_pca_covariate</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span> \
+        <span class="o">--</span><span class="n">pcaFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">rds</span> \
+        <span class="o">--</span><span class="n">covFile</span>  <span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">tol_cov</span> <span class="mf">0.3</span>  \
+        <span class="o">--</span><span class="n">k</span> <span class="err">`</span><span class="n">awk</span> <span class="s1">&#39;$3 &lt; 0.7&#39;</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">scree</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="err">`</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  <span class="o">--</span><span class="n">outliersFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="removal-of-outliers">
+<h3>Removal of outliers<a class="headerlink" href="#removal-of-outliers" title="Permalink to this headline">¶</a></h3>
+<p>At this step, based on the output plot of PCA step, the user can decide if outliers should be removed. By default, the <code class="docutils literal notranslate"><span class="pre">outlierFile</span></code> will be filled, but the user have to manually add the <code class="docutils literal notranslate"><span class="pre">--remove-outliers</span></code> flag which will remove all the samples ID in the second column of the <code class="docutils literal notranslate"><span class="pre">.outlier</span></code> file from the header of pc-cov matrix, effectively remove them from all down stream analysis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">covariate_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_pca_covariate</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span> \
+        <span class="o">--</span><span class="n">pcaFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">rds</span> \
+        <span class="o">--</span><span class="n">covFile</span>  <span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">tol_cov</span> <span class="mf">0.3</span>  \
+        <span class="o">--</span><span class="n">k</span> <span class="err">`</span><span class="n">awk</span> <span class="s1">&#39;$3 &lt; 0.7&#39;</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">scree</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">tail</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="err">`</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  <span class="o">--</span><span class="n">outliersFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">outliers</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="factor-analysis">
+<h2>Factor Analysis<a class="headerlink" href="#factor-analysis" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/phenotype_preprocessing.ipynb">residual expression</a> will be used to conduct the factor analysis using either <a class="reference external" href="https://corbinq.github.io/apex/">BiCV (APEX)</a> or <a class="reference external" href="https://biofam.github.io/MOFA2/">PEER (MOFA2)</a>. The purpose of factor analysis is to uncovered un-measured factor embedded in the phenotype data, potentiall factor could be experiment batch effct, or unmeasure morbidity of the sampels .etc.</p>
+<p>The primary factor analysis method we used in our analysis is PEER.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">BiCV_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">BiCV</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span> \
+   <span class="o">--</span><span class="n">phenoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">resid</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">APEX</span><span class="o">.</span><span class="n">sif</span>  \
+   <span class="o">--</span><span class="kp">walltime</span> <span class="mi">24</span><span class="n">h</span> \
+   <span class="o">--</span><span class="n">numThreads</span> <span class="mi">8</span> \
+   <span class="o">--</span><span class="n">iteration</span> <span class="mi">1000</span> \
+   <span class="o">--</span><span class="n">N</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PEER</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span> \
+   <span class="o">--</span><span class="n">phenoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">resid</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">PEER</span><span class="o">.</span><span class="n">sif</span>  \
+   <span class="o">--</span><span class="kp">walltime</span> <span class="mi">24</span><span class="n">h</span> \
+   <span class="o">--</span><span class="n">numThreads</span> <span class="mi">8</span> \
+   <span class="o">--</span><span class="n">iteration</span> <span class="mi">1000</span> \
+   <span class="o">--</span><span class="n">N</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="merged-factor-covariates">
+<h2>Merged factor &amp; covariates<a class="headerlink" href="#merged-factor-covariates" title="Permalink to this headline">¶</a></h2>
+<p>The factors estimated above will be concatanated with pc-cov matrix for downstream analysis as a complete covariate matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">covariate_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_factor_covariate</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span> \
+        <span class="o">--</span><span class="n">factorFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">resid</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">PEER</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">covFile</span>  <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>

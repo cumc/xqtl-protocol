@@ -286,7 +286,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="covariate/covariate_formatting.html">
-     Merge Covariate
+     Covariate data formatting
     </a>
    </li>
   </ul>
@@ -570,23 +570,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#normalization-pink">
-   Normalization (pink)
+  <a class="reference internal nav-link" href="#annotation-and-region-list-generation">
+   Annotation and region list generation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#annotation-blue">
-   Annotation(Blue)
+  <a class="reference internal nav-link" href="#residual-expression">
+   Residual Expression
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#residual-expression-purple">
-   Residual_Expression(Purple)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#phenotype-reformmating-green">
-   Phenotype reformmating(Green)
+  <a class="reference internal nav-link" href="#phenotype-reformmating">
+   Phenotype reformmating
   </a>
  </li>
 </ul>
@@ -602,84 +597,74 @@
                 
   <section class="tex2jax_ignore mathjax_ignore" id="phenotype-data-preprocessing">
 <h1>Phenotype data preprocessing<a class="headerlink" href="#phenotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
-<p><strong>This tutorial contains examples on running the pink,blue,purple, and green section of the following diagram.</strong></p>
+<p>This section documents output from the Molecular Phenotype Processing section of command generator MWE and explained the purpose for each of the command. The file used in this page can be found at <a class="reference external" href="https://drive.google.com/drive/folders/16ZUsciZHqCeeEWwZQR46Hvh5OtS8lFtA?usp=sharing">here</a>.</p>
+<p><strong>Each commands in the Molecular Phenotype Processing tutorials will be generated once per theme. The MWE is considered a one theme analysis</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">eqtl_command</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> ../images/data_preprocessing.png (544.5 KiB):</div></div><img alt="../../_images/phenotype_preprocessing_1_1.png" src="../../_images/phenotype_preprocessing_1_1.png" />
+<div class="output text_html"><div class="sos_hint">> ../images/eqtl_command.png (254.4 KiB):</div></div><img alt="../../_images/phenotype_preprocessing_1_1.png" src="../../_images/phenotype_preprocessing_1_1.png" />
 </div>
 </div>
-<section id="normalization-pink">
-<h2>Normalization (pink)<a class="headerlink" href="#normalization-pink" title="Permalink to this headline">¶</a></h2>
+<section id="annotation-and-region-list-generation">
+<h2>Annotation and region list generation<a class="headerlink" href="#annotation-and-region-list-generation" title="Permalink to this headline">¶</a></h2>
+<p>The input molecular phenotype data is assumed to be a matrix with first column being gene name/ gene ID. The first step of processing is to annotate the matrixs with the genomics coordination of the gene to make a bed file. The chromosome, transcription start site(TSS), and TSS+1 will be written in the chr,start,end columns of the bed file, in accordance with the requirement from TensorQTL and APEX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">module</span><span class="o">/</span><span class="n">normailzation</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">normalization</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">collapse</span>  \
-<span class="o">--</span><span class="n">counts_gct</span> <span class="s2">&quot;./geneCounts.gct&quot;</span>         <span class="o">--</span><span class="n">tpm_gct</span> <span class="s2">&quot;./geneTpm.gct&quot;</span>        \
-<span class="o">--</span><span class="n">vcf_chr_list</span> <span class="s2">&quot;/mnt/mfs/statgen/xqtl_workflow_testing/expression_normalization/vcf_chrom_list&quot;</span>     \
-<span class="o">--</span><span class="n">sample_participant_lookup</span> <span class="s2">&quot;/mnt/mfs/statgen/xqtl_workflow_testing/expression_normalization/sampleSheetAfterQc.txt&quot;</span>      \
-<span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span>         <span class="o">--</span><span class="n">script_dir</span> <span class="s2">&quot;/mnt/mfs/statgen/xqtl_workflow_testing/expression_normalization/&quot;</span> <span class="o">--</span><span class="n">wd</span> <span class="o">./</span>       \
-<span class="o">--</span><span class="n">annotation_gtf</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">expression_normalization</span><span class="o">/</span><span class="n">gencode</span><span class="o">.</span><span class="n">v26</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">gz</span> \
-<span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">xqtl_pipeline_sif</span><span class="o">/</span><span class="n">base</span><span class="o">-</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotate_coord</span> \
+  <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span> \
+  <span class="o">--</span><span class="n">phenoFile</span> <span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">tsv</span> \
+  <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">genes</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
+  <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">txt</span> \
+  <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+  <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="nb">id</span><span class="o">-</span><span class="nb">type</span> <span class="n">gene_name</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">region_list_generation</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span>  \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>\
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">genes</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="nb">id</span><span class="o">-</span><span class="nb">type</span> <span class="n">gene_name</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="annotation-blue">
-<h2>Annotation(Blue)<a class="headerlink" href="#annotation-blue" title="Permalink to this headline">¶</a></h2>
-<p><strong>This cannot be ran without internet connection (i.e. in an computational node)</strong></p>
-<p>Ideally the input shall be the output of normalization, for the time being another similar file was used.</p>
+<section id="residual-expression">
+<h2>Residual Expression<a class="headerlink" href="#residual-expression" title="Permalink to this headline">¶</a></h2>
+<p>The residual expression will be computed using the <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/covariate/covariate_formatting.ipynb">covariate-PCs matrixs</a>. Residual expression is needed because  <a class="reference external" href="https://biofam.github.io/MOFA2/faq.html">PEER(MOFA2) handle covariates poorly</a>. However, the residual expression is only used for factor analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotation</span> \
-<span class="o">--</span><span class="n">molecular_pheno_whole</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">success_example</span><span class="o">/</span><span class="n">testing_10</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Phenotype</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">bed</span>  \
-<span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">annotation</span>  \
-<span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/xqtl_pipeline_sif/base-bioinfo.sif&quot;</span> <span class="o">&amp;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># ROSMAP</span>
-<span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotation</span> \
-<span class="o">--</span><span class="n">molecular_pheno_whole</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">Project</span><span class="o">/</span><span class="n">Rosmap</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">gene_exp</span><span class="o">/</span><span class="n">AC</span><span class="o">/</span><span class="n">geneTpmResidualsAgeGenderAdj_rename</span><span class="o">.</span><span class="n">txt</span> \
-<span class="o">--</span><span class="n">wd</span> <span class="o">./</span>  \
-<span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;ROSMAP-AC&quot;</span> <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/xqtl_pipeline_sif/base-bioinfo.sif&quot;</span> <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">covariate_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">compute_residual</span> \
+        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype</span> \
+        <span class="o">--</span><span class="n">phenoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">covFile</span>  <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">covariates</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">covariate</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">gz</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="residual-expression-purple">
-<h2>Residual_Expression(Purple)<a class="headerlink" href="#residual-expression-purple" title="Permalink to this headline">¶</a></h2>
-<p>When wengou’s residual expression ready, use his, for the timebeing this works</p>
+<section id="phenotype-reformmating">
+<h2>Phenotype reformmating<a class="headerlink" href="#phenotype-reformmating" title="Permalink to this headline">¶</a></h2>
+<p>The phenotype file will be partioned into 1 bed.gz per chromosome. Doing so allows <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/association_scan/cisQTL_scan.ipynb">cis-eQTL association testing</a> be done in parallel.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">remove_covariates</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">Residual_Y</span> \
-<span class="o">--</span><span class="n">molecular_pheno_whole</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">annotation</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">annotated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-<span class="o">--</span><span class="n">factor_covariate</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">success_example</span><span class="o">/</span><span class="n">testing_no_cov</span><span class="o">/</span><span class="n">Data_Processing</span><span class="o">/</span><span class="n">Factor_and_Covariate</span><span class="o">/</span><span class="n">AC</span><span class="o">.</span><span class="n">APEX</span><span class="o">.</span><span class="n">cov</span>  \
-<span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">residual_Y</span><span class="o">/</span> \
-<span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/xqtl_pipeline_sif/base-bioinfo.sif&quot;</span> <span class="o">&amp;</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="phenotype-reformmating-green">
-<h2>Phenotype reformmating(Green)<a class="headerlink" href="#phenotype-reformmating-green" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">reformat</span> \
-<span class="o">--</span><span class="n">region_list</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">hs3163</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">ADSPFG</span><span class="o">-</span><span class="n">xQTL</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">mwe_region_long</span> \
-<span class="o">--</span><span class="n">molecular_pheno_whole</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">residual_Y</span><span class="o">/</span><span class="n">demo</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">resid</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  \
-<span class="o">--</span><span class="n">wd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">demo</span><span class="o">/</span><span class="n">phenotype_reformat</span><span class="o">/</span>  \
-<span class="o">--</span><span class="kp">name</span> <span class="s2">&quot;demo&quot;</span> <span class="o">--</span><span class="n">container</span> <span class="s2">&quot;/mnt/mfs/statgen/containers/xqtl_pipeline_sif/base-bioinfo.sif&quot;</span> <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span>  \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">phenotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">4</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>

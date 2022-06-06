@@ -286,7 +286,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="covariate/covariate_formatting.html">
-     Merge Covariate
+     Covariate data formatting
     </a>
    </li>
   </ul>
@@ -597,18 +597,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#principle-component-analysis">
-   Principle component analysis
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finalized-genotype-qc-as-a-result-of-pca">
-   Finalized genotype QC as a result of PCA
+  <a class="reference internal nav-link" href="#finalized-genotype-qc-optionally-as-a-result-of-pca">
+   Finalized genotype QC, optionally as a result of PCA
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-all-variants">
-     For all variants
+    <a class="reference internal nav-link" href="#common-varriant">
+     Common varriant:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#remove-outlier">
+     Remove outlier
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -619,9 +619,21 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#genomic-relationship-matrix">
-   Genomic relationship matrix
+  <a class="reference internal nav-link" href="#genotype-reformatting">
+   Genotype Reformatting
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#partition-by-chromosome">
+     Partition by Chromosome
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#converted-to-vcf">
+     Converted to VCF
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -636,15 +648,16 @@
                 
   <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-preprocessing">
 <h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
-<p>This document performs genotype data quality control and preprocessing, as outlined in the yellow boxes of the flowchart below.</p>
+<p>This section documents output from the genotype section (colored in light yellow) of command generator MWE and explained the purpose for each of the command. The file used in this page can be found at <a class="reference external" href="https://drive.google.com/drive/folders/16ZUsciZHqCeeEWwZQR46Hvh5OtS8lFtA?usp=sharing">here</a>.</p>
+<p><strong>For mutli-theme study using same set of genotype (i.e. different tissues for the same participant) , the VCF QC and final Genotype QC steps are ran once. The related/unrelated genotype QC and PCA were ran once per tissue, as only the participant also have rna-seq in the corresponding tissue will be used for PCA</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">eqtl_command</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> ../images/data_preprocessing.png (544.5 KiB):</div></div><img alt="../../_images/genotype_preprocessing_1_1.png" src="../../_images/genotype_preprocessing_1_1.png" />
+<div class="output text_html"><div class="sos_hint">> ../images/eqtl_command.png (254.4 KiB):</div></div><img alt="../../_images/genotype_preprocessing_1_1.png" src="../../_images/genotype_preprocessing_1_1.png" />
 </div>
 </div>
 <section id="overview">
@@ -667,17 +680,31 @@
 </section>
 <section id="qc-for-vcf-files">
 <h2>QC for VCF files<a class="headerlink" href="#qc-for-vcf-files" title="Permalink to this headline">¶</a></h2>
-<p>Annotate rsID to variants,</p>
+<p>This step extract the rsID for the known varriants, so that we can distinguish them from the novel variants we had in our study. The procedure/rationale is <a class="reference external" href="https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html">explained in this post</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">dbsnp_annotate</span> \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">dbsnp_annotate</span> \
     <span class="o">--</span><span class="n">genoFile</span> <span class="n">reference_data</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span>
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">reference_data</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">-</span><span class="n">J</span> <span class="mi">50</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">--</span><span class="n">add_chr</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Perform QC on VCF files. The QC-ed data will also be exported to PLINK format for next steps analysis.</p>
+<p>Perform QC on VCF files. The QC-ed data will also be exported to PLINK format for next steps analysis. The QC procedure includes:</p>
+<ol>
+<li><p>Handling the formatting of multi-allelic sites,</p></li>
+<li><p>Genotype and variant level filtering based on genotype calling qualities.</p>
+<p>2.1. Genotype depth filters: For WES data, UK Biobank recommends <strong>SNPs DP&gt;10 and Indels DP&gt;10 for indels.</strong> However we think for WGS we can be less stringent, or simply rely on GQ. Users can set it to 1 eg, <code class="docutils literal notranslate"><span class="pre">--DP</span> <span class="pre">1</span> <span class="pre">--DP-indel</span> <span class="pre">1</span> </code></p>
+<p>2.2. Genotype quality GQ&gt;20.</p>
+<p>2.3. At least one sample per site passed the allele balance threshold &gt;= 0.15 for SNPs and &gt;=0.20 for indels (heterozygous variants). Allele balance is calculated for heterozygotes as the number of bases supporting the least-represented allele over the total number of base observations.</p>
+</li>
+<li><p>Known/novel variants annotation</p></li>
+<li><p>Summary statistics before and after QC, in particular the ts/tv ratio, to assess the effectiveness of QC.</p></li>
+</ol>
+<p>3 and 4 above are for explorative analysis on the overall quality assessment of genotype data in the VCF files. We annotate known and novel variants because ts/tv are expected to be different between known and novel variants, and is important QC metric to assess the effectiveness of our QC.
+After the procedure was done, the output will be converted to a plink bed/bim/fam binary format for downstream analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
@@ -692,38 +719,29 @@
 </section>
 <section id="genotype-qc-for-pca">
 <h2>Genotype QC for PCA<a class="headerlink" href="#genotype-qc-for-pca" title="Permalink to this headline">¶</a></h2>
+<p>To accuratly estimate the PCs for the genotype. We split participants based on their kinship coefficients, estimated by king. We have implemented a graph-based method to avoid removing unrelated participants that are in a family. However, this option is disable by default due to the long running time it required. User can enable this option by changing the <code class="docutils literal notranslate"><span class="pre">--no-maximize_unrelated</span></code> to <code class="docutils literal notranslate"><span class="pre">--maximize_unrelated</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1</span><span class="o">.</span><span class="n">bed</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr6</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">chr1_chr6</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="n">MWE</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="kp">name</span> <span class="n">MWE</span> \
+   <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">samples</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">sampleSheetAfterQC</span><span class="o">.</span><span class="n">filtered_geno</span><span class="o">.</span><span class="n">txt</span> \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+   <span class="o">--</span><span class="kp">walltime</span> <span class="mi">48</span><span class="n">h</span>   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">maximize_unrelated</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Determine and split between related and unrelated individuals,</p>
+<p>Variant level and sample level QC on unrelated individuals using missingness &gt; 10% ,MAF&gt;5% , and LD-prunning in preparation for PCA analysis:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="mi">20220110</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Variant level and sample level QC on unrelated individuals using MAF&gt;1% variants, in preparation for PCA analysis:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.01</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">variants</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">dupe_snp_to_exclude</span> \
+   <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
 </pre></div>
 </div>
 </div>
@@ -731,176 +749,145 @@
 <p>Extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+   <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+   <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+   <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+   <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span>  \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  \
+   <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="principle-component-analysis">
-<h2>Principle component analysis<a class="headerlink" href="#principle-component-analysis" title="Permalink to this headline">¶</a></h2>
-<p>Analysis below uses data from previous genotype QC. This is a simple data-set containing what we believe a homogenous (European) samples.</p>
-<p>First, perform PCA on unrelated individuals after QC in previous step,</p>
+<section id="finalized-genotype-qc-optionally-as-a-result-of-pca">
+<h2>Finalized genotype QC, optionally as a result of PCA<a class="headerlink" href="#finalized-genotype-qc-optionally-as-a-result-of-pca" title="Permalink to this headline">¶</a></h2>
+<section id="common-varriant">
+<h3>Common varriant:<a class="headerlink" href="#common-varriant" title="Permalink to this headline">¶</a></h3>
+<p>In our demo, the genotype data was filtered by the criteria of missingness &gt; 10% and MAF&gt;5% as shown below. User can detemined the level of filtering by changing the generated command manually.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flashpca</span> \
-        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span> \
-        <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">bed</span> \
-        <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">fam</span> \
-        <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">flashpcaR</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
+    <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">~/</span><span class="n">tmp</span><span class="o">/</span><span class="mi">19</span><span class="o">-</span><span class="n">Jan</span><span class="o">-</span><span class="mi">2022</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">png</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> /home/gw/tmp/19-Jan-2022/output/pca/chr1_chr6.20220110.unrelated.for_pca.filtered.prune.pca.pc.png (1.4 MiB):</div></div><img alt="../../_images/genotype_preprocessing_18_1.png" src="../../_images/genotype_preprocessing_18_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">~/</span><span class="n">tmp</span><span class="o">/</span><span class="mi">19</span><span class="o">-</span><span class="n">Jan</span><span class="o">-</span><span class="mi">2022</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">scree</span><span class="o">.</span><span class="n">png</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> /home/gw/tmp/19-Jan-2022/output/pca/chr1_chr6.20220110.unrelated.for_pca.filtered.prune.pca.scree.png (56.7 KiB):</div></div><img alt="../../_images/genotype_preprocessing_19_1.png" src="../../_images/genotype_preprocessing_19_1.png" />
-</div>
-</div>
-<p>Then project back related individuals to the space spanned by PC from unrelated individuals, and detect PC outliers.</p>
-<p><strong>Notice here that you need to decide how many PCs to use to compute outliers (the <code class="docutils literal notranslate"><span class="pre">--maha-k</span></code> parameter), based on the PC scree plot. You should include a decent number of PCs that capture enough variation in genotype data. Please manually examine the PC plot before running this command.</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">project_samples</span> \
-  <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span> \
-  <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">bed</span> \
-  <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">fam</span> \
-  <span class="o">--</span><span class="n">pca</span><span class="o">-</span><span class="n">model</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">rds</span> \
-  <span class="o">--</span><span class="n">maha</span><span class="o">-</span><span class="n">k</span> <span class="mi">5</span> \
-  <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">flashpcaR</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">~/</span><span class="n">tmp</span><span class="o">/</span><span class="mi">19</span><span class="o">-</span><span class="n">Jan</span><span class="o">-</span><span class="mi">2022</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">png</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> /home/gw/tmp/19-Jan-2022/output/pca/chr1_chr6.20220110.related.for_pca.filtered.extracted.pca.projected.pc.png (1.4 MiB):</div></div><img alt="../../_images/genotype_preprocessing_22_1.png" src="../../_images/genotype_preprocessing_22_1.png" />
 </div>
 </div>
 </section>
-<section id="finalized-genotype-qc-as-a-result-of-pca">
-<h2>Finalized genotype QC as a result of PCA<a class="headerlink" href="#finalized-genotype-qc-as-a-result-of-pca" title="Permalink to this headline">¶</a></h2>
-<section id="for-all-variants">
-<h3>For all variants<a class="headerlink" href="#for-all-variants" title="Permalink to this headline">¶</a></h3>
-<p>PCA analysis can possibly provide us a list of outlier samples to be removed from the genotype data. We can optionally remove them and perform genotype data QC, similar to our initial QC but without LD pruning:</p>
+<section id="remove-outlier">
+<h3>Remove outlier<a class="headerlink" href="#remove-outlier" title="Permalink to this headline">¶</a></h3>
+<p>PCA analysis (see covariate formatting page) can possibly provide us a list of outlier samples to be removed from the genotype data. We can optionally remove them and perform genotype data QC.</p>
+<p>Removal of samples is a complicated decision that require human descretion. Therefore outlier removal is not performed automatically. The <code class="docutils literal notranslate"><span class="pre">--remove-samples</span></code> parameter take a two columns table that illustrated by  <code class="docutils literal notranslate"><span class="pre">output/data_preprocessing/MWE/pca/MWE.MWE.related.filtered.extracted.pca.projected.outliers</span></code> in <code class="docutils literal notranslate"><span class="pre">MWEoutput.tar.gz</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
+    <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>Also remove outliers and keep the same variant as unrelated individuals, in related individuals:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> \
-    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">no_outlier</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bim</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Finally, merge back related and unrelated individuals as finalized genotype in PLINK format,</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">no_outlier</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
-               <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">no_outlier</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype_final</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">chr1_chr6_20220110_qced</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>To fully illustrate how PCA and PCA based QC is done on sample with <strong>multiple populations (a more complicated but potentially very useful setting)</strong>, please try out the example documented in the <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/PCA.html">PCA analysis module</a> with a different example data-set.</p>
 </section>
 <section id="for-common-and-infrequent-variants">
 <h3>For common and infrequent variants<a class="headerlink" href="#for-common-and-infrequent-variants" title="Permalink to this headline">¶</a></h3>
-<p>Additionally, we provide a version with variants having sample minor allele count MAC &gt;= 5, for the sake of convenience focusing our single variant analysis:</p>
+<p>Additionally, we provide a version with variants having sample minor allele count MAC &gt;= 5, for the sake of convenience focusing our single variant analysis. It should be noted that mac and maf don’t overwrite each other within our module. It is up to plink to decide how to handle the secnario of both <code class="docutils literal notranslate"><span class="pre">--maf-filter</span></code> and <code class="docutils literal notranslate"><span class="pre">--mac-filter</span></code> &gt; 0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">mac</span><span class="o">=</span><span class="s2">&quot;5&quot;</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">variants</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">dupe_snp_to_exclude</span> \
+   <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
     <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="err">$</span><span class="n">mac</span> \
     <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_mac</span><span class="err">$</span><span class="n">mac</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span> \
-    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bim</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+   <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+   <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+   <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="err">$</span><span class="n">mac</span> \
     <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_mac</span><span class="err">$</span><span class="n">mac</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+   <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">genotype_data</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span>  \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  \
+   <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
-               <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">no_outlier_maf0p</span><span class="err">$</span><span class="n">maf</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype_final</span> \
-    <span class="o">--</span><span class="kp">name</span> <span class="n">chr1_chr6_20220110_qced_mac</span><span class="err">$</span><span class="n">mac</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
+    <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
+    <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>  \
+    <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="err">$</span><span class="n">mac</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">no_outlier_mac</span><span class="err">$</span><span class="n">mac</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="genotype-reformatting">
+<h2>Genotype Reformatting<a class="headerlink" href="#genotype-reformatting" title="Permalink to this headline">¶</a></h2>
+<section id="partition-by-chromosome">
+<h3>Partition by Chromosome<a class="headerlink" href="#partition-by-chromosome" title="Permalink to this headline">¶</a></h3>
+<p>The association analysis of TensorQTL required the chromosome be seperated by chromosome to allowed for parallel analysis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_chrom</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
+    <span class="o">--</span><span class="n">chrom</span>  <span class="err">`</span><span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span>  <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bim</span>  <span class="o">|</span> <span class="n">uniq</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;s/chr//g&quot;</span><span class="err">`</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="converted-to-vcf">
+<h3>Converted to VCF<a class="headerlink" href="#converted-to-vcf" title="Permalink to this headline">¶</a></h3>
+<p>If association analysis by APEX is needed, following command convert the per-chromosome plink binaray generated above into indexed vcf.gz.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_to_vcf</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">plink_files_list</span><span class="o">.</span><span class="n">txt</span>  \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
 </pre></div>
 </div>
 </div>
 </div>
 <p><strong>FIXME: still need to add in section for VCF formatted file processing after PCA</strong></p>
 </section>
-</section>
-<section id="genomic-relationship-matrix">
-<h2>Genomic relationship matrix<a class="headerlink" href="#genomic-relationship-matrix" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GRM</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">grm</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
-    <span class="o">--</span><span class="n">genotype</span><span class="o">-</span><span class="nb">list</span> <span class="n">data</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">list</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 <div class="toctree-wrapper compound">
 </div>

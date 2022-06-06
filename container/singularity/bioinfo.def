@@ -8,7 +8,7 @@ maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
 su -  root # USER root
 
 
-# Install JAVA
+# Install JAVA & GIT
 apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk && \
 apt-get clean && \
 apt-get autoremove -y && \
@@ -26,10 +26,9 @@ R --slave -e "install.packages(c('rlang',
 R --slave -e "BiocManager::install('biomaRt')"
 R --slave -e "BiocManager::install('VariantAnnotation')"
 
-# LDtools package was used for summary stats merger script to handle strand flips
+# cugg package was used for summary stats merger script to handle strand flips
 # QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-pip install qtl LDtools
-                                     
+pip install qtl cugg
 cd /tmp && wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
 unzip -o  plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/plink*
 cd /tmp && wget https://s3.amazonaws.com/plink2-assets/alpha2/plink2_linux_avx2.zip && \

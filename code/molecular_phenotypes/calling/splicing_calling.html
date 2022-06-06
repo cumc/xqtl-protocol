@@ -583,6 +583,26 @@
   <a class="reference internal nav-link" href="#output">
    Output
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leafcutter">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       leafcutter
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#psichomics">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       psichomics
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#minimal-working-example">
@@ -622,7 +642,7 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#leafcutter">
+  <a class="reference internal nav-link" href="#id1">
    <code class="docutils literal notranslate">
     <span class="pre">
      leafcutter
@@ -643,7 +663,7 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#psichomics">
+  <a class="reference internal nav-link" href="#id2">
    <code class="docutils literal notranslate">
     <span class="pre">
      psichomics
@@ -668,7 +688,7 @@
 <p><strong>Various reference data needs to be prepared before using this workflow</strong>. <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">Here we provide a module</a> to download and prepare the reference data.</p>
 <section id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
-<p>“There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
+<p>There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
 <ol class="simple">
 <li><p><a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> that quantifies each specific event. In particular the exon skipping event which is used also in GTEx sQTL analysis.</p></li>
 <li><p><a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> to quantify the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events. The method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.</p></li>
@@ -688,16 +708,19 @@
 </section>
 <section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<section id="leafcutter">
+<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">{sample_list}</span></code> below refers to the name of the meta-data file input, {sample_name} refers to the name of each input BAM file, and {chromosome_id} refers to chromosome names, ie 1,2,3,X,Y.</p>
+<p>Main output include:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code>: {sample_list} below refers to the name of the meta-data file input, {sample_name} refers to the name of each input BAM file, and {chromosome_id} refers to chromosome names, ie 1,2,3,X,Y.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz</span></code> file with row id in format: “chromosome:intron_start:intron_end:cluster_id”, column labeled as input sample names and each type of intron usage ratio under each sample (i.e. #particular intron in a sample / #total introns classified in the same cluster in a sample) in each cells.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind_numers.counts.gz</span></code> file with the same row and column label but the count of each intron in each cells.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz.qqnorm_{chromosome_id}.gz</span></code> files, which is phenotype tables for QTL analysis.</p></li>
 </ul>
-<p>Major output include:</p>
-<p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz</span></code> file with row id in format: “chromosome:intron_start:intron_end:cluster_id”, column labeled as input sample names and each type of intron usage ratio under each sample (i.e. #particular intron in a sample / #total introns classified in the same cluster in a sample) in each cells.</p>
-<p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind_numers.counts.gz</span></code> file with the same row and column label but the count of each intron in each cells.</p>
-<p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz.qqnorm_{chromosome_id}.gz</span></code> files, which is phenotype tables for QTL analysis.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">psichomics</span></code>: …</p></li>
-</ul>
+</section>
+<section id="psichomics">
+<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h3>
+</section>
 </section>
 <section id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
@@ -772,13 +795,20 @@ Global Workflow Options:
 Sections
   leafcutter_1:
     Workflow Options:
-      --min-anchor-len 8 (as int)
-      --min-split-reads 50 (as int)
+      --anchor-len 8 (as int)
+      --min-intron-len 50 (as int)
       --max-intron-len 500000 (as int)
+      --strandness 1 (as int)
   leafcutter_2:
     Workflow Options:
       --min-split-reads 50 (as int)
       --max-intron-len 500000 (as int)
+  leafcutter_3:
+    Workflow Options:
+      --npc 10 (as int)
+      --chr-blacklist  f&#39;{samples:d}/black_list.txt&#39;
+
+  leafcutter_4:
 </pre></div>
 </div>
 </div>
@@ -834,8 +864,8 @@ Sections
 </div>
 </div>
 </section>
-<section id="leafcutter">
-<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h2>
+<section id="id1">
+<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="https://davidaknowles.github.io/leafcutter/index.html"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a>. The choices of regtool parameters are <a class="reference external" href="https://github.com/davidaknowles/leafcutter/issues/127">discussed here</a>.</p>
 <section id="parameter-annotations">
 <h3>Parameter Annotations<a class="headerlink" href="#parameter-annotations" title="Permalink to this headline">¶</a></h3>
@@ -940,8 +970,8 @@ Sections
 </div>
 </section>
 </section>
-<section id="psichomics">
-<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h2>
+<section id="id2">
+<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="http://bioconductor.org/packages/release/bioc/html/psichomics.html"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></p>
 </section>
 </section>

@@ -583,26 +583,6 @@
   <a class="reference internal nav-link" href="#output">
    Output
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#leafcutter">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       leafcutter
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#psichomics">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       psichomics
-      </span>
-     </code>
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#minimal-working-example">
@@ -642,7 +622,7 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id1">
+  <a class="reference internal nav-link" href="#leafcutter">
    <code class="docutils literal notranslate">
     <span class="pre">
      leafcutter
@@ -663,7 +643,7 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id2">
+  <a class="reference internal nav-link" href="#psichomics">
    <code class="docutils literal notranslate">
     <span class="pre">
      psichomics
@@ -688,7 +668,7 @@
 <p><strong>Various reference data needs to be prepared before using this workflow</strong>. <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">Here we provide a module</a> to download and prepare the reference data.</p>
 <section id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
-<p>There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
+<p>“There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
 <ol class="simple">
 <li><p><a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> that quantifies each specific event. In particular the exon skipping event which is used also in GTEx sQTL analysis.</p></li>
 <li><p><a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> to quantify the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events. The method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.</p></li>
@@ -704,35 +684,20 @@
 </pre></div>
 </div>
 <p>All the BAM files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
+<p>If intend to blacklist some chromosomes and not analyze it, add one text file named black_list.txt with one chromosome name per line in the same directory of the meta-data file.</p>
 </section>
 <section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<section id="leafcutter">
-<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">{sample_list}</span></code> below refers to the name of the meta-data file input, <code class="docutils literal notranslate"><span class="pre">{sample_name}</span></code> refers to the name of each input BAM file.</p>
-<p>Main output include:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz</span></code> file with row id in format:  “chromosome:intron_start:intron_end:cluster_id”, column labeled as input sample names and each type of intron usage ratio under each sample (i.e. #particular intron in a sample / #total introns classified in the same cluster in a sample) in each cells.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind_numers.counts.gz</span></code> file with the same row and column label but the count of each intron in each cells.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code>: {sample_list} below refers to the name of the meta-data file input, {sample_name} refers to the name of each input BAM file, and {chromosome_id} refers to chromosome names, ie 1,2,3,X,Y.</p></li>
 </ul>
-<p>Other output files:</p>
+<p>Major output include:</p>
+<p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz</span></code> file with row id in format: “chromosome:intron_start:intron_end:cluster_id”, column labeled as input sample names and each type of intron usage ratio under each sample (i.e. #particular intron in a sample / #total introns classified in the same cluster in a sample) in each cells.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind_numers.counts.gz</span></code> file with the same row and column label but the count of each intron in each cells.</p>
+<p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz.qqnorm_{chromosome_id}.gz</span></code> files, which is phenotype tables for QTL analysis.</p>
 <ul class="simple">
-<li><p>{sample_name}.bai (only this is under the same directory of each BAM file),</p></li>
-<li><p>{sample_name}.junc,</p></li>
-<li><p>{sample_name}.stderr,</p></li>
-<li><p>{sample_name}.stdout,</p></li>
-<li><p>{sample_name}.junc.{sample_list}_intron_usage.sorted.gz,</p></li>
-<li><p>{sample_list}_intron_usage_perind.counts.stderr,</p></li>
-<li><p>{sample_list}_intron_usage_perind.counts.stdout,</p></li>
-<li><p>{sample_list}_intron_usage_perind.junc_record,</p></li>
-<li><p>{sample_list}_intron_usage_pooled,</p></li>
-<li><p>{sample_list}_intron_usage_refined,</p></li>
-<li><p>{sample_list}_intron_usage_sortedlibs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">psichomics</span></code>: …</p></li>
 </ul>
-</section>
-<section id="psichomics">
-<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h3>
-</section>
 </section>
 <section id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
@@ -843,6 +808,7 @@ Sections
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="k">def</span> <span class="nf">get_samples</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">os</span>
@@ -868,8 +834,8 @@ Sections
 </div>
 </div>
 </section>
-<section id="id1">
-<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<section id="leafcutter">
+<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="https://davidaknowles.github.io/leafcutter/index.html"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a>. The choices of regtool parameters are <a class="reference external" href="https://github.com/davidaknowles/leafcutter/issues/127">discussed here</a>.</p>
 <section id="parameter-annotations">
 <h3>Parameter Annotations<a class="headerlink" href="#parameter-annotations" title="Permalink to this headline">¶</a></h3>
@@ -879,12 +845,16 @@ Sections
 <li><p>max_intron_len: maximum intron length to be analyzed</p></li>
 <li><p>strandness: strandness status, 0 for unstranded, 1 for first-strand/RF, 2 for second-strand/FR</p></li>
 <li><p>min_split_reads: minimal split reads allows to form a cluster</p></li>
+<li><p>npc: the number of PCs wanted to be calculated as covariates in QTL analysis</p></li>
+<li><p>chr_blacklist: file of blacklisted chromosomes to exclude from analysis, one per line. If none is provided, will default to blacklisting X and Y. Use by adding –ChromosomeBlackList option for the prepare_phenotype_table.py command in step leafcutter_3,</p></li>
 </ul>
 </section>
 <section id="things-to-keep-in-mind">
 <h3>Things to keep in mind<a class="headerlink" href="#things-to-keep-in-mind" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>If .bam.bai index files of the .bam input are ready before using leafCutter, it can be placed in the same directory with input .bam files and the “samtools index ${_input}” line can be skipped.</p></li>
+<li><p>need to be updated with function to flag rna strandness for each input sample seperately</p></li>
+<li><p>Seems leafcutter_3 requires ~ 10G memory (or larger if having large input) or there will be segmentation fault.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -920,10 +890,58 @@ Sections
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_3</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">npc</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">chr_blacklist</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">/black_list.txt&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_intron_usage_perind.counts.gz.PCs&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_intron_usage_perind.counts.gz_prepare.sh&#39;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/sample_list_intron_usage_phenotype_list_by_chromosome.txt&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
+    <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">leafcutter</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">prepare_phenotype_table</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="p">{</span><span class="n">npc</span><span class="p">}</span> <span class="o">--</span><span class="n">ChromosomeBlackList</span> <span class="err">$</span><span class="p">{</span><span class="n">chr_blacklist</span><span class="p">}</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">blk_lst</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="si">{</span><span class="n">chr_blacklist</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">blk_lst</span> <span class="o">=</span> <span class="n">blk_lst</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;bgzip&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;-p&quot;</span><span class="p">]</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">chrs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">chrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">chrs</span><span class="p">,</span> <span class="n">names</span><span class="p">))</span>
+    <span class="n">dfout</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">zipped</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">,</span><span class="s1">&#39;#dir&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">blk_lst</span><span class="p">:</span>
+        <span class="n">dfout</span> <span class="o">=</span> <span class="n">dfout</span><span class="p">[</span><span class="n">dfout</span><span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+    <span class="n">dfout</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/sample_list_intron_usage_phenotype_list_by_chromosome.txt&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_4</span><span class="p">]</span>
+<span class="n">molecular_pheno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">molecular_pheno_chr_inv</span> <span class="o">=</span> <span class="n">molecular_pheno_chr_inv</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">file_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">molecular_pheno_chr_inv</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">file_inv</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># This design is necessary to avoid using for_each, as sos can not take chr number as an input.</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">}</span><span class="s1">.gz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
+    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>
+    <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">bed</span> <span class="err">$</span><span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
-<section id="id2">
-<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<section id="psichomics">
+<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="http://bioconductor.org/packages/release/bioc/html/psichomics.html"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></p>
 </section>
 </section>

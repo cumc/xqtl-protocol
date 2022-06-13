@@ -726,19 +726,20 @@
 <p>Our proposed xQTL summary statistics fields should include (cf. <a class="reference external" href="https://www.niagads.org/adsp/content/xqtl-fileformats-110921v3sharedxlsx">our xQTL format draft V3, Jan 2021</a>, <a class="reference external" href="https://github.com/eQTL-Catalogue/eQTL-Catalogue-resources/blob/master/tabix/Columns.md">eQTL catalog</a>, <a class="reference external" href="https://www.gtexportal.org/home/datasets">GTEx</a>, <a class="reference external" href="https://www.metabrain.nl/">metaBrain</a>):</p>
 <ul class="simple">
 <li><p><strong>variant</strong> - The variant ID (chromosome_position_ref_alt) e.g. chr19_226776_C_T. Based on GRCh38 coordinates and reference genome, with ‘chr’ prefix added to the chromosome number.</p></li>
+<li><p><strong>chromosome</strong> - GRCh38 chromosome name of the variant (e.g. 1,2,3 …,X).</p></li>
+<li><p><strong>position</strong> - GRCh38 position of the variant.</p></li>
+<li><p><strong>ref</strong> - GRCh38 reference allele.</p></li>
+<li><p><strong>alt</strong> - GRCh38 alternative allele (also the effect allele).</p></li>
 <li><p><strong>imputation_quality</strong> - Optional imputation quality score from the imputation software, can be replaced with NA if not available.</p></li>
-<li><p><strong>pvalue</strong> - Nominal p-value of association between the variant and the molecular trait.</p></li>
 <li><p><strong>molecular_trait_object_id</strong> - For phenotypes with multiple correlated alternatives (multiple alternative transcripts or exons within a gene, multple alternative promoters in txrevise, multiple alternative intons in Leafcutter), this defines the level at which the phenotypes were aggregated. Permutation p-values are calculated across this set of alternatives.</p></li>
 <li><p><strong>molecular_trait_id</strong> - ID of the molecular trait used for QTL mapping. Depending on the quantification method used, this can be either a gene id, exon id, transcript id or a txrevise promoter, splicing or 3’end event id. Examples: ENST00000356937, ENSG00000008128.</p></li>
 <li><p><strong>maf</strong> - Minor allele frequency within a QTL mapping context (e.g. cell type or tissues within a study).</p></li>
 <li><p><strong>beta</strong> - Regression coefficient from the linear model.</p></li>
 <li><p><strong>se</strong> - Standard error of the beta.</p></li>
+<li><p><strong>pvalue</strong> - Nominal p-value of association between the variant and the molecular trait.</p></li>
 <li><p><strong>n</strong> - Total number of samples without missing data.</p></li>
 <li><p><strong>ac</strong> - Count of the alternative allele.</p></li>
-<li><p><strong>chromosome</strong> - GRCh38 chromosome name of the variant (e.g. 1,2,3 …,X).</p></li>
-<li><p><strong>position</strong> - GRCh38 position of the variant.</p></li>
-<li><p><strong>ref</strong> - GRCh38 reference allele.</p></li>
-<li><p><strong>alt</strong> - GRCh38 alternative allele (also the effect allele).</p></li>
+<li><p><strong>ma_samples</strong> - Number of samples carrying at least one copy of the minor allele.</p></li>
 </ul>
 </section>
 <section id="trait-level-qtl-summary-multiple-testing-corrected">
@@ -816,7 +817,7 @@
 <span class="kn">OUTPUT:</span> <span class="n">data</span><span class="o">/</span><span class="n">testflip</span><span class="o">/</span><span class="n">output</span><span class="o">/</span>
 </pre></div>
 </div>
-<p>For xQTL summary statistics, <code class="docutils literal notranslate"><span class="pre">trait_id</span></code> is required because a variant can be made association with multiple molecular traits.</p>
+<p>For xQTL summary statistics, <code class="docutils literal notranslate"><span class="pre">molecular_trait_object_id</span></code> is required because a variant can be made association with multiple molecular traits.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">INPUT:</span>
   <span class="o">-</span> <span class="n">data</span><span class="o">/</span><span class="n">twas</span><span class="o">/*.</span><span class="n">txt</span><span class="p">:</span>
         <span class="n">build</span><span class="p">:</span> <span class="n">GRCh38</span>
@@ -825,7 +826,7 @@
         <span class="n">position</span><span class="p">:</span> <span class="n">POS</span>
         <span class="n">ref</span><span class="p">:</span> <span class="n">A0</span>
         <span class="n">alt</span><span class="p">:</span> <span class="n">A1</span>
-        <span class="n">trait_id</span><span class="p">:</span> <span class="n">GENE</span>
+        <span class="n">molecular_trait_object_id</span><span class="p">:</span> <span class="n">GENE</span>
         <span class="n">beta</span><span class="p">:</span> <span class="n">BETA</span>
         <span class="n">se</span><span class="p">:</span> <span class="n">SE</span>
         <span class="n">pvalue</span><span class="p">:</span> <span class="n">P</span> 
@@ -837,7 +838,7 @@
         <span class="n">position</span><span class="p">:</span> <span class="n">POS</span>
         <span class="n">ref</span><span class="p">:</span> <span class="n">A0</span>
         <span class="n">alt</span><span class="p">:</span> <span class="n">A1</span>
-        <span class="n">trait_id</span><span class="p">:</span> <span class="n">GENE</span>
+        <span class="n">molecular_trait_object_id</span><span class="p">:</span> <span class="n">GENE</span>
         <span class="n">beta</span><span class="p">:</span> <span class="n">BETA</span>
         <span class="n">se</span><span class="p">:</span> <span class="n">SE</span>
         <span class="n">pvalue</span><span class="p">:</span> <span class="n">P</span> 

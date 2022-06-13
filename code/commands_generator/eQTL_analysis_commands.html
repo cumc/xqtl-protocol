@@ -475,7 +475,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/summary_stats_merger.html">
-   Summary statistics merger
+   Summary statistics standardization and export
   </a>
  </li>
  <li class="toctree-l1">
@@ -621,6 +621,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#association-scan">
    Association Scan
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#trans-association-scan">
+   Trans Association Scan
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1221,6 +1226,31 @@ A genotype list, with two column, `#chr` and  `path`
         <span class="o">--</span><span class="n">covariate</span><span class="o">-</span><span class="n">file</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>    \
         <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">:</span><span class="n">d</span><span class="p">]</span>  \
         <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_apex</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="n">submission</span> <span class="k">if</span> <span class="n">yml</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span> <span class="o">--</span><span class="kp">name</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">bnn</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="trans-association-scan">
+<h2>Trans Association Scan<a class="headerlink" href="#trans-association-scan" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">TensorQTL_Trans</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">MAC</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># The minor allele frequency as treshold for the analysis, overwrite MAC</span>
+<span class="kn">parameter:</span> <span class="n">maf_threshold</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kn">parameter:</span> <span class="n">genotype_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">genotype_list</span><span class="p">,</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;phenotype_partition_by_chrom&quot;</span><span class="p">),</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;merge_factor_covariate&quot;</span><span class="p">),</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;input_inv&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/association_scan/</span><span class="si">{</span><span class="n">_input_inv</span><span class="p">[</span><span class="s2">&quot;Theme&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">/Trans/TensorQTL.trans._recipe.tsv&#39;</span>
+<span class="kn">script:</span> <span class="n">interpreter</span> <span class="o">=</span> <span class="n">interpreter</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="p">[</span><span class="n">exe_dir</span><span class="p">]</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">TensorQTL</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">trans</span> \
+        <span class="o">--</span><span class="n">genotype</span><span class="o">-</span><span class="nb">list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>   \
+        <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="nb">list</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> \
+        <span class="o">--</span><span class="n">covariate</span><span class="o">-</span><span class="n">file</span> <span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>    \
+        <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">:</span><span class="n">d</span><span class="p">]</span>  \
+        <span class="o">--</span><span class="n">region_list</span> <span class="err">$</span><span class="p">[</span><span class="n">region_list</span><span class="p">]</span> \
+        <span class="o">--</span><span class="n">container</span> <span class="err">$</span><span class="p">[</span><span class="n">container_TensorQTL</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="n">submission</span> <span class="k">if</span> <span class="n">yml</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span> <span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--MAC </span><span class="si">{</span><span class="n">MAC</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">MAC</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="err">$</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;--maf_threshold </span><span class="si">{</span><span class="n">maf_threshold</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">maf_threshold</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>

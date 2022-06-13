@@ -475,7 +475,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../misc/summary_stats_merger.html">
-   Summary statistics merger
+   Summary statistics standardization and export
   </a>
  </li>
  <li class="toctree-l1">
@@ -860,7 +860,7 @@
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> 
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> <span class="o">-</span><span class="n">n</span>
 </pre></div>
 </div>
 </div>
@@ -896,6 +896,21 @@ On a cluster, the <code class="docutils literal notranslate"><span class="pre">-
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>  <span class="o">-</span><span class="n">n</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rnaseqc_call</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
+    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">fasta</span> \
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span> <span class="o">-</span><span class="n">n</span>
 </pre></div>
 </div>
 </div>
@@ -1051,7 +1066,6 @@ Sections
 <span class="kn">parameter:</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Raw data directory, default to the same directory as sample list</span>
 <span class="kn">parameter:</span> <span class="n">data_dir</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -1068,30 +1082,40 @@ Sections
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="c1"># Reference gene model</span>
 <span class="kn">parameter:</span> <span class="n">gtf</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1">## FIX: The way to get sample needs to be revamped to 1. Accomodate rf/fr as column 2. accomodate single end read (Only 2 fq/samples)</span>
+<span class="n">sample_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1">## Extract strand information if user have specified the strand</span>
+<span class="n">strand_inv</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="k">def</span> <span class="nf">get_samples</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">os</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Line </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> of file </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2"> must have 3 columns&quot;</span><span class="p">)</span>
-        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
-            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">files</span><span class="p">)):</span>
+<span class="k">if</span> <span class="s2">&quot;strand&quot;</span> <span class="ow">in</span> <span class="n">sample_inv</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">strand_inv</span> <span class="o">=</span> <span class="n">sample_inv</span><span class="o">.</span><span class="n">strand</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">sample_inv</span> <span class="o">=</span> <span class="n">sample_inv</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;strand&quot;</span> <span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">stop_if</span><span class="p">(</span><span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;unstranded&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">strand_inv</span> <span class="p">]),</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;strand columns should only include ``fr``, ``rf`` or ``unstranded``&quot;</span><span class="p">)</span>
+
+<span class="c1">## Extract sample_id</span>
+<span class="n">sample_inv</span> <span class="o">=</span> <span class="n">sample_inv</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">sample_id</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sample_inv</span><span class="p">]</span>
+
+<span class="c1">## Get the file name for single/paired end data</span>
+<span class="n">file_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sample_inv</span><span class="p">]</span>
+<span class="n">file_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">file_inv</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
+
+<span class="n">fastq</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data_dir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">file_inv</span><span class="p">]</span>
+
+
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">fastq</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fastq</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">fastq</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duplicated files are found (but should not be allowed) in fastq file list&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">names</span><span class="p">,</span> <span class="n">files</span>
 
-<span class="n">sample_id</span><span class="p">,</span> <span class="n">fastq</span> <span class="o">=</span> <span class="n">get_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
 <span class="c1"># Is the RNA-seq data pair-end</span>
 <span class="n">is_paired_end</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fastq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_id</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span> 
 <span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="kp">env</span>
-<span class="kp">env</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Input samples are `f{&quot;paired-end&quot; if is_paired_end else &quot;single-end&quot;}` sequences.&#39;</span><span class="p">)</span>
+<span class="kp">env</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Input samples are </span><span class="si">{</span><span class="s2">&quot;paired-end&quot;</span> <span class="k">if</span> <span class="n">is_paired_end</span> <span class="k">else</span> <span class="s2">&quot;single-end&quot;</span><span class="si">}</span><span class="s1"> sequences.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1270,7 +1294,6 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">STAR_align_1</span><span class="p">]</span>
 <span class="c1"># STAR indexing file</span>
 <span class="kn">parameter:</span> <span class="n">STAR_index</span> <span class="o">=</span> <span class="n">path</span>
-
 <span class="c1"># Alignment parameter</span>
 <span class="kn">parameter:</span> <span class="n">outFilterMultimapNmax</span> <span class="o">=</span> <span class="mi">20</span> 
 <span class="kn">parameter:</span> <span class="n">alignSJoverhangMin</span> <span class="o">=</span> <span class="mi">8</span> 
@@ -1299,14 +1322,10 @@ Sections
     <span class="n">star_mem</span> <span class="o">=</span> <span class="s1">&#39;40G&#39;</span>
 <span class="kn">else:</span>
     <span class="n">star_mem</span> <span class="o">=</span> <span class="kp">mem</span>
-
-    
-    
 <span class="c1"># This option is commented out because it will force the downstream analysis to use 40G, which significantlly slow down the process.</span>
 <span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;fastp_trim_adaptor&quot;</span><span class="p">),</span><span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;sample_id&quot;</span>
 <span class="kn">output:</span> <span class="n">cord_bam</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.out.bam&#39;</span><span class="p">,</span>
         <span class="n">trans_bam</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.Aligned.toTranscriptome.out.bam&#39;</span>
-        
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="n">star_mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="c1"># clean up before using run_STAR.py wrapper</span>
@@ -1337,7 +1356,60 @@ Sections
         <span class="o">--</span><span class="n">chimJunctionOverhangMin</span> <span class="err">$</span><span class="p">{</span><span class="n">chimJunctionOverhangMin</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">chimOutType</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chimOutType</span><span class="p">)}</span> \
         <span class="o">--</span><span class="n">chimMainSegmentMultNmax</span> <span class="err">$</span><span class="p">{</span><span class="n">chimMainSegmentMultNmax</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">annotation_gtf</span> <span class="err">$</span><span class="p">{</span><span class="n">gtf</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Following step will be automatically ran to detect the strand of input fastq file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">strand_detected_1</span><span class="p">:</span> <span class="kp">shared</span><span class="o">=</span><span class="s2">&quot;step_strand_detected&quot;</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align_1&quot;</span><span class="p">),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;sample_id&quot;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">ReadsPerGene</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.ReadsPerGene.out.tab.gz&#39;</span> <span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">)</span>
+<span class="n">ReadsPerGene_list</span> <span class="o">=</span> <span class="n">ReadsPerGene</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">::,]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">numeric_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">strand_percentage</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">/</span><span class="n">ReadsPerGene_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ReadsPerGene_list</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;for sample </span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Counts for the 1st read strand aligned with RNA is </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">, &gt; 90% of aligned count&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data is likely FR/fr-secondstrand&#39;</span><span class="p">)</span>
+    <span class="n">strand_detected</span> <span class="o">=</span> <span class="s2">&quot;fr&quot;</span>
+<span class="k">elif</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Counts for the 1st read strand aligned with RNA is </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">, &gt; 90% of aligned count&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data is likely RF/fr-firststrand&#39;</span><span class="p">)</span>
+    <span class="n">strand_detected</span> <span class="o">=</span> <span class="s2">&quot;rf&quot;</span>
+<span class="k">elif</span> <span class="nb">max</span><span class="p">(</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.6</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Both </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> and  </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1"> are under 60% of reads explained by one direction&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data is likely unstranded&#39;</span><span class="p">)</span>
+    <span class="n">strand_detected</span> <span class="o">=</span> <span class="s2">&quot;unstranded&quot;</span>
+<span class="kn">else:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Data does not fall into a likely stranded (max percent explained </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="si">}</span><span class="s1"> &gt; 0.9) or unstranded layout (max percent explained </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="si">}</span><span class="s1"> &lt; 0.6)&#39;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Exiting, please check your data and manually specified the ``--strand`` option as ``fr``, ``rf`` or ``unstranded``&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">strand_detected_2</span><span class="p">:</span> <span class="kp">shared</span><span class="o">=</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">strand</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">strand_inv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">strand</span> <span class="o">=</span> <span class="n">strand_inv</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Use strand specified in the input samples list </span><span class="si">{</span><span class="n">strand</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warn_if</span><span class="p">(</span><span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="n">step_strand_detected</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">step_strand_detected</span><span class="p">),</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;strands detected are different among samples, please check your protocol, we will use the detected strand for each samples&quot;</span><span class="p">)</span>    
+        <span class="n">strand</span> <span class="o">=</span> <span class="n">step_strand_detected</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Use detected strand for each samples </span><span class="si">{</span><span class="n">strand</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="kn">else:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Use ``--strand`` overwrite option for all the samples </span><span class="si">{</span><span class="n">strand</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+    <span class="n">strand</span> <span class="o">=</span> <span class="p">[</span><span class="n">strand</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">step_strand_detected</span><span class="p">)</span>
+
+<span class="n">stop_if</span><span class="p">(</span><span class="n">strand</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;unstranded&quot;</span><span class="p">],</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;``--strand`` option should be ``fr``, ``rf`` or ``unstranded``&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1345,12 +1417,13 @@ Sections
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">STAR_align_2</span><span class="p">]</span>
+<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;strand&quot;</span><span class="p">)</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_bam_list&#39;</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">bam_list</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">b</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="s2">&quot;cord_bam&quot;</span><span class="p">]]</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;sample_id&quot;</span> <span class="p">:</span> <span class="n">sample_id</span><span class="p">,</span> <span class="s2">&quot;bam_list&quot;</span> <span class="p">:</span> <span class="n">bam_list</span> <span class="p">})</span>
-<span class="n">out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">_output</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;sample_id&quot;</span> <span class="p">:</span> <span class="n">sample_id</span><span class="p">,</span><span class="s2">&quot;strand&quot;</span> <span class="p">:</span> <span class="n">strand</span> <span class="p">,</span> <span class="s2">&quot;bam_list&quot;</span> <span class="p">:</span> <span class="n">bam_list</span> <span class="p">})</span>
+<span class="n">out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">_output</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1374,7 +1447,8 @@ Sections
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_1</span><span class="p">,</span> <span class="n">rsem_call_1</span><span class="p">,</span> <span class="n">picard_qc</span><span class="p">:</span> <span class="kp">shared</span><span class="o">=</span><span class="s1">&#39;step_strand_detected&#39;</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_1</span><span class="p">,</span> <span class="n">rsem_call_1</span><span class="p">,</span> <span class="n">picard_qc</span><span class="p">]</span>
+<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s1">&#39;strand&#39;</span><span class="p">)</span>
 <span class="c1"># Path to flat reference file, for computing QC metric</span>
 <span class="kn">parameter:</span> <span class="n">ref_flat</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
 <span class="c1"># Path to the software. Default set to using our rna_quantification.sif image</span>
@@ -1383,33 +1457,11 @@ Sections
 <span class="kn">parameter:</span> <span class="n">reference_fasta</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># For the patterned flowcell models (HiSeq X), change to 2500</span>
 <span class="kn">parameter:</span> <span class="n">optical_distance</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align_1&quot;</span><span class="p">),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;sample_id&quot;</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">ReadsPerGene</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.ReadsPerGene.out.tab.gz&#39;</span> <span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span> <span class="p">)</span>
-<span class="n">ReadsPerGene_list</span> <span class="o">=</span> <span class="n">ReadsPerGene</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">::,]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">numeric_only</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">strand_percentage</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">/</span><span class="n">ReadsPerGene_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ReadsPerGene_list</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;for sample </span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Counts for the 1st read strand aligned with RNA is </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">, &gt; 90% of aligned count&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data is likely FR/fr-secondstrand&#39;</span><span class="p">)</span>
-    <span class="n">strand_detected</span> <span class="o">=</span> <span class="s2">&quot;fr&quot;</span>
-<span class="k">elif</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Counts for the 1st read strand aligned with RNA is </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">, &gt; 90% of aligned count&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data is likely RF/fr-firststrand&#39;</span><span class="p">)</span>
-    <span class="n">strand_detected</span> <span class="o">=</span> <span class="s2">&quot;rf&quot;</span>
-<span class="k">elif</span> <span class="nb">max</span><span class="p">(</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.6</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Both </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> and  </span><span class="si">{</span><span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1"> are under 60% of reads explained by one direction&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Data is likely unstranded&#39;</span><span class="p">)</span>
-    <span class="n">strand_detected</span> <span class="o">=</span> <span class="s2">&quot;unstranded&quot;</span>
-<span class="kn">else:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Data does not fall into a likely stranded (max percent explained </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="si">}</span><span class="s1"> &gt; 0.9) or unstranded layout (max percent explained </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span> <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">strand_percentage</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="si">}</span><span class="s1"> &lt; 0.6)&#39;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s1">&#39;Exiting, please check your data and manually specified the ``--strand`` option as ``fr``, ``rf`` or ``unstranded``&#39;</span><span class="p">)</span>
-
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align_1&quot;</span><span class="p">),</span><span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sample_id&quot;</span><span class="p">,</span><span class="s2">&quot;strand&quot;</span><span class="p">}</span>
 <span class="kn">output:</span> <span class="n">picard_metrics</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.alignment_summary_metrics&#39;</span><span class="p">,</span>
         <span class="n">md_bam</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.out.md.bam&#39;</span><span class="p">,</span>
         <span class="n">md_metrics</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.Aligned.sortedByCoord.md.metrics&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>        
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
         <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">picard_jar</span><span class="p">}</span> <span class="n">CollectMultipleMetrics</span> \
             <span class="o">-</span><span class="n">REFERENCE_SEQUENCE</span> <span class="err">$</span><span class="p">{</span><span class="n">reference_fasta</span><span class="p">}</span> \
@@ -1479,37 +1531,12 @@ Sections
         <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">-</span><span class="n">Xmx</span><span class="err">$</span><span class="p">{</span><span class="n">java_mem</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">picard_jar</span><span class="p">}</span> <span class="n">CollectRnaSeqMetrics</span> \
             <span class="o">-</span><span class="n">REF_FLAT</span> <span class="err">$</span><span class="p">{</span><span class="n">ref_flat</span><span class="p">}</span> \
             <span class="o">-</span><span class="n">RIBOSOMAL_INTERVALS</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;cord_bam&quot;</span><span class="p">]}</span><span class="o">.</span><span class="n">RI</span> \
-            <span class="o">-</span><span class="n">STRAND_SPECIFICITY</span> <span class="n">NONE</span> \
+            <span class="o">-</span><span class="n">STRAND_SPECIFICITY</span> <span class="err">$</span><span class="p">{</span><span class="n">_strand</span><span class="p">}</span> \
             <span class="o">-</span><span class="n">CHART_OUTPUT</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">rna_metrics</span><span class="o">.</span><span class="n">pdf</span> \
             <span class="o">-</span><span class="n">VALIDATION_STRINGENCY</span> <span class="n">STRICT</span> \
             <span class="o">-</span><span class="n">INPUT</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;cord_bam&quot;</span><span class="p">]}</span>  \
             <span class="o">-</span><span class="n">OUTPUT</span>  <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">rna_metrics</span>
         <span class="n">rm</span> <span class="err">$</span><span class="p">{</span><span class="n">gtf</span><span class="p">}</span><span class="o">.</span><span class="n">tmp</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">Following</span> <span class="n">step</span> <span class="n">will</span> <span class="n">be</span> <span class="n">automatically</span> <span class="n">ran</span> <span class="n">to</span> <span class="n">detect</span> <span class="n">the</span> <span class="n">strand</span> <span class="n">of</span> <span class="nb">input</span> <span class="n">fastq</span> <span class="n">file</span><span class="o">.</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">strand_checking</span><span class="p">:</span> <span class="kp">shared</span><span class="o">=</span><span class="s2">&quot;strand&quot;</span><span class="p">]</span>
-<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s1">&#39;step_strand_detected&#39;</span><span class="p">)</span>
-<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="n">stop_if</span><span class="p">(</span><span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="n">step_strand_detected</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">step_strand_detected</span><span class="p">),</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;strands detected are different among samples, please check your input fastq and manually specify input&quot;</span><span class="p">)</span>
-<span class="n">strand_detected</span> <span class="o">=</span> <span class="n">step_strand_detected</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">strand</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">strand</span><span class="p">:</span>
-    <span class="n">strand</span> <span class="o">=</span> <span class="n">strand_detected</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Use detected strand </span><span class="si">{</span><span class="n">strand</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="kn">else:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Use user input strand </span><span class="si">{</span><span class="n">strand</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">stop_if</span><span class="p">(</span><span class="n">strand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;unstranded&quot;</span><span class="p">],</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;``--strand`` option should be ``fr``, ``rf`` or ``unstranded``&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1542,7 +1569,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">rnaseqc_call_2</span><span class="p">]</span>
 <span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s1">&#39;strand&#39;</span><span class="p">)</span>
-<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sample_id&quot;</span><span class="p">,</span><span class="s2">&quot;strand&quot;</span><span class="p">}</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.gene_tpm.gct.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.gene_reads.gct.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rnaseqc.exon_reads.gct.gz&#39;</span><span class="p">,</span>
@@ -1555,7 +1582,7 @@ Sections
         <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="s2">&quot;md_bam&quot;</span><span class="p">]:</span><span class="n">a</span><span class="p">}</span> \
         <span class="err">$</span><span class="p">{</span><span class="n">_sample_id</span><span class="p">}</span><span class="o">.</span><span class="n">rnaseqc</span> \
         <span class="o">-</span><span class="n">o</span> <span class="o">./</span> \
-        <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">strand</span><span class="p">)</span> <span class="k">if</span> <span class="n">strand</span> <span class="o">!=</span> <span class="s2">&quot;unstranded&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+        <span class="err">$</span><span class="p">{(</span><span class="s2">&quot;--stranded &quot;</span> <span class="o">+</span> <span class="n">_strand</span><span class="p">)</span> <span class="k">if</span> <span class="n">_strand</span> <span class="o">!=</span> <span class="s2">&quot;unstranded&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1633,7 +1660,7 @@ Sections
 <span class="kn">parameter:</span> <span class="n">RSEM_index</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span> <span class="n">max_frag_len</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">estimate_rspd</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align_1&quot;</span><span class="p">),</span>  <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s1">&#39;sample_id&#39;</span> <span class="c1"># After star there will only be two output per sample id, regardless of paired/unpaired</span>
+<span class="kn">input:</span> <span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;STAR_align_1&quot;</span><span class="p">),</span>  <span class="n">group_by</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sample_id&quot;</span><span class="p">,</span><span class="s2">&quot;strand&quot;</span><span class="p">}</span> <span class="c1"># After star there will only be two output per sample id, regardless of paired/unpaired</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.isoforms.results&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.genes.results&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.stat/</span><span class="si">{</span><span class="n">_sample_id</span><span class="si">}</span><span class="s1">.rsem.cnt&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
@@ -1642,7 +1669,7 @@ Sections
         <span class="o">--</span><span class="n">max_frag_len</span> <span class="err">$</span><span class="p">{</span><span class="n">max_frag_len</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">estimate_rspd</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">estimate_rspd</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">paired_end</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">is_paired_end</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
-        <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">strand</span> <span class="o">!=</span> <span class="s2">&quot;unstranded&quot;</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
+        <span class="o">--</span><span class="n">is_stranded</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;true&quot;</span> <span class="k">if</span> <span class="n">_strand</span> <span class="o">!=</span> <span class="s2">&quot;unstranded&quot;</span> <span class="k">else</span> <span class="s2">&quot;false&quot;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">threads</span> <span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -1661,7 +1688,6 @@ Sections
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.rsem_genes_tpm.txt.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.rsem_genes_fpkm.txt.gz&#39;</span><span class="p">,</span>
         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.rsem.aggregated_quality.metrics.tsv&#39;</span>
-        
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">python:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">input_list</span> <span class="o">=</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]</span>
@@ -1669,15 +1695,12 @@ Sections
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_list</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">3</span><span class="p">]))</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;$</span><span class="si">{cwd}</span><span class="s1">/${samples:bn}.rsem.genes_output_list&#39;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_list</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]))</span>
-
-
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
          <span class="n">aggregate_rsem_results</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">samples</span><span class="p">:</span><span class="n">bn</span><span class="p">}</span><span class="o">.</span><span class="n">rsem</span><span class="o">.</span><span class="n">isoforms_output_list</span> <span class="p">{</span><span class="n">expected_count</span><span class="p">,</span><span class="n">TPM</span><span class="p">,</span><span class="n">FPKM</span><span class="p">,</span><span class="n">IsoPct</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">nnn</span><span class="p">}</span>
          <span class="n">aggregate_rsem_results</span><span class="o">.</span><span class="n">py</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="err">$</span><span class="p">{</span><span class="n">samples</span><span class="p">:</span><span class="n">bn</span><span class="p">}</span><span class="o">.</span><span class="n">rsem</span><span class="o">.</span><span class="n">genes_output_list</span> <span class="p">{</span><span class="n">expected_count</span><span class="p">,</span><span class="n">TPM</span><span class="p">,</span><span class="n">FPKM</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">nnn</span><span class="p">}</span> 
 
 <span class="kn">R:</span>  <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
      <span class="n">readRSEM</span><span class="o">.</span><span class="n">cnt</span> <span class="o">&lt;-</span> <span class="n">function</span> <span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-
             <span class="c1"># RSEM .cnt files gives statistics about the (transcriptome) alignment passed to RSEM:</span>
             <span class="c1"># Row 1: N0 (# unalignable reads);</span>
             <span class="c1">#        N1 (# alignable reads);</span>
@@ -1701,7 +1724,6 @@ Sections
                 <span class="n">files</span> <span class="o">&lt;-</span> <span class="n">source</span>
                 <span class="n">samples</span> <span class="o">&lt;-</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;.rsem.cnt&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">fixed</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
             <span class="p">}</span>
-
             <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="p">{</span>
                 <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">char</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
@@ -1717,7 +1739,6 @@ Sections
 
             <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
         <span class="p">}</span>
-
         <span class="n">sourceRSEM</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,})</span>
         <span class="n">sourceRSEM</span> <span class="o">=</span> <span class="n">sourceRSEM</span><span class="p">[</span><span class="n">seq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">sourceRSEM</span><span class="p">),</span><span class="mi">3</span><span class="p">)]</span>
         <span class="n">metrics</span><span class="o">.</span><span class="n">RSEM</span> <span class="o">=</span> <span class="n">readRSEM</span><span class="o">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">sourceRSEM</span><span class="p">)</span>
@@ -1763,7 +1784,6 @@ Sections
 <span class="kn">R:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="c1">## Define Function</span>
     <span class="n">readPicard</span><span class="o">.</span><span class="n">alignment_summary_metrics</span> <span class="o">&lt;-</span> <span class="n">function</span> <span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-    
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
       <span class="n">isDir</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="err">$</span><span class="n">isdir</span>
@@ -1791,10 +1811,9 @@ Sections
     
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
-    
+
     <span class="n">readPicard</span><span class="o">.</span><span class="n">rna_metrics</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-    
+
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
       <span class="n">isDir</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="err">$</span><span class="n">isdir</span>
@@ -1806,7 +1825,7 @@ Sections
         <span class="n">files</span> <span class="o">&lt;-</span> <span class="n">source</span>
         <span class="n">samples</span> <span class="o">&lt;-</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;.rna_metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">fixed</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
       <span class="p">}</span>
-    
+
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
       <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">char</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1830,10 +1849,10 @@ Sections
     
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
-    
+
+
     <span class="n">readPicard</span><span class="o">.</span><span class="n">duplicate_metrics</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-    
+
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
       <span class="n">isDir</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="err">$</span><span class="n">isdir</span>
@@ -1845,7 +1864,7 @@ Sections
         <span class="n">files</span> <span class="o">&lt;-</span> <span class="n">source</span>
         <span class="n">samples</span> <span class="o">&lt;-</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;.Aligned.sortedByCoord.md.metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">fixed</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
       <span class="p">}</span>
-    
+
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
       <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">char</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1860,10 +1879,9 @@ Sections
     
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
-    
+
     <span class="n">readPicard</span><span class="o">.</span><span class="n">wgs_metrics</span> <span class="o">&lt;-</span> <span class="n">function</span> <span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-    
+
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
       <span class="n">isDir</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="err">$</span><span class="n">isdir</span>
@@ -1875,7 +1893,7 @@ Sections
         <span class="n">files</span> <span class="o">&lt;-</span> <span class="n">source</span>
         <span class="n">samples</span> <span class="o">&lt;-</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;.wgs_metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">fixed</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
       <span class="p">}</span>
-    
+
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
       <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">char</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1889,13 +1907,13 @@ Sections
       <span class="p">}</span>
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="n">do</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">rbind</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
       <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">metrics</span><span class="err">$</span><span class="n">Sample</span>
-    
+
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
-    
+
+
     <span class="n">readPicard</span><span class="o">.</span><span class="n">insert_size_metrics</span> <span class="o">&lt;-</span> <span class="n">function</span> <span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-    
+
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
       <span class="n">isDir</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="err">$</span><span class="n">isdir</span>
@@ -1907,7 +1925,7 @@ Sections
         <span class="n">files</span> <span class="o">&lt;-</span> <span class="n">source</span>
         <span class="n">samples</span> <span class="o">&lt;-</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;.insert_size_metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">fixed</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
       <span class="p">}</span>
-    
+
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
       <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">char</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1923,10 +1941,9 @@ Sections
     
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
-    
+
     <span class="n">readPicard</span><span class="o">.</span><span class="n">gc_bias</span><span class="o">.</span><span class="n">summary_metrics</span> <span class="o">&lt;-</span> <span class="n">function</span> <span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-    
+
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
       <span class="n">stopifnot</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
       <span class="n">isDir</span> <span class="o">&lt;-</span> <span class="n">file</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">source</span><span class="p">)</span><span class="err">$</span><span class="n">isdir</span>
@@ -1938,7 +1955,7 @@ Sections
         <span class="n">files</span> <span class="o">&lt;-</span> <span class="n">source</span>
         <span class="n">samples</span> <span class="o">&lt;-</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;.gc_bias.summary_metrics&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">files</span><span class="p">),</span> <span class="n">fixed</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
       <span class="p">}</span>
-    
+
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="p">()</span>
       <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">char</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1950,37 +1967,37 @@ Sections
       <span class="p">}</span>
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="n">do</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">rbind</span><span class="p">,</span> <span class="n">metrics</span><span class="p">)</span>
       <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">metrics</span><span class="err">$</span><span class="n">Sample</span>
-    
+
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
-    
-    
-    
+
+
+
+
     <span class="n">readPicard</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">aln</span> <span class="o">&lt;-</span> <span class="n">readPicard</span><span class="o">.</span><span class="n">alignment_summary_metrics</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">rna</span> <span class="o">&lt;-</span> <span class="n">readPicard</span><span class="o">.</span><span class="n">rna_metrics</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">dup</span> <span class="o">&lt;-</span> <span class="n">readPicard</span><span class="o">.</span><span class="n">duplicate_metrics</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-    
+
       <span class="n">stopifnot</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">aln</span><span class="p">)</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">rna</span><span class="p">))</span> <span class="o">&amp;</span>
                 <span class="nb">all</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">rna</span><span class="p">)</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">dup</span><span class="p">))</span> <span class="o">&amp;</span>
                 <span class="nb">all</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">dup</span><span class="p">)</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">aln</span><span class="p">)))</span>
-    
+
       <span class="n">metrics</span><span class="o">.</span><span class="n">aln</span><span class="err">$</span><span class="n">File</span> <span class="o">&lt;-</span> <span class="n">NULL</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">rna</span><span class="err">$</span><span class="n">File</span> <span class="o">&lt;-</span> <span class="n">NULL</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">dup</span><span class="err">$</span><span class="n">File</span> <span class="o">&lt;-</span> <span class="n">NULL</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">rna</span><span class="err">$</span><span class="n">Sample</span> <span class="o">&lt;-</span> <span class="n">NULL</span>
       <span class="n">metrics</span><span class="o">.</span><span class="n">dup</span><span class="err">$</span><span class="n">Sample</span> <span class="o">&lt;-</span> <span class="n">NULL</span>
-    
+
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">aln</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">rna</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">aln</span><span class="p">),</span> <span class="p">])</span>
       <span class="n">metrics</span> <span class="o">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">metrics</span><span class="o">.</span><span class="n">dup</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">aln</span><span class="p">),</span> <span class="p">])</span>
-    
+
       <span class="k">return</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
     <span class="p">}</span>
-    
+
     <span class="c1">## Execution  </span>
     <span class="n">sourcePicard</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span><span class="n">dr</span><span class="p">}</span>
-    
+
     <span class="n">Picard_qualityMetrics</span> <span class="o">&lt;-</span> <span class="n">readPicard</span><span class="p">(</span><span class="n">sourcePicard</span><span class="p">)</span>
     <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">Picard_qualityMetrics</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">col</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
 </pre></div>

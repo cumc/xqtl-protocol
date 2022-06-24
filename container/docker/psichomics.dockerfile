@@ -32,4 +32,6 @@ cd R-4.2.0 && \
 make && make install
 RUN R --slave -e 'install.packages("BiocManager")'
 RUN R --slave -e 'BiocManager::install("psichomics")'
+RUN wget https://raw.githubusercontent.com/Rhopala/xqtl-pipeline/main/code/psichomics_annotation_caching_location_update.R && \
+Rscript psichomics_annotation_caching_location_update.R
 CMD exec /bin/bash "$@"

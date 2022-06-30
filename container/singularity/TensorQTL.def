@@ -11,6 +11,14 @@ wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
 unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin
 pip install tensorqtl
 pip install fastparquet
+## Install Git
+apt-get update && \
+apt-get install -y --no-install-recommends \
+git-all
+## Installing the multipy package for the qvalue. Noted: the pip version dont works with python3. Only the github version works.
+git clone https://github.com/puolival/multipy.git
+cd multipy/
+ipython setup.py install
 echo "cd /tmp" >> /entrypoint.sh
 echo "exec /bin/bash "$@"" >> /entrypoint.sh
 chmod u+x /entrypoint.sh

@@ -28,14 +28,13 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 
 The website https://cumc.github.io/xqtl-pipeline is generated from files under `code` folder of the source code repository. The `pipeline` folder are symbolic links automatically generated for pipeline files under `code`. The logic of the entire xQTL analysis workflow is roughly reflected on the left side bar:
 
-- The **COMMAND GENERATOR** section is reserved for "push botton" commands that generates the entire QTL analysis pipeline workflow script from a single configuration file (**[FIXME: link to config file example]**). Notebooks under this sections are meant to be **executed as command line software** to generate data analysis commands. The generated commands can be executed as is to complete all available analysis, or can be used to help customizing specific analysis tasks by making modification on them. The configuration file itself helps centralized control and book keeping of workflows executed.
+- The **COMMAND GENERATOR** section is reserved for "push botton" commands that generates the entire QTL analysis pipeline workflow script from a simple configuration file. Notebooks under this sections are meant to be **executed as command line software** to generate data analysis commands. The generated commands can be executed as is to complete all available analysis, or can be used to help customizing specific analysis tasks by making modification on them. The configuration file itself helps centralized control and book keeping of workflows executed.
 - Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as ***analysis groups***, which are further divided into ***protocols*** by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the protocol. Most of them are "tutorials" in nature and are meant to be **executed interactively in Jupyter or in command terminal** to run the SoS pipelines line by line. A few are the actual ***pipeline modules*** implementing pipelines in SoS, as will be discussed next.
 - *Protocols* can be expanded by clicking on the down arrows to access the SoS workflows implemention of ***pipeline modules***. These are the core pipeline implementations to be **executed as command line software**, and are meant to be **self-contained** --- they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline modules are documented with some background information, required input, expected output, and most importantly a **minimal working example** to allow users to test it out with a toy data-set before applying to their own analysis. The rest of the pipeline module are the actual code implementations.
 
 ## xQTL workflow blueprint
 
 ![QTL Diagram](code/images/complete_workflow.png)
-
 
 ## Contributors
 
@@ -51,8 +50,9 @@ Lead developers
 Contributors
 
 - Wenhao Gou, Department of Biostatistics, Columbia University
-- Amanda Tsai, Department of Biostatistics, Columbia University  
 - Liucheng Shi, Department of Biostatistics, Columbia University
+- Xuanhe Chen, Department of Biostatistics, Columbia University
+- Amanda Tsai, Department of Biostatistics, Columbia University  
 
 Brain xQTL project leadership
 
@@ -62,5 +62,5 @@ Brain xQTL project leadership
 Brain xQTL methods and data integration work group
 
 - Gao Wang (work group leader), Department of Neurology, Columbia University
-- Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
+- Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai

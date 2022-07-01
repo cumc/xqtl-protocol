@@ -34,4 +34,12 @@ RUN R --slave -e 'install.packages("BiocManager")'
 RUN R --slave -e 'BiocManager::install("psichomics")'
 RUN wget https://raw.githubusercontent.com/Rhopala/xqtl-pipeline/main/code/psichomics_annotation_caching_location_update.R && \
 Rscript psichomics_annotation_caching_location_update.R
+## install sklearn and scipy
+RUN pip install sklearn scipy
+## SUPPA
+RUN cd /opt
+RUN pip install SUPPA==2.3
+RUN git clone https://github.com/comprna/SUPPA.git
+RUN alias SUPPA=python /opt/SUPPA/suppa.py
+
 CMD exec /bin/bash "$@"

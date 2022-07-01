@@ -621,6 +621,16 @@
    Implementation using biomaRt
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#annotation-of-leafcutter-isoform">
+   Annotation of leafcutter isoform
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#processing-of-psichomics-output">
+   Processing of psichomics output
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -842,7 +852,7 @@ Sections
         <span class="n">sample_participant_lookup_s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">sample_participant_lookup</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">sample_participant_lookup_s</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span><span class="n">phenotype_id</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;gene&#39;</span><span class="p">,</span><span class="n">phenotype_id</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span> <span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GTF file $</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">ar</span><span class="si">}</span><span class="s2"> needs to be collapsed into gene model by reference data processing module&quot;</span><span class="p">)</span>
          
     <span class="n">bed_template_df</span> <span class="o">=</span> <span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;transcript&#39;</span><span class="p">,</span><span class="n">phenotype_id</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{phenotype_id_type}</span><span class="s2">&quot;</span> <span class="p">)</span>
@@ -894,6 +904,343 @@ Sections
 <span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span><span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
         <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span>
         <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">bed</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span><span class="n">f</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="annotation-of-leafcutter-isoform">
+<h2>Annotation of leafcutter isoform<a class="headerlink" href="#annotation-of-leafcutter-isoform" title="Permalink to this headline">¶</a></h2>
+<p>The following steps processed the output files of leafcutter so that they are TensorQTL ready. Shown below are three intemediate files</p>
+<p>Exon list</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>chr</p></th>
+<th class="head"><p>start</p></th>
+<th class="head"><p>end</p></th>
+<th class="head"><p>strand</p></th>
+<th class="head"><p>gene_id</p></th>
+<th class="head"><p>gene_name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chr1</p></td>
+<td><p>29554</p></td>
+<td><p>30039</p></td>
+<td><p>+</p></td>
+<td><p>ENSG00000243485</p></td>
+<td><p>MIR1302-2HG</p></td>
+</tr>
+<tr class="row-odd"><td><p>chr1</p></td>
+<td><p>30564</p></td>
+<td><p>30667</p></td>
+<td><p>+</p></td>
+<td><p>ENSG00000243485</p></td>
+<td><p>MIR1302-2HG</p></td>
+</tr>
+<tr class="row-even"><td><p>chr1</p></td>
+<td><p>30976</p></td>
+<td><p>31097</p></td>
+<td><p>+</p></td>
+<td><p>ENSG00000243485</p></td>
+<td><p>MIR1302-2HG</p></td>
+</tr>
+<tr class="row-odd"><td><p>chr1</p></td>
+<td><p>35721</p></td>
+<td><p>36081</p></td>
+<td><p>-</p></td>
+<td><p>ENSG00000237613</p></td>
+<td><p>FAM138A</p></td>
+</tr>
+<tr class="row-even"><td><p>chr1</p></td>
+<td><p>35277</p></td>
+<td><p>35481</p></td>
+<td><p>-</p></td>
+<td><p>ENSG00000237613</p></td>
+<td><p>FAM138A</p></td>
+</tr>
+<tr class="row-odd"><td><p>chr1</p></td>
+<td><p>34554</p></td>
+<td><p>35174</p></td>
+<td><p>-</p></td>
+<td><p>ENSG00000237613</p></td>
+<td><p>FAM138A</p></td>
+</tr>
+<tr class="row-even"><td><p>chr1</p></td>
+<td><p>65419</p></td>
+<td><p>65433</p></td>
+<td><p>+</p></td>
+<td><p>ENSG00000186092</p></td>
+<td><p>OR4F5</p></td>
+</tr>
+<tr class="row-odd"><td><p>chr1</p></td>
+<td><p>65520</p></td>
+<td><p>65573</p></td>
+<td><p>+</p></td>
+<td><p>ENSG00000186092</p></td>
+<td><p>OR4F5</p></td>
+</tr>
+<tr class="row-even"><td><p>chr1</p></td>
+<td><p>69037</p></td>
+<td><p>71585</p></td>
+<td><p>+</p></td>
+<td><p>ENSG00000186092</p></td>
+<td><p>OR4F5</p></td>
+</tr>
+</tbody>
+</table>
+<p>clusters_to_genes</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>clu</p></th>
+<th class="head"><p>genes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1:clu_1_+</p></td>
+<td><p>ENSG00000116288</p></td>
+</tr>
+<tr class="row-odd"><td><p>1:clu_10_+</p></td>
+<td><p>ENSG00000143774</p></td>
+</tr>
+<tr class="row-even"><td><p>1:clu_11_+</p></td>
+<td><p>ENSG00000143774</p></td>
+</tr>
+<tr class="row-odd"><td><p>1:clu_12_+</p></td>
+<td><p>ENSG00000143774</p></td>
+</tr>
+<tr class="row-even"><td><p>1:clu_14_-</p></td>
+<td><p>ENSG00000126709</p></td>
+</tr>
+<tr class="row-odd"><td><p>1:clu_15_-</p></td>
+<td><p>ENSG00000121753</p></td>
+</tr>
+<tr class="row-even"><td><p>1:clu_16_-</p></td>
+<td><p>ENSG00000121753</p></td>
+</tr>
+<tr class="row-odd"><td><p>1:clu_17_-</p></td>
+<td><p>ENSG00000116560</p></td>
+</tr>
+<tr class="row-even"><td><p>1:clu_18_-</p></td>
+<td><p>ENSG00000143549</p></td>
+</tr>
+</tbody>
+</table>
+<p>phenotype_group</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>X1</p></th>
+<th class="head"><p>X2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7:102476270:102478811:clu_309_-:ENSG00000005075</p></td>
+<td><p>ENSG00000005075</p></td>
+</tr>
+<tr class="row-odd"><td><p>7:102476270:102478808:clu_309_-:ENSG00000005075</p></td>
+<td><p>ENSG00000005075</p></td>
+</tr>
+<tr class="row-even"><td><p>X:47572961:47574002:clu_349_-:ENSG00000008056</p></td>
+<td><p>ENSG00000008056</p></td>
+</tr>
+<tr class="row-odd"><td><p>X:47572999:47574002:clu_349_-:ENSG00000008056</p></td>
+<td><p>ENSG00000008056</p></td>
+</tr>
+<tr class="row-even"><td><p>8:27236905:27239971:clu_322_-:ENSG00000015592</p></td>
+<td><p>ENSG00000015592</p></td>
+</tr>
+<tr class="row-odd"><td><p>8:27239279:27239971:clu_322_-:ENSG00000015592</p></td>
+<td><p>ENSG00000015592</p></td>
+</tr>
+<tr class="row-even"><td><p>8:27241262:27241677:clu_323_-:ENSG00000015592</p></td>
+<td><p>ENSG00000015592</p></td>
+</tr>
+<tr class="row-odd"><td><p>8:27241262:27242397:clu_323_-:ENSG00000015592</p></td>
+<td><p>ENSG00000015592</p></td>
+</tr>
+<tr class="row-even"><td><p>8:27241757:27242397:clu_323_-:ENSG00000015592</p></td>
+<td><p>ENSG00000015592</p></td>
+</tr>
+<tr class="row-odd"><td><p>1:35558223:35559107:clu_4_+:ENSG00000020129</p></td>
+<td><p>ENSG00000020129</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">map_leafcutter_cluster_to_gene</span><span class="p">]</span>
+<span class="c1">## Extract the code in case psichromatic needs to be processed the same way</span>
+<span class="c1">## PheoFile in this step is the intron_count file</span>
+<span class="kn">parameter:</span> <span class="n">intron_count</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">input:</span> <span class="n">intron_count</span><span class="p">,</span> <span class="n">annotation_gtf</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.exon_list&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">b</span><span class="si">}</span><span class="s1">.leafcutter.clusters_to_genes.txt&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">qtl.annotation</span>
+    <span class="c1"># Load data</span>
+    <span class="n">annot</span> <span class="o">=</span> <span class="n">qtl</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">Annotation</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">})</span>
+    <span class="n">exon_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">g</span><span class="o">.</span><span class="n">chr</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">end_pos</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">strand</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="kp">name</span><span class="p">]</span>
+                        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">annot</span><span class="o">.</span><span class="n">genes</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">transcripts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">exons</span><span class="p">],</span>
+                       <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;chr&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;strand&#39;</span><span class="p">,</span> <span class="s1">&#39;gene_id&#39;</span><span class="p">,</span> <span class="s1">&#39;gene_name&#39;</span><span class="p">])</span>
+    <span class="n">exon_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="kn">R:</span><span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">suppressMessages</span><span class="p">(</span><span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">,</span> <span class="n">quietly</span><span class="o">=</span><span class="n">TRUE</span><span class="p">))</span>
+    <span class="n">suppressMessages</span><span class="p">(</span><span class="n">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">,</span> <span class="n">quietly</span><span class="o">=</span><span class="n">TRUE</span><span class="p">))</span>
+    <span class="n">suppressMessages</span><span class="p">(</span><span class="n">library</span><span class="p">(</span><span class="n">foreach</span><span class="p">,</span> <span class="n">quietly</span><span class="o">=</span><span class="n">TRUE</span><span class="p">))</span>
+    <span class="c1"># leafcutter functions:</span>
+    
+    <span class="c1">#&#39; Make a data.frame of meta data about the introns</span>
+    <span class="c1">#&#39; @param introns Names of the introns</span>
+    <span class="c1">#&#39; @return Data.frame with chr, start, end, cluster id</span>
+    <span class="c1">#&#39; @export</span>
+    <span class="n">get_intron_meta</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">introns</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">intron_meta</span> <span class="o">&lt;-</span> <span class="n">do</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">rbind</span><span class="p">,</span> <span class="n">strsplit</span><span class="p">(</span><span class="n">introns</span><span class="p">,</span><span class="s2">&quot;:&quot;</span><span class="p">))</span>
+      <span class="n">colnames</span><span class="p">(</span><span class="n">intron_meta</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">,</span><span class="s2">&quot;clu&quot;</span><span class="p">)</span>
+      <span class="n">intron_meta</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">intron_meta</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
+      <span class="n">intron_meta</span><span class="err">$</span><span class="n">start</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">intron_meta</span><span class="err">$</span><span class="n">start</span><span class="p">)</span>
+      <span class="n">intron_meta</span><span class="err">$</span><span class="n">end</span> <span class="o">&lt;-</span> <span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">intron_meta</span><span class="err">$</span><span class="n">end</span><span class="p">)</span>
+      <span class="n">intron_meta</span>
+    <span class="p">}</span>
+    
+    <span class="c1">#&#39; Work out which gene each cluster belongs to. Note the chromosome names used in the two inputs must match.</span>
+    <span class="c1">#&#39; @param intron_meta Data frame describing the introns, usually from get_intron_meta</span>
+    <span class="c1">#&#39; @param exons_table Table of exons, see e.g. /data/gencode19_exons.txt.gz</span>
+    <span class="c1">#&#39; @return Data.frame with cluster ids and genes separated by commas</span>
+    <span class="c1">#&#39; @import dplyr</span>
+    <span class="c1">#&#39; @export</span>
+    <span class="n">map_clusters_to_genes</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">intron_meta</span><span class="p">,</span> <span class="n">exons_table</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">gene_df</span> <span class="o">&lt;-</span> <span class="n">foreach</span> <span class="p">(</span><span class="nb">chr</span><span class="o">=</span><span class="n">sort</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">intron_meta</span><span class="err">$</span><span class="nb">chr</span><span class="p">)),</span> <span class="o">.</span><span class="n">combine</span><span class="o">=</span><span class="n">rbind</span><span class="p">)</span> <span class="o">%</span><span class="n">dopar</span><span class="o">%</span> <span class="p">{</span>
+    
+        <span class="n">intron_chr</span> <span class="o">&lt;-</span> <span class="n">intron_meta</span><span class="p">[</span> <span class="n">intron_meta</span><span class="err">$</span><span class="nb">chr</span><span class="o">==</span><span class="nb">chr</span><span class="p">,</span> <span class="p">]</span>
+        <span class="n">exons_chr</span> <span class="o">&lt;-</span> <span class="n">exons_table</span><span class="p">[</span><span class="n">exons_table</span><span class="err">$</span><span class="nb">chr</span><span class="o">==</span><span class="nb">chr</span><span class="p">,</span> <span class="p">]</span>
+    
+        <span class="n">exons_chr</span><span class="err">$</span><span class="n">temp</span> <span class="o">&lt;-</span> <span class="n">exons_chr</span><span class="err">$</span><span class="n">start</span>
+        <span class="n">intron_chr</span><span class="err">$</span><span class="n">temp</span> <span class="o">&lt;-</span> <span class="n">intron_chr</span><span class="err">$</span><span class="n">end</span>
+        <span class="n">three_prime_matches</span> <span class="o">&lt;-</span> <span class="n">inner_join</span><span class="p">(</span> <span class="n">intron_chr</span><span class="p">,</span> <span class="n">exons_chr</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;temp&quot;</span><span class="p">)</span>
+    
+        <span class="n">exons_chr</span><span class="err">$</span><span class="n">temp</span> <span class="o">&lt;-</span> <span class="n">exons_chr</span><span class="err">$</span><span class="n">end</span>
+        <span class="n">intron_chr</span><span class="err">$</span><span class="n">temp</span> <span class="o">&lt;-</span> <span class="n">intron_chr</span><span class="err">$</span><span class="n">start</span>
+        <span class="n">five_prime_matches</span> <span class="o">&lt;-</span> <span class="n">inner_join</span><span class="p">(</span> <span class="n">intron_chr</span><span class="p">,</span> <span class="n">exons_chr</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;temp&quot;</span><span class="p">)</span>
+    
+        <span class="n">all_matches</span> <span class="o">&lt;-</span> <span class="n">rbind</span><span class="p">(</span><span class="n">three_prime_matches</span><span class="p">,</span> <span class="n">five_prime_matches</span><span class="p">)[</span> <span class="p">,</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;clu&quot;</span><span class="p">,</span> <span class="s2">&quot;gene_name&quot;</span><span class="p">)]</span>
+    
+        <span class="n">all_matches</span> <span class="o">&lt;-</span> <span class="n">all_matches</span><span class="p">[</span><span class="err">!</span><span class="n">duplicated</span><span class="p">(</span><span class="n">all_matches</span><span class="p">),]</span>
+    
+        <span class="k">if</span> <span class="p">(</span><span class="n">nrow</span><span class="p">(</span><span class="n">all_matches</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">return</span><span class="p">(</span><span class="n">NULL</span><span class="p">)</span>
+        <span class="n">all_matches</span><span class="err">$</span><span class="n">clu</span> <span class="o">&lt;-</span> <span class="n">paste</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="n">all_matches</span><span class="err">$</span><span class="n">clu</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">all_matches</span>
+      <span class="p">}</span>
+    
+      <span class="n">clu_df</span> <span class="o">&lt;-</span> <span class="n">gene_df</span> <span class="o">%&gt;%</span> <span class="n">group_by</span><span class="p">(</span><span class="n">clu</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">summarize</span><span class="p">(</span><span class="n">genes</span><span class="o">=</span><span class="n">paste</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">))</span>
+      <span class="n">class</span><span class="p">(</span><span class="n">clu_df</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="s2">&quot;data.frame&quot;</span>
+      <span class="n">clu_df</span>
+    <span class="p">}</span>
+
+    <span class="n">cat</span><span class="p">(</span><span class="s2">&quot;LeafCutter: mapping clusters to genes</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">intron_counts</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">check</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">intron_meta</span> <span class="o">&lt;-</span> <span class="n">get_intron_meta</span><span class="p">(</span><span class="n">rownames</span><span class="p">(</span><span class="n">intron_counts</span><span class="p">))</span>
+    <span class="n">exon_table</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">header</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">stringsAsFactors</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="err">!</span><span class="n">str_detect</span><span class="p">(</span><span class="n">intron_meta</span><span class="p">,</span><span class="s2">&quot;chr&quot;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">exon_table</span> <span class="o">=</span> <span class="n">exon_table</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="nb">chr</span> <span class="o">=</span> <span class="n">str_remove_all</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span><span class="s2">&quot;chr&quot;</span><span class="p">))</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="err">!</span><span class="nb">any</span><span class="p">(</span><span class="n">str_detect</span><span class="p">(</span><span class="n">exon_table</span><span class="err">$</span><span class="nb">chr</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot;chr&quot;</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="n">exon_table</span> <span class="o">=</span> <span class="n">exon_table</span><span class="o">%&gt;%</span><span class="n">mutate</span><span class="p">(</span><span class="nb">chr</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="nb">chr</span><span class="p">))</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">(</span><span class="n">exon_table</span> <span class="o">=</span> <span class="n">exon_table</span><span class="p">)</span>
+    <span class="n">stopifnot</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s1">&#39;gene_id&#39;</span><span class="p">,</span> <span class="n">colnames</span><span class="p">(</span><span class="n">exon_table</span><span class="p">)))</span>
+    <span class="n">exon_table</span><span class="p">[,</span> <span class="s1">&#39;gene_name&#39;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="n">exon_table</span><span class="p">[,</span> <span class="s1">&#39;gene_id&#39;</span><span class="p">]</span>
+    <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">map_clusters_to_genes</span><span class="p">(</span><span class="n">intron_meta</span><span class="p">,</span> <span class="n">exon_table</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">annotate_leafcutter_isoforms</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">sample_participant_lookup</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">annotation_gtf</span><span class="p">,</span><span class="n">output_from</span><span class="p">(</span><span class="s2">&quot;map_cluster_to_gene&quot;</span><span class="p">)</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.formated.bed.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.phenotype_group.txt&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>  
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">qtl.io</span>
+    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+    <span class="c1"># Load data</span>
+    <span class="n">tss_df</span> <span class="o">=</span> <span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">})</span>
+    <span class="n">bed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bed_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;#chr&quot;</span> <span class="c1"># Temporary</span>
+    <span class="n">sample_participant_lookup</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;${sample_participant_lookup:a}&quot;</span><span class="p">)</span>
+    <span class="n">cluster2gene_dict</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ** assigning introns to gene mapping(s)&#39;</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">gene_bed_df</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">group_s</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="n">bed_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">cluster_id</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="o">+</span><span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">cluster_id</span> <span class="ow">in</span> <span class="n">cluster2gene_dict</span><span class="p">:</span>
+            <span class="n">gene_ids</span> <span class="o">=</span> <span class="n">cluster2gene_dict</span><span class="p">[</span><span class="n">cluster_id</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gene_ids</span><span class="p">:</span>
+                <span class="n">gi</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="o">+</span><span class="n">g</span>
+                <span class="n">gene_bed_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tss_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">g</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;chr&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">gi</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+                <span class="n">group_s</span><span class="p">[</span><span class="n">gi</span><span class="p">]</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    ** discarded </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1"> introns without a gene mapping&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  * writing BED files for QTL mapping&#39;</span><span class="p">)</span>
+    <span class="n">gene_bed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">gene_bed_df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">bed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="c1"># sort by TSS</span>
+    <span class="n">gene_bed_df</span> <span class="o">=</span> <span class="n">gene_bed_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;#chr&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">group_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">))</span>
+    <span class="c1"># change sample IDs to participant IDs</span>
+    <span class="k">if</span> <span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="n">sample_participant_lookup_s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">sample_participant_lookup</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">gene_bed_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">sample_participant_lookup_s</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">write_bed</span><span class="p">(</span><span class="n">gene_bed_df</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">})</span>
+    <span class="n">gene_bed_df</span><span class="p">[[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">gene_bed_df</span><span class="p">[[</span><span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">gene_bed_df</span><span class="p">[</span><span class="n">gene_bed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">:]]</span> <span class="o">=</span> <span class="n">gene_bed_df</span><span class="p">[</span><span class="n">gene_bed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">:]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">group_s</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="processing-of-psichomics-output">
+<h2>Processing of psichomics output<a class="headerlink" href="#processing-of-psichomics-output" title="Permalink to this headline">¶</a></h2>
+<p>It occurs that the psichomatic by default grouped the isoforms by gene name, so only thing needs to be done is to extract this information and potentially renamed the gene symbol into ENSG ID</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">annotate_psichomics_isoforms</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">sample_participant_lookup</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">annotation_gtf</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.formated.bed.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.phenotype_group.txt&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">qtl.io</span>
+    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+    <span class="n">tss_df</span> <span class="o">=</span> <span class="n">qtl</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gtf_to_tss_bed</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span> <span class="n">feature</span><span class="o">=</span><span class="s1">&#39;gene&#39;</span><span class="p">,</span><span class="n">phenotype_id</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span> <span class="p">)</span>
+    <span class="n">bed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">ar</span><span class="p">},</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">bed_df</span><span class="p">[</span><span class="s2">&quot;gene_id&quot;</span><span class="p">]</span>  <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bed_df</span><span class="o">.</span><span class="n">ID</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="s2">&quot;start&quot;</span> <span class="ow">in</span>  <span class="n">bed_df</span><span class="o">.</span><span class="n">columns</span><span class="p">():</span>
+        <span class="n">bed_df</span> <span class="o">=</span> <span class="n">bed_df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;#Chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">tss_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">bed_df</span><span class="p">,</span> <span class="n">left_on</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gene_id&quot;</span><span class="p">],</span> <span class="n">right_on</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gene_id&quot;</span><span class="p">],</span><span class="n">how</span> <span class="o">=</span> <span class="s2">&quot;right&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;#chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">])</span>
+    <span class="c1"># change sample IDs to participant IDs</span>
+    <span class="k">if</span> <span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="n">sample_participant_lookup_s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">sample_participant_lookup</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="nb">str</span><span class="p">},</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">sample_participant_lookup_s</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">bed_output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;gene_id&quot;</span> <span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">phenotype_group</span> <span class="o">=</span> <span class="n">output</span><span class="p">[[</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span><span class="s2">&quot;gene_id&quot;</span><span class="p">]]</span>
+    <span class="n">bed_output</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">nr</span><span class="p">},</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">phenotype_group</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span>
+    <span class="n">tabix</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
 </pre></div>
 </div>
 </div>

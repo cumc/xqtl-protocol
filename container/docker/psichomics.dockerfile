@@ -40,6 +40,8 @@ RUN pip install sklearn scipy
 RUN cd /opt
 RUN pip install SUPPA==2.3
 RUN git clone https://github.com/comprna/SUPPA.git
-RUN alias SUPPA=python /opt/SUPPA/suppa.py
-
+RUN echo "exec /bin/bash "$@"" >> /entrypoint.sh
+RUN echo 'alias SUPPA="python /opt/SUPPA/suppa.py"'  >> /entrypoint.sh
+RUN chmod u+x /entrypoint.sh
+CMD /bin/bash /entrypoint.sh
 CMD exec /bin/bash "$@"

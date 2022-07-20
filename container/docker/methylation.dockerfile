@@ -16,7 +16,12 @@ libglpk-dev \
 libssl-dev \
 libcurl4-gnutls-dev \
 r-cran-rmysql \
-wget
+wget \
+libopenblas-base \
+libatlas3-base 
+
+RUN update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3
+
 RUN cd /opt && \
 wget --no-check-certificate https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2 && \
 tar -xf htslib-1.11.tar.bz2 && rm htslib-1.11.tar.bz2 && cd htslib-1.11 && \

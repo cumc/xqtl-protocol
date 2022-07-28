@@ -32,7 +32,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under `
 - Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as ***analysis groups***, which are further divided into ***protocols*** by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the protocol. Most of them are "tutorials" in nature and are meant to be **executed interactively in Jupyter or in command terminal** to run the SoS pipelines line by line. A few are the actual ***pipeline modules*** implementing pipelines in SoS, as will be discussed next.
 - *Protocols* can be expanded by clicking on the down arrows to access the SoS workflows implemention of ***pipeline modules***. These are the core pipeline implementations to be **executed as command line software**, and are meant to be **self-contained** --- they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline modules are documented with some background information, required input, expected output, and most importantly a **minimal working example** to allow users to test it out with a toy data-set before applying to their own analysis. The rest of the pipeline module are the actual code implementations.
 
-## xQTL workflow blueprint
+## xQTL workflow schema
 
 ![QTL Diagram](code/images/complete_workflow.png)
 

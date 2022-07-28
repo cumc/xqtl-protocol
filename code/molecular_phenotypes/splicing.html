@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Quantifying alternative splicing from RNA-seq data &#8212; ADSP-FG Project</title>
+    <title>Alternative splicing from RNA-seq data &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -134,7 +134,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="bulk_expression.html">
-   Methylation calling and QC
+   RNA-seq expression
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -183,7 +183,7 @@
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="methylation.html">
-   Quantifying methylation data
+   Methylation
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -200,7 +200,7 @@
  </li>
  <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
-   Quantifying alternative splicing from RNA-seq data
+   Alternative splicing from RNA-seq data
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
   <label for="toctree-checkbox-4">
@@ -592,138 +592,14 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#methods-overview">
-   Methods overview
+  <a class="reference internal nav-link" href="#alternative-splicing-events-quantification">
+   Alternative splicing events quantification
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input">
-   Input
+  <a class="reference internal nav-link" href="#alternative-splicing-data-normalization">
+   Alternative splicing data normalization
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#leafcutter">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       leafcutter
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#psichomics">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       psichomics
-      </span>
-     </code>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#output">
-   Output
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       leafcutter
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       psichomics
-      </span>
-     </code>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#minimal-working-example">
-   Minimal working example
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-leafcutter">
-     For
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       leafcutter
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-psichomics">
-     For
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       psichomics
-      </span>
-     </code>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#command-interface">
-   Command interface
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setup-and-global-parameters">
-   Setup and global parameters
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id3">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     leafcutter
-    </span>
-   </code>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#other-clustering-options">
-     Other clustering options:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#things-to-keep-in-mind">
-     Things to keep in mind:
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#id4">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     psichomics
-    </span>
-   </code>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#other-options">
-     Other options
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#alternative-splicing-annotation-information">
-     Alternative Splicing Annotation Information
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -736,382 +612,15 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="quantifying-alternative-splicing-from-rna-seq-data">
-<h1>Quantifying alternative splicing from RNA-seq data<a class="headerlink" href="#quantifying-alternative-splicing-from-rna-seq-data" title="Permalink to this headline">¶</a></h1>
-<p>This pipeline implements our pipeline to call alternative splicing events from RNA-seq data, using <a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> and <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx/TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail. The choice of pipeline modules in this project is supported by internal (unpublished) benchmarks from GTEx group.</p>
-<p><strong>Various reference data needs to be prepared before using this workflow</strong>. <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">Here we provide a module</a> to download and prepare the reference data.</p>
-<p>The product of this workflow can be used in generating phenotype tables using /molecular_phenotyles/QC/splicing_normalization.ipynb.</p>
-<section id="methods-overview">
-<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
-<p>There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
-<ol class="simple">
-<li><p><a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> that quantifies each specific event. In particular the exon skipping event which is used also in GTEx sQTL analysis.</p></li>
-<li><p><a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> to quantify the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events. The method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.</p></li>
-</ol>
+  <section class="tex2jax_ignore mathjax_ignore" id="alternative-splicing-from-rna-seq-data">
+<h1>Alternative splicing from RNA-seq data<a class="headerlink" href="#alternative-splicing-from-rna-seq-data" title="Permalink to this headline">¶</a></h1>
+<section id="alternative-splicing-events-quantification">
+<h2>Alternative splicing events quantification<a class="headerlink" href="#alternative-splicing-events-quantification" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">code/molecular_phenotypes/calling/splicing_calling.ipynb</span></code></p>
 </section>
-<section id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
-<p>Both leafcutter and psichomics section, a meta-data file, white space delimited, containing 4 columns: sample ID, RNA strandness and path to the BAM files input for leafcutter section and to SJ.out.tab files for psichomics section:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_id</span>       <span class="n">strand</span>          <span class="n">bam_list</span>                                <span class="n">SJ_list</span>
-<span class="n">sample_1</span>        <span class="n">rf</span>              <span class="n">sample_1</span><span class="o">.</span><span class="n">Aligned</span><span class="o">.</span><span class="n">sortedByCoord</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">bam</span>  <span class="n">sample_1</span><span class="o">.</span><span class="n">SJ</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">tab</span>
-<span class="n">sample_2</span>        <span class="n">fr</span>              <span class="n">sample_2</span><span class="o">.</span><span class="n">Aligned</span><span class="o">.</span><span class="n">sortedByCoord</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">bam</span>  <span class="n">sample_2</span><span class="o">.</span><span class="n">SJ</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">tab</span>
-<span class="n">sample_3</span>        <span class="n">strand_missing</span>  <span class="n">sample_3</span><span class="o">.</span><span class="n">Aligned</span><span class="o">.</span><span class="n">sortedByCoord</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">bam</span>  <span class="n">sample_3</span><span class="o">.</span><span class="n">SJ</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">tab</span>
-</pre></div>
-</div>
-<section id="leafcutter">
-<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h3>
-<p>The bam files can be generated by <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">STAR_align</span></code> workflow from our RNA_calling.ipynb module.</p>
-<p>All the BAM files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
-<p>If intend to blacklist some chromosomes and not analyze it, add one text file named black_list.txt with one chromosome name per line in the same directory of the meta-data file.</p>
-</section>
-<section id="psichomics">
-<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h3>
-<p>The SJ.out.tab files can be generated by <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">STAR_align</span></code> workflow from our RNA_calling.ipynb module.</p>
-<p>All the SJ.out.tab files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
-</section>
-</section>
-<section id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<section id="id1">
-<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">{sample_list}</span></code> below refers to the name of the meta-data file input.</p>
-<p>Main output include:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz</span></code> file with row id in format: “chromosome:intron_start:intron_end:cluster_id”, column labeled as input sample names and each type of intron usage ratio under each sample (i.e. #particular intron in a sample / #total introns classified in the same cluster in a sample) in each cells.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind_numers.counts.gz</span></code> file with the same row and column label but the count of each intron in each cells.</p></li>
-</ul>
-</section>
-<section id="id2">
-<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">psi_raw_data.tsv</span></code> A dataframe of PSI values (quantification of the alternative splicing events) with first column splicing event identifier (for instance, SE_1_-_2125078_2124414_2124284_2121220_C1orf86) is composed of:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>             Event type (SE stands for skipped exon)
-             Chromosome (1)
-             Strand (-)
-             Relevant coordinates depending on event type (in this case, the first constitutive exon’s end, the                            alternative exon’ start and end and the second constitutive exon’s start)
-             Associated gene (C1orf86)
-</pre></div>
-</div>
-</li>
-</ul>
-<table class="colwidths-auto table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Splicing Event Type</p></th>
-<th class="head"><p>Abbreviation</p></th>
-<th class="head"><p><a class="reference external" href="https://bioconductor.org/packages/release/bioc/manuals/psichomics/man/psichomics.pdf">Coordinates</a></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Skipped Exon</p></td>
-<td><p>SE</p></td>
-<td><p>constitutive exon 1 end, alternative exon (start and end) and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-odd"><td><p>Mutually exclusive exon</p></td>
-<td><p>MXE</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 and 2 (start and end) and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-even"><td><p>Alternative 5’ splice site</p></td>
-<td><p>A5SS</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 end and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-odd"><td><p>Alternative 3’ splice site</p></td>
-<td><p>A3SS</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 start and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-even"><td><p>Alternative first exon</p></td>
-<td><p>AFE</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 end and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-odd"><td><p>Alternative last exon</p></td>
-<td><p>ALE</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 start and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-even"><td><p>Alternative first exon (exon-centered - less reliable)</p></td>
-<td><p>AFE_exon</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 end and constitutive exon 2 start</p></td>
-</tr>
-<tr class="row-odd"><td><p>Alternative last exon (exon-centered - less reliable)</p></td>
-<td><p>ALE_exon</p></td>
-<td><p>constitutive exon 1 end, alternative exon 1 start and constitutive exon 2 start</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="minimal-working-example">
-<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
-<section id="for-leafcutter">
-<h3>For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#for-leafcutter" title="Permalink to this headline">¶</a></h3>
-<p>A minimal working example is uploaded in the <a class="reference external" href="https://drive.google.com/drive/folders/1lpcx3eKG2UpauntLUuJ6bMBjHyIhWW_R?usp=sharing">google drive</a></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">leafcutter</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">leafcutter_output</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">sample_bam</span><span class="o">.</span><span class="n">list</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">leafcutter</span><span class="o">.</span><span class="n">sif</span> 
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="for-psichomics">
-<h3>For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#for-psichomics" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psichomics</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">psidata</span><span class="o">/</span><span class="n">output</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">psidata</span><span class="o">/</span><span class="n">sample_SJ</span><span class="o">.</span><span class="n">list</span> \
-    <span class="o">--</span><span class="n">splicing_annotation</span> <span class="n">hg38_suppa</span><span class="o">.</span><span class="n">rds</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">psichomics</span><span class="o">.</span><span class="n">sif</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="command-interface">
-<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run splicing_calling.ipynb
-               [workflow_name | -t targets] [options] [workflow_options]
-  workflow_name:        Single or combined workflows defined in this script
-  targets:              One or more targets to generate
-  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
-  workflow_options:     Double-hyphen workflow-specific parameters
-
-Workflows:
-  leafcutter
-  psichomics
-
-Global Workflow Options:
-  --cwd output (as path)
-                        The output directory for generated files.
-  --samples VAL (as path, required)
-                        Sample meta data list
-  --data-dir  path(f&quot;{samples:d}&quot;)
-
-                        Raw data directory, default to the same directory as
-                        sample list
-  --job-size 1 (as int)
-                        For cluster jobs, number commands to run per job
-  --walltime 5h
-                        Wall clock time expected
-  --mem 16G
-                        Memory expected
-  --numThreads 8 (as int)
-                        Number of threads
-  --container &#39;&#39;
-                        Software container option
-
-Sections
-  leafcutter_1:
-    Workflow Options:
-      --anchor-len 8 (as int)
-                        anchor length (default 8)
-      --min-intron-len 50 (as int)
-                        minimum intron length to be analyzed (default 50)
-      --max-intron-len 500000 (as int)
-                        maximum intron length to be analyzed (default 500000)
-  leafcutter_2:
-    Workflow Options:
-      --min-clu-reads 50 (as int)
-                        minimum reads in a cluster (default 50 reads)
-      --max-intron-len 500000 (as int)
-                        maximum intron length to be analyzed (default 500000)
-  psichomics_1:
-  psichomics_2:
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="setup-and-global-parameters">
-<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
-<span class="c1"># The output directory for generated files. </span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
-<span class="c1"># Sample meta data list</span>
-<span class="kn">parameter:</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># Raw data directory, default to the same directory as sample list</span>
-<span class="kn">parameter:</span> <span class="n">data_dir</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="c1"># splicing annotation for psichomics</span>
-<span class="kn">parameter:</span> <span class="n">splicing_annotation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="c1"># For cluster jobs, number commands to run per job</span>
-<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c1"># Wall clock time expected</span>
-<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
-<span class="c1"># Memory expected</span>
-<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
-<span class="c1"># Number of threads</span>
-<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="c1"># Software container option</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sos.utils</span> <span class="kn">import</span> <span class="n">expand_size</span>
-<span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">get_samples</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">os</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">strandness</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">bam_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">bam_files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">SJtab_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">SJtab_files</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Line </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> of file </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2"> must have 4 columns&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">strandness</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">bam_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">SJtab_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-        
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strandness</span><span class="p">)):</span>
-        <span class="c1"># for regtools command usage, replace 0 = unstranded/XS, 1 = first-strand/RF, 2 = second-strand/FR</span>
-        <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;rf&#39;</span><span class="p">:</span>
-            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;fr&#39;</span><span class="p">:</span>
-            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
-        <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;strand_missing&#39;</span><span class="p">:</span>
-            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            
-    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">bam_list</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
-        <span class="n">bam_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duplicated files are found (but should not be allowed) in BAM file list&quot;</span><span class="p">)</span>
-        
-    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">SJtab_list</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
-        <span class="n">SJtab_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SJtab_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">SJtab_list</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duplicated files are found (but should not be allowed) in SJ.tab file list&quot;</span><span class="p">)</span>
-        
-    <span class="k">return</span> <span class="n">names</span><span class="p">,</span> <span class="n">strandness</span><span class="p">,</span> <span class="n">bam_files</span><span class="p">,</span> <span class="n">SJtab_files</span>
-
-<span class="n">sample_id</span><span class="p">,</span> <span class="n">strandness</span><span class="p">,</span> <span class="n">bam_data</span><span class="p">,</span> <span class="n">SJtab_data</span> <span class="o">=</span> <span class="n">get_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="id3">
-<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>Documentation: <a class="reference external" href="https://davidaknowles.github.io/leafcutter/index.html"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a>. The choices of regtool parameters are <a class="reference external" href="https://github.com/davidaknowles/leafcutter/issues/127">discussed here</a>.</p>
-<section id="other-clustering-options">
-<h3>Other clustering options:<a class="headerlink" href="#other-clustering-options" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>“-q”, “–quiet” : don’t print status messages to stdout, default=True.</p></li>
-<li><p>“-p”, “–mincluratio” : minimum fraction of reads in a cluster that support a junction, default 0.001.</p></li>
-<li><p>“-c”, “–cluster” : refined cluster file when clusters are already made, default = None.</p></li>
-<li><p>“-k”, “–nochromcheck” : Don’t check that the chromosomes are well formated e.g. chr1, chr2, …, or 1, 2, …, default = False.</p></li>
-<li><p>“-C”, “–includeconst” : also include constitutive introns, default = False.</p></li>
-</ul>
-<p>The default parameter we used are:</p>
-<p><code class="docutils literal notranslate"><span class="pre">--min_clu_ratio</span> <span class="pre">0.001</span> <span class="pre">--max_intron_len</span> <span class="pre">500000</span> <span class="pre">--min_clu_reads</span> <span class="pre">30</span></code></p>
-<p>These parameter is based on <a class="reference external" href="https://www.science.org/action/downloadSupplement?doi=10.1126%2Fscience.aaz1776&amp;file=aaz1776_aguet_sm.pdf">GTEX’s sQTL discovery pipeline (Section 3.4.3) </a></p>
-</section>
-<section id="things-to-keep-in-mind">
-<h3>Things to keep in mind:<a class="headerlink" href="#things-to-keep-in-mind" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>If .bam.bai index files of the .bam input are ready before using leafCutter, it can be placed in the same directory with input .bam files and the “samtools index ${_input}” line can be skipped.</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_1</span><span class="p">]</span>
-<span class="c1"># anchor length (default 8)</span>
-<span class="kn">parameter:</span> <span class="n">anchor_len</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="c1"># minimum intron length to be analyzed (default 50)</span>
-<span class="kn">parameter:</span> <span class="n">min_intron_len</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="c1"># maximum intron length to be analyzed (default 500000)</span>
-<span class="kn">parameter:</span> <span class="n">max_intron_len</span> <span class="o">=</span> <span class="mi">500000</span>
-<span class="kn">input:</span> <span class="n">bam_data</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;strandness&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.junc&#39;</span> 
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
-    <span class="n">samtools</span> <span class="n">index</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>
-    <span class="n">regtools</span> <span class="n">junctions</span> <span class="n">extract</span> <span class="o">-</span><span class="n">a</span> <span class="err">$</span><span class="p">{</span><span class="n">anchor_len</span><span class="p">}</span> <span class="o">-</span><span class="n">m</span> <span class="err">$</span><span class="p">{</span><span class="n">min_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">M</span> <span class="err">$</span><span class="p">{</span><span class="n">max_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="p">{</span><span class="n">_strandness</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_2</span><span class="p">]</span>
-<span class="c1"># minimum reads in a cluster (default 50 reads)</span>
-<span class="kn">parameter:</span> <span class="n">min_clu_reads</span> <span class="o">=</span> <span class="mi">30</span> 
-<span class="c1"># maximum intron length to be analyzed (default 500000)</span>
-<span class="kn">parameter:</span> <span class="n">max_intron_len</span> <span class="o">=</span> <span class="mi">500000</span> 
-<span class="c1"># minimum fraction of reads in a cluster that support a junction (default 0.001)</span>
-<span class="kn">parameter:</span> <span class="n">min_clu_ratio</span> <span class="o">=</span> <span class="mf">0.001</span>
-<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_intron_usage_perind.counts.gz&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
-    <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">};</span> <span class="n">do</span>
-    <span class="n">echo</span> <span class="err">$</span><span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="p">;</span> <span class="n">done</span>
-    <span class="n">python</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">leafcutter</span><span class="o">/</span><span class="n">clustering</span><span class="o">/</span><span class="n">leafcutter_cluster_regtools</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_perind&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)}</span> <span class="o">-</span><span class="n">m</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_reads</span><span class="p">}</span> <span class="o">-</span><span class="n">l</span> <span class="err">$</span><span class="p">{</span><span class="n">max_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">r</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_ratio</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="id4">
-<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<p>Documentation: <a class="reference external" href="http://bioconductor.org/packages/release/bioc/html/psichomics.html"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></p>
-<section id="other-options">
-<h3>Other options<a class="headerlink" href="#other-options" title="Permalink to this headline">¶</a></h3>
-<p>quantifySplicing( annotation,
-junctionQuant,
-eventType = c(“SE”, “MXE”, “ALE”, “AFE”, “A3SS”, “A5SS”),
-minReads = 10,
-genes = NULL
-)</p>
-<p>In function quantifySplicing, arguments eventType (Character: splicing event types to quantify), minReads (Integer: values whose number of total supporting read counts is below minReads are returned as NA) and genes (Character: gene symbols for which to quantify splicing events. If NULL, events from all genes are quantified.) can be specified. Usage and default values are shown above.</p>
-</section>
-<section id="alternative-splicing-annotation-information">
-<h3>Alternative Splicing Annotation Information<a class="headerlink" href="#alternative-splicing-annotation-information" title="Permalink to this headline">¶</a></h3>
-<p>Two alternative splicing annotations will be provided in this pipeline which can be download <a class="reference external" href="https://drive.google.com/drive/folders/1bKN1WhjByOqNCqyLs3C2Ovj27FYIA78J?usp=sharing">here</a>. The hg38_suppa.rds is created Via SUPPA using the gtf file of the xqtl-pipeline, and the modified_psichomics_hg38_splicing_annotation.rds is modified from the default Human hg38 (2018-04-30) annotation provided by psichomics package. Description of the database can be found in the Alternative splicing annotation section in the <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259?login=true#130023625">MATERIALS AND METHODS</a> part. Gene names of the original annotation are replaced by Ensembl ids for format unifying. The Ensembl IDs used in modifiction are matched from the gtf file, HGNC database, SUPPA and VASTTOOL records within the original annotation.</p>
-<p>Theoretically the annotation created using the gtf file only will give results more consistent with other part of the pipeline. The annotation modified from psichomics original hg38 annotation can identify more events since it was build based on information maximizing principle, however there will be risk of containing outdated information too.</p>
-<p>For details of generation method of the gtf file and the two splicing annotations, please check the GFF3 to GTF formatting, Generation of SUPPA annotation for psichomics, and Modification of psichomics default Hg38 splicing annotation sections in <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/reference_data.ipynb">reference_data.ipynb</a>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">psichomics_1</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">SJtab_data</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/psi_raw_data.tsv&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;psichomics&quot;</span><span class="p">)</span>
-    <span class="n">setwd</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">prepareJunctionQuant</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,})</span>
-    <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">loadLocalFiles</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">junctionQuant</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]</span><span class="err">$`</span><span class="n">Junction</span> <span class="n">quantification</span><span class="err">`</span>
-    <span class="n">annotation</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{splicing_annotation}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">psi</span> <span class="o">&lt;-</span> <span class="n">quantifySplicing</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">junctionQuant</span><span class="p">)</span>
-    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s1">&#39;$</span><span class="si">{cwd}</span><span class="s1">/psi_raw_data.tsv&#39;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
+<section id="alternative-splicing-data-normalization">
+<h2>Alternative splicing data normalization<a class="headerlink" href="#alternative-splicing-data-normalization" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">code/molecular_phenotypes/QC/splicing_normalization.ipynb</span></code></p>
 </section>
 <div class="toctree-wrapper compound">
 </div>

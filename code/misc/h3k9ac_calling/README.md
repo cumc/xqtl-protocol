@@ -1,4 +1,4 @@
-These are the scripts used to call H3K9AC phenotype.
+# Histone acetylation peak calling pipeline 
 
 ## 0. Bam to fastq
 If the file format for raw data is bam, the "bamtofastq.sh" in the fastq folder can convert it back to fastq so that QC and other processing can be done.

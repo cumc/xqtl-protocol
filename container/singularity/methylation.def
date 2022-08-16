@@ -40,12 +40,20 @@ R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.co
 R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('BiocManager')"
+### Disable threading for preprocessCore
+R -e 'BiocManager::install("sesame")'
+R -e 'sesameData::sesameDataCache()'
+
 R -e 'BiocManager::install("preprocessCore", configure.args="--disable-threading")'
 R -e 'BiocManager::install("minfi")'
 R -e 'BiocManager::install("limma")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
 R -e "devtools::install_github('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
+
+
+## Here you are specifying what your entrypoint is when you launch the docker.
+
 %runscript
 exec /bin/bash exec sh "$@"
 %startscript

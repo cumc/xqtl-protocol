@@ -1,17 +1,10 @@
 Bootstrap: docker
 From: rocker/r-ver:4.2.0
 
+
 %labels
 MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
-
 %post
-# You can create an R image from scratch also, here we are importing base R image from rocker. rocker has many different versions of R that you can pull into your own image.
-#Base image https://hub.docker.com/u/rocker/
-
-## If you have files you want added to you docker image for later use, you can do that by adding the data in the image. 
-
-## Below we are telling this file to install some dependencies because this Dockerfile uses an existing R image from rocker and we want to extend it by installing some R packages ourselves. So, we should also install the development version of some libraries because they contain the header files that are required to build the R-packages.
-
 apt-get update \
 && apt-get install -y --no-install-recommends \
 libxml2 \
@@ -30,56 +23,39 @@ libcurl4-gnutls-dev \
 r-cran-rmysql \
 wget \
 libopenblas-base \
-libatlas3-base 
-
+libatlas3-base
 
 update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3
-
-
-## Install bgzip and tabix
 
 cd /opt && \
 wget --no-check-certificate https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2 && \
 tar -xf htslib-1.11.tar.bz2 && rm htslib-1.11.tar.bz2 && cd htslib-1.11 && \
 ./configure --enable-libcurl --enable-s3 --enable-plugins --enable-gcs && \
 make && make install && make clean
-
-
-## Save the cross reactive probe
-
 cd /opt && \
-wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/data/cross_reactive_probe_Hop2020.txt
-
-## Install R package for the analysis
-R -e "install.packages('devtools')"
+wget https://raw.githubusercontent.com/hsun3163/xqtl-pipeline/main/data/cross_reactive_probe_Hop2020.txt
 R -e "install.packages('data.table', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('glmnet', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
-
+R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('BiocManager')"
 ### Disable threading for preprocessCore
 R -e 'install.packages("http://bioconductor.org/packages/3.15/data/experiment/src/contrib/sesameData_1.14.0.tar.gz", repos=NULL)'
 R -e 'BiocManager::install("zwdzwd/sesame")'
 R -e 'sesameData::sesameDataCache()'
 
-### Disable threading for preprocessCore
 R -e 'BiocManager::install("preprocessCore", configure.args="--disable-threading")'
 R -e 'BiocManager::install("minfi")'
 R -e 'BiocManager::install("limma")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
-R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
-R -e 'BiocManager::install("IlluminaHumanMethylation450kanno.ilmn12.hg19")'
-
-### Install the hg38 Annotation
 R -e "devtools::install_github('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
-
 
 
 ## Here you are specifying what your entrypoint is when you launch the docker.
 
 %runscript
-exec sh "$@"
+exec /bin/bash exec sh "$@"
 %startscript
-exec sh "$@"
+exec /bin/bash exec sh "$@"

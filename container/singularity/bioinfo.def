@@ -8,8 +8,8 @@ maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
 su -  root # USER root
 
 
-# Install JAVA and GIT
-apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk git && \
+# Install JAVA
+apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk && \
 apt-get clean && \
 apt-get autoremove -y && \
 rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -21,24 +21,15 @@ R --slave -e "install.packages(c('rlang',
                                      'BiocManager', 
                                      'RcppEigen',
                                      # For kinship analysis
-                                     'igraph',
-                                     # leafcutter post-processing    
-                                     'foreach'))"
+                                     'igraph'))"
                                      
 R --slave -e "BiocManager::install('biomaRt')"
 R --slave -e "BiocManager::install('VariantAnnotation')"
 
 # cugg package was used for summary stats merger script to handle strand flips
 # QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-pip install qtl
-
-# Install CUGG
-git clone https://github.com/cumc/cugg.git
-cd cugg
-pip install .
-
-# Install Other packages
-
+pip install qtl cugg
+                                     
 cd /tmp && wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
 unzip -o  plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/plink*
 cd /tmp && wget https://s3.amazonaws.com/plink2-assets/alpha2/plink2_linux_avx2.zip && \

@@ -57,5 +57,10 @@ hosts:
   high_mem:
     based_on: hosts.neurology
     partition: $ -q high_mem.q
+  csg2:
+    based_on: hosts.neurology
+    partition: $ -q csg2.q -l t_pri
+    PE: $ -pe openmp {cores}
+    submit_cmd_output: 'Your job {job_id} ("{job_name}") has been submitted'
 
 localhost: localhost

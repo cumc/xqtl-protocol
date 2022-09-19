@@ -42,6 +42,9 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under `
 
 ![QTL Diagram](code/images/complete_workflow.png)
 
+## See Also
+- Some example analysis using our pipeline can be found in the [brain-xqtl-analysis github repo](https://github.com/cumc/brain-xqtl-analysis)
+
 ## Contributors
 
 This repository is developed by the ADSP FG Brain xQTL consortium.
@@ -70,5 +73,4 @@ Brain xQTL methods and data integration work group
 - Gao Wang (work group leader), Department of Neurology, Columbia University
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
 - Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
-### See Also
-- Some example analysis using our pipeline can be found in the [brain-xqtl-analysis github repo](https://github.com/cumc/brain-xqtl-analysis)
+

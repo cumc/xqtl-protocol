@@ -19,18 +19,24 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 - Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-pipeline/tree/main/code. 
 - Container configurations are available at https://github.com/cumc/xqtl-pipeline/tree/main/container.
 
-### Software container and minimal working example data
+### Software container and working example data
 
-- Minimal working examples are available through request to access [this Google Drive folder](https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed).
-- Under the folder above you can find `singularity` image release for software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
+- Working examples and containers are available through request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/).
+  - In the `test_data` folder, you can find the **MWE** data used to perform unit test for each of the modules (i.e. whether there is anything wrong within the code). 
+  - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demostrate the usage of xqtl-protocol in this [WIP notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb).
+
+- Under the `Container` folder above you can find `singularity` image release for software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
+
 
 ### Organization of the resource
 
-The website https://cumc.github.io/xqtl-pipeline is generated from files under `code` folder of the source code repository. The `pipeline` folder are symbolic links automatically generated for pipeline files under `code`. The logic of the entire xQTL analysis workflow is roughly reflected on the left side bar:
+The website https://cumc.github.io/xqtl-pipeline is generated from files under `code` folder of the source code repository. The `pipeline` folder are symbolic links automatically generated for pipeline files under `code`. The logic of the entire xQTL analysis workflow is roughly reflected on the **left side bar**:
 
 - The **COMMAND GENERATOR** section is reserved for "push botton" commands that generates the entire QTL analysis pipeline workflow script from a simple configuration file. Notebooks under this sections are meant to be **executed as command line software** to generate data analysis commands. The generated commands can be executed as is to complete all available analysis, or can be used to help customizing specific analysis tasks by making modification on them. The configuration file itself helps centralized control and book keeping of workflows executed.
 - Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as ***analysis groups***, which are further divided into ***protocols*** by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the protocol. Most of them are "tutorials" in nature and are meant to be **executed interactively in Jupyter or in command terminal** to run the SoS pipelines line by line. A few are the actual ***pipeline modules*** implementing pipelines in SoS, as will be discussed next.
 - *Protocols* can be expanded by clicking on the down arrows to access the SoS workflows implemention of ***pipeline modules***. These are the core pipeline implementations to be **executed as command line software**, and are meant to be **self-contained** --- they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline modules are documented with some background information, required input, expected output, and most importantly a **minimal working example** to allow users to test it out with a toy data-set before applying to their own analysis. The rest of the pipeline module are the actual code implementations.
+  - *Beginner* should read each of the *Protocols* notebook carefully to get a general idea of how modules are connected to the upstream and downstream analysis. 
+  - After being more familirize with it, one can proceed into the self-contained pipeline modules
 
 ## xQTL workflow schema
 
@@ -64,3 +70,5 @@ Brain xQTL methods and data integration work group
 - Gao Wang (work group leader), Department of Neurology, Columbia University
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
 - Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
+### See Also
+- Some example analysis using our pipeline can be found in the [brain-xqtl-analysis github repo](https://github.com/cumc/brain-xqtl-analysis)

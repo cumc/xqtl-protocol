@@ -994,6 +994,17 @@ Sections
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">download_dbsnp</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/00-All.vcf.gz&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/00-All.vcf.gz.tbi&quot;</span>
+<span class="kn">download:</span> <span class="n">dest_dir</span> <span class="o">=</span> <span class="n">cwd</span>
+    <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">ncbi</span><span class="o">.</span><span class="n">nlm</span><span class="o">.</span><span class="n">nih</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">snp</span><span class="o">/</span><span class="n">organisms</span><span class="o">/</span><span class="n">human_9606</span><span class="o">/</span><span class="n">VCF</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">ncbi</span><span class="o">.</span><span class="n">nlm</span><span class="o">.</span><span class="n">nih</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">snp</span><span class="o">/</span><span class="n">organisms</span><span class="o">/</span><span class="n">human_9606</span><span class="o">/</span><span class="n">VCF</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span><span class="o">.</span><span class="n">tbi</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="gff3-to-gtf-formatting">
 <h2>GFF3 to GTF formatting<a class="headerlink" href="#gff3-to-gtf-formatting" title="Permalink to this headline">¶</a></h2>
@@ -1208,7 +1219,11 @@ Sections
 <span class="kn">parameter:</span> <span class="n">hg_reference</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</span>
 <span class="c1"># Default choice follows from TOPMed pipeline recommendation.</span>
-<span class="n">fail_if</span><span class="p">(</span><span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">expand_size</span><span class="p">(</span><span class="s1">&#39;40G&#39;</span><span class="p">),</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;At least 40GB of memory is required for this step&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">expand_size</span><span class="p">(</span><span class="kp">mem</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">expand_size</span><span class="p">(</span><span class="s1">&#39;40G&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Insufficent memory for STAR, changing to 40G&quot;</span><span class="p">)</span>
+    <span class="n">star_mem</span> <span class="o">=</span> <span class="s1">&#39;40G&#39;</span>
+<span class="kn">else:</span>
+    <span class="n">star_mem</span> <span class="o">=</span> <span class="kp">mem</span>
 <span class="kn">input:</span> <span class="n">hg_reference</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/STAR_Index/chrName.txt&quot;</span><span class="p">,</span> 
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/STAR_Index/SAindex&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/STAR_Index/SA&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/STAR_Index/genomeParameters.txt&quot;</span><span class="p">,</span> 

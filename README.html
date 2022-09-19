@@ -594,8 +594,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#software-container-and-minimal-working-example-data">
-     Software container and minimal working example data
+    <a class="reference internal nav-link" href="#software-container-and-working-example-data">
+     Software container and working example data
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -608,6 +608,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#xqtl-workflow-schema">
    xQTL workflow schema
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#see-also">
+   See Also
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -654,26 +659,37 @@
 <li><p>Container configurations are available at <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/tree/main/container">https://github.com/cumc/xqtl-pipeline/tree/main/container</a>.</p></li>
 </ul>
 </section>
-<section id="software-container-and-minimal-working-example-data">
-<h3>Software container and minimal working example data<a class="headerlink" href="#software-container-and-minimal-working-example-data" title="Permalink to this headline">¶</a></h3>
+<section id="software-container-and-working-example-data">
+<h3>Software container and working example data<a class="headerlink" href="#software-container-and-working-example-data" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Minimal working examples are available through request to access <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed">this Google Drive folder</a>.</p></li>
-<li><p>Under the folder above you can find <code class="docutils literal notranslate"><span class="pre">singularity</span></code> image release for software environment. You can also build the singularity image from configuration files at: <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity">https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity</a>.</p></li>
+<li><p>Working examples and containers are available through a request to access <a class="reference external" href="https://www.synapse.org/#%21Synapse:syn36416559/files/">this Synapse folder</a>.</p>
+<ul>
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">test_data</span></code> folder, you can find the <strong>MWE</strong> data used to perform unit testing for each module (i.e., whether there is anything wrong within the code).</p></li>
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">protocol_data</span></code> folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb">WIP notebook that outline the comprehensive xqtl-analysis procedure</a>.</p></li>
+</ul>
+</li>
+<li><p>Under the <code class="docutils literal notranslate"><span class="pre">Container</span></code> folder above, you can find the <code class="docutils literal notranslate"><span class="pre">singularity</span></code> image release for the software environment. You can also build the singularity image from configuration files at: <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity">https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity</a>.</p></li>
 </ul>
 </section>
 <section id="organization-of-the-resource">
 <h3>Organization of the resource<a class="headerlink" href="#organization-of-the-resource" title="Permalink to this headline">¶</a></h3>
-<p>The website <a class="reference external" href="https://cumc.github.io/xqtl-pipeline">https://cumc.github.io/xqtl-pipeline</a> is generated from files under <code class="docutils literal notranslate"><span class="pre">code</span></code> folder of the source code repository. The <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> folder are symbolic links automatically generated for pipeline files under <code class="docutils literal notranslate"><span class="pre">code</span></code>. The logic of the entire xQTL analysis workflow is roughly reflected on the left side bar:</p>
+<p>The website <a class="reference external" href="https://cumc.github.io/xqtl-pipeline">https://cumc.github.io/xqtl-pipeline</a> is generated from files under the <code class="docutils literal notranslate"><span class="pre">code</span></code> folder of the source code repository. The <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> folder contains symbolic links automatically generated for pipeline files under <code class="docutils literal notranslate"><span class="pre">code.</span></code> The logic of the entire xQTL analysis workflow is roughly reflected on the <strong>left sidebar</strong>:</p>
 <ul class="simple">
-<li><p>The <strong>COMMAND GENERATOR</strong> section is reserved for “push botton” commands that generates the entire QTL analysis pipeline workflow script from a simple configuration file. Notebooks under this sections are meant to be <strong>executed as command line software</strong> to generate data analysis commands. The generated commands can be executed as is to complete all available analysis, or can be used to help customizing specific analysis tasks by making modification on them. The configuration file itself helps centralized control and book keeping of workflows executed.</p></li>
-<li><p>Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as <em><strong>analysis groups</strong></em>, which are further divided into <em><strong>protocols</strong></em> by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the protocol. Most of them are “tutorials” in nature and are meant to be <strong>executed interactively in Jupyter or in command terminal</strong> to run the SoS pipelines line by line. A few are the actual <em><strong>pipeline modules</strong></em> implementing pipelines in SoS, as will be discussed next.</p></li>
-<li><p><em>Protocols</em> can be expanded by clicking on the down arrows to access the SoS workflows implemention of <em><strong>pipeline modules</strong></em>. These are the core pipeline implementations to be <strong>executed as command line software</strong>, and are meant to be <strong>self-contained</strong> — they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline modules are documented with some background information, required input, expected output, and most importantly a <strong>minimal working example</strong> to allow users to test it out with a toy data-set before applying to their own analysis. The rest of the pipeline module are the actual code implementations.</p></li>
+<li><p>The <strong>COMMAND GENERATOR</strong> section is reserved for “push button” commands that generate the entire QTL analysis pipeline workflow script from a simple configuration file. Notebooks under these sections are meant to be <strong>executed as command line software</strong> to generate data analysis commands. The generated commands can be executed as is to complete all available analyses or can be used to help customize specific analysis tasks by making modifications to them. The configuration file itself helps centralized control and bookkeeping of workflows executed.</p></li>
+<li><p>Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as <em><strong>analysis groups</strong></em>, which are further divided into <em><strong>protocols</strong></em> by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the protocol. Most of them are “tutorials” in nature and are meant to be <strong>executed interactively in Jupyter or in the command terminal</strong> to run the SoS pipelines line by line. A few are the actual <em><strong>pipeline modules</strong></em> implementing pipelines in SoS, as will be discussed next.</p></li>
+<li><p><em>Protocols</em> can be expanded by clicking on the down arrows to access the SoS workflows implementation of <em><strong>pipeline modules</strong></em>. These are the core pipeline implementations to be <strong>executed as command line software</strong>and are meant to be <strong>self-contained</strong> — they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline</p></li>
 </ul>
 </section>
 </section>
 <section id="xqtl-workflow-schema">
 <h2>xQTL workflow schema<a class="headerlink" href="#xqtl-workflow-schema" title="Permalink to this headline">¶</a></h2>
 <p><img alt="QTL Diagram" src="_images/complete_workflow.png" /></p>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Some example analysis using our pipeline can be found in the <a class="reference external" href="https://github.com/cumc/brain-xqtl-analysis">brain-xqtl-analysis github repo</a></p></li>
+</ul>
 </section>
 <section id="contributors">
 <h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>

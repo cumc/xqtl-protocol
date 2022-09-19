@@ -706,6 +706,11 @@
      Alternative Splicing Annotation Information
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Things to keep in mind:
+    </a>
+   </li>
   </ul>
  </li>
 </ul>
@@ -944,6 +949,7 @@ Sections
 <span class="k">def</span> <span class="nf">get_samples</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
     <span class="kn">import</span> <span class="nn">os</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    
     <span class="n">samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">strandness</span> <span class="o">=</span> <span class="p">[]</span>
@@ -952,24 +958,14 @@ Sections
     <span class="n">SJtab_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">SJtab_files</span> <span class="o">=</span> <span class="p">[]</span>
     
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Line </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> of file </span><span class="si">{</span><span class="n">fn</span><span class="si">}</span><span class="s2"> must have 4 columns&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])):</span> <span class="c1">#case if both input types are ready</span>
-            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">strandness</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">bam_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">SJtab_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])):</span> <span class="c1">#case if only input for leafcutter or psichomics is ready</span>
-            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">strandness</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">SJtab_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])):</span>
-            <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">strandness</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">bam_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&amp;</span> <span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">])):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least one type of input should be ready&quot;</span><span class="p">)</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;NA&quot;</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;sample_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">strandness</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;strand&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">bam_list</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;coord_bam_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">SJtab_list</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="s1">&#39;SJ_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;NA&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bam_list</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SJtab_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;NA&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">SJtab_list</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least one type of input should be ready&quot;</span><span class="p">)</span>
         
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strandness</span><span class="p">)):</span>
         <span class="c1"># for regtools command usage, replace 0 = unstranded/XS, 1 = first-strand/RF, 2 = second-strand/FR</span>
@@ -980,7 +976,7 @@ Sections
         <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;strand_missing&#39;</span><span class="p">:</span>
             <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;NA&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bam_list</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">bam_list</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
@@ -990,7 +986,7 @@ Sections
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Duplicated files are found (but should not be allowed) in BAM file list&quot;</span><span class="p">)</span>
     
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SJtab_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SJtab_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">SJtab_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;NA&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">SJtab_list</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">SJtab_list</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dr</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
@@ -1089,6 +1085,12 @@ genes = NULL
 <p>Two alternative splicing annotations will be provided in this pipeline which can be download <a class="reference external" href="https://drive.google.com/drive/folders/1lpcx3eKG2UpauntLUuJ6bMBjHyIhWW_R">here</a>. The hg38_suppa.rds is created Via SUPPA using the gtf file of the xqtl-pipeline, and the modified_psichomics_hg38_splicing_annotation.rds is modified from the default Human hg38 (2018-04-30) annotation provided by psichomics package. Description of the database can be found in the Alternative splicing annotation section in the <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259?login=true#130023625">MATERIALS AND METHODS</a> part. Gene names of the original annotation are replaced by Ensembl ids for format unifying. The Ensembl IDs used in modifiction are matched from the gtf file, HGNC database, SUPPA and VASTTOOL records within the original annotation.</p>
 <p>Theoretically the annotation created using the gtf file only will give results more consistent with other part of the pipeline. The annotation modified from psichomics original hg38 annotation can identify more events since it was build based on information maximizing principle, however there will be risk of containing outdated information too.</p>
 <p>For details of generation method of the gtf file and the two splicing annotations, please check the GFF3 to GTF formatting, Generation of SUPPA annotation for psichomics, and Modification of psichomics default Hg38 splicing annotation sections in <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/reference_data.ipynb">reference_data.ipynb</a>.</p>
+</section>
+<section id="id5">
+<h3>Things to keep in mind:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The script below allows to run prepareJunctionQuant() function from psichomics package on different input directories, however the prepareJunctionQuant() function will generate one psichomics_junctions.txt in each input directory. The psichomics_junctions.txt files generated in input directories are recommanded to be deleted before rerun of the psichimics_1 step since there probabaly be an overwrite conflict.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">psichomics_1</span><span class="p">]</span>
@@ -1097,8 +1099,39 @@ genes = NULL
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
 <span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span>
     <span class="n">library</span><span class="p">(</span><span class="s2">&quot;psichomics&quot;</span><span class="p">)</span>
-    <span class="n">setwd</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">prepareJunctionQuant</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
+  
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+  
+    <span class="k">for</span> <span class="p">(</span><span class="n">f</span> <span class="ow">in</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,})){</span>
+      <span class="n">filename</span> <span class="o">=</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;^.*/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+      <span class="n">directory</span> <span class="o">=</span> <span class="n">gsub</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]]</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]]</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]],</span> <span class="n">filename</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  
+    <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">setwd</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">files</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="n">res</span> <span class="o">=</span> <span class="n">prepareJunctionQuant</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:(</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">names</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">setwd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[[</span><span class="n">d</span><span class="p">]]</span> <span class="o">=</span> <span class="n">prepareJunctionQuant</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="n">d</span><span class="p">]])</span>
+        <span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="o">%&gt;%</span> <span class="n">reduce</span><span class="p">(</span><span class="n">full_join</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;Junction ID&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="n">res</span><span class="p">[</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">res</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="mi">0</span>
+  
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s1">&#39;$</span><span class="si">{cwd}</span><span class="s1">/psichomics_junctions.txt&#39;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
+    
     <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">loadLocalFiles</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">junctionQuant</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]</span><span class="err">$`</span><span class="n">Junction</span> <span class="n">quantification</span><span class="err">`</span>
     <span class="n">annotation</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{splicing_annotation}</span><span class="s2">&quot;</span><span class="p">)</span>

@@ -19,14 +19,12 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 - Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-pipeline/tree/main/code. 
 - Container configurations are available at https://github.com/cumc/xqtl-pipeline/tree/main/container.
 
-### Software container and working example data
+### Getting started
 
 - Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/).
-  - In the `test_data` folder, you can find the **MWE** data used to perform unit testing for each module (i.e., whether there is anything wrong within the code). 
+  - In the `test_data` folder, you can find the data, prefixed with **MWE**,  used to perform unit testing for each module (i.e., whether there is anything wrong within the code).
   - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this [WIP notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb).
-
-- Under the `Container` folder above, you can find the `singularity` image release for the software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
-
+- Under the `container` folder above, you can find the `singularity` image release for the software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
 
 ### Organization of the resource
 

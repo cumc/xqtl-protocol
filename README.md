@@ -43,13 +43,11 @@ To perform a complete analysis from molecular phenotype calling up to the xqtl d
 2. [Gene expression calling for eQTL](https://cumc.github.io/xqtl-pipeline/code/molecular_phenotypes/bulk_expression.html)
 3. [Alternative splicing calling for sQTL](https://cumc.github.io/xqtl-pipeline/code/molecular_phenotypes/splicing.html)
 ### xQTL discovery
-1. [Genotype Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype_preprocessing.html)
-2. [Covariates Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/covariate_preprocessing.html)
-3. [Phenotype Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/phenotype_preprocessing.html)
+1. [Phenotype Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/phenotype_preprocessing.html)
+2. [Genotype Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype_preprocessing.html)
+3. [Covariates Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/covariate_preprocessing.html)
 4. [CisQTL Association Scan](https://cumc.github.io/xqtl-pipeline/code/association_scan/cisQTL_scan.html)
-5. [TransQTL Association Scan](https://cumc.github.io/xqtl-pipeline/code/association_scan/transQTL_scan.html)
-
-***Noted that mini protocols 1,2,3 of xQTL discovery are interwined with each other. Please read the mini protocol for the transition point from one to another.***
+5. [TransQTL Association Scan](https://cumc.github.io/xqtl-pipeline/code/association_scan/transQeL_scan.html)
 
 ![QTL Diagram](code/images/complete_workflow.png)
 

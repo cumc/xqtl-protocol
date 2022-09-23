@@ -22,10 +22,11 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 ### Getting started
 
 - Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/).
+- In order to run the protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts [(see here for a tutorial to set it up)](https://wanggroup.org/orientation/jupyter-setup). You also need to install the software [Singularity](https://sylabs.io/singularity/). If you are a Windows user you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1) and then install singularity within it as instructed in this [post](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).
+- Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). The instruction for downloading the data programmatically can be found [here](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html)
   - In the `test_data` folder, you can find the data, prefixed with **MWE**,  used to perform unit testing for each module (i.e., whether there is anything wrong within the code).
-  - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this [WIP notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb).
+  - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this [notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb). This document is still work in progress. 
 - Under the `container` folder above, you can find the `singularity` image release for the software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
-
 
 ### Organization of the resource
 
@@ -35,21 +36,8 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 - Other sections in bold contain various types of analysis available, roughly showing in order from upstream to downstream analysis. We will refer to them as ***analysis groups***, which are further divided into ***protocols*** by various non-bold, clickable text under each analysis group linking to some notebooks. These notebooks illustrate commands to perform analysis implemented in the protocol. Most of them are "tutorials" in nature and are meant to be **executed interactively in Jupyter or in the command terminal** to run the SoS pipelines line by line. A few are the actual ***pipeline modules*** implementing pipelines in SoS, as will be discussed next.
 - *Protocols* can be expanded by clicking on the down arrows to access the SoS workflows implementation of ***pipeline modules***. These are the core pipeline implementations to be **executed as command line software**and are meant to be **self-contained** --- they may be used in other contexts not specific to the xQTL data analysis. Each of these pipeline
 
-## xQTL workflow schema (WIP)
+## xQTL workflow schema
 
-To perform a complete analysis from molecular phenotype calling up to the xqtl discovery as demonstrated in the xqtl-protocol paper(in preparation), please read the ***mini protocols*** in the following orders:
-### Molecular phenotype calling
-1. [Reference data procession](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html)
-2. [Gene expression calling for eQTL] (https://github.com/cumc/xqtl-pipeline/blob/main/code/molecular_phenotypes/bulk_expression.ipynb)
-3. [Alternative splicing calling for sQTL] (https://github.com/cumc/xqtl-pipeline/blob/main/code/molecular_phenotypes/splicing.ipynb)
-### xQTL discovery
-1. [Genotype Processing](https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/genotype_preprocessing.ipynb)
-2. [Covariates Processing] (https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/covariate_preprocessing.ipynb)
-3. [Phenotype Processing] (https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/phenotype_preprocessing.ipynb)
-4. [CisQTL Association Scan] (https://github.com/cumc/xqtl-pipeline/blob/main/code/association_scan/cisQTL_scan.ipynb)
-5. [TransQTL Association Scan] (https://github.com/cumc/xqtl-pipeline/blob/main/code/association_scan/transQTL_scan.ipynb)
-
-***Noted that mini protocols 1,2,3 of xQTL discovery are interwined with each other. Please read the mini protocol for the transition point from one to another.***
 
 ![QTL Diagram](code/images/complete_workflow.png)
 

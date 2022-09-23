@@ -40,16 +40,14 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 To perform a complete analysis from molecular phenotype calling up to the xqtl discovery as demonstrated in the xqtl-protocol paper(in preparation), please read the ***mini protocols*** in the following orders:
 ### Molecular phenotype calling
 1. [Reference data procession](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html)
-2. [Gene expression calling for eQTL] (https://github.com/cumc/xqtl-pipeline/blob/main/code/molecular_phenotypes/bulk_expression.ipynb)
-3. [Alternative splicing calling for sQTL] (https://github.com/cumc/xqtl-pipeline/blob/main/code/molecular_phenotypes/splicing.ipynb)
+2. [Gene expression calling for eQTL](https://cumc.github.io/xqtl-pipeline/code/molecular_phenotypes/bulk_expression.html)
+3. [Alternative splicing calling for sQTL](https://cumc.github.io/xqtl-pipeline/code/molecular_phenotypes/splicing.html)
 ### xQTL discovery
-1. [Genotype Processing](https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/genotype_preprocessing.ipynb)
-2. [Covariates Processing] (https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/covariate_preprocessing.ipynb)
-3. [Phenotype Processing] (https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/phenotype_preprocessing.ipynb)
-4. [CisQTL Association Scan] (https://github.com/cumc/xqtl-pipeline/blob/main/code/association_scan/cisQTL_scan.ipynb)
-5. [TransQTL Association Scan] (https://github.com/cumc/xqtl-pipeline/blob/main/code/association_scan/transQTL_scan.ipynb)
-
-***Noted that mini protocols 1,2,3 of xQTL discovery are interwined with each other. Please read the mini protocol for the transition point from one to another.***
+1. [Phenotype Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/phenotype_preprocessing.html)
+2. [Genotype Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype_preprocessing.html)
+3. [Covariates Processing](https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/covariate_preprocessing.html)
+4. [CisQTL Association Scan](https://cumc.github.io/xqtl-pipeline/code/association_scan/cisQTL_scan.html)
+5. [TransQTL Association Scan](https://cumc.github.io/xqtl-pipeline/code/association_scan/transQeL_scan.html)
 
 ![QTL Diagram](code/images/complete_workflow.png)
 

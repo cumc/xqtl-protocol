@@ -22,9 +22,9 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 ### Getting started
 
 - In order to run the protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts [(see here for a tutorial to set it up)](https://wanggroup.org/orientation/jupyter-setup). You also need to install the software [Singularity](https://sylabs.io/singularity/). If you are a Windows user you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL1 and not on WSL2). 
-- Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/).
+- Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). The instruction for downloading the data programmatically can be found [here](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html)
   - In the `test_data` folder, you can find the data, prefixed with **MWE**,  used to perform unit testing for each module (i.e., whether there is anything wrong within the code).
-  - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this [notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb). This document is still work in progress.
+  - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this [notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb). This document is still work in progress. 
 - Under the `container` folder above, you can find the `singularity` image release for the software environment. You can also build the singularity image from configuration files at: https://github.com/cumc/xqtl-pipeline/tree/main/container/singularity.
 
 ### Organization of the resource

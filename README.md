@@ -58,9 +58,10 @@ Lead developers
 
 Contributors
 
-- Wenhao Gou, Department of Biostatistics, Columbia University
-- Liucheng Shi, Department of Biostatistics, Columbia University
 - Xuanhe Chen, Department of Biostatistics, Columbia University
+- Wenhao Gou, Department of Biostatistics, Columbia University
+- Yuqi Miao, Department of Biostatistics, Columbia University
+- Liucheng Shi, Department of Biostatistics, Columbia University
 - Amanda Tsai, Department of Biostatistics, Columbia University  
 
 Brain xQTL project leadership

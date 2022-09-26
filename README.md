@@ -74,4 +74,4 @@ Brain xQTL methods and data integration work group
 - Gao Wang (work group leader), Department of Neurology, Columbia University
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
 - Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
-
+- Fanny Leung (also leads data standardization WG), Department of the Pathology and Laboratory Medicine, University of Pennsylvania

@@ -1,5 +1,5 @@
 FROM gaow/base-notebook
-MAINTAINER Francois Aguet; Hao Sun
+MAINTAINER Hao Sun
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	software-properties-common \
@@ -144,3 +144,8 @@ RUN wget https://github.com/gpertea/gffread/archive/refs/tags/v0.12.7.zip && \
     cd gffread-0.12.7 && make release && \
     mv gffread  /usr/local/bin/ && \
     cd .. && rm -r gffread* v0.12.7*
+    
+# gtfToGenePred
+RUN cd /opt/src
+RUN wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred
+RUN chmod +x gtfToGenePred

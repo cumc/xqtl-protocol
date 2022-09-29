@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Covariate data preprocessing &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -629,7 +628,7 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="covariate-data-preprocessing">
+  <div class="tex2jax_ignore mathjax_ignore section" id="covariate-data-preprocessing">
 <h1>Covariate data preprocessing<a class="headerlink" href="#covariate-data-preprocessing" title="Permalink to this headline">¶</a></h1>
 <p>This section documents output from the factor analysis section (colored in orange) of command generator MWE and explained the purpose for each of the command. The file used in this page can be found at <a class="reference external" href="https://drive.google.com/drive/folders/16ZUsciZHqCeeEWwZQR46Hvh5OtS8lFtA?usp=sharing">here</a>.</p>
 <p><strong>Each commands in the factor analysis tutorials will be generated once per theme. The MWE is considered a one theme analysis</strong></p>
@@ -643,7 +642,7 @@
 <div class="output text_html"><div class="sos_hint">> ../images/eqtl_command.png (254.4 KiB):</div></div><img alt="../../_images/covariate_preprocessing_1_1.png" src="../../_images/covariate_preprocessing_1_1.png" />
 </div>
 </div>
-<section id="merge-covariate">
+<div class="section" id="merge-covariate">
 <h2>Merge covariate<a class="headerlink" href="#merge-covariate" title="Permalink to this headline">¶</a></h2>
 <p>This step generate a concatanated principle component + covaraiate (pc-cov) matrixs so that we can use it to generate a residual phenotype, as outlined in the <span class="xref myst">phenotype processing</span> page</p>
 <p>The tolerance for sample-wide NA rate of any covariates/pc are specified by <code class="docutils literal notranslate"><span class="pre">tol_cov</span></code>.  -1 means quit, otherwise for covariate with missing rate larger than tol_cov will be removed, with missing rate smaller than tol_cov will be mean_imputed.</p>
@@ -661,7 +660,7 @@
 </div>
 </div>
 </div>
-<section id="removal-of-outliers">
+<div class="section" id="removal-of-outliers">
 <h3>Removal of outliers<a class="headerlink" href="#removal-of-outliers" title="Permalink to this headline">¶</a></h3>
 <p>At this step, based on the output plot of PCA step, the user can decide if outliers should be removed. By default, the <code class="docutils literal notranslate"><span class="pre">outlierFile</span></code> will be filled, but the user have to manually add the <code class="docutils literal notranslate"><span class="pre">--remove-outliers</span></code> flag which will remove all the samples ID in the second column of the <code class="docutils literal notranslate"><span class="pre">.outlier</span></code> file from the header of pc-cov matrix, effectively remove them from all down stream analysis.</p>
 <div class="cell docutils container">
@@ -677,9 +676,9 @@
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="residual-expression">
+</div>
+</div>
+<div class="section" id="residual-expression">
 <h2>Residual Expression<a class="headerlink" href="#residual-expression" title="Permalink to this headline">¶</a></h2>
 <p>The residual expression will be computed using the <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/covariate/covariate_formatting.ipynb">covariate-PCs matrixs</a>. Residual expression is needed because  <a class="reference external" href="https://biofam.github.io/MOFA2/faq.html">PEER(MOFA2) handle covariates poorly</a>. However, the residual expression is only used for factor analysis.</p>
 <div class="cell docutils container">
@@ -693,8 +692,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="factor-analysis">
+</div>
+<div class="section" id="factor-analysis">
 <h2>Factor Analysis<a class="headerlink" href="#factor-analysis" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/phenotype_preprocessing.ipynb">residual expression</a> will be used to conduct the factor analysis using either <a class="reference external" href="https://corbinq.github.io/apex/">BiCV (APEX)</a> or <a class="reference external" href="https://biofam.github.io/MOFA2/">PEER (MOFA2)</a>. The purpose of factor analysis is to uncovered un-measured factor embedded in the phenotype data, potentiall factor could be experiment batch effct, or unmeasure morbidity of the sampels .etc.</p>
 <p>The primary factor analysis method we used in our analysis is PEER.</p>
@@ -726,8 +725,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="merged-factor-covariates">
+</div>
+<div class="section" id="merged-factor-covariates">
 <h2>Merged factor &amp; covariates<a class="headerlink" href="#merged-factor-covariates" title="Permalink to this headline">¶</a></h2>
 <p>The factors estimated above will be concatanated with pc-cov matrix for downstream analysis as a complete covariate matrix.</p>
 <div class="cell docutils container">
@@ -741,10 +740,10 @@
 </div>
 </div>
 </div>
-</section>
+</div>
 <div class="toctree-wrapper compound">
 </div>
-</section>
+</div>
 
     <script type="text/x-thebe-config">
     {

@@ -22,7 +22,7 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 ### Getting started
 
 - Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/).
-- In order to run the protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts [(see here for a tutorial to set it up)](https://wanggroup.org/orientation/jupyter-setup). You also need to install the software [Singularity](https://sylabs.io/singularity/). If you are a Windows user you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1). 
+- In order to run the protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts [(see here for a tutorial to set it up)](https://wanggroup.org/orientation/jupyter-setup). You also need to install the software [Singularity](https://sylabs.io/singularity/). If you are a Windows user you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1) and then install singularity within it as instructed in this [post](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).
 - Working examples and containers are available through a request to access [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). The instruction for downloading the data programmatically can be found [here](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html)
   - In the `test_data` folder, you can find the data, prefixed with **MWE**,  used to perform unit testing for each module (i.e., whether there is anything wrong within the code).
   - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the usage of xqtl-protocol in this [notebook that outline the comprehensive xqtl-analysis procedure](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb). This document is still work in progress. 
@@ -58,9 +58,10 @@ Lead developers
 
 Contributors
 
-- Wenhao Gou, Department of Biostatistics, Columbia University
-- Liucheng Shi, Department of Biostatistics, Columbia University
 - Xuanhe Chen, Department of Biostatistics, Columbia University
+- Wenhao Gou, Department of Biostatistics, Columbia University
+- Yuqi Miao, Department of Biostatistics, Columbia University
+- Liucheng Shi, Department of Biostatistics, Columbia University
 - Amanda Tsai, Department of Biostatistics, Columbia University  
 
 Brain xQTL project leadership
@@ -73,4 +74,4 @@ Brain xQTL methods and data integration work group
 - Gao Wang (work group leader), Department of Neurology, Columbia University
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
 - Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
-
+- Fanny Leung (also leads data standardization WG), Department of the Pathology and Laboratory Medicine, University of Pennsylvania

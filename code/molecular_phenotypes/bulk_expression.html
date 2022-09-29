@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RNA-seq expression &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -657,7 +656,7 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="rna-seq-expression">
+  <div class="tex2jax_ignore mathjax_ignore section" id="rna-seq-expression">
 <h1>RNA-seq expression<a class="headerlink" href="#rna-seq-expression" title="Permalink to this headline">¶</a></h1>
 <p>This document shows the use of various modules to prepare reference data, perform RNA-seq calling, expression level quantification and quality control, and finally normalization. In particular,</p>
 <ol class="simple">
@@ -675,7 +674,7 @@
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Output</span></code> of this mini-protocol is a bed.gz file that are TensorQTL ready.</p>
-<section id="perform-data-quality-summary-via-fastqc">
+<div class="section" id="perform-data-quality-summary-via-fastqc">
 <h2>Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code><a class="headerlink" href="#perform-data-quality-summary-via-fastqc" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -684,13 +683,13 @@
     <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="cut-adaptor-optional">
+</div>
+<div class="section" id="cut-adaptor-optional">
 <h2>Cut adaptor (Optional)<a class="headerlink" href="#cut-adaptor-optional" title="Permalink to this headline">¶</a></h2>
 <p>This step will trim the fastq file to remove the adaptor. It is optional because the fastq in the protocol data folders are converted from bam file and are already without adaptors.</p>
 <div class="cell docutils container">
@@ -698,16 +697,16 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fastp_trim_adaptor</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="read-alignment-via-star-and-qc-via-picard">
+</div>
+<div class="section" id="read-alignment-via-star-and-qc-via-picard">
 <h2>Read alignment via STAR and QC via Picard.<a class="headerlink" href="#read-alignment-via-star-and-qc-via-picard" title="Permalink to this headline">¶</a></h2>
 <p>Following step shall take at least 40G of memory ~2hr in total. It will also produce the input needed for the splicing QTL. It should be noted that, the gtf file used here is the same as the one fed into RSEM index step in the refernce data mini protocol, i.e. the one without <code class="docutils literal notranslate"><span class="pre">gene</span></code> in its file name.</p>
 <div class="cell docutils container">
@@ -715,16 +714,16 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_output</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="call-gene-level-rna-expression-via-rnaseqc">
+</div>
+<div class="section" id="call-gene-level-rna-expression-via-rnaseqc">
 <h2>Call gene-level RNA expression via <code class="docutils literal notranslate"><span class="pre">rnaseqc</span></code><a class="headerlink" href="#call-gene-level-rna-expression-via-rnaseqc" title="Permalink to this headline">¶</a></h2>
 <p>Following steps generate the count table of gene expression. It should be noted that, the gtf file used here is not the same as the one used in STAR_output i.e. the one with <code class="docutils literal notranslate"><span class="pre">gene</span></code> in its file name.</p>
 <div class="cell docutils container">
@@ -733,17 +732,17 @@
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span>    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>  \
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>  \
     <span class="o">--</span><span class="n">bam_list</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="call-transcript-level-rna-expression-via-rsem">
+</div>
+<div class="section" id="call-transcript-level-rna-expression-via-rsem">
 <h2>Call transcript level RNA expression via <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#call-transcript-level-rna-expression-via-rsem" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -760,8 +759,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="multi-sample-rna-seq-qc">
+</div>
+<div class="section" id="multi-sample-rna-seq-qc">
 <h2>Multi-sample RNA-seq QC<a class="headerlink" href="#multi-sample-rna-seq-qc" title="Permalink to this headline">¶</a></h2>
 <p>We need to use a different MWE data-set that contains multiple samples – here is the <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1Rv2bWHBbX_tastTh49ToYVDMV6rFP5Wk">Google Drive link</a>.</p>
 <div class="cell docutils container">
@@ -775,8 +774,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="multi-sample-read-count-normalization">
+</div>
+<div class="section" id="multi-sample-read-count-normalization">
 <h2>Multi-sample read count normalization<a class="headerlink" href="#multi-sample-read-count-normalization" title="Permalink to this headline">¶</a></h2>
 <p>Please download the reference_data/sample_participant_lookup.rnaseq file from the reference_data folder within the synapses.</p>
 <div class="cell docutils container">
@@ -785,15 +784,15 @@
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> \
     <span class="o">--</span><span class="n">tpm</span><span class="o">-</span><span class="n">gct</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tpm</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">counts</span><span class="o">-</span><span class="n">gct</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">geneCount</span><span class="o">.</span><span class="n">gct</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">count</span><span class="o">-</span><span class="n">threshold</span> <span class="mi">1</span> <span class="o">--</span><span class="n">sample_participant_lookup</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">rnaseq</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="optional-region-list-generation">
+</div>
+<div class="section" id="optional-region-list-generation">
 <h2>Optional: Region list generation<a class="headerlink" href="#optional-region-list-generation" title="Permalink to this headline">¶</a></h2>
 <p>By default, the first 4 column of the bed.gz file contains the chr,start (TSS), end (TSS+1), and gene id of each gene. User can extract these information with a simple <code class="docutils literal notranslate"><span class="pre">zcat</span> <span class="pre">{phenoFile}.bed.gz</span> <span class="pre">|</span> <span class="pre">cut</span> <span class="pre">-f</span> <span class="pre">1,2,3,4</span> </code> command. However, when a region list with both gene id and gene name are needed, following utilities are provided.</p>
 <div class="cell docutils container">
@@ -801,7 +800,7 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">region_list_generation</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span>  \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tmm</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>  \
     <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">rnaseq</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="nb">id</span><span class="o">-</span><span class="nb">type</span> <span class="n">gene_id</span>
@@ -809,10 +808,10 @@
 </div>
 </div>
 </div>
-</section>
+</div>
 <div class="toctree-wrapper compound">
 </div>
-</section>
+</div>
 
     <script type="text/x-thebe-config">
     {

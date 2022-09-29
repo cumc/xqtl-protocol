@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alternative splicing from RNA-seq data &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -681,7 +680,7 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="alternative-splicing-from-rna-seq-data">
+  <div class="tex2jax_ignore mathjax_ignore section" id="alternative-splicing-from-rna-seq-data">
 <h1>Alternative splicing from RNA-seq data<a class="headerlink" href="#alternative-splicing-from-rna-seq-data" title="Permalink to this headline">¶</a></h1>
 <p>This document shows the use of moudules for Data Preperation, Quantification, Quality Control + Normalization for Splicing events analysis, and converting the results to molecular phenotype data in <code class="docutils literal notranslate"><span class="pre">bed</span></code> format. In particular:</p>
 <ol class="simple">
@@ -693,10 +692,10 @@
 <p>Two tools, leafCutter and Psichomics are used in this splicing analyzing workflow and please check the corresponding modules for code documentation. Various reference data need to be prepared before using this workflow, please check <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">this module</a> to download and prepare the reference data.</p>
 <p>The data used in this mini protocol can be found within the input folder within protocol data folder in the synapse repo as outlined in the landing pages. The <code class="docutils literal notranslate"><span class="pre">fastq</span></code> files can be used for step “fastqc”, “fast_trim_adaptor”, and “STAR_output” steps below, which are exactly the same as the first half of the RNA-calling mini protocol.</p>
 <p>The output of the overlapping step can also be found in the output folder within the protocol data folder so that the overlapped step can be skipped.</p>
-<section id="rna-seq-alignment">
+<div class="section" id="rna-seq-alignment">
 <h2>RNA Seq Alignment<a class="headerlink" href="#rna-seq-alignment" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="perform-data-quality-summary-via-fastqc">
+</div>
+<div class="section" id="perform-data-quality-summary-via-fastqc">
 <h2>Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code><a class="headerlink" href="#perform-data-quality-summary-via-fastqc" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -705,13 +704,13 @@
     <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="cut-adaptor-optional">
+</div>
+<div class="section" id="cut-adaptor-optional">
 <h2>Cut adaptor (Optional)<a class="headerlink" href="#cut-adaptor-optional" title="Permalink to this headline">¶</a></h2>
 <p>This step will trim the fastq file to remove the adaptor. It is optional because the fastq in the protocol data folders are converted from bam file and are already without adaptors.</p>
 <div class="cell docutils container">
@@ -719,16 +718,16 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fastp_trim_adaptor</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="read-alignment-via-star-and-qc-via-picard">
+</div>
+<div class="section" id="read-alignment-via-star-and-qc-via-picard">
 <h2>Read alignment via STAR and QC via Picard.<a class="headerlink" href="#read-alignment-via-star-and-qc-via-picard" title="Permalink to this headline">¶</a></h2>
 <p>Following step shall take at least 40G of memory ~2hr in total. It will also produce the input needed for the splicing QTL. It should be noted that, the gtf file used here is the same as the one fed into RSEM index step in the refernce data mini protocol, i.e. the one without <code class="docutils literal notranslate"><span class="pre">gene</span></code> in its file name.</p>
 <div class="cell docutils container">
@@ -736,19 +735,19 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_output</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>The LeafCutter and Psichomics part below should are in parallel. They should be run independently and the corresponding inputs/outputs are not depend on eachother.</p>
-</section>
-<section id="leafcutter-part-workflow">
+</div>
+<div class="section" id="leafcutter-part-workflow">
 <h2>LeafCutter part workflow<a class="headerlink" href="#leafcutter-part-workflow" title="Permalink to this headline">¶</a></h2>
-<section id="intron-usage-ratio-quantification-via-leafcutter">
+<div class="section" id="intron-usage-ratio-quantification-via-leafcutter">
 <h3>Intron usage ratio quantification via <code class="docutils literal notranslate"><span class="pre">leafCutter</span></code><a class="headerlink" href="#intron-usage-ratio-quantification-via-leafcutter" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: a meta data file contains locations of all Aligned.sortedByCoord.out.bam files to be analyzed.</p></li>
@@ -764,8 +763,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="qc-and-normalization-of-leafcutter-outputs">
+</div>
+<div class="section" id="qc-and-normalization-of-leafcutter-outputs">
 <h3>QC and Normalization of leafCutter outputs<a class="headerlink" href="#qc-and-normalization-of-leafcutter-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: the “_intron_usage_perind.counts.gz” file from previous step</p></li>
@@ -787,8 +786,8 @@ Be noted that the <code class="docutils literal notranslate"><span class="pre">r
 </div>
 </div>
 </div>
-</section>
-<section id="post-process-of-leafcutter-outputs-for-them-to-be-tensorqtl-ready">
+</div>
+<div class="section" id="post-process-of-leafcutter-outputs-for-them-to-be-tensorqtl-ready">
 <h3>Post-process of leafcutter outputs for them to be TensorQTL ready<a class="headerlink" href="#post-process-of-leafcutter-outputs-for-them-to-be-tensorqtl-ready" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: output of the previous two steps and the gtf file.</p></li>
@@ -800,18 +799,18 @@ Be noted that the <code class="docutils literal notranslate"><span class="pre">r
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">intron_count</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list_intron_usage_perind_numers</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list_intron_usage_perind</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">gz_raw_data</span><span class="o">.</span><span class="n">qqnorm</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">sample_participant_lookup</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">rnaseq</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="psichomics-part-workflow">
+</div>
+</div>
+<div class="section" id="psichomics-part-workflow">
 <h2>Psichomics part workflow<a class="headerlink" href="#psichomics-part-workflow" title="Permalink to this headline">¶</a></h2>
-<section id="percent-spliced-in-psi-quantification-for-alternative-splicing-events-via-psichomics">
+<div class="section" id="percent-spliced-in-psi-quantification-for-alternative-splicing-events-via-psichomics">
 <h3>Percent Spliced In (PSI) quantification for alternative splicing events via <code class="docutils literal notranslate"><span class="pre">Psichomics</span></code><a class="headerlink" href="#percent-spliced-in-psi-quantification-for-alternative-splicing-events-via-psichomics" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: a meta data file contains locations of all SJ.out.tab files to be analyzed.</p></li>
@@ -828,8 +827,8 @@ Be noted that the <code class="docutils literal notranslate"><span class="pre">r
 </div>
 </div>
 </div>
-</section>
-<section id="qc-and-normalization-of-psichomics-outputs">
+</div>
+<div class="section" id="qc-and-normalization-of-psichomics-outputs">
 <h3>QC and Normalization of psichomics outputs<a class="headerlink" href="#qc-and-normalization-of-psichomics-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: the “psi_raw_data.tsv” file from previous step</p></li>
@@ -845,8 +844,8 @@ Be noted that the <code class="docutils literal notranslate"><span class="pre">r
 </div>
 </div>
 </div>
-</section>
-<section id="post-process-of-psichomics-outputs-for-them-to-be-tensorqtl-ready">
+</div>
+<div class="section" id="post-process-of-psichomics-outputs-for-them-to-be-tensorqtl-ready">
 <h3>Post-process of psichomics outputs for them to be TensorQTL ready<a class="headerlink" href="#post-process-of-psichomics-outputs-for-them-to-be-tensorqtl-ready" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: the “qqnorm.txt” output from the previous step and the gtf file.</p></li>
@@ -857,17 +856,17 @@ Be noted that the <code class="docutils literal notranslate"><span class="pre">r
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotate_psichomics_isoforms</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">psichomics_output</span> \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">psichomics_output</span><span class="o">/</span><span class="n">psichomics_raw_data_bedded</span><span class="o">.</span><span class="n">qqnorm</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
-</section>
+</div>
 
     <script type="text/x-thebe-config">
     {

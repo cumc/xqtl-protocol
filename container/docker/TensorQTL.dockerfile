@@ -14,6 +14,9 @@ git-all
 RUN git clone https://github.com/puolival/multipy.git
 RUN cd multipy/
 RUN ipython setup.py install
+## Installing R packages for the qvalue
+RUN R --slave -e "install.packages(c('BiocManager','tidyr'))"
+RUN R --slave -e "BiocManager::install('qvalue')"
 RUN echo "cd /tmp" >> /entrypoint.sh
 RUN echo "exec /bin/bash "$@"" >> /entrypoint.sh
 RUN chmod u+x /entrypoint.sh

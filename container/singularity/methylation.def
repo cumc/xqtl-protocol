@@ -40,12 +40,22 @@ R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.co
 R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('BiocManager')"
+R -e 'install.packages("http://bioconductor.org/packages/3.15/data/experiment/src/contrib/sesameData_1.14.0.tar.gz", repos=NULL)'
+R -e 'BiocManager::install("zwdzwd/sesameData")'
+R -e 'BiocManager::install("zwdzwd/sesame")'
+R -e 'sesameData::sesameDataCache()'
+R -e 'ExperimentHub::ExperimentHub()[["EH3675"]]' ## To retrieve the missing HM450 data
 R -e 'BiocManager::install("preprocessCore", configure.args="--disable-threading")'
 R -e 'BiocManager::install("minfi")'
 R -e 'BiocManager::install("limma")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
+R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
-R -e "devtools::install_github('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
+R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
+
+
+## Here you are specifying what your entrypoint is when you launch the docker.
+
 %runscript
 exec /bin/bash exec sh "$@"
 %startscript

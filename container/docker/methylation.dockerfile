@@ -18,10 +18,8 @@ libcurl4-gnutls-dev \
 r-cran-rmysql \
 wget \
 libopenblas-base \
-libatlas3-base 
-
+libatlas3-base
 RUN update-alternatives --set libblas.so.3-x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3
-
 RUN cd /opt && \
 wget --no-check-certificate https://github.com/samtools/htslib/releases/download/1.11/htslib-1.11.tar.bz2 && \
 tar -xf htslib-1.11.tar.bz2 && rm htslib-1.11.tar.bz2 && cd htslib-1.11 && \
@@ -35,10 +33,16 @@ RUN R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudi
 RUN R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('BiocManager')"
+RUN R -e 'install.packages("http://bioconductor.org/packages/3.15/data/experiment/src/contrib/sesameData_1.14.0.tar.gz", repos=NULL)'
+RUN R -e 'BiocManager::install("zwdzwd/sesameData")'
+RUN R -e 'BiocManager::install("zwdzwd/sesame")'
+RUN R -e 'sesameData::sesameDataCache()'
+RUN R -e 'ExperimentHub::ExperimentHub()[["EH3675"]]' ## To retrieve the missing HM450 data
 RUN R -e 'BiocManager::install("preprocessCore", configure.args="--disable-threading")'
 RUN R -e 'BiocManager::install("minfi")'
 RUN R -e 'BiocManager::install("limma")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
+RUN R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
-RUN R -e "devtools::install_github('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
-CMD exec sh "$@"
+RUN R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
+CMD exec /bin/bash exec sh "$@"

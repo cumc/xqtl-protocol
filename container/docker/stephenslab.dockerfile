@@ -1,7 +1,7 @@
 FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN cd /tmp
-su -  root # USER root
+RUN su -  root # USER root
 RUN R --slave -e "install.packages(c('rlang', 'RcppEigen','BiocManager','data.table'))"
 RUN R --slave -e "install.packages('remotes')"
 RUN R --slave -e "install.packages('tidyr')"

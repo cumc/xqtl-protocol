@@ -17,6 +17,16 @@ bash: expand = True, stderr = f'{config}.stderr', stdout = f'{config}.stdout'
   singularity build --fakeroot {out_dir}/{config:bn}.sif {config}
   md5sum {out_dir}/{config:bn}.sif > {out_dir}/{config:bn}.md5
 
+[docker]
+import glob
+depends: executable('docker')
+input: glob.glob("container/docker/*.dockerfile"), group_by = 1, concurrent = False
+bash: expand = True
+	set -e
+	docker build -t gaow/{_input:n} -f {_input} .
+	docker push gaow/{_input:n}
+
+
 [build, default_2]
 input: group_by = 'all'
 bash:

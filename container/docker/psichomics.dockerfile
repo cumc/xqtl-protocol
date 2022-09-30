@@ -1,12 +1,11 @@
 FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun
+USER root
 ENV PATH=/opt/R-4.2.0:$PATH
-RUN apt-get update && \
-apt-get install -y --no-install-recommends \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 git-all \
 libboost-all-dev \
-libgsl-dev && \
-apt-get upgrade -y --no-install-recommends \
+libgsl-dev \ 
 gfortran \
 libreadline6-dev \
 libx11-dev \

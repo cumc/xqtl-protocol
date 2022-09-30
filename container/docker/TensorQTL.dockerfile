@@ -7,9 +7,7 @@ unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin
 RUN pip install tensorqtl
 RUN pip install fastparquet
 ## Install Git
-RUN apt-get update && \
-apt-get install -y --no-install-recommends \
-git-all
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git-all
 ## Installing the multipy package for the qvalue. Noted: the pip version dont works with python3. Only the github version works.
 RUN git clone https://github.com/puolival/multipy.git
 RUN cd multipy/

@@ -1,7 +1,7 @@
 FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN cd /tmp
-RUN su -  root # USER root
+USER root
 RUN apt-get update \
 && apt install -y --no-install-recommends  git-all  libboost-all-dev
 RUN git clone https://github.com/statgen/METAL

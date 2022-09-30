@@ -1,7 +1,7 @@
 FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN cd /tmp
-RUN su -  root # USER root
+USER root
 RUN wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
 unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin
 RUN pip install tensorqtl

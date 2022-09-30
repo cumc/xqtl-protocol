@@ -688,7 +688,7 @@
 <p><strong>For mutli-theme study using same set of genotype (i.e. different tissues for the same participant) , the VCF QC and final Genotype QC steps are ran once. The related/unrelated genotype QC and PCA were ran once per tissue, as only the participant also have molecular phenotype data will be used for PCA</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">../</span><span class="n">images</span><span class="o">/</span><span class="n">eqtl_command</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%preview ../images/eqtl_command.png
 </pre></div>
 </div>
 </div>
@@ -719,11 +719,11 @@
 <p>This step extract the rsID for the known varriants, so that we can distinguish them from the novel variants we had in our study. The procedure/rationale is <a class="reference external" href="https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html">explained in this post</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">dbsnp_annotate</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">reference_data</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">reference_data</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">-</span><span class="n">J</span> <span class="mi">50</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">--</span><span class="n">add_chr</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/VCF_QC.ipynb dbsnp_annotate <span class="se">\</span>
+    --genoFile reference_data/00-All.vcf.gz <span class="se">\</span>
+    --cwd output/reference_data <span class="se">\</span>
+    --container containers/bioinfo.sif <span class="se">\</span>
+    -J <span class="m">50</span> -c csg.yml -q csg --add_chr
 </pre></div>
 </div>
 </div>
@@ -744,12 +744,12 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>It will take ~25G of memory and ~5min to complete the following step</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">DEJ_11898_B01_GRM_WGS_2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mf">15_21.</span><span class="n">recalibrated_variants</span><span class="o">.</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> \
-                       <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">Genotype</span><span class="o">//</span><span class="n">DEJ_11898_B01_GRM_WGS_2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mf">15_22.</span><span class="n">recalibrated_variants</span><span class="o">.</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> \
-            <span class="o">--</span><span class="n">dbsnp</span><span class="o">-</span><span class="n">variants</span> <span class="n">reference_data</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">variants</span><span class="o">.</span><span class="n">gz</span> \
-            <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">genome</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/VCF_QC.ipynb qc <span class="se">\</span>
+            --genoFile ROSMAP_data/Genotype/DEJ_11898_B01_GRM_WGS_2017-05-15_21.recalibrated_variants.xqtl_protocol_data.add_chr.vcf.gz <span class="se">\</span>
+                       ROSMAP_data/Genotype//DEJ_11898_B01_GRM_WGS_2017-05-15_22.recalibrated_variants.xqtl_protocol_data.add_chr.vcf.gz <span class="se">\</span>
+            --dbsnp-variants reference_data/00-All.add_chr.variants.gz <span class="se">\</span>
+            --reference-genome reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta <span class="se">\</span>
+            --cwd output/genotype --container containers/bioinfo.sif 
 </pre></div>
 </div>
 </div>
@@ -760,9 +760,9 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>To accomodate the genotype file with extra large size,we allow our user to perform QC of vcf file on a per chromomosome basis. However, to accurately perform filtering base on minor allele count, HWE deviation, and missingness, the input to GWAS QC need to be the whole genome genotype file. Therefore we provide this utlity for the user to merge their output from vcf QC</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
-            <span class="o">--</span><span class="n">genoFile</span> <span class="err">`</span><span class="n">ls</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">DEJ_11898_B01_GRM_WGS_2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mf">15_21.</span><span class="n">recalibrated_variants</span><span class="o">*.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span><span class="err">`</span> \
-            <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="kp">name</span> <span class="n">xqtl_protocol_data</span>  <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb merge_plink <span class="se">\</span>
+            --genoFile <span class="sb">`</span>ls output/genotype/DEJ_11898_B01_GRM_WGS_2017-05-15_21.recalibrated_variants*.leftnorm.filtered.bed<span class="sb">`</span> <span class="se">\</span>
+            --cwd output/genotype --container containers/bioinfo.sif --name xqtl_protocol_data  <span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
@@ -773,13 +773,13 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>In most of the time, the number of samples in genotype and phenotype data will not be an exact match. Therefore, we provides a utility to produce a list of overlaps samples between genotypes and each phenotypes. Following command retrieve the overlapped sample between Genotypes and methylation data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">sample_matcher</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">filtered_sample_list</span> \
-        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span>  \
-        <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">methylation</span><span class="o">/</span>  \
-        <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fam</span>  \
-        <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">rnaseq</span> \
-        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
-        <span class="o">--</span><span class="n">translated_phenoFile</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/sample_matcher.ipynb filtered_sample_list <span class="se">\</span>
+        --cwd output/  <span class="se">\</span>
+        --phenoFile output/methylation/xqtl_protocol_data_arrayMethylation_covariates.sesame.M.bed.gz  <span class="se">\</span>
+        --genoFile output/genotype/xqtl_protocol_data.fam  <span class="se">\</span>
+        --sample-participant-lookup reference_data/sample_participant_lookup.rnaseq <span class="se">\</span>
+        --container containers/bioinfo.sif <span class="se">\</span>
+        --translated_phenoFile
 </pre></div>
 </div>
 </div>
@@ -790,12 +790,18 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>To accuratly estimate the PCs for the genotype. We split participants based on their kinship coefficients, estimated by king. We have implemented a graph-based method to avoid removing unrelated participants that are in a family. However, this option is disable by default due to the long running time it required. User can enable this option by changing the <code class="docutils literal notranslate"><span class="pre">--no-maximize_unrelated</span></code> to <code class="docutils literal notranslate"><span class="pre">--maximize_unrelated</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
-   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-   <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">bed</span> \
-   <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">sample_participant_lookup</span><span class="o">.</span><span class="n">filtered_geno</span><span class="o">.</span><span class="n">txt</span> \
-   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
-   <span class="o">--</span><span class="kp">walltime</span> <span class="mi">48</span><span class="n">h</span>   <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">maximize_unrelated</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
+   --cwd output/pca_methylation <span class="se">\</span>
+   --genoFile output/genotype/xqtl_protocol_data.bed <span class="se">\</span>
+   --keep-samples output/sample_participant_lookup.filtered_geno.txt <span class="se">\</span>
+   --container containers/bioinfo.sif <span class="se">\</span>
+   --walltime 48h   --no-maximize_unrelated
+
+sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
+   --cwd output/pca <span class="se">\</span>
+   --genoFile output/genotype/xqtl_protocol_data.bed <span class="se">\</span>
+   --container containers/bioinfo.sif <span class="se">\</span>
+   --walltime 48h   --no-maximize_unrelated
 </pre></div>
 </div>
 </div>
@@ -803,11 +809,11 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>Variant level and sample level QC on unrelated individuals using missingness &gt; 10% ,MAF&gt;1% , and LD-prunning in preparation for PCA analysis:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
-   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-   <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
-   <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.01</span> \
-   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb qc <span class="se">\</span>
+   --cwd output/genotype <span class="se">\</span>
+   --genoFile output/pca/xqtl_protocol_data.unrelated.bed <span class="se">\</span>
+   --maf-filter <span class="m">0</span>.01 <span class="se">\</span>
+   --container containers/bioinfo.sif 
 </pre></div>
 </div>
 </div>
@@ -815,16 +821,16 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>Extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-   <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
-   <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
-   <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
-   <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-   <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
-   <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span>  \
-   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  \
-   <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb qc_no_prune <span class="se">\</span>
+   --cwd output/genotype <span class="se">\</span>
+   --genoFile output/pca/xqtl_protocol_data.related.bed <span class="se">\</span>
+   --maf-filter <span class="m">0</span> <span class="se">\</span>
+   --geno-filter <span class="m">0</span> <span class="se">\</span>
+   --mind-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --hwe-filter <span class="m">0</span> <span class="se">\</span>
+   --keep-variants output/genotype/xqtl_protocol_data.unrelated.filtered.prune.in  <span class="se">\</span>
+   --container containers/bioinfo.sif  <span class="se">\</span>
+   --mem 40G
 </pre></div>
 </div>
 </div>
@@ -836,64 +842,66 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 <p>First, perform PCA on unrelated individuals after QC in previous step,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span> <span class="n">sos</span> <span class="n">run</span> <span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flashpca</span> \
-        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span> \
-        <span class="o">--</span><span class="n">genoFileoutput</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">bed</span>  \
-        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">flashpcaR</span><span class="o">.</span><span class="n">sif</span> 
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span> sos run pipeline/PCA.ipynb flashpca <span class="se">\</span>
+        --cwd output/pca <span class="se">\</span>
+        --genoFile output/genotype/xqtl_protocol_data.unrelated.filtered.prune.bed  <span class="se">\</span>
+        --container containers/flashpcaR.sif 
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">GRCh38_liftedover_sorted_all</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%preview /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.pc.png
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> /mnt/mfs/statgen/snuc_pseudo_bulk/Ast/pca/GRCh38_liftedover_sorted_all.add_chr.leftnorm.filtered.snuc_pseudo_bulk.unrelated.snuc_pseudo_bulk.filtered.prune.pca.pc.png (1.2 MiB):</div></div><img alt="../../_images/genotype_preprocessing_21_1.png" src="../../_images/genotype_preprocessing_21_1.png" />
+<div class="output text_html"><div class="sos_hint">> /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.pc.png (611.8 KiB):</div></div><img alt="../../_images/genotype_preprocessing_22_1.png" src="../../_images/genotype_preprocessing_22_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">GRCh38_liftedover_sorted_all</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">scree</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%preview /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.scree.png
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> /mnt/mfs/statgen/snuc_pseudo_bulk/Ast/pca/GRCh38_liftedover_sorted_all.add_chr.leftnorm.filtered.snuc_pseudo_bulk.unrelated.snuc_pseudo_bulk.filtered.prune.pca.scree.png (56.2 KiB):</div></div><img alt="../../_images/genotype_preprocessing_22_1.png" src="../../_images/genotype_preprocessing_22_1.png" />
+<div class="output text_html"><div class="sos_hint">> /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.scree.png (56.6 KiB):</div></div><img alt="../../_images/genotype_preprocessing_23_1.png" src="../../_images/genotype_preprocessing_23_1.png" />
 </div>
 </div>
 <p>Then project back related individuals to the space spanned by PC from unrelated individuals, and detect PC outliers.</p>
 <p><strong>Notice here that you need to decide how many PCs to use to compute outliers (the <code class="docutils literal notranslate"><span class="pre">--maha-k</span></code> parameter), based on the PC scree plot. You should include a decent number of PCs that capture enough variation in genotype data. Please manually examine the PC plot before running this command.</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">project_samples</span> \
-        <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span> \
-        <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">bed</span>  \
-        <span class="o">--</span><span class="n">pca</span><span class="o">-</span><span class="n">model</span>  <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">rds</span> \
-        <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">flashpcaR</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="n">maha</span><span class="o">-</span><span class="n">k</span> <span class="mi">13</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/PCA.ipynb project_samples <span class="se">\</span>
+        --cwd output/pca <span class="se">\</span>
+        --genoFile output/genotype/xqtl_protocol_data.related.filtered.extracted.bed  <span class="se">\</span>
+        --pca-model  output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.rds <span class="se">\</span>
+        --container containers/flashpcaR.sif --maha-k <span class="sb">`</span>awk <span class="s1">&#39;$3 &lt; 0.7&#39;</span> output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.scree.txt  <span class="p">|</span> tail -1 <span class="p">|</span> cut -f <span class="m">1</span>  <span class="sb">`</span> 
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">GRCh38_liftedover_sorted_all</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">pc</span><span class="o">.</span><span class="n">png</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%preview /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.related.filtered.extracted.pca.projected.pc.png
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="sos_hint">> /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.related.filtered.extracted.pca.projected.pc.png (615.6 KiB):</div></div><img alt="../../_images/genotype_preprocessing_26_1.png" src="../../_images/genotype_preprocessing_26_1.png" />
 </div>
 </div>
 <p>Two outliers was removed, as shown below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">GRCh38_liftedover_sorted_all</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat /mnt/vast/hpc/csg/xqtl_workflow_testing/finalizing/output/pca/xqtl_protocol_data.unrelated.filtered.prune.pca.outliers
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SM-CJEK6	SM-CJEK6
-SM-CJGGO	SM-CJGGO
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0	SM-CJGN1
 </pre></div>
 </div>
 </div>
@@ -906,15 +914,15 @@ SM-CJGGO	SM-CJGGO
 <p>In our demo, we only keep variants having sample minor allele count MAC &gt;= 5, for the sake of convenience focusing our single variant analysis. It should be noted that mac and maf don’t overwrite each other within our module. It is up to plink to decide how to handle the secnario of both <code class="docutils literal notranslate"><span class="pre">--maf-filter</span></code> and <code class="docutils literal notranslate"><span class="pre">--mac-filter</span></code> &gt; 0. Therefore, the user should not specify both <code class="docutils literal notranslate"><span class="pre">--maf-filter</span></code> and <code class="docutils literal notranslate"><span class="pre">--mac-filter</span></code> without good reason.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-   <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">bed</span> \
-   <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-   <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-   <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
-   <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">5</span> \
-   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  \
-   <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb qc_no_prune <span class="se">\</span>
+   --cwd output/genotype <span class="se">\</span>
+   --genoFile output/genotype/xqtl_protocol_data.bed <span class="se">\</span>
+   --geno-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --mind-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --hwe-filter 1e-06   <span class="se">\</span>
+   --mac-filter <span class="m">5</span> <span class="se">\</span>
+   --container containers/bioinfo.sif  <span class="se">\</span>
+   --mem 40G
 </pre></div>
 </div>
 </div>
@@ -926,16 +934,16 @@ SM-CJGGO	SM-CJGGO
 <p>Removal of samples is a complicated decision that require human descretion. Therefore outlier removal is not performed automatically. The <code class="docutils literal notranslate"><span class="pre">--remove-samples</span></code> parameter take a two columns table that illustrated by  <code class="docutils literal notranslate"><span class="pre">output/pca/xqtl_protocol_data.related.filtered.extracted.pca.projected.outliers</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
-    <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">5</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>  \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>
-    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb qc_no_prune <span class="se">\</span>
+    --cwd output/genotype <span class="se">\</span>
+    --genoFile output/genotype/xqtl_protocol_data.bed <span class="se">\</span>
+    --geno-filter <span class="m">0</span>.1 <span class="se">\</span>
+    --mind-filter <span class="m">0</span>.1 <span class="se">\</span>
+    --hwe-filter 1e-06   <span class="se">\</span>
+    --mac-filter <span class="m">5</span> <span class="se">\</span>
+    --container containers/bioinfo.sif  <span class="se">\</span>
+    --mem 40G
+    --remove-samples output/pca/xqtl_protocol_data.related.filtered.extracted.pca.projected.outliers
 </pre></div>
 </div>
 </div>
@@ -947,15 +955,15 @@ SM-CJGGO	SM-CJGGO
 <p>In case you would like to focus on common variants only, the genotype data can also filtered by the criteria of missingness &gt; 10% and MAF&gt;5% as shown below to retain the common variants, User can detemined the level of filtering by changing the generated command manually.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
-    <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>  \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb qc_no_prune <span class="se">\</span>
+   --cwd output/genotype <span class="se">\</span>
+   --genoFile output/genotype/xqtl_protocol_data.bed <span class="se">\</span>
+   --geno-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --mind-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --hwe-filter 1e-06   <span class="se">\</span>
+   --maf-filter <span class="m">0</span>.05 <span class="se">\</span>
+   --container containers/bioinfo.sif  <span class="se">\</span>
+   --mem 40G
 </pre></div>
 </div>
 </div>
@@ -963,16 +971,16 @@ SM-CJGGO	SM-CJGGO
 <p>If outliers are to be removed, following command could be used:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.05</span> \
-    <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> \
-    <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">1e-06</span>   \
-    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span>  \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">pca</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">MWE</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">outliers</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/GWAS_QC.ipynb qc_no_prune <span class="se">\</span>
+   --cwd output/genotype <span class="se">\</span>
+   --genoFile output/genotype/xqtl_protocol_data.bed <span class="se">\</span>
+   --geno-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --mind-filter <span class="m">0</span>.1 <span class="se">\</span>
+   --hwe-filter 1e-06   <span class="se">\</span>
+   --maf-filter <span class="m">0</span>.05 <span class="se">\</span>
+   --container containers/bioinfo.sif  <span class="se">\</span>
+   --mem 40G <span class="se">\</span>
+   --remove-samples output/data_preprocessing/MWE/pca/MWE.MWE.related.filtered.extracted.pca.projected.outliers 
 </pre></div>
 </div>
 </div>
@@ -986,11 +994,11 @@ SM-CJGGO	SM-CJGGO
 <p>The association analysis of TensorQTL required the chromosome be seperated by chromosome to allowed for parallel analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_by_chrom</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
-    <span class="o">--</span><span class="n">chrom</span>  <span class="err">`</span><span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span>  <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">mwe_genotype</span><span class="o">.</span><span class="n">add_chr</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">bim</span>  <span class="o">|</span> <span class="n">uniq</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;s/chr//g&quot;</span><span class="err">`</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb plink_by_chrom <span class="se">\</span>
+    --genoFile output/genotype/xqtl_protocol_data.filtered.bed <span class="se">\</span>
+    --cwd output/data_preprocessing <span class="se">\</span>
+    --chrom  <span class="sb">`</span>cut -f <span class="m">1</span>  output/data_preprocessing/mwe_genotype.add_chr.leftnorm.filtered.filtered.bim  <span class="p">|</span> uniq <span class="p">|</span> sed <span class="s2">&quot;s/chr//g&quot;</span><span class="sb">`</span> <span class="se">\</span>
+    --container containers/bioinfo.sif 
 </pre></div>
 </div>
 </div>
@@ -1001,10 +1009,10 @@ SM-CJGGO	SM-CJGGO
 <p>If association analysis by APEX is needed, following command convert the per-chromosome plink binaray generated above into indexed vcf.gz.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">plink_to_vcf</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">plink_files_list</span><span class="o">.</span><span class="n">txt</span>  \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb plink_to_vcf <span class="se">\</span>
+    --genoFile plink_files_list.txt  <span class="se">\</span>
+    --cwd output/data_preprocessing <span class="se">\</span>
+    --container containers/bioinfo.sif 
 </pre></div>
 </div>
 </div>
@@ -1024,16 +1032,16 @@ SM-CJGGO	SM-CJGGO
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "sos"
+            mode: "bash"
         },
         kernelOptions: {
-            kernelName: "sos",
+            kernelName: "bash",
             path: "./code/data_preprocessing"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'sos'</script>
+    <script>kernelName = 'bash'</script>
 
               </div>
               

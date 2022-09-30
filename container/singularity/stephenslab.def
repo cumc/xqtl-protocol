@@ -5,28 +5,24 @@ From: gaow/base-notebook
 %labels
 MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 %post
-cd /tmp
 su -  root # USER root
-R --slave -e "install.packages(c('rlang', 'RcppEigen','BiocManager','data.table'))"
-R --slave -e "install.packages('remotes')"
-R --slave -e "install.packages('tidyr')"
-R --slave -e "remotes::install_github('stephenslab/flashr')"
-R --slave -e "remotes::install_github('willwerscheid/flashier')"
 apt-get --assume-yes update
 apt-get --assume-yes install libgsl0-dev
-R --slave -e "remotes::install_github('stephenslab/mashr')"
-R --slave -e "remotes::install_github('stephenslab/mvsusieR')"
+
+R --slave -e "for (p in c('abind','rlang', 'RcppEigen', 'BiocManager', 'tidyr', 'data.table', 'devtools', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
+
 P2R_VERSION=d74be015e8f54d662b96c6c2a52a614746f9030d
 cd /opt/
 wget https://github.com/gabraham/plink2R/archive/${P2R_VERSION}.zip && \
 unzip -o ${P2R_VERSION}.zip && \
 R --slave -e "install.packages('plink2R-${P2R_VERSION}/plink2R/',repos=NULL)" && \
-R --slave -e "remotes::install_github('stephenslab/susieR')" && \
-R --slave -e "remotes::install_github('hadley/devtools', ref='cran')" &&
-R --slave -e "for (p in c('abind','data.table', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
-cd /tmp/
 R --slave -e "BiocManager::install('VariantAnnotation')"
+R --slave -e "remotes::install_github('stephenslab/flashr')"
+R --slave -e "remotes::install_github('willwerscheid/flashier')"
+R --slave -e "remotes::install_github('stephenslab/mashr')"
 R --slave -e "remotes::install_github('stephenslab/udr')"
+R --slave -e "remotes::install_github('stephenslab/susieR', build_vignettes=FALSE)"
+R --slave -e "remotes::install_github('stephenslab/mvsusieR')"
 cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.12/htslib-1.12.tar.bz2 -O htslib-1.12.tar.bz2 && \
 tar -xjvf htslib-1.12.tar.bz2 && \
 cd htslib-1.12 && \

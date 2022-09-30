@@ -23,8 +23,8 @@ depends: executable('docker')
 input: glob.glob("container/docker/*.dockerfile"), group_by = 1, concurrent = False
 bash: expand = True
 	set -e
-	docker build -t gaow/{_input:n} -f {_input} .
-	docker push gaow/{_input:n}
+	docker build -t gaow/{_input:bn} -f {_input} .
+	docker push gaow/{_input:bn}
 
 
 [build, default_2]

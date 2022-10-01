@@ -13,9 +13,9 @@ cp tabix bgzip htsfile /usr/local/bin && rm -rf /tmp/htslib*
 
 RUN R --slave -e "for (p in c('abind','rlang', 'RcppEigen', 'BiocManager', 'tidyr', 'data.table', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
 
-RUN P2R_VERSION=d74be015e8f54d662b96c6c2a52a614746f9030d
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
-RUN R --slave -e "remotes::install_github('gabraham/plink2R', subdir='plink2R', ref='${P2R_VERSION}')"
+# https://github.com/gabraham/plink2R/issues/10
+RUN R --slave -e "Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS"=TRUE); remotes::install_github('gabraham/plink2R', subdir='plink2R', ref='d74be015e8f54d662b96c6c2a52a614746f9030d')"
 RUN R --slave -e "remotes::install_github('stephenslab/flashr')"
 RUN R --slave -e "remotes::install_github('willwerscheid/flashier')"
 RUN R --slave -e "remotes::install_github('stephenslab/mashr')"

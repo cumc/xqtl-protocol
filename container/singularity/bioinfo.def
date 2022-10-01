@@ -15,15 +15,7 @@ apt-get autoremove -y && \
 rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Install R pkg
-R --slave -e "install.packages(c('rlang',
-                                     'tidyverse',
-                                     'BiocManager', 
-                                     'RcppEigen',
-                                     # For kinship analysis
-                                     'igraph',
-                                     # leafcutter post-processing
-                                     'foreach'))"
-                                     
+R --slave -e "install.packages(c('rlang', 'tidyverse', 'BiocManager', 'RcppEigen', 'igraph', 'foreach'))"
 R --slave -e "BiocManager::install('biomaRt')"
 R --slave -e "BiocManager::install('VariantAnnotation')"
 
@@ -54,13 +46,11 @@ unzip -o  snpEff_latest_core.zip &&  \
 mv snpEff /opt && rm -rf /tmp/snpEff*
 
 # QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-pip install qtl
+pip install qtl --no-cache-dir
     
 # Install CUGG
 
-git clone https://github.com/cumc/cugg.git
-cd cugg
-pip install .
+pip install git+https://github.com/cumc/cugg.git --no-cache-dir
 
 %runscript
 exec /bin/bash exec /bin/bash "$@"

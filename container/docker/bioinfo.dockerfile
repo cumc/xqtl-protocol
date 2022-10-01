@@ -10,15 +10,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # Install R pkg
-RUN R --slave -e "install.packages(c('rlang',
-                                     'tidyverse',
-                                     'BiocManager', 
-                                     'RcppEigen',
-                                     # For kinship analysis
-                                     'igraph',
-                                     # leafcutter post-processing
-                                     'foreach'))"
-                                     
+RUN R --slave -e "install.packages(c('rlang', 'tidyverse', 'BiocManager', 'RcppEigen', 'igraph', 'foreach'))"
 RUN R --slave -e "BiocManager::install('biomaRt')"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
 
@@ -49,12 +41,10 @@ RUN cd /tmp && wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_
     mv snpEff /opt && rm -rf /tmp/snpEff*
 
 # QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-RUN pip install qtl  
+RUN pip install qtl --no-cache-dir 
     
 # Install CUGG
 
-RUN git clone https://github.com/cumc/cugg.git
-RUN cd cugg
-RUN pip install .
+RUN pip install git+https://github.com/cumc/cugg.git --no-cache-dir 
 
 CMD exec /bin/bash "$@"

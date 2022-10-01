@@ -1,6 +1,8 @@
 FROM gaow/base-notebook
 MAINTAINER Hao Sun
 
+USER root
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	software-properties-common \
         libboost-all-dev \
@@ -13,7 +15,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 ## FIXME: The 'rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*'  command was removed, please add back the specific contents that are to be removed. 
-
 
 #-----------------------------
 # Pipeline components
@@ -39,10 +40,9 @@ RUN cd /opt && \
 RUN pip install multiqc
 
 # fastp
-wget http://opengene.org/fastp/fastp.0.23.2
-mv fastp.0.23.2 /usr/local/bin/fastp
-chmod a+x /usr/local/bin/fastp
-
+RUN wget http://opengene.org/fastp/fastp.0.23.2 && \
+    mv fastp.0.23.2 /usr/local/bin/fastp && \
+    chmod a+x /usr/local/bin/fastp
 
 # STAR v2.7.10a
 RUN cd /opt && \
@@ -109,12 +109,6 @@ RUN mkdir /opt/rnaseqc && cd /opt/rnaseqc && \
     gunzip rnaseqc.v2.4.2.linux.gz && mv rnaseqc.v2.4.2.linux rnaseqc && chmod 775 rnaseqc
 RUN pip3 install rnaseqc
 ENV PATH /opt/rnaseqc:$PATH
-
-# gcloud
-RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
-    echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update -y && apt-get install google-cloud-sdk -y
 
 # Trimmomatic
 RUN wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip

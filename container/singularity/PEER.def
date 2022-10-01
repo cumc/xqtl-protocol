@@ -7,9 +7,9 @@ maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
 %post
 su -  root # USER root
 apt-get update \
-&& apt install -y --no-install-recommends  git-all  libboost-all-dev
-R --slave -e "install.packages(c('rlang', 'RcppEigen','devtools'))"
-R --slave -e 'devtools::install_github("bioFAM/MOFA2", build_opts = c("--no-resave-data --no-build-vignettes"))'
+&& apt install -y --no-install-recommends  git-all  libboost-all-dev libharfbuzz-dev
+R --slave -e "install.packages(c('rlang', 'RcppEigen','remotes'))"
+R --slave -e 'remotes::install_github("bioFAM/MOFA2", build_opts = c("--no-resave-data --no-build-vignettes"))'
 pip install mofapy2
 echo "cd /tmp" >> /entrypoint.sh
 echo "exec /bin/bash "$@"" >> /entrypoint.sh

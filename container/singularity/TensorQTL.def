@@ -5,18 +5,15 @@ From: gaow/base-notebook
 %labels
 MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 %post
-cd /tmp
 su -  root # USER root
-wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
-unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin
-pip install tensorqtl
-pip install fastparquet
+cd /tmp
 ## Install Git
 apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git-all
+wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
+unzip plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin
+pip install tensorqtl fastparquet --no-cache-dir
 ## Installing the multipy package for the qvalue. Noted: the pip version dont works with python3. Only the github version works.
-git clone https://github.com/puolival/multipy.git
-cd multipy/
-ipython setup.py install
+pip install git+https://github.com/puolival/multipy.git
 ## Installing R packages for the qvalue
 R --slave -e "install.packages(c('BiocManager','tidyr'))"
 R --slave -e "BiocManager::install('qvalue')"

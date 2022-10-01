@@ -111,10 +111,10 @@ RUN pip3 install rnaseqc
 ENV PATH /opt/rnaseqc:$PATH
 
 # Trimmomatic
-RUN wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
-RUN mv Trimmomatic-0.39.zip /opt/
-RUN cd /opt/
-RUN unzip Trimmomatic-0.39.zip
+RUN wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip && \
+    mv Trimmomatic-0.39.zip /opt/ && \
+    cd /opt/ && \
+    unzip Trimmomatic-0.39.zip
 
 # scripts
 
@@ -140,6 +140,4 @@ RUN wget https://github.com/gpertea/gffread/archive/refs/tags/v0.12.7.zip && \
     cd .. && rm -r gffread* v0.12.7*
     
 # gtfToGenePred
-RUN cd /opt/src
-RUN wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred
-RUN chmod +x gtfToGenePred
+RUN cd /opt/src && wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred && chmod +x gtfToGenePred

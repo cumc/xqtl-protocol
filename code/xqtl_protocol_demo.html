@@ -624,6 +624,11 @@
    Data
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#software-environment-singularity-vs-docker">
+   Software environment: Singularity vs Docker
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -663,6 +668,22 @@
 <div class="section" id="data">
 <h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
 <p>For record keeping: preparation of the demo dataset is documented <a class="reference external" href="https://github.com/gaow/lab-wiki/blob/master/private/data/xQTL_Protocol.md">on this page</a> — this is a private repository accessible to Gao Wang’s group members.</p>
+</div>
+<div class="section" id="software-environment-singularity-vs-docker">
+<h2>Software environment: Singularity vs Docker<a class="headerlink" href="#software-environment-singularity-vs-docker" title="Permalink to this headline">¶</a></h2>
+<p>Our example analysis documented on this website are performed using <code class="docutils literal notranslate"><span class="pre">singularity</span></code>, via the <code class="docutils literal notranslate"><span class="pre">--container</span></code> option pointing to a <code class="docutils literal notranslate"><span class="pre">sif</span></code> singularity image file. For example, <code class="docutils literal notranslate"><span class="pre">--container</span> <span class="pre">TensorQTL.sif</span></code> uses <code class="docutils literal notranslate"><span class="pre">TensorQTL.sif</span></code> image to perform analysis for QTL association mapping via software <code class="docutils literal notranslate"><span class="pre">TensorQTL</span></code>. If you use Docker, you need to replace</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">container</span> <span class="n">TensorQTL</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+<p>with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">container</span> <span class="n">gaow</span><span class="o">/</span><span class="n">tensorqtl</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ol class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/u/gaow"><code class="docutils literal notranslate"><span class="pre">gaow</span></code> is the dockerhub account</a> under which all docker images are saved. You do not have to download these docker images manually. Simply point the dockerhub repository name to <code class="docutils literal notranslate"><span class="pre">--container</span></code> option as above — SoS will download it the first time you run the analysis.</p></li>
+<li><p>Please use all lower case letters and drop <code class="docutils literal notranslate"><span class="pre">.sif</span></code> extension when you modify the command from using singularity to docker, eg, <code class="docutils literal notranslate"><span class="pre">TensorQTL.sif</span></code> is modified into <code class="docutils literal notranslate"><span class="pre">tensorqtl</span></code>.</p></li>
+</ol>
 </div>
 </div>
 

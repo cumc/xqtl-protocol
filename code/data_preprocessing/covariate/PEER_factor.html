@@ -972,6 +972,13 @@ Sections
     <span class="n">ent</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
     <span class="n">ent</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
     <span class="n">ent</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">})</span>
+    <span class="c1">## To fix issue https://github.com/cumc/xqtl-pipeline/issues/420</span>
+    <span class="kn">import</span> <span class="nn">h5py</span>
+    <span class="n">right_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="n">ent</span><span class="o">.</span><span class="n">data_opts</span><span class="p">[</span><span class="s2">&quot;features_names&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span> 
+    <span class="n">new_hd5</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">new_hd5</span><span class="p">[</span><span class="s2">&quot;features/view0&quot;</span><span class="p">]</span>
+    <span class="n">new_hd5</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;view0&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">right_name</span><span class="p">))</span>
+    <span class="n">new_hd5</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

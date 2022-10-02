@@ -608,15 +608,25 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#processed-reference-file-for-rna-seq-based-expression-quantification">
-     Processed reference file for RNA-seq based expression quantification
+    <a class="reference internal nav-link" href="#reference-files-for-rna-seq-expression-quantification">
+     Reference files for RNA-seq expression quantification
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reference-files-for-methylation">
+     Reference files for Methylation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reference-files-for-alternative-splicing">
+     Reference files for alternative splicing
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#methods">
-   Methods
+  <a class="reference internal nav-link" href="#details">
+   Details
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -642,8 +652,8 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-commands">
-   Example commands
+  <a class="reference internal nav-link" href="#list-of-commands-to-prepare-reference-data">
+   List of commands to prepare reference data
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -719,18 +729,16 @@
   <a class="reference internal nav-link" href="#generation-of-refflat-file">
    Generation of RefFlat file
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generation-of-suppa-annotation-for-psichomics">
-     Generation of SUPPA annotation for psichomics.
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#modification-of-psichomics-default-hg38-splicing-annotation">
-     Modification of psichomics default Hg38 splicing annotation.
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generation-of-suppa-annotation-for-psichomics">
+   Generation of SUPPA annotation for psichomics.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generate-psichomics-hg38-splicing-annotation">
+   Generate psichomics Hg38 splicing annotation
+  </a>
  </li>
 </ul>
 
@@ -746,14 +754,13 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="reference-data-standardization">
 <h1>Reference data standardization<a class="headerlink" href="#reference-data-standardization" title="Permalink to this headline">¶</a></h1>
 <p>This module provides reference data download, indexing and preprocessing (if necessary), in preparation for use throughout the pipeline.</p>
-<p>We have included the PDF document compiled by data standardization subgroup in the <a class="reference external" href="https://drive.google.com/file/d/1R5sw5o8vqk_mbQQb4CGmtH3ldu1T3Vu0/view?usp=sharing">on Google Drive</a> as well as on <a class="reference external" href="https://www.niagads.org/adsp/content/adspgcadgenomeresources-v2pdf">ADSP Dashboard</a>. It contains the reference data to use for the project.</p>
+<p>We have included the PDF document compiled by Data Standardization Working Group in the <a class="reference external" href="https://www.synapse.org/#%21Synapse:syn36416587">on Synapse</a> as well as on <a class="reference external" href="https://www.niagads.org/adsp/content/adspgcadgenomeresources-v2pdf">ADSP Dashboard</a>. It contains the reference data to use for the project.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>This module is based on the <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">TOPMed workflow from Broad</a>. The reference data after we process it (details see Methods section and the rest of the analysis) can be found <a class="reference external" href="https://drive.google.com/drive/folders/19fmoII8yS7XE7HFcMU4OfvC2bL1zMD_P">in this folder on Google Drive</a>.</p>
-<div class="section" id="processed-reference-file-for-rna-seq-based-expression-quantification">
-<h3>Processed reference file for RNA-seq based expression quantification<a class="headerlink" href="#processed-reference-file-for-rna-seq-based-expression-quantification" title="Permalink to this headline">¶</a></h3>
-<p><strong>We have decided to use these preprocessed reference files for RNA-seq expression quantification. They may not be applicable to other molecular phenotypes.</strong></p>
-<p>Specifically, the list of reference files to be used are:</p>
+<p>This module is based on the <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">TOPMed workflow from Broad</a>. The reference data after we process it (details see Methods section and the rest of the analysis) can be found <a class="reference external" href="https://www.synapse.org/#%21Synapse:syn36416587">in this folder on Synapse</a>.</p>
+<div class="section" id="reference-files-for-rna-seq-expression-quantification">
+<h3>Reference files for RNA-seq expression quantification<a class="headerlink" href="#reference-files-for-rna-seq-expression-quantification" title="Permalink to this headline">¶</a></h3>
+<p><strong>We have decided to use these preprocessed reference files for RNA-seq expression and splicing quantification.</strong> Specifically:</p>
 <ol class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.{dict,fasta,fasta.fai}</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf</span></code> for stranded protocol, and <code class="docutils literal notranslate"><span class="pre">Homo_sapiens.GRCh38.103.chr.reformatted.gene.ERCC.gtf</span></code> for unstranded protocol.</p></li>
@@ -762,9 +769,17 @@
 <li><p>Optionally, for quality control, <code class="docutils literal notranslate"><span class="pre">gtf_ref.flat</span></code></p></li>
 </ol>
 </div>
+<div class="section" id="reference-files-for-methylation">
+<h3>Reference files for Methylation<a class="headerlink" href="#reference-files-for-methylation" title="Permalink to this headline">¶</a></h3>
+<p>FIXME &#64;hao</p>
 </div>
-<div class="section" id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reference-files-for-alternative-splicing">
+<h3>Reference files for alternative splicing<a class="headerlink" href="#reference-files-for-alternative-splicing" title="Permalink to this headline">¶</a></h3>
+<p>FIXME &#64;xuanhe</p>
+</div>
+</div>
+<div class="section" id="details">
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
 <p>Workflows implemented include:</p>
 <div class="section" id="convert-transcript-feature-file-gff3-to-gtf">
 <h3>Convert transcript feature file gff3 to gtf<a class="headerlink" href="#convert-transcript-feature-file-gff3-to-gtf" title="Permalink to this headline">¶</a></h3>
@@ -795,20 +810,23 @@
 </ul>
 </div>
 </div>
-<div class="section" id="example-commands">
-<h2>Example commands<a class="headerlink" href="#example-commands" title="Permalink to this headline">¶</a></h2>
-<p>To download reference data, it will take approximately an hour, depending on the network.</p>
+<div class="section" id="list-of-commands-to-prepare-reference-data">
+<h2>List of commands to prepare reference data<a class="headerlink" href="#list-of-commands-to-prepare-reference-data" title="Permalink to this headline">¶</a></h2>
+<p>To download reference data,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_hg_reference</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span>    <span class="o">&amp;</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_gene_annotation</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> <span class="o">&amp;</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_ercc_reference</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> <span class="o">&amp;</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_dbsnp</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span> <span class="o">&amp;</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_hg_reference</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span>
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_gene_annotation</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span>
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_ercc_reference</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span>
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">download_dbsnp</span> <span class="o">--</span><span class="n">cwd</span> <span class="n">reference_data</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>To format reference data, these step should take ~10 min in total, with 16GB of memory</p>
+<ul class="simple">
+<li><p>Approximate time: an hour, depending on the network.</p></li>
+</ul>
+<p>To format reference data,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">hg_reference</span> \
@@ -844,10 +862,12 @@
 </div>
 </div>
 </div>
+<ul class="simple">
+<li><p>Approximate time: 10min</p></li>
+<li><p>Memory: 16GB</p></li>
+</ul>
 <p><strong>Notice that for un-stranded RNA-seq protocol please use switch <code class="docutils literal notranslate"><span class="pre">--no-stranded</span></code> to the command above instead of <code class="docutils literal notranslate"><span class="pre">--stranded</span></code>. More details can be found later in the document.</strong></p>
-<p>Generating STAR index without the GTF annotation file allow customize read lenght lateron in STAR alignment. it will take at least 40G of memory for STAR to build the index.
-Aproximate time: 30  min
-Mem: 40 G</p>
+<p>Generating STAR index without the GTF annotation file allow customize read lenght lateron in STAR alignment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_index</span> \
@@ -859,9 +879,11 @@ Mem: 40 G</p>
 </div>
 </div>
 </div>
-<p><strong>Notice that command above requires at least 40G of memory, and takes quite a while to complete</strong>.</p>
-<p>To generate RSEM index with the gtf file <strong>prior</strong> to the gene collapsing step ( <strong>without</strong> the gene tag in its file name. )</p>
-<p>Aproximate time: 1  min</p>
+<ul class="simple">
+<li><p>Approximate time: 30 min</p></li>
+<li><p>Memory: 40 GB</p></li>
+</ul>
+<p>To generate RSEM index with the gtf file <strong>prior</strong> to the gene collapsing step ( <strong>without</strong> the gene tag in its file name.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">RSEM_index</span> \
@@ -873,7 +895,10 @@ Mem: 40 G</p>
 </div>
 </div>
 </div>
-<p>To generate RefFlat annotation for Picard QC</p>
+<ul class="simple">
+<li><p>Approximate time: 1 min</p></li>
+</ul>
+<p>To generate RefFlat annotation for Picard QC,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">RefFlat_generation</span> \
@@ -882,7 +907,7 @@ Mem: 40 G</p>
 </div>
 </div>
 </div>
-<p>To generate the SUPPA annotation for psichomics</p>
+<p>To generate the SUPPA annotation for psichomics to detect RNA alternative splicing events,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">SUPPA_annotation</span> \
@@ -892,6 +917,23 @@ Mem: 40 G</p>
 </div>
 </div>
 </div>
+<ul class="simple">
+<li><p>Approximate time: ? min</p></li>
+</ul>
+<p>Prepare psichomics database,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psi_hg38_annotation</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hgrc</span><span class="o">-</span><span class="n">db</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">hgnc_database</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">psichomics</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Approximate time: ? min</p></li>
+</ul>
 </div>
 <div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
@@ -912,16 +954,20 @@ Workflows:
   download_hg_reference
   download_gene_annotation
   download_ercc_reference
+  download_dbsnp
   gff3_to_gtf
   hg_reference
   hg_gtf
   ercc_gtf
   gene_annotation
   STAR_index
-  RSEM_indexing
+  RSEM_index
+  RefFlat_generation
+  SUPPA_annotation
+  psi_hg38_annotation_modification
 
 Global Workflow Options:
-  --cwd VAL (as path, required)
+  --cwd output (as path)
                         The output directory for generated files.
   --job-size 1 (as int)
                         For cluster jobs, number commands to run per job
@@ -938,6 +984,7 @@ Sections
   download_hg_reference:
   download_gene_annotation:
   download_ercc_reference:
+  download_dbsnp:
   gff3_to_gtf:
     Workflow Options:
       --gff3-file VAL (as path, required)
@@ -955,27 +1002,31 @@ Sections
       --hg-gtf VAL (as path, required)
   hg_gtf_2:
     Workflow Options:
-      --[no-]collapse-only (default to False)
-                        Use this for stranded protocol (optional)
+      --[no-]stranded (required)
   ercc_gtf:
     Workflow Options:
       --ercc-gtf VAL (as path, required)
   gene_annotation:
   STAR_index:
     Workflow Options:
-      --hg-gtf VAL (as path, required)
       --hg-reference VAL (as path, required)
-      --sjdbOverhang 100 (as int)
-                        Specifies the length of the genomic sequence around the
-                        annotated junction to be used in constructing the splice
-                        junctions database. Ideally, this length should be equal
-                        to the ReadLength-1, where ReadLength is the length of
-                        the reads. Default choice follows from TOPMed pipeline
-                        recommendation.
-  RSEM_indexing:
+  RSEM_index:
     Workflow Options:
       --hg-gtf VAL (as path, required)
       --hg-reference VAL (as path, required)
+  RefFlat_generation:
+    Workflow Options:
+      --hg-gtf VAL (as path, required)
+  SUPPA_annotation_1:
+    Workflow Options:
+      --hg-gtf VAL (as path, required)
+  SUPPA_annotation_2:
+    Workflow Options:
+      --hg-gtf VAL (as path, required)
+  psi_hg38_annotation_modification_1:
+    Workflow Options:
+      --hg-gtf VAL (as path, required)
+      --hgrc-db VAL (as path, required)
 </pre></div>
 </div>
 </div>
@@ -1100,7 +1151,7 @@ Sections
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_ERCC.fasta&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="n">sed</span> <span class="s1">&#39;s/ERCC-/ERCC_/g&#39;</span> <span class="err">$</span><span class="p">{</span><span class="n">ercc_reference</span><span class="p">}</span> <span class="o">&gt;</span>  <span class="err">$</span><span class="p">{</span><span class="n">ercc_reference</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">patched</span><span class="o">.</span><span class="n">fa</span>
+    <span class="n">sed</span> <span class="s1">&#39;s/ERCC-/ERCC_/g&#39;</span> <span class="err">$</span><span class="p">{</span><span class="n">ercc_reference</span><span class="p">}</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">ercc_reference</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">patched</span><span class="o">.</span><span class="n">fa</span>
     <span class="n">cat</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">ercc_reference</span><span class="p">:</span><span class="n">n</span><span class="p">}</span><span class="o">.</span><span class="n">patched</span><span class="o">.</span><span class="n">fa</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -1114,9 +1165,9 @@ Sections
 <span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
     <span class="n">samtools</span> <span class="n">faidx</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>
     <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">picard</span><span class="o">-</span><span class="n">tools</span><span class="o">/</span><span class="n">picard</span><span class="o">.</span><span class="n">jar</span> \
-    <span class="n">CreateSequenceDictionary</span> \
-    <span class="n">R</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> \
-    <span class="n">O</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
+        <span class="n">CreateSequenceDictionary</span> \
+        <span class="n">R</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> \
+        <span class="n">O</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1126,11 +1177,11 @@ Sections
 <h2>Transcript and gene model reference processing<a class="headerlink" href="#transcript-and-gene-model-reference-processing" title="Permalink to this headline">¶</a></h2>
 <p>This step modify the <code class="docutils literal notranslate"><span class="pre">gtf</span></code> file for following reasons:</p>
 <ol class="simple">
-<li><p>RSEM require GTF input to have the same chromosome name format (with <code class="docutils literal notranslate"><span class="pre">chr</span></code> prefix) as the fasta file. <strong>although for STAR, this problem can be solved by the now commented –sjdbGTFchrPrefix “chr” option, we have to add <code class="docutils literal notranslate"><span class="pre">chr</span></code> to it for use with RSEM</strong>.</p></li>
-<li><p>Gene model collapsing script <code class="docutils literal notranslate"><span class="pre">collapse_annotation.py</span></code> from GTEx require the gtf have <code class="docutils literal notranslate"><span class="pre">transcript_type</span></code> instead <code class="docutils literal notranslate"><span class="pre">transcript_biotype</span></code> in its annotation. We rename it here, although <strong>this problem can also be solved by modifying the collapse_annotation.py while building the docker, since we are doing 1 above we think it is better to add in another customization here.</strong></p></li>
+<li><p>RSEM require GTF input to have the same chromosome name format (with <code class="docutils literal notranslate"><span class="pre">chr</span></code> prefix) as the fasta file. <strong>Although for STAR, this problem can be solved by the <code class="docutils literal notranslate"><span class="pre">--sjdbGTFchrPrefix</span> <span class="pre">&quot;chr&quot;</span></code> option, we have to add <code class="docutils literal notranslate"><span class="pre">chr</span></code> to it for use with RSEM anyways.</strong> That is why we would like to do it here.</p></li>
+<li><p>Gene model collapsing script <code class="docutils literal notranslate"><span class="pre">collapse_annotation.py</span></code> from GTEx require the gtf have <code class="docutils literal notranslate"><span class="pre">transcript_type</span></code> instead <code class="docutils literal notranslate"><span class="pre">transcript_biotype</span></code> in its annotation. We rename it here, although <strong>this problem can also be solved by modifying the collapse_annotation.py while building the docker, since we are already customizing the reference file for 1 above, we add this in as well, as another customization made.</strong></p></li>
 <li><p>Adding in ERCC information to the <code class="docutils literal notranslate"><span class="pre">gtf</span></code> reference.</p></li>
 </ol>
-<p>We may reimplement 1 and 2 if the problem with RSEM is solved, or when RSEM is no longer needed.</p>
+<p>We may reimplement 1 and 2 with the alternative approaches discussed above if the problem with RSEM is solved, or when RSEM is no longer needed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">hg_gtf_1</span> <span class="p">(</span><span class="n">add</span> <span class="nb">chr</span> <span class="n">prefix</span> <span class="n">to</span> <span class="n">gtf</span> <span class="n">file</span><span class="p">)]</span>
@@ -1333,6 +1384,7 @@ Sections
 <span class="kn">parameter:</span> <span class="n">hg_gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="n">hg_gtf</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.ref.flat&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bd</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">gtfToGenePred</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>  <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span><span class="o">.</span><span class="n">tmp</span> <span class="o">-</span><span class="n">genePredExt</span> <span class="o">-</span><span class="n">geneNameAsName2</span>
     <span class="n">awk</span> <span class="o">-</span><span class="sa">F</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="o">-</span><span class="n">v</span> <span class="n">OFS</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="s1">&#39;{$1=$12 OFS $1;}7&#39;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span><span class="o">.</span><span class="n">tmp</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="o">-</span><span class="mi">11</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
@@ -1341,8 +1393,9 @@ Sections
 </div>
 </div>
 </div>
+</div>
 <div class="section" id="generation-of-suppa-annotation-for-psichomics">
-<h3>Generation of SUPPA annotation for psichomics.<a class="headerlink" href="#generation-of-suppa-annotation-for-psichomics" title="Permalink to this headline">¶</a></h3>
+<h2>Generation of SUPPA annotation for psichomics.<a class="headerlink" href="#generation-of-suppa-annotation-for-psichomics" title="Permalink to this headline">¶</a></h2>
 <p>The generation of custom alternative splicing annotation is based on <a class="reference external" href="https://rpubs.com/nuno-agostinho/preparing-AS-annotation">this tutorial</a>. The way to generate the local alternative splicing suppa output is documented on <a class="reference external" href="https://github.com/comprna/SUPPA">SUPPA github page</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1359,11 +1412,19 @@ Sections
 <span class="kn">parameter:</span> <span class="n">hg_gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="n">hg_gtf</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/hg38.</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_SE_strict.ioe&#39;</span> <span class="c1"># The stderr file must not shared the same start with the output file</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">python</span> <span class="o">~/</span><span class="n">GIT</span><span class="o">/</span><span class="n">SUPPA</span><span class="o">/</span><span class="n">suppa</span><span class="o">.</span><span class="n">py</span> <span class="n">generateEvents</span> <span class="o">-</span><span class="n">i</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span><span class="o">/</span><span class="n">hg38</span><span class="o">.</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">bn</span><span class="p">}</span> <span class="o">-</span><span class="n">f</span> <span class="n">ioe</span> <span class="o">-</span><span class="n">e</span> <span class="n">SE</span> <span class="n">SS</span> <span class="n">MX</span> <span class="n">RI</span> <span class="n">FL</span>
-<span class="p">[</span><span class="n">SUPPA_annotation_2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">SUPPA_annotation_2</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">hg_gtf</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">hg_gtf</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.SUPPA_annotation.rds&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">R:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">library</span><span class="p">(</span><span class="s2">&quot;psichomics&quot;</span><span class="p">)</span>
     <span class="n">suppa</span> <span class="o">&lt;-</span> <span class="n">parseSuppaAnnotation</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input:d}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">genome</span><span class="o">=</span><span class="s2">&quot;hg38&quot;</span><span class="p">)</span> 
@@ -1374,14 +1435,14 @@ Sections
 </div>
 </div>
 </div>
-<div class="section" id="modification-of-psichomics-default-hg38-splicing-annotation">
-<h3>Modification of psichomics default Hg38 splicing annotation.<a class="headerlink" href="#modification-of-psichomics-default-hg38-splicing-annotation" title="Permalink to this headline">¶</a></h3>
-<p>Since the original annotation provided by psichomics package is using gene symbols, we modified it to use Ensembl IDs. The modified annotation will be used here: <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/molecular_phenotypes/calling/splicing_calling.ipynb">psichomics section</a>.</p>
+<div class="section" id="generate-psichomics-hg38-splicing-annotation">
+<h2>Generate psichomics Hg38 splicing annotation<a class="headerlink" href="#generate-psichomics-hg38-splicing-annotation" title="Permalink to this headline">¶</a></h2>
+<p>Since the original annotation provided by psichomics package is using gene symbols, we modified it to use Ensembl IDs. The modified annotation will be used for <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/molecular_phenotypes/calling/splicing_calling.html">detecting RNA alternative splicing using psichomics</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psi_hg38_annotation_modification</span> \
-    <span class="o">--</span><span class="n">hg_gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">gtf</span> \
-    <span class="o">--</span><span class="n">hgrc_db</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">hgnc_database</span><span class="o">.</span><span class="n">txt</span> \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">reference_data</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psi_hg38_annotation</span> \
+    <span class="o">--</span><span class="n">hg</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">hgrc</span><span class="o">-</span><span class="n">db</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">hgnc_database</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">psichomics</span><span class="o">.</span><span class="n">sif</span>
 </pre></div>
 </div>
@@ -1389,11 +1450,13 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">psi_hg38_annotation_modification_1</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">psi_hg38_annotation</span><span class="p">]</span>
 <span class="kn">parameter:</span> <span class="n">hg_gtf</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># FIXME: Please document what this file is and where do we get it @xuanhe.</span>
 <span class="kn">parameter:</span> <span class="n">hgrc_db</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">input:</span> <span class="n">hg_gtf</span><span class="p">,</span> <span class="n">hgrc_db</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/modified_psichomics_hg38_splicing_annotation.rds&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/psichomics_hg38_annotation.rds&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">R:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
     <span class="n">library</span><span class="p">(</span><span class="s2">&quot;psichomics&quot;</span><span class="p">)</span>
     <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
@@ -1527,7 +1590,6 @@ Sections
     <span class="c1"># save modified annotation</span>
     <span class="n">saveRDS</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>

@@ -5,13 +5,14 @@ From: gaow/base-notebook
 %labels
 MAINTAINER Hao Sun
 %post
-PATH=/opt/R-4.2.0:$PATH
-apt-get update && \
-apt-get install -y --no-install-recommends \
+su -  root # USER root
+
+# upgrade packages to get R 4.2
+apt-get update && apt-get dist-upgrade -y &&  \
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 git-all \
 libboost-all-dev \
-libgsl-dev && \
-apt-get upgrade -y --no-install-recommends \
+libgsl-dev \
 gfortran \
 libreadline6-dev \
 libx11-dev \
@@ -29,27 +30,20 @@ texlive \
 texlive-fonts-extra \
 screen \
 libpcre2-dev
-cd /opt && \
-wget https://cran.r-project.org/src/base/R-4/R-4.2.0.tar.gz && \
-tar zxvf R-4.2.0.tar.gz && \
-cd R-4.2.0 && \
-./configure --enable-R-shlib && \
-make && make install
+
+R --slave -e "update.packages(ask = FALSE, checkBuilt = TRUE)"
 R --slave -e 'install.packages("BiocManager")'
 R --slave -e 'BiocManager::install("psichomics")'
-wget https://raw.githubusercontent.com/Rhopala/xqtl-pipeline/main/code/psichomics_annotation_caching_location_update.R && \
+wget https://raw.githubusercontent.com/cumc/xqtl-pipeline/main/code/psichomics_annotation_caching_location_update.R && \
 Rscript psichomics_annotation_caching_location_update.R
 ## install sklearn and scipy
 pip install sklearn scipy
 ## SUPPA
-cd /opt
 pip install SUPPA==2.3
-git clone https://github.com/comprna/SUPPA.git
+cd /opt && git clone https://github.com/comprna/SUPPA.git
 echo "exec /bin/bash "$@"" >> /entrypoint.sh
 echo 'alias SUPPA="python /opt/SUPPA/suppa.py"'  >> /entrypoint.sh
 chmod u+x /entrypoint.sh
-%environment
-export PATH=/opt/R-4.2.0:$PATH
 %runscript
 exec /bin/bash exec /bin/bash "$@"
 %startscript

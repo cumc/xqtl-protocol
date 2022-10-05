@@ -21,10 +21,11 @@ bash: expand = True, stderr = f'{config}.stderr', stdout = f'{config}.stdout'
 import glob
 depends: executable('docker')
 input: glob.glob("container/docker/*.dockerfile"), group_by = 1, concurrent = False
+repo = str(_input).split("/")[-1].lower()[:-11]
 bash: expand = True
 	set -e
-	docker build -t gaow/{_input:n} -f {_input} .
-	docker push gaow/{_input:n}
+	docker build -t gaow/{repo} -f {_input} .
+	docker push gaow/{repo}
 
 
 [build, default_2]

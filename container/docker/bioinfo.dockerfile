@@ -9,26 +9,11 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y default-
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-# Install CUGG
-
-RUN git clone https://github.com/cumc/cugg.git
-RUN cd cugg
-RUN pip install .
-
 # Install R pkg
-RUN R --slave -e "install.packages(c('rlang',
-                                     'tidyverse',
-                                     'BiocManager', 
-                                     'RcppEigen',
-                                     # For kinship analysis
-                                     'igraph','foreach'))"
-                                     
+RUN R --slave -e "install.packages(c('rlang', 'tidyverse', 'BiocManager', 'RcppEigen', 'igraph', 'foreach'))"
 RUN R --slave -e "BiocManager::install('biomaRt')"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
 
-# QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
-RUN pip install qtl  
-                                     
 RUN cd /tmp && wget http://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
     unzip -o  plink_linux_x86_64_20200616.zip && mv plink /usr/local/bin && rm -rf /tmp/plink*
 RUN cd /tmp && wget https://s3.amazonaws.com/plink2-assets/alpha2/plink2_linux_avx2.zip && \
@@ -54,7 +39,12 @@ RUN cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.12/ht
 RUN cd /tmp && wget https://snpeff.blob.core.windows.net/versions/snpEff_latest_core.zip && \
     unzip -o  snpEff_latest_core.zip &&  \
     mv snpEff /opt && rm -rf /tmp/snpEff*
-    
 
+# QTL packages was used for Normalization of gene Count Table and TPM in Phenotype Normalization modules
+RUN pip install qtl --no-cache-dir 
+    
+# Install CUGG
+
+RUN pip install git+https://github.com/cumc/cugg.git --no-cache-dir 
 
 CMD exec /bin/bash "$@"

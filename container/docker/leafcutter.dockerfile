@@ -1,5 +1,6 @@
 FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun
+USER root
 ENV PATH=/opt/samtools-1.11:$PATH
 ENV PATH=/opt/htslib-1.11:$PATH
 ENV PATH=/opt/regtools/build:$PATH

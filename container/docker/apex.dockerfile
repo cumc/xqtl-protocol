@@ -1,6 +1,6 @@
 FROM gaow/base-notebook
 LABEL maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
-RUN su -  root # USER root
+USER root
 RUN apt-get update \
 && apt install -y --no-install-recommends  git-all  libboost-all-dev
 RUN git clone https://github.com/corbinq/apex.git \

@@ -1,17 +1,15 @@
 FROM gaow/base-notebook
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN cd /tmp
-RUN su -  root # USER root
+USER root
 RUN apt-get update \
 && apt install -y --no-install-recommends  git-all  libboost-all-dev
-RUN git clone https://github.com/statgen/METAL
-RUN cd METAL
-RUN mkdir build && cd build
-RUN cmake -DCMAKE_BUILD_TYPE=Release ..
-RUN make
-RUN make test
-RUN make install
-RUN cp ./bin/metal  /usr/local/bin/metal && chmod +x /usr/local/bin/metal
+RUN git clone https://github.com/statgen/METAL && \
+	cd METAL && \
+	mkdir build && cd build && \
+	cmake -DCMAKE_BUILD_TYPE=Release ../ && \
+	make && make test && make install && \
+	cp ./bin/metal  /usr/local/bin/metal && chmod +x /usr/local/bin/metal
 RUN R --slave -e "install.packages(c('BiocManager'))"
 RUN R --slave -e "BiocManager::install('VariantAnnotation')"
 RUN echo "cd /tmp" >> /entrypoint.sh

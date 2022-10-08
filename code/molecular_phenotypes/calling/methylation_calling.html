@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quantification of methylation data &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -667,9 +666,9 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="quantification-of-methylation-data">
+  <div class="tex2jax_ignore mathjax_ignore section" id="quantification-of-methylation-data">
 <h1>Quantification of methylation data<a class="headerlink" href="#quantification-of-methylation-data" title="Permalink to this headline">¶</a></h1>
-<section id="methods-overview">
+<div class="section" id="methods-overview">
 <h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
 <p>This notebook implements two methods to quantify methylation data, using <code class="docutils literal notranslate"><span class="pre">sesame</span></code> and <code class="docutils literal notranslate"><span class="pre">minfi</span></code>. We recommend <code class="docutils literal notranslate"><span class="pre">sesame</span></code> over <code class="docutils literal notranslate"><span class="pre">minfi</span></code>.</p>
 <table class="colwidths-auto table">
@@ -702,23 +701,23 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="input">
+</div>
+<div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">sample_sheet</span></code>: path to csv/tsv file that documenting all the meta-information of the bisulfite sequencing. The user need to manually ensure/rename the column names corresponding  to the first and second half of the idat file names are “Sentrix_ID” and “Sentrix_Position”</p></li>
 <li><p>[optional] <code class="docutils literal notranslate"><span class="pre">idat_folder</span></code>: path to the folder containing all the IDAT files to generate methylation data matrices from. Default is set to using the same folder where <code class="docutils literal notranslate"><span class="pre">sample_sheet</span></code> locates.</p></li>
 <li><p>[optional] <code class="docutils literal notranslate"><span class="pre">cross_reactive_probes</span></code>: A list of CpG probes that are reported to <a class="reference external" href="https://academic.oup.com/nargab/article/2/4/lqaa105/6040968">map to multiple regions in the genome.</a></p></li>
 </ol>
-</section>
-<section id="output">
+</div>
+<div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>A pair bed.gz file for <code class="docutils literal notranslate"><span class="pre">beta</span></code> and <code class="docutils literal notranslate"><span class="pre">M</span></code> value.</p></li>
 <li><p>Probe to gene annotation.</p></li>
 </ul>
-</section>
-<section id="minimal-working-example">
+</div>
+<div class="section" id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -729,8 +728,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="command-interface">
+</div>
+<div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -801,8 +800,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="global-parameters">
+</div>
+<div class="section" id="global-parameters">
 <h2>Global parameters<a class="headerlink" href="#global-parameters" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">keep_only_cpg_probes</span></code> option dictate whether only cpg probes should be kept:</p>
 <ul>
@@ -841,8 +840,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="sesame">
+</div>
+<div class="section" id="sesame">
 <h2><code class="docutils literal notranslate"><span class="pre">Sesame</span></code><a class="headerlink" href="#sesame" title="Permalink to this headline">¶</a></h2>
 <p>Getting the beta value from EPIC450 IDAT for 750 samples from 3000 wells take ~40 mins.</p>
 <p>Based on <a class="reference external" href="https://www.bioconductor.org/packages/release/bioc/vignettes/sesame/inst/doc/sesame.html">sesame documentation</a>, the processing procedure suitable for human on EPIC 450 and 850 platform is “QCDPB”</p>
@@ -965,8 +964,8 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
 </div>
 </div>
 </div>
-</section>
-<section id="minfi">
+</div>
+<div class="section" id="minfi">
 <h2><code class="docutils literal notranslate"><span class="pre">minfi</span></code><a class="headerlink" href="#minfi" title="Permalink to this headline">¶</a></h2>
 <p>By default, for Infinium MethylationEPIC the data will be annotated based on hg38 using <a class="reference external" href="https://github.com/achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38">this annotation</a>, alternatively user can set the <code class="docutils literal notranslate"><span class="pre">--hg-build</span></code> parameter back to 19 to use the <a class="reference external" href="https://bioconductor.org/packages/release/data/annotation/html/IlluminaHumanMethylationEPICanno.ilm10b4.hg19.html">hg19 annotation</a>.</p>
 <p>For 450K data however, only hg19 annotation is availble, which is what we would use would use for minfi to work. However, we will reannotate everything to hg38 anyways in the next step.</p>
@@ -1061,8 +1060,8 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
 </div>
 </div>
 </div>
-</section>
-<section id="annotate-probes">
+</div>
+<div class="section" id="annotate-probes">
 <h2>Annotate probes<a class="headerlink" href="#annotate-probes" title="Permalink to this headline">¶</a></h2>
 <p>The probes are annotated via <code class="docutils literal notranslate"><span class="pre">sesameData</span></code> package and formatted as bgzipped bed files, regardless of method used to process the IDAT.</p>
 <div class="cell docutils container">
@@ -1095,8 +1094,8 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

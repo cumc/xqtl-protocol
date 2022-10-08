@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Genotype PLINK file quality control &#8212; ADSP-FG Project</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
@@ -666,10 +665,10 @@
         
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="genotype-plink-file-quality-control">
+  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-plink-file-quality-control">
 <h1>Genotype PLINK file quality control<a class="headerlink" href="#genotype-plink-file-quality-control" title="Permalink to this headline">¶</a></h1>
 <p>This workflow implements some prelimary data QC steps for PLINK input files. VCF format of inputs will be converted to PLINK before performing QC.</p>
-<section id="overview">
+<div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This notebook includes workflow for</p>
 <ul class="simple">
@@ -678,20 +677,20 @@
 <li><p>LD pruning for follow up PCA analysis on genotype, as needed</p></li>
 </ul>
 <p>A potential limitation is that the workflow requires all samples and chromosomes to be merged as one single file, in order to perform both sample and variant level QC. However, in our experience using this pipeline with 200K exomes with 15 million variants, this pipeline works on the single merged PLINK file.</p>
-</section>
-<section id="methods">
+</div>
+<div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <p>Depending on the context of your problem, the workflow can be executed in two ways:</p>
 <ol class="simple">
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">qc</span></code> command to perform genotype data QC and LD pruning to generate a subset of variants in preparation for analysis such as PCA.</p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">king</span></code> first on either the original or a subset of common variants to identify unrelated individuals. The <code class="docutils literal notranslate"><span class="pre">king</span></code> pipeline will split samples to related and unrelated individuals. Then you perform <code class="docutils literal notranslate"><span class="pre">qc</span></code> on these individuals only and finally extract the same set of QC-ed variants for related individuals.</p></li>
 </ol>
-</section>
-<section id="input-format">
+</div>
+<div class="section" id="input-format">
 <h2>Input format<a class="headerlink" href="#input-format" title="Permalink to this headline">¶</a></h2>
 <p>The whole genome PLINK bim/bed/fam bundle. For input in VCF format and/or per-chromosome VCF or PLINK format, please use <code class="docutils literal notranslate"><span class="pre">vcf_to_plink</span></code> and <code class="docutils literal notranslate"><span class="pre">merge_plink</span></code> in <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/genotype_formatting.html">genotype formatting</a> pipeline to convert them to PLINK file bundle.</p>
-</section>
-<section id="default-qc-parameters">
+</div>
+<div class="section" id="default-qc-parameters">
 <h2>Default QC parameters<a class="headerlink" href="#default-qc-parameters" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Kinship coefficient for related individuals: 0.0625</p></li>
@@ -712,12 +711,12 @@
 </ul>
 </li>
 </ul>
-</section>
-<section id="minimal-working-example">
+</div>
+<div class="section" id="minimal-working-example">
 <h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>Minimal working example data-set as well as the singularity container <code class="docutils literal notranslate"><span class="pre">bioinfo.sif</span></code> can be downloaded from <a class="reference external" href="https://drive.google.com/drive/u/0/folders/1ahIZGnmjcGwSd-BI91C9ayd_Ya8sB2ed">Google Drive</a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">chr1_chr6</span></code> data-set was merged from <code class="docutils literal notranslate"><span class="pre">chr1</span></code> and <code class="docutils literal notranslate"><span class="pre">chr6</span></code> data, using <code class="docutils literal notranslate"><span class="pre">merge_plink</span></code> command from <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/genotype_formatting.html">genotype formatting</a> pipeline.</p>
-<section id="example-1-perform-qc-on-both-rare-and-common-variants">
+<div class="section" id="example-1-perform-qc-on-both-rare-and-common-variants">
 <h3>Example 1: perform QC on both rare and common variants<a class="headerlink" href="#example-1-perform-qc-on-both-rare-and-common-variants" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -729,8 +728,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="example-2-qc-common-variants-in-unrelated-individuals-and-extract-those-variants-from-related-individuals">
+</div>
+<div class="section" id="example-2-qc-common-variants-in-unrelated-individuals-and-extract-those-variants-from-related-individuals">
 <h3>Example 2: QC common variants in unrelated individuals and extract those variants from related individuals<a class="headerlink" href="#example-2-qc-common-variants-in-unrelated-individuals-and-extract-those-variants-from-related-individuals" title="Permalink to this headline">¶</a></h3>
 <p>Determine and split between related and unrelated individuals,</p>
 <div class="cell docutils container">
@@ -749,7 +748,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.01</span> \
     <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
@@ -762,8 +761,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc_no_prune</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="mf">.20220110</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">related</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">variants</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype</span><span class="o">/</span><span class="n">chr1_chr6</span><span class="o">.</span><span class="mf">20220110.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">for_pca</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="ow">in</span> \
     <span class="o">--</span><span class="n">maf</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">geno</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mind</span><span class="o">-</span><span class="nb">filter</span> <span class="mf">0.1</span> <span class="o">--</span><span class="n">hwe</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">0</span> \
     <span class="o">--</span><span class="kp">name</span> <span class="n">for_pca</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
@@ -771,9 +770,9 @@
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="command-interface">
+</div>
+</div>
+<div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -917,8 +916,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="estimate-kinship-in-the-sample">
+</div>
+<div class="section" id="estimate-kinship-in-the-sample">
 <h2>Estimate kinship in the sample<a class="headerlink" href="#estimate-kinship-in-the-sample" title="Permalink to this headline">¶</a></h2>
 <p>The output is a list of related individuals, as well as the kinship matrix</p>
 <div class="cell docutils container">
@@ -1177,8 +1176,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="genotype-and-sample-qc">
+</div>
+<div class="section" id="genotype-and-sample-qc">
 <h2>Genotype and sample QC<a class="headerlink" href="#genotype-and-sample-qc" title="Permalink to this headline">¶</a></h2>
 <p>QC the genetic data based on MAF, sample and variant missigness and Hardy-Weinberg Equilibrium (HWE).</p>
 <p>In this step you may also provide a list of samples to keep, for example in the case when you would like to subset a sample based on their ancestries to perform independent analyses on each of these groups.</p>
@@ -1267,8 +1266,8 @@ Sections
 </div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {

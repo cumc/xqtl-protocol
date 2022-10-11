@@ -46,6 +46,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
   - In the `test_data` folder, you can find the data, prefixed with **MWE**,  used to perform unit testing for each module (i.e., whether there is anything wrong within the code).
   - In the `protocol_data` folder, you can find a more sophisticated collection of data, which are used to demonstrate the complete usage of our protocole in [this notebook](https://cumc.github.io/xqtl-pipeline/code/xqtl_protocol_demo.html) with [source code](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb).
   - In the `container` folder above, you can find the Singularity images released for the software environment. If you use Docker (eg on a Linux or Mac Desktop) you **do not** need to download this folder.
+- Please clone this repository https://github.com/cumc/xqtl-pipeline to your computer. This is the source code for this resource. All pipelines are symbolic links under `pipeline` folder to various notebooks under `code` folder. You can follow our mini-protocols to run the pipelines under `pipeline` folder.
 
 ### See Also
 

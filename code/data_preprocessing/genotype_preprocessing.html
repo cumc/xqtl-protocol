@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
     <title>Genotype data preprocessing &#8212; ADSP-FG Project</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
@@ -694,7 +695,7 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-preprocessing">
+  <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-preprocessing">
 <h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
 <p>This section documents output from the genotype section (colored in light yellow) of xqtl discovery pipeline MWE and explained the purpose for each of the command. The file used in this page can be found within the protocol_data folder of the synapse repo as described on the landing page.</p>
 <p><strong>For mutli-theme study using same set of genotype (i.e. different tissues for the same participant) , the VCF QC and final Genotype QC steps are ran once. The related/unrelated genotype QC and PCA were ran once per tissue, as only the participant also have molecular phenotype data will be used for PCA</strong></p>
@@ -708,25 +709,25 @@
 <div class="output text_html"><div class="sos_hint">> ../images/eqtl_command.png (254.4 KiB):</div></div><img alt="../../_images/genotype_preprocessing_1_1.png" src="../../_images/genotype_preprocessing_1_1.png" />
 </div>
 </div>
-<div class="section" id="overview">
+<section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="analysis-steps">
+<section id="analysis-steps">
 <h3>Analysis steps<a class="headerlink" href="#analysis-steps" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>Genotype data quality control (QC). See here for the <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/GWAS_QC.html">QC default settings</a>.</p></li>
 <li><p>Principle component analysis (PCA) based QC, and PC computation for each sub-population available in the genotype data.</p></li>
 <li><p>Genomic relationship matrix (GRM) computation (optional, when in Step 1 genotype QC detects related individuals or the input is known to have related individuals).</p></li>
 </ol>
-</div>
-<div class="section" id="input-data-requirement">
+</section>
+<section id="input-data-requirement">
 <h3>Input data requirement<a class="headerlink" href="#input-data-requirement" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>Genotype data. See here for <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/genotype_formatting.html">format details</a>.</p></li>
 <li><p>[Optional] a sample information file to specific population information, if external data such as HapMap or 1000 Genomes are to be integrated to the PCA analysis to visualize and assess population structure in the genotype data. See here for <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/genotype_formatting.html">format details</a>.</p></li>
 </ol>
-</div>
-</div>
-<div class="section" id="qc-for-vcf-files">
+</section>
+</section>
+<section id="qc-for-vcf-files">
 <h2>QC for VCF files<a class="headerlink" href="#qc-for-vcf-files" title="Permalink to this headline">¶</a></h2>
 <p>This step extract the rsID for the known varriants, so that we can distinguish them from the novel variants we had in our study. The procedure/rationale is <a class="reference external" href="https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html">explained in this post</a>.</p>
 <div class="cell docutils container">
@@ -766,8 +767,8 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="optional-merged-output-of-vcf-qc">
+</section>
+<section id="optional-merged-output-of-vcf-qc">
 <h2>Optional: Merged output of VCF QC<a class="headerlink" href="#optional-merged-output-of-vcf-qc" title="Permalink to this headline">¶</a></h2>
 <p>To accomodate the genotype file with extra large size,we allow our user to perform QC of vcf file on a per chromomosome basis. However, to accurately perform filtering base on minor allele count, HWE deviation, and missingness, the input to GWAS QC need to be the whole genome genotype file. Therefore we provide this utlity for the user to merge their output from vcf QC</p>
 <div class="cell docutils container">
@@ -779,8 +780,8 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="get-overlap-samples-for-genotypes-and-phenotype-data">
+</section>
+<section id="get-overlap-samples-for-genotypes-and-phenotype-data">
 <h2>Get overlap samples for genotypes and phenotype data<a class="headerlink" href="#get-overlap-samples-for-genotypes-and-phenotype-data" title="Permalink to this headline">¶</a></h2>
 <p>In most of the time, the number of samples in genotype and phenotype data will not be an exact match. Therefore, we provides a utility to produce a list of overlaps samples between genotypes and each phenotypes. Following command retrieve the overlapped sample between Genotypes and methylation data</p>
 <div class="cell docutils container">
@@ -796,8 +797,8 @@ After the procedure was done, the output will be converted to a plink bed/bim/fa
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="genotype-qc-for-pca">
+</section>
+<section id="genotype-qc-for-pca">
 <h2>Genotype QC for PCA<a class="headerlink" href="#genotype-qc-for-pca" title="Permalink to this headline">¶</a></h2>
 <p>To accuratly estimate the PCs for the genotype. We split participants based on their kinship coefficients, estimated by king. We have implemented a graph-based method to avoid removing unrelated participants that are in a family. However, this option is disable by default due to the long running time it required. User can enable this option by changing the <code class="docutils literal notranslate"><span class="pre">--no-maximize_unrelated</span></code> to <code class="docutils literal notranslate"><span class="pre">--maximize_unrelated</span></code></p>
 <div class="cell docutils container">
@@ -847,8 +848,8 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="principle-component-analysis">
+</section>
+<section id="principle-component-analysis">
 <h2>Principle component analysis<a class="headerlink" href="#principle-component-analysis" title="Permalink to this headline">¶</a></h2>
 <p>Analysis below uses data from previous genotype QC.</p>
 <p>First, perform PCA on unrelated individuals after QC in previous step,</p>
@@ -918,10 +919,10 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="finalized-genotype-qc">
+</section>
+<section id="finalized-genotype-qc">
 <h2>Finalized genotype QC<a class="headerlink" href="#finalized-genotype-qc" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="for-common-and-infrequent-variants">
+<section id="for-common-and-infrequent-variants">
 <h3>For common and infrequent variants<a class="headerlink" href="#for-common-and-infrequent-variants" title="Permalink to this headline">¶</a></h3>
 <p>In our demo, we only keep variants having sample minor allele count MAC &gt;= 5, for the sake of convenience focusing our single variant analysis. It should be noted that mac and maf don’t overwrite each other within our module. It is up to plink to decide how to handle the secnario of both <code class="docutils literal notranslate"><span class="pre">--maf-filter</span></code> and <code class="docutils literal notranslate"><span class="pre">--mac-filter</span></code> &gt; 0. Therefore, the user should not specify both <code class="docutils literal notranslate"><span class="pre">--maf-filter</span></code> and <code class="docutils literal notranslate"><span class="pre">--mac-filter</span></code> without good reason.</p>
 <div class="cell docutils container">
@@ -939,8 +940,8 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="optional-remove-outlier">
+</section>
+<section id="optional-remove-outlier">
 <h3>Optional: Remove outlier<a class="headerlink" href="#optional-remove-outlier" title="Permalink to this headline">¶</a></h3>
 <p>PCA analysis (see covariate formatting page) can possibly provide us a list of outlier samples to be removed from the genotype data. We can optionally remove them and perform genotype data QC.</p>
 <p>Removal of samples is a complicated decision that require human descretion. Therefore outlier removal is not performed automatically. The <code class="docutils literal notranslate"><span class="pre">--remove-samples</span></code> parameter take a two columns table that illustrated by  <code class="docutils literal notranslate"><span class="pre">output/pca/xqtl_protocol_data.related.filtered.extracted.pca.projected.outliers</span></code></p>
@@ -961,8 +962,8 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 <p>To fully illustrate how PCA and PCA based QC is done on sample with <strong>multiple populations (a more complicated but potentially very useful setting)</strong>, please try out the example documented in the <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/genotype/PCA.html">PCA analysis module</a> with a different example data-set.</p>
-</div>
-<div class="section" id="optional-extract-common-variants">
+</section>
+<section id="optional-extract-common-variants">
 <h3>Optional: Extract common variants<a class="headerlink" href="#optional-extract-common-variants" title="Permalink to this headline">¶</a></h3>
 <p>In case you would like to focus on common variants only, the genotype data can also filtered by the criteria of missingness &gt; 10% and MAF&gt;5% as shown below to retain the common variants, User can detemined the level of filtering by changing the generated command manually.</p>
 <div class="cell docutils container">
@@ -996,11 +997,11 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="genotype-reformatting">
+</section>
+</section>
+<section id="genotype-reformatting">
 <h2>Genotype Reformatting<a class="headerlink" href="#genotype-reformatting" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="partition-by-chromosome">
+<section id="partition-by-chromosome">
 <h3>Partition by Chromosome<a class="headerlink" href="#partition-by-chromosome" title="Permalink to this headline">¶</a></h3>
 <p>The association analysis of TensorQTL required the chromosome be seperated by chromosome to allowed for parallel analysis.</p>
 <div class="cell docutils container">
@@ -1014,8 +1015,8 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="optional-convert-to-vcf">
+</section>
+<section id="optional-convert-to-vcf">
 <h3>Optional: convert to VCF<a class="headerlink" href="#optional-convert-to-vcf" title="Permalink to this headline">¶</a></h3>
 <p>If association analysis by APEX is needed, following command convert the per-chromosome plink binaray generated above into indexed vcf.gz.</p>
 <div class="cell docutils container">
@@ -1028,11 +1029,11 @@ sos run pipeline/GWAS_QC.ipynb king <span class="se">\</span>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 <div class="toctree-wrapper compound">
 </div>
-</div>
+</section>
 
     <script type="text/x-thebe-config">
     {

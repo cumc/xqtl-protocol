@@ -9,7 +9,7 @@ cd htslib-1.12 && \
 ./configure --prefix=/usr/local/bin && \
 make && \
 make install && \
-cp tabix bgzip htsfile /usr/local/bin && rm -rf /tmp/htslib*
+cp tabix bgzip htsfile /usr/local/bin && cd ../ && rm -rf /tmp/htslib*
 
 RUN R --slave -e "for (p in c('abind','rlang', 'RcppEigen', 'BiocManager', 'tidyr', 'data.table', 'tibble','modelr','purrr')) if (!(p %in% rownames(installed.packages()))) install.packages(p, repos = 'http://cran.rstudio.com')"
 

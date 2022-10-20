@@ -33,6 +33,7 @@ make && make install && make clean
 cd /opt && \
 wget https://raw.githubusercontent.com/hsun3163/xqtl-pipeline/main/data/cross_reactive_probe_Hop2020.txt
 R -e "install.packages('data.table', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+R -e "install.packages(c('Matrix','softImpute'))"
 R -e "install.packages('glmnet', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
@@ -50,6 +51,8 @@ R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
 R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
+
+
 %runscript
 exec /bin/bash exec /bin/bash exec sh "$@"
 %startscript

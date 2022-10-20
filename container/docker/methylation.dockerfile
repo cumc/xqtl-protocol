@@ -30,6 +30,7 @@ wget https://raw.githubusercontent.com/hsun3163/xqtl-pipeline/main/data/cross_re
 RUN R -e "install.packages('data.table', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('glmnet', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages(c('Matrix','softImpute'))"
 RUN R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('BiocManager')"

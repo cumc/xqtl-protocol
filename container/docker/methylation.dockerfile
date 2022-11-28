@@ -45,5 +45,6 @@ RUN R -e 'BiocManager::install("limma")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
+RUN R -e 'BiocManager::install("IlluminaHumanMethylation450kanno.ilmn12.hg19")'
 RUN R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
 CMD exec /bin/bash exec sh "$@"

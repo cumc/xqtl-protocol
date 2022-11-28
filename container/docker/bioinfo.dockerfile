@@ -21,15 +21,15 @@ RUN cd /tmp && wget https://s3.amazonaws.com/plink2-assets/alpha2/plink2_linux_a
 RUN cd /tmp && wget https://cnsgenomics.com/software/gcta/bin/gcta_1.93.2beta.zip && \
     unzip -o  gcta_1.93.2beta.zip && mv gcta_1.93.2beta/gcta64 /usr/local/bin && rm -rf /tmp/gcta*
 #Install bcftools, tabix, and bgzip
-RUN cd /tmp && wget https://github.com/samtools/bcftools/releases/download/1.12/bcftools-1.12.tar.bz2 -O bcftools.tar.bz2 && \
+RUN cd /tmp && wget https://github.com/samtools/bcftools/releases/download/1.16/bcftools-1.16.tar.bz2 -O bcftools.tar.bz2 && \
     tar -xjvf bcftools.tar.bz2 && \
-    cd bcftools-1.12 && \
+    cd bcftools-1.16 && \
     make prefix=/usr/local/bin install && \
     ln -s /usr/local/bin/bin/bcftools /usr/bin/bcftools
     
-RUN cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.12/htslib-1.12.tar.bz2 -O htslib-1.12.tar.bz2 && \
-    tar -xjvf htslib-1.12.tar.bz2 && \
-    cd htslib-1.12 && \
+RUN cd /tmp && wget https://github.com/samtools/htslib/releases/download/1.16/htslib-1.16.tar.bz2 -O htslib-1.16.tar.bz2 && \
+    tar -xjvf htslib-1.16.tar.bz2 && \
+    cd htslib-1.16 && \
     ./configure --prefix=/usr/local/bin && \
     make && \
     make install && \

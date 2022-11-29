@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Quantification of methylation data &#8212; ADSP-FG Project</title>
+    <title>Quantification of methylation data &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -122,7 +122,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
-   Bulk RNA-seq eQTL analysis
+   Bulk RNA-seq xQTL analysis
   </a>
  </li>
 </ul>
@@ -729,6 +729,15 @@
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">methylation_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">minfi</span> \
+    <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">sheet</span> <span class="n">data</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">MWE_Sample_sheet</span><span class="o">.</span><span class="n">csv</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">methylation</span><span class="o">.</span><span class="n">sif</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
@@ -927,6 +936,8 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
     <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
     <span class="n">library</span><span class="p">(</span><span class="n">tibble</span><span class="p">)</span>
     <span class="n">library</span><span class="p">(</span><span class="n">purrr</span><span class="p">)</span>
+    <span class="c1"># Cache the sesameData, it will not actually download anything if the data is here alerady</span>
+    <span class="n">sesameData</span><span class="p">::</span><span class="n">sesameDataCache</span><span class="p">()</span>
     <span class="c1"># Define function </span>
     <span class="n">B2M</span><span class="o">&lt;-</span><span class="n">function</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="p">{</span>
@@ -1034,7 +1045,7 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
     <span class="n">message</span><span class="p">(</span><span class="s2">&quot;Cross-reactive probes removed&quot;</span><span class="p">)</span>
     
     <span class="c1">## 5. Drop probes that are also SNPs</span>
-    <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">keep_only_cpg_probes</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">}</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">keep_only_cpg_probes</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">}</span> <span class="p">){</span>
         <span class="n">mSetSq</span> <span class="o">&lt;-</span> <span class="n">dropLociWithSnps</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">)</span>
         <span class="n">message</span><span class="p">(</span><span class="s2">&quot;probes overlapping with SNPs removed&quot;</span><span class="p">)</span>
     <span class="p">}</span>
@@ -1145,9 +1156,9 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

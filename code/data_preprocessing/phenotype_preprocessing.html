@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Phenotype data preprocessing &#8212; ADSP-FG Project</title>
+    <title>Phenotype data preprocessing &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -609,8 +609,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#optional-annotation">
-   Optional: Annotation
+  <a class="reference internal nav-link" href="#optional-annotation-not-part-of-the-protocol-data-analysis">
+   Optional: Annotation (Not part of the protocol data analysis)
   </a>
  </li>
 </ul>
@@ -644,40 +644,33 @@
 max vms_memory: 15.36GB</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span>  \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span> <span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">protocol</span><span class="o">-</span><span class="n">eqtl</span><span class="o">/</span><span class="n">phenotype_data</span>  \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tmm</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="o">&lt;</span><span class="p">(</span><span class="n">zcat</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tmm</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span>  <span class="o">|</span> <span class="n">grep</span> <span class="s1">&#39;chr21\|chr22&#39;</span> <span class="p">)</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span>  \
-    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list_intron_usage_perind</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">gz_raw_data</span><span class="o">.</span><span class="n">qqnorm</span><span class="o">.</span><span class="n">formated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="o">&lt;</span><span class="p">(</span><span class="n">zcat</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list_intron_usage_perind</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">gz_raw_data</span><span class="o">.</span><span class="n">qqnorm</span><span class="o">.</span><span class="n">formated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span> <span class="o">|</span> <span class="n">grep</span> <span class="s1">&#39;chr21\|chr22&#39;</span> <span class="p">)</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span>  \
-    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tmm</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="o">&lt;</span><span class="p">(</span><span class="n">zcat</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tmm</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span> <span class="p">)</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span>  <span class="o">&lt;</span><span class="p">(</span><span class="n">zcat</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">rnaseqc</span><span class="o">.</span><span class="n">low_expression_filtered</span><span class="o">.</span><span class="n">outlier_removed</span><span class="o">.</span><span class="n">tmm</span><span class="o">.</span><span class="n">expression</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">16</span><span class="n">G</span>       
+
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">protocol</span><span class="o">-</span><span class="n">sqtl</span><span class="o">/</span><span class="n">phenotype_data</span>  \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list_intron_usage_perind</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">gz_raw_data</span><span class="o">.</span><span class="n">qqnorm</span><span class="o">.</span><span class="n">formated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span>  <span class="o">&lt;</span><span class="p">(</span><span class="n">zcat</span> <span class="n">output</span><span class="o">/</span><span class="n">leaf_cutter</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list_intron_usage_perind</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">gz_raw_data</span><span class="o">.</span><span class="n">qqnorm</span><span class="o">.</span><span class="n">formated</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">16</span><span class="n">G</span>       
+
+<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">partition_by_chrom</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">protocol</span><span class="o">-</span><span class="n">mqtl</span><span class="o">/</span><span class="n">phenotype_data</span>  \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">methylation</span><span class="o">/</span><span class="n">xqtl_protocol_data_arrayMethylation_covariates</span><span class="o">.</span><span class="n">sesame</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">filter_na</span><span class="o">.</span><span class="n">soft</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span>  <span class="o">&lt;</span><span class="p">(</span><span class="n">zcat</span> <span class="n">output</span><span class="o">/</span><span class="n">methylation</span><span class="o">/</span><span class="n">xqtl_protocol_data_arrayMethylation_covariates</span><span class="o">.</span><span class="n">sesame</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">filter_na</span><span class="o">.</span><span class="n">soft</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>  \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">16</span><span class="n">G</span>       
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="optional-annotation">
-<h2>Optional: Annotation<a class="headerlink" href="#optional-annotation" title="Permalink to this headline">¶</a></h2>
+<section id="optional-annotation-not-part-of-the-protocol-data-analysis">
+<h2>Optional: Annotation (Not part of the protocol data analysis)<a class="headerlink" href="#optional-annotation-not-part-of-the-protocol-data-analysis" title="Permalink to this headline">¶</a></h2>
 <p>The input molecular phenotype data is assumed to be a bed.gz file generated from our molecular phenotype calling pipeline. However, when such file is not availble. The annotate_coord utility can help the user to produce such file based on a gene expression matrix with first column being gene name/ gene ID. The chromosome, transcription start site(TSS), and TSS+1 will be written in the chr,start,end columns of the bed file, in accordance with the requirement from TensorQTL and APEX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -744,9 +737,9 @@ max vms_memory: 15.36GB</p>
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

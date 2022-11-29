@@ -1,4 +1,4 @@
-# ADSP-FG xQTL protocol
+# ADSP FunGen-xQTL computational protocol
 
 Developed for reproducible molecular QTL analysis for the NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium.
 

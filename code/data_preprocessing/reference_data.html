@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Reference data standardization &#8212; ADSP-FG Project</title>
+    <title>Reference data standardization &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -631,7 +631,17 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#process-reference-fasta-file">
+     Process reference fasta file
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#convert-transcript-feature-file-gff3-to-gtf">
+     Convert transcript feature file gff3 to gtf
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
      Convert transcript feature file gff3 to gtf
     </a>
    </li>
@@ -715,7 +725,7 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
+    <a class="reference internal nav-link" href="#id2">
      Step Inputs
     </a>
    </li>
@@ -739,6 +749,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#generate-psichomics-hg38-splicing-annotation">
    Generate psichomics Hg38 splicing annotation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generate-tad-associated-index">
+   Generate TAD associated index
   </a>
  </li>
 </ul>
@@ -782,8 +797,22 @@
 <section id="details">
 <h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
 <p>Workflows implemented include:</p>
+<section id="process-reference-fasta-file">
+<h3>Process reference fasta file<a class="headerlink" href="#process-reference-fasta-file" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Input:  a reference fasta file.</p></li>
+<li><p>Output: a reference fasta file without HLA, ALT, Decoy but with ERCC.</p></li>
+</ul>
+</section>
 <section id="convert-transcript-feature-file-gff3-to-gtf">
 <h3>Convert transcript feature file gff3 to gtf<a class="headerlink" href="#convert-transcript-feature-file-gff3-to-gtf" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Input: an uncompressed gff3 file.(i.e. can be view via cat)</p></li>
+<li><p>Output: a gtf file.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>Convert transcript feature file gff3 to gtf<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Input: an uncompressed gff3 file.(i.e. can be view via cat)</p></li>
 <li><p>Output: a gtf file.</p></li>
@@ -919,9 +948,19 @@
 </div>
 </div>
 </div>
-<ul class="simple">
-<li><p>Approximate time: ? min</p></li>
-</ul>
+<p>Approximate time: ? min</p>
+<p>This step extract the rsID for the known varriants, so that we can distinguish them from the novel variants we had in our study. The procedure/rationale is <a class="reference external" href="https://hbctraining.github.io/In-depth-NGS-Data-Analysis-Course/sessionVI/lessons/03_annotation-snpeff.html">explained in this post</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">dbsnp_annotate</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">reference_data</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">reference_data</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">-</span><span class="n">J</span> <span class="mi">50</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">--</span><span class="n">add_chr</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
@@ -1324,8 +1363,8 @@ Sections
 <section id="generating-index-file-for-rsem">
 <h2>Generating index file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#generating-index-file-for-rsem" title="Permalink to this headline">¶</a></h2>
 <p>This step generate the indexing file for <code class="docutils literal notranslate"><span class="pre">RSEM</span></code>. This file just need to generate once.</p>
-<section id="id1">
-<h3>Step Inputs<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<section id="id2">
+<h3>Step Inputs<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code> and <code class="docutils literal notranslate"><span class="pre">fasta</span></code>: path to reference sequence. <code class="docutils literal notranslate"><span class="pre">gtf</span></code> should be the one prior to collapse by gene.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sjdbOverhang</span></code>: specifies the length of the genomic sequence around the annotated junction to be used in constructing the splice junctions database. Ideally, this length should be equal to the ReadLength-1, where ReadLength is the length of the reads.</p></li>
@@ -1581,6 +1620,46 @@ Sections
 </div>
 </div>
 </section>
+<section id="generate-tad-associated-index">
+<h2>Generate TAD associated index<a class="headerlink" href="#generate-tad-associated-index" title="Permalink to this headline">¶</a></h2>
+<p>We use <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7895846/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7895846/</a> to define the genotype cis region for fine mapping with different phenotypes. The actual TAD dataframe for each cell types and tissues are download from the hg38 TAD link from  <a class="reference external" href="http://3dgenome.fsm.northwestern.edu/publications.html">http://3dgenome.fsm.northwestern.edu/publications.html</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Tad_annotateion</span><span class="p">]</span>
+<span class="c1">## The tad file downloads from </span>
+<span class="kn">parameter:</span> <span class="n">TAD_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">TAD_genotype</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">input:</span> <span class="n">TAD_list</span><span class="p">,</span> <span class="n">region_list</span>
+<span class="kn">output:</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">region_list</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.annotation&#39;</span> 
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">python:</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">tad</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input[0]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">tad</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#chr&quot;</span><span class="p">,</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">]</span>
+    <span class="n">tad</span><span class="p">[</span><span class="s2">&quot;tad_index&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;tad</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">tad</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">region_list</span> <span class="o">=</span>  <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input[1]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">tad</span> <span class="o">=</span> <span class="n">tad</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">region_list</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#chr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;start_y &gt; start_x &amp;  end_y &lt; end_x&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;start_y&quot;</span><span class="p">,</span><span class="s2">&quot;end_y&quot;</span><span class="p">]</span> <span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tad_geno_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_TAD_genotype}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">tad_gene_id</span> <span class="o">=</span> <span class="n">tad</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">tad_geno_list</span><span class="p">,</span><span class="n">left_on</span> <span class="o">=</span> <span class="s2">&quot;tad_index&quot;</span><span class="p">,</span><span class="n">right_on</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]]</span>
+    <span class="n">tad_gene_id</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span><span class="s2">&quot;dir&quot;</span><span class="p">]</span>
+    <span class="n">tad_gene_id</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/hs3163/miniconda3/lib/python3.9/site-packages/IPython/core/interactiveshell.py:3441: FutureWarning: In a future version of pandas all arguments of read_csv except for the argument &#39;filepath_or_buffer&#39; will be keyword-only.
+  exec(code_obj, self.user_global_ns, self.user_ns)
+/home/hs3163/miniconda3/lib/python3.9/site-packages/IPython/core/interactiveshell.py:3441: FutureWarning: In a future version of pandas all arguments of read_csv except for the argument &#39;filepath_or_buffer&#39; will be keyword-only.
+  exec(code_obj, self.user_global_ns, self.user_ns)
+/home/hs3163/miniconda3/lib/python3.9/site-packages/IPython/core/interactiveshell.py:3441: FutureWarning: In a future version of pandas all arguments of read_csv except for the argument &#39;filepath_or_buffer&#39; will be keyword-only.
+  exec(code_obj, self.user_global_ns, self.user_ns)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1630,9 +1709,9 @@ Sections
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

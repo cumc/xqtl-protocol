@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>TensorQTL QTL association testing &#8212; ADSP-FG Project</title>
+    <title>TensorQTL QTL association testing &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -880,6 +880,9 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">molecular_pheno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">phenotype_file</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">geno_chr_inv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_file</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">geno_chr_inv</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geno_chr_inv</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">molecular_pheno_chr_inv</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">molecular_pheno_chr_inv</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
 <span class="n">input_inv</span> <span class="o">=</span> <span class="n">molecular_pheno_chr_inv</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">geno_chr_inv</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
 <span class="n">input_inv</span> <span class="o">=</span> <span class="n">input_inv</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">chr_inv</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_inv</span><span class="p">]</span>
@@ -923,9 +926,10 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
     <span class="n">phenotype_df</span> <span class="o">=</span> <span class="n">phenotype_df</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
     <span class="n">phenotype_df</span> <span class="o">=</span> <span class="n">phenotype_df</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">genotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
     <span class="n">covariates_df</span> <span class="o">=</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">phenotype_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">covariates_df</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-    <span class="k">if</span> <span class="s2">&quot;chr&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">variant_df</span><span class="o">.</span><span class="n">chrom</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-        <span class="n">phenotype_pos_df</span><span class="o">.</span><span class="n">chr</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">phenotype_pos_df</span><span class="o">.</span><span class="n">chr</span><span class="p">]</span>
-
+    
+    <span class="c1">## To simplify things, there should really not be &quot;chr&quot; prefix</span>
+    <span class="n">phenotype_pos_df</span><span class="o">.</span><span class="n">chr</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">phenotype_pos_df</span><span class="o">.</span><span class="n">chr</span><span class="p">]</span>
+    <span class="n">variant_df</span><span class="o">.</span><span class="n">chrom</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">variant_df</span><span class="o">.</span><span class="n">chrom</span><span class="p">]</span>
     <span class="c1">## Read phenotype group if availble</span>
     <span class="k">if</span> <span class="err">$</span><span class="p">[</span><span class="mi">1</span> <span class="k">if</span>  <span class="n">phenotype_group</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span><span class="p">]</span>  <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">group_s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="err">$</span><span class="p">[</span><span class="n">phenotype_group</span><span class="p">:</span><span class="n">r</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -944,7 +948,7 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
     <span class="k">else</span><span class="p">:</span>
         <span class="n">pairs_df</span><span class="p">[</span><span class="s2">&quot;molecular_trait_object_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pairs_df</span><span class="o">.</span><span class="n">phenotype_id</span>
 
-    <span class="n">lambda_col</span> <span class="o">=</span> <span class="n">pairs_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;molecular_trait_object_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>  <span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">pval_nominal</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">chi2</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1">#lambda_col = pairs_df.groupby(&quot;molecular_trait_object_id&quot;).apply( lambda x:  chi2.ppf(1. - np.median(x.pval_nominal), 1)/chi2.ppf(0.5,1))</span>
     <span class="n">pairs_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;molecular_trait_id&quot;</span>
     <span class="n">pairs_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;pvalue&quot;</span>
     <span class="n">pairs_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>  <span class="o">=</span> <span class="s2">&quot;beta&quot;</span>
@@ -968,10 +972,7 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
         <span class="n">cis_df</span><span class="p">[</span><span class="s2">&quot;group_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cis_df</span><span class="o">.</span><span class="n">index</span>
         <span class="n">cis_df</span><span class="p">[</span><span class="s2">&quot;group_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">cis_df</span> <span class="o">=</span> <span class="n">cis_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;group_id&quot;</span><span class="p">:</span><span class="s2">&quot;molecular_trait_object_id&quot;</span><span class="p">,</span><span class="s2">&quot;group_size&quot;</span><span class="p">:</span><span class="s2">&quot;n_traits&quot;</span><span class="p">,</span><span class="s2">&quot;num_var&quot;</span> <span class="p">:</span> <span class="s2">&quot;n_variants&quot;</span><span class="p">,</span><span class="s2">&quot;variant_id&quot;</span><span class="p">:</span><span class="s2">&quot;variant&quot;</span><span class="p">,</span><span class="s2">&quot;pval_perm&quot;</span><span class="p">:</span><span class="s2">&quot;p_perm&quot;</span><span class="p">,</span> <span class="s2">&quot;pval_beta&quot;</span><span class="p">:</span><span class="s2">&quot;p_beta&quot;</span> <span class="p">},</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">cis_df</span> <span class="o">=</span> <span class="n">cis_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">inflation_factor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span> <span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s2">&quot;molecular_trait_object_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">molecular_trait_object_id</span><span class="p">:</span><span class="n">lambda_col</span><span class="p">[</span><span class="n">molecular_trait_object_id</span><span class="p">]))</span>
-     <span class="c1">## Generate Qvalues</span>
-   
-    <span class="n">significance</span><span class="p">,</span><span class="n">cis_df</span><span class="p">[</span><span class="s1">&#39;qvalue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qvalue</span><span class="p">(</span><span class="n">cis_df</span><span class="o">.</span><span class="n">p_beta</span><span class="p">)</span>
+    <span class="c1">#cis_df = cis_df.assign(inflation_factor = lambda dataframe : dataframe[&quot;molecular_trait_object_id&quot;].map(lambda molecular_trait_object_id:lambda_col[molecular_trait_object_id]))</span>
     <span class="n">cis_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[1]]&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1065,8 +1066,6 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
         <span class="n">cis_df</span><span class="p">[</span><span class="s2">&quot;group_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">cis_df</span> <span class="o">=</span> <span class="n">cis_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;group_id&quot;</span><span class="p">:</span><span class="s2">&quot;molecular_trait_object_id&quot;</span><span class="p">,</span><span class="s2">&quot;group_size&quot;</span><span class="p">:</span><span class="s2">&quot;n_traits&quot;</span><span class="p">,</span><span class="s2">&quot;num_var&quot;</span> <span class="p">:</span> <span class="s2">&quot;n_variants&quot;</span><span class="p">,</span><span class="s2">&quot;variant_id&quot;</span><span class="p">:</span><span class="s2">&quot;variant&quot;</span><span class="p">,</span><span class="s2">&quot;pval_perm&quot;</span><span class="p">:</span><span class="s2">&quot;p_perm&quot;</span><span class="p">,</span> <span class="s2">&quot;pval_beta&quot;</span><span class="p">:</span><span class="s2">&quot;p_beta&quot;</span> <span class="p">},</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">cis_df</span> <span class="o">=</span> <span class="n">cis_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">inflation_factor</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dataframe</span> <span class="p">:</span> <span class="n">dataframe</span><span class="p">[</span><span class="s2">&quot;molecular_trait_object_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">molecular_trait_object_id</span><span class="p">:</span><span class="n">lambda_col</span><span class="p">[</span><span class="n">molecular_trait_object_id</span><span class="p">]))</span>
-     <span class="c1">## Generate Qvalues</span>
-    <span class="n">significance</span><span class="p">,</span><span class="n">cis_df</span><span class="p">[</span><span class="s1">&#39;qvalue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qvalue</span><span class="p">(</span><span class="n">cis_df</span><span class="o">.</span><span class="n">p_beta</span><span class="p">)</span>
     <span class="n">cis_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output[0]]&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1316,9 +1315,9 @@ For cis: Also process the consolidates emprical data.</p>
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

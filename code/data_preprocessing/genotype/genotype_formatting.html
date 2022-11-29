@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Genotype data formatting &#8212; ADSP-FG Project</title>
+    <title>Genotype data formatting &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -122,7 +122,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
-   Bulk RNA-seq eQTL analysis
+   Bulk RNA-seq xQTL analysis
   </a>
  </li>
 </ul>
@@ -919,7 +919,7 @@ Sections
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">plink_by_gene_1</span><span class="p">]</span>
 <span class="c1"># cis window size</span>
-<span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">1000000</span>
 <span class="c1"># Region definition</span>
 <span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span>
 <span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">region_list</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)]</span>
@@ -927,13 +927,30 @@ Sections
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">region_list</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_plink_files/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_regions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">.bed&#39;</span>
 <span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">region_list</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">region_list</span><span class="si">:</span><span class="s1">ad</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
-    <span class="n">plink</span> <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">an</span><span class="p">}</span> \
+    <span class="n">plink2</span> <span class="o">--</span><span class="n">bfile</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">an</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">make</span><span class="o">-</span><span class="n">bed</span> \
         <span class="o">--</span><span class="n">out</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> \
         <span class="o">--</span><span class="nb">chr</span> <span class="err">$</span><span class="p">{</span><span class="n">_regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> \
         <span class="o">--</span><span class="n">from</span><span class="o">-</span><span class="n">bp</span> <span class="err">$</span><span class="p">{</span><span class="sa">f</span><span class="s1">&#39;1&#39;</span> <span class="k">if</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">_regions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">window</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">_regions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">window</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="n">bp</span> <span class="err">$</span><span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">_regions</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="n">window</span><span class="p">}</span> \
         <span class="o">--</span><span class="n">allow</span><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sex</span> <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="nb">chr</span> <span class="n">chrMT</span> <span class="o">||</span> <span class="n">touch</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">plink_by_gene_2</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.plink_files_list.txt&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+    <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]],</span>
+    <span class="s2">&quot;dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]</span>
+    <span class="p">})</span>
+    <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -963,15 +980,14 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">plink_by_chrom_2</span><span class="p">,</span> <span class="n">plink_by_gene_2</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">plink_by_chrom_2</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.plink_files_list.txt&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="kn">import</span> <span class="nn">csv</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
     <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;chr</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]],</span>
+    <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]],</span>
     <span class="s2">&quot;dir&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]</span>
     <span class="p">})</span>
     <span class="n">data_tempt</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="p">)</span>
@@ -984,9 +1000,8 @@ Sections
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">plink_to_vcf_2</span><span class="p">]</span>
 <span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
 <span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">nnn</span><span class="si">}</span><span class="s1">.vcf_files_list.txt&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="c1">#task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;</span>
 <span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="kn">import</span> <span class="nn">csv</span>
     <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
     <span class="n">data_tempt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
     <span class="s2">&quot;#id&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span>  <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]],</span>
@@ -1098,9 +1113,9 @@ Sections
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

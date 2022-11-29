@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>RNA-seq expression &#8212; ADSP-FG Project</title>
+    <title>RNA-seq expression &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -604,6 +604,11 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#download-input-data-from-synapse">
+   Download input data from Synapse
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#perform-data-quality-summary-via-fastqc">
    Perform data quality summary via
    <code class="docutils literal notranslate">
@@ -687,14 +692,18 @@
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Output</span></code> of this mini-protocol is a bed.gz file that are TensorQTL ready.</p>
+<section id="download-input-data-from-synapse">
+<h2>Download input data from Synapse<a class="headerlink" href="#download-input-data-from-synapse" title="Permalink to this headline">¶</a></h2>
+<p>Required input data lists <a class="reference external" href="https://www.synapse.org/#%21Synapse:syn36422500">on this page</a>. See Data section for details <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb">on this page</a> of downloading data. Making any necessary changes to path.</p>
+</section>
 <section id="perform-data-quality-summary-via-fastqc">
 <h2>Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code><a class="headerlink" href="#perform-data-quality-summary-via-fastqc" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fastqc</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">fastqc</span> \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
-    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
+    <span class="o">--</span><span class="n">samples</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span>
 </pre></div>
@@ -708,8 +717,8 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fastp_trim_adaptor</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
-    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
@@ -725,12 +734,12 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_output</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
-    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> <span class="o">--</span><span class="n">samples</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span> \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy_ERCC</span><span class="o">.</span><span class="n">fasta</span> \
-    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span>
+    <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span> <span class="o">--</span><span class="n">uncompressed</span> 
 </pre></div>
 </div>
 </div>
@@ -743,7 +752,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rnaseqc_call</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span> \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span>    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
+    <span class="o">--</span><span class="n">samples</span> <span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span>    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">fasta</span> \
@@ -760,8 +769,8 @@
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rsem_call</span>  \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span>   \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span>  \
-    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">ROSMAP_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span>   \
+    <span class="o">--</span><span class="n">samples</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span><span class="n">xqtl_protocol_data</span><span class="o">.</span><span class="n">fastqlist</span>  \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">protocol_data</span><span class="o">/</span><span class="n">input_data</span><span class="o">/</span><span class="n">RNASeq</span><span class="o">/</span><span class="n">fastq</span><span class="o">/</span>   \
     <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">RSEM_Index</span><span class="o">/</span>   \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span>   \
     <span class="o">--</span><span class="n">bam_list</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">xqtl_protocol_data_bam_list</span>   
@@ -870,9 +879,9 @@
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

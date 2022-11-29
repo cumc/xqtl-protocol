@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Quantifying expression from RNA-seq data &#8212; ADSP-FG Project</title>
+    <title>Quantifying expression from RNA-seq data &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -896,7 +896,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fastp_trim_adaptor</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output2</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
     <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
@@ -912,10 +912,10 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">STAR_output</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output4</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
-    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data3</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">fasta</span><span class="o">.</span><span class="n">fasta</span> \
@@ -929,15 +929,15 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rnaseqc_call</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output3</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
-    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data3</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">fasta</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span> \
-    <span class="o">--</span><span class="n">bam_list</span> <span class="n">output3</span><span class="o">/</span><span class="n">sample_fastq_bam_list</span> <span class="o">-</span><span class="n">J</span> <span class="mi">3</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span>
+    <span class="o">--</span><span class="n">bam_list</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">sample_fastq_bam_list</span> <span class="o">-</span><span class="n">J</span> <span class="mi">3</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span>
 </pre></div>
 </div>
 </div>
@@ -946,16 +946,16 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">RNA_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">rsem_call</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output3</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">samples</span> <span class="n">data</span><span class="o">/</span><span class="n">sample_fastq</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="n">data</span> \
-    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data3</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">STAR</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">STAR_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">RSEM</span><span class="o">-</span><span class="n">index</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">RSEM_Index</span><span class="o">/</span> \
     <span class="o">--</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">fasta</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">GRCh38_full_analysis_set_plus_decoy_hla</span><span class="o">.</span><span class="n">noALT_noHLA_noDecoy</span><span class="o">.</span><span class="n">fasta</span><span class="o">.</span><span class="n">fasta</span> \
     <span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">flat</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="mf">.103</span><span class="o">.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformated</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">flat</span> \
-    <span class="o">--</span><span class="n">bam_list</span> <span class="n">output3</span><span class="o">/</span><span class="n">sample_fastq_bam_list</span> <span class="o">-</span><span class="n">J</span> <span class="mi">3</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span>
+    <span class="o">--</span><span class="n">bam_list</span> <span class="n">output</span><span class="o">/</span><span class="n">rnaseq</span><span class="o">/</span><span class="n">sample_fastq_bam_list</span> <span class="o">-</span><span class="n">J</span> <span class="mi">3</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span>
 </pre></div>
 </div>
 </div>
@@ -2201,9 +2201,9 @@ Sections
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

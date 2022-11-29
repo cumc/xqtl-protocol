@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Covariate data formatting &#8212; ADSP-FG Project</title>
+    <title>Covariate data formatting &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -122,7 +122,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
-   Bulk RNA-seq eQTL analysis
+   Bulk RNA-seq xQTL analysis
   </a>
  </li>
 </ul>
@@ -816,6 +816,8 @@ Sections
 <span class="c1"># Outliers</span>
 <span class="kn">parameter:</span> <span class="n">outliersFile</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> 
 <span class="kn">parameter:</span> <span class="n">remove_outliers</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="kn">parameter:</span> <span class="n">mean_impute</span> <span class="o">=</span> <span class="kc">False</span>
+
 <span class="c1">## stop if no outliersFile was provided.</span>
 <span class="n">stop_if</span><span class="p">(</span><span class="n">remove_outliers</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">outliersFile</span><span class="o">.</span><span class="n">is_file</span><span class="p">(),</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No outliers file specified, please add outliers file or remove the remove-outliers flag&quot;</span><span class="p">)</span>
 <span class="kn">input:</span> <span class="n">pcaFile</span><span class="p">,</span> <span class="n">covFile</span>
@@ -835,7 +837,15 @@ Sections
           <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="n">mtx</span><span class="p">[,</span><span class="n">i</span><span class="p">][</span><span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">mtx</span><span class="p">[,</span><span class="n">i</span><span class="p">]))]</span> <span class="o">&lt;-</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
           <span class="k">return</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span>
         <span class="p">}</span>
-    
+            
+        <span class="n">soft_impute</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">mtx</span><span class="p">){</span>
+  
+          <span class="n">f</span> <span class="o">&lt;-</span> <span class="n">apply</span><span class="p">(</span><span class="n">mtx</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">na</span><span class="o">.</span><span class="n">rm</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">))</span>
+          <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="n">mtx</span><span class="p">[,</span><span class="n">i</span><span class="p">][</span><span class="n">which</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">mtx</span><span class="p">[,</span><span class="n">i</span><span class="p">]))]</span> <span class="o">&lt;-</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+  
+        <span class="k">return</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span>
+        <span class="p">}</span>
+          
         <span class="n">filter_mtx</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">missing_rate_thresh</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">rm_col</span> <span class="o">&lt;-</span> <span class="n">which</span><span class="p">(</span><span class="n">apply</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">compute_missing</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">missing_rate_thresh</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">rm_col</span><span class="p">))</span> <span class="n">X</span> <span class="o">&lt;-</span> <span class="n">X</span><span class="p">[,</span> <span class="o">-</span><span class="n">rm_col</span><span class="p">]</span>
@@ -873,14 +883,14 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">compute_residual_1</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">compute_residual</span><span class="p">]</span>
 <span class="c1"># Path to the input molecular phenotype data.</span>
 <span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
 <span class="kn">parameter:</span><span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">phenoFile</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
 <span class="kn">input:</span> <span class="n">phenoFile</span><span class="p">,</span> <span class="n">covFile</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.resid.bed&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.resid.bed.gz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span> <span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
 
     <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
     <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span>
@@ -909,14 +919,9 @@ Sections
     <span class="c1"># Get residual </span>
     <span class="n">pheno_resid</span> <span class="o">=</span> <span class="o">.</span><span class="n">lm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">covariate</span><span class="p">),</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pheno</span><span class="p">)</span><span class="err">$</span><span class="n">residuals</span>
     <span class="n">pheno_output</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="n">pheno_id</span><span class="p">,</span> <span class="n">pheno_resid</span><span class="o">%&gt;%</span><span class="n">t</span><span class="p">())</span>
-    <span class="n">pheno_output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">},</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># tabix via samtools</span>
-<span class="p">[</span><span class="n">compute_residual_2</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">}</span><span class="s1">.gz&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s1">&#39;4h&#39;</span><span class="p">,</span>  <span class="kp">mem</span> <span class="o">=</span> <span class="s1">&#39;20G&#39;</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">pheno_output</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output:n}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">delim</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span>
-    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>
+    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">n</span><span class="p">}</span>
     <span class="n">tabix</span> <span class="o">-</span><span class="n">p</span> <span class="n">bed</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -992,9 +997,9 @@ Sections
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
 
-    <title>Methylation &#8212; ADSP-FG Project</title>
+    <title>Methylation &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -82,7 +82,7 @@
       <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">ADSP-FG Project</h1>
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
@@ -93,7 +93,7 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../../README.html">
-   ADSP-FG xQTL protocol
+   ADSP FunGen-xQTL computational protocol
   </a>
  </li>
 </ul>
@@ -122,7 +122,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">
-   Bulk RNA-seq eQTL analysis
+   Bulk RNA-seq xQTL analysis
   </a>
  </li>
 </ul>
@@ -608,6 +608,11 @@
    Quantification of methylation data
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#soft-impute-to-remove-na">
+   Soft Impute to remove NA
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -623,7 +628,45 @@
 <h1>Methylation<a class="headerlink" href="#methylation" title="Permalink to this headline">¶</a></h1>
 <section id="quantification-of-methylation-data">
 <h2>Quantification of methylation data<a class="headerlink" href="#quantification-of-methylation-data" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">code/molecular_phenotypes/calling/methylation_calling.ipynb</span></code></p>
+<p>We call the methylation data from a collection of IDAT file. The <code class="docutils literal notranslate"><span class="pre">--sample_sheet_header_rows</span></code> parameter govern the number of header rows in the sample sheet accompaning the IDAT file. By default, this number is 7</p>
+<ul class="simple">
+<li><p>Resource Usage</p>
+<ul>
+<li><p>time elapsed: 1550.12s</p></li>
+<li><p>max vms_memory: 14.62GB</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/methylation_calling.ipynb sesame <span class="se">\</span>
+    --sample-sheet input_data/Methylation/xqtl_protocol_data_arrayMethylation_covariates.tsv  <span class="se">\</span>
+    --container containers/methylation.sif --sample_sheet_header_rows <span class="m">0</span> --cwd output/methylation/
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="soft-impute-to-remove-na">
+<h2>Soft Impute to remove NA<a class="headerlink" href="#soft-impute-to-remove-na" title="Permalink to this headline">¶</a></h2>
+<p>Many of the methylation matrix are filled with NA, softImputation are applied to the result.</p>
+<ul class="simple">
+<li><p>Resource Usage</p>
+<ul>
+<li><p>time elapsed: 143.58s</p></li>
+<li><p>max vms_memory: 8.07GB</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/phenotype_formatting.ipynb bed_filter_na <span class="se">\</span>
+        --phenoFile output/methylation/xqtl_protocol_data_arrayMethylation_covariates.sesame.M.bed.gz <span class="se">\</span>
+        --cwd ./output/methylation/
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -676,9 +719,9 @@
     <div class="container">
       <p>
         
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics Consortium<br/>
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
         
-            &copy; Copyright 2021+, ADSP-FG xQTL methods and data integration working group.<br/>
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
       </p>
     </div>
   </footer>

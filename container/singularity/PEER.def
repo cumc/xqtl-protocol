@@ -1,60 +1,17 @@
 Bootstrap: docker
-From: ubuntu:18.04
+From: gaow/base-notebook
 
 
 %labels
 maintainer="Wenhao Gou<wg2364@cumc.columbia.edu>"
 %post
-useradd docker
-mkdir /home/docker
-chown docker:docker /home/docker
-addgroup docker staff
-echo 'deb http://mirror.math.princeton.edu/pub/ubuntu/ bionic main' >> /etc/apt/sources.list
-apt-get update && \
-DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-cpp \
-libgirepository-1.0-1 \
-libglib2.0-0 \
-libelf1 \
-libssl-dev \
-libcurl4-openssl-dev \
-libxml2-dev \
-libmpx0 \
-curl \
-perl-base \
-gpg-agent \
-libxrender1 \
-yum \
-dirmngr \
-software-properties-common \
-lsb-release \
-ed \
-less \
-locales \
-wget \
-ca-certificates \
-libopenblas-base \
-libgcc-6-dev \
-libstdc++-6-dev \
-gcc-5 \
-g++-5 \
-cmake \
-swig \
-gfortran \
-libbz2-dev \
-xfonts-base \
-libxrender1 \
-libx11-dev \
-libx11-6 \
-libxt-dev && rm -rf /var/lib/apt/lists/*
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50 --slave /usr/bin/g++ g++ /usr/bin/g++-5
-cd /tmp && wget https://cran.r-project.org/src/base/R-3/R-3.5.1.tar.gz && wget http://tukaani.org/xz/xz-5.2.2.tar.gz
-tar xzvf xz-5.2.2.tar.gz && cd xz-5.2.2 && ./configure && make && make install && cd .. && rm -rf xz-5.2.2*
-tar -xzf R-3.5.1.tar.gz && cd R-3.5.1 && ./configure --prefix=/usr/lib/R/ --with-blas --with-readline=no && \
-make && make install && ln -s /usr/lib/R/bin/R /bin/R && ln -s /usr/lib/R/bin/Rscript /bin/Rscript && \
-cd .. && rm -rf R-3.5.1*
-wget https://github.com/downloads/PMBio/peer/R_peer_source_1.3.tgz && R CMD INSTALL R_peer_source_1.3.tgz && rm -f R_peer_source_1.3.tgz
-R --slave -e 'install.packages(c("dplyr", "tibble", "readr", "modelr", "purrr"), repos="http://cran.rstudio.com/")'
+su -  root # USER root
+apt-get update \
+&& apt install -y --no-install-recommends  git-all  libboost-all-dev libharfbuzz-dev
+R --slave -e "install.packages(c('rlang', 'RcppEigen','remotes'))"
+R --slave -e 'remotes::install_github("bioFAM/MOFA2", build_opts = c("--no-resave-data --no-build-vignettes"))'
+pip install mofapy2
+echo "cd /tmp" >> /entrypoint.sh
 echo "exec /bin/bash "$@"" >> /entrypoint.sh
 chmod u+x /entrypoint.sh
 %runscript

@@ -1,7 +1,7 @@
 FROM gaow/base-notebook
 LABEL maintainer="Amanda Tsai<at3535@cumc.columbia.edu>"
 RUN cd /tmp
-su -  root # USER root
+USER root
 RUN R -e "remotes::install_github('stephenslab/susieR',build_vignettes=FALSE)"
 RUN R -e "install.packages('Ckmeans.1d.dp', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('KRIS', dependencies=TRUE, repos='http://cran.rstudio.com/')"

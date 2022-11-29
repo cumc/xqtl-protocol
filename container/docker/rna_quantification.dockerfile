@@ -1,5 +1,7 @@
 FROM gaow/base-notebook
-MAINTAINER Francois Aguet; Hao Sun
+MAINTAINER Hao Sun
+
+USER root
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	software-properties-common \
@@ -7,12 +9,12 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         libbz2-dev \
         libhdf5-dev \
         libncurses5-dev \
-        default-jdk && \
+        default-jdk \
+	git && \
     apt-get clean && \
     apt-get autoremove -y && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 ## FIXME: The 'rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*'  command was removed, please add back the specific contents that are to be removed. 
-
 
 #-----------------------------
 # Pipeline components
@@ -34,11 +36,19 @@ RUN cd /opt && \
     tar -xf samtools-1.11.tar.bz2 && rm samtools-1.11.tar.bz2 && cd samtools-1.11 && \
     ./configure --with-htslib=/opt/htslib-1.11 && make && make install && make clean
 
-# STAR v2.7.8a
+# multiQC
+RUN pip install multiqc
+
+# fastp
+RUN wget http://opengene.org/fastp/fastp.0.23.2 && \
+    mv fastp.0.23.2 /usr/local/bin/fastp && \
+    chmod a+x /usr/local/bin/fastp
+
+# STAR v2.7.10a
 RUN cd /opt && \
-    wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.8a.tar.gz && \
-    tar -xf 2.7.8a.tar.gz && rm 2.7.8a.tar.gz
-ENV PATH /opt/STAR-2.7.8a/bin/Linux_x86_64_static:$PATH
+    wget --no-check-certificate https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz && \
+    tar -xf 2.7.10a.tar.gz && rm 2.7.10a.tar.gz
+ENV PATH /opt/STAR-2.7.10a/bin/Linux_x86_64_static:$PATH
 
 # RSEM v1.3.3
 RUN cd /opt && \
@@ -100,17 +110,11 @@ RUN mkdir /opt/rnaseqc && cd /opt/rnaseqc && \
 RUN pip3 install rnaseqc
 ENV PATH /opt/rnaseqc:$PATH
 
-# gcloud
-RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
-    echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update -y && apt-get install google-cloud-sdk -y
-
 # Trimmomatic
-RUN wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
-RUN mv Trimmomatic-0.39.zip /opt/
-RUN cd /opt/
-RUN unzip Trimmomatic-0.39.zip
+RUN wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip && \
+    mv Trimmomatic-0.39.zip /opt/ && \
+    cd /opt/ && \
+    unzip Trimmomatic-0.39.zip
 
 # scripts
 
@@ -134,3 +138,6 @@ RUN wget https://github.com/gpertea/gffread/archive/refs/tags/v0.12.7.zip && \
     cd gffread-0.12.7 && make release && \
     mv gffread  /usr/local/bin/ && \
     cd .. && rm -r gffread* v0.12.7*
+    
+# gtfToGenePred
+RUN cd /opt/src && wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred && chmod +x gtfToGenePred

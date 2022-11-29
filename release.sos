@@ -12,16 +12,27 @@ bash: expand = True
 [singularity]
 parameter: config = path
 parameter: out_dir = path('container/singularity')
+bash: expand = True, stderr = f'{config}.stderr', stdout = f'{config}.stdout'
+  rm -f {out_dir}/{config:bn}.sif
+  singularity build --fakeroot {out_dir}/{config:bn}.sif {config}
+  md5sum {out_dir}/{config:bn}.sif > {out_dir}/{config:bn}.md5
+
+[docker]
+import glob
+depends: executable('docker')
+input: glob.glob("container/docker/*.dockerfile"), group_by = 1, concurrent = False
+repo = str(_input).split("/")[-1].lower()[:-11]
 bash: expand = True
-  rm -f {out_dir}/{config:n}.sif
-  singularity build --fakeroot {out_dir}/{config:n}.sif container/singularity/{config}
-  md5sum {out_dir}/{config:n}.sif > {out_dir}/{config:n}.md5
+	set -e
+	docker build -t gaow/{repo} -f {_input} .
+	docker push gaow/{repo}
+
 
 [build, default_2]
 input: group_by = 'all'
 bash:
 	jupyter-book build .  --path-output . --config website/_config.yml --toc website/_toc.yml 
-	rsync -auzP images/* _build/html/_images/
+	rsync -auzP code/images/* _build/html/_images/
 	ghp-import -n -p -f _build/html
 	rm -rf pipeline/*
 

@@ -32,6 +32,7 @@ hosts:
       #{partition}
       
       # Below is your usual computational code
+      module load Singularity
       set -e
       sos execute {task} -v {verbosity} -s {sig_mode}
     # Maximum number of cores, memory and walltime ever to ask. 
@@ -56,5 +57,10 @@ hosts:
   high_mem:
     based_on: hosts.neurology
     partition: $ -q high_mem.q
+  csg2:
+    based_on: hosts.neurology
+    partition: $ -q csg2.q -l t_pri
+    PE: $ -pe openmp {cores}
+    submit_cmd_output: 'Your job {job_id} ("{job_name}") has been submitted'
 
 localhost: localhost

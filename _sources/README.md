@@ -50,11 +50,11 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 
 ### See Also
 
-- Some analysis from ADSP-FG xQTL project using our protocol can be found in the [`cumc/brain-xqtl-analysis` github repo](https://github.com/cumc/brain-xqtl-analysis)
+- Some analysis from FunGen-xQTL project using our protocol can be found in the [`cumc/brain-xqtl-analysis` github repo](https://github.com/cumc/brain-xqtl-analysis)
 
 ## Our team
 
-This repository is developed by the ADSP FG Brain xQTL consortium.
+This repository is developed by the NIA FunGen-xQTL consortium.
 
 ### Developers
 
@@ -73,12 +73,12 @@ Contributors
 
 ### Leadership
 
-Brain xQTL project leadership
+FunGen leadership
 
 - Philip De Jager, Department of Neurology, Columbia University
 - Carlos Crunchaga, Department of Psychiatry, Neurology and Genetics, Washington University in St. Louis
 
-Brain xQTL methods and data integration work group
+FunGen-xQTL methods and data integration working group
 
 - Gao Wang (work group leader), Department of Neurology, Columbia University
 - Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University

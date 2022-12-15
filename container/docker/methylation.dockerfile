@@ -1,4 +1,4 @@
-FROM rocker/r-ver:4.2.0
+FROM rocker/r-ver:4.2.0 AS spython-base
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN apt-get update \
 && apt-get install -y --no-install-recommends \
@@ -30,11 +30,9 @@ wget https://raw.githubusercontent.com/hsun3163/xqtl-pipeline/main/data/cross_re
 RUN R -e "install.packages('data.table', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('glmnet', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.com/')"
-RUN R -e "install.packages(c('Matrix','softImpute'))"
 RUN R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('BiocManager')"
-RUN R -e 'install.packages("http://bioconductor.org/packages/3.15/data/experiment/src/contrib/sesameData_1.14.0.tar.gz", repos=NULL)'
 RUN R -e 'BiocManager::install("zwdzwd/sesameData")'
 RUN R -e 'BiocManager::install("zwdzwd/sesame")'
 RUN R -e 'sesameData::sesameDataCache()'
@@ -45,6 +43,5 @@ RUN R -e 'BiocManager::install("limma")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 RUN R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
-RUN R -e 'BiocManager::install("IlluminaHumanMethylation450kanno.ilmn12.hg19")'
 RUN R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
 CMD exec /bin/bash exec sh "$@"

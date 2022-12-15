@@ -33,7 +33,6 @@ RUN R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudi
 RUN R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('BiocManager')"
-RUN R -e 'BiocManager::install("zwdzwd/sesameData")'
 RUN R -e 'BiocManager::install("zwdzwd/sesame")'
 RUN R -e 'sesameData::sesameDataCache()'
 RUN R -e 'ExperimentHub::ExperimentHub()[["EH3675"]]' ## To retrieve the missing HM450 data

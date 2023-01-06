@@ -33,14 +33,12 @@ make && make install && make clean
 cd /opt && \
 wget https://raw.githubusercontent.com/hsun3163/xqtl-pipeline/main/data/cross_reactive_probe_Hop2020.txt
 R -e "install.packages('data.table', dependencies=TRUE, repos='http://cran.rstudio.com/')"
-R -e "install.packages(c('Matrix','softImpute'))"
 R -e "install.packages('glmnet', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('dplyr', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+R -e "install.packages(c('Matrix','softImpute'))"
 R -e "install.packages('ggplot2', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('devtools', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 R -e "install.packages('BiocManager')"
-R -e 'install.packages("http://bioconductor.org/packages/3.15/data/experiment/src/contrib/sesameData_1.14.0.tar.gz", repos=NULL)'
-R -e 'BiocManager::install("zwdzwd/sesameData")'
 R -e 'BiocManager::install("zwdzwd/sesame")'
 R -e 'sesameData::sesameDataCache()'
 R -e 'ExperimentHub::ExperimentHub()[["EH3675"]]' ## To retrieve the missing HM450 data
@@ -50,9 +48,8 @@ R -e 'BiocManager::install("limma")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylation450kmanifest")'
 R -e 'BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")'
-R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
 R -e 'BiocManager::install("IlluminaHumanMethylation450kanno.ilmn12.hg19")'
-
+R -e "BiocManager::install('achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38')"
 %runscript
 exec /bin/bash exec /bin/bash exec sh "$@"
 %startscript

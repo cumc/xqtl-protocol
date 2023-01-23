@@ -22,6 +22,7 @@ RUN R --slave -e "remotes::install_github('stephenslab/mashr')"
 RUN R --slave -e "remotes::install_github('stephenslab/udr')"
 RUN R --slave -e "remotes::install_github('stephenslab/susieR', build_vignettes=FALSE)"
 RUN R --slave -e "remotes::install_github('stephenslab/mvsusieR')"
+RUN R --slave -e "remotes::install_github('chr1swallace/coloc@main')"
 RUN R --slave -e "install.packages('Rfast')"
 RUN python -m pip install -U pip
 RUN pip install scipy sklearn backports.zoneinfo

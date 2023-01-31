@@ -22,6 +22,12 @@ RUN R --slave -e "remotes::install_github('stephenslab/mashr')"
 RUN R --slave -e "remotes::install_github('stephenslab/udr')"
 RUN R --slave -e "remotes::install_github('stephenslab/susieR', build_vignettes=FALSE)"
 RUN R --slave -e "remotes::install_github('stephenslab/mvsusieR')"
+RUN R --slave -e "remotes::install_github('chr1swallace/coloc@main')"
+RUN R --slave -e "install.packages('Rfast')"
+RUN python -m pip install -U pip
+RUN pip install scipy sklearn backports.zoneinfo
+RUN pip install rpy2
+RUN pip install https://files.pythonhosted.org/packages/a8/fd/f98ab7dea176f42cb61b80450b795ef19b329e8eb715b87b0d13c2a0854d/ldstore-0.1.9.tar.gz
 RUN echo "cd /tmp" >> /entrypoint.sh
 RUN echo "exec /bin/bash "$@"" >> /entrypoint.sh
 RUN chmod u+x /entrypoint.sh

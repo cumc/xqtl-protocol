@@ -1,4 +1,4 @@
-FROM rocker/r-ver:4.2.0 AS spython-base
+FROM rocker/r-ver:4.2.0
 LABEL MAINTAINER Hao Sun <hs3163@cumc.columbia.edu>
 RUN apt-get update \
 && apt-get install -y --no-install-recommends \

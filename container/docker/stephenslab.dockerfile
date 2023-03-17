@@ -25,7 +25,7 @@ RUN R --slave -e "remotes::install_github('stephenslab/mvsusieR')"
 RUN R --slave -e "remotes::install_github('chr1swallace/coloc@main')"
 RUN R --slave -e "install.packages('Rfast')"
 RUN R --slave -e "install.packages('cowplot')"
-RUN R --slave -e "install.packages("gwasrapidd")"
+RUN R --slave -e "install.packages('gwasrapidd')"
 RUN python -m pip install -U pip
 RUN pip install scipy sklearn backports.zoneinfo
 RUN pip install rpy2

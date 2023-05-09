@@ -26,8 +26,17 @@ RUN R --slave -e "remotes::install_github('chr1swallace/coloc@main')"
 RUN R --slave -e "install.packages('Rfast')"
 RUN R --slave -e "install.packages('cowplot')"
 RUN R --slave -e "install.packages('gwasrapidd')"
+RUN R --slave -e "install.packages('UpSetR')"
+RUN R --slave -e "install.packages('ComplexUpset')"
+RUN R --slave -e "install.packages('readr')"
+RUN R --slave -e "install.packages('wavethresh')"
+RUN R --slave -e "install.packages('wavethresh')"
+
+
+
+
 RUN python -m pip install -U pip
-RUN pip install scipy sklearn backports.zoneinfo
+RUN pip install scipy scikit-learn backports.zoneinf
 RUN pip install rpy2
 RUN pip install https://files.pythonhosted.org/packages/a8/fd/f98ab7dea176f42cb61b80450b795ef19b329e8eb715b87b0d13c2a0854d/ldstore-0.1.9.tar.gz
 

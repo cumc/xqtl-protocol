@@ -30,7 +30,7 @@ RUN R --slave -e "install.packages('UpSetR')"
 RUN R --slave -e "install.packages('ComplexUpset')"
 RUN R --slave -e "install.packages('readr')"
 RUN R --slave -e "install.packages('wavethresh')"
-RUN R --slave -e "install.packages('wavethresh')"
+RUN R --slave -e "install.packages('L0Learn')"
 
 
 

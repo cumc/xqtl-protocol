@@ -48,7 +48,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 - Please clone this repository https://github.com/cumc/xqtl-pipeline onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing 
 
 ```
-sos run pipelines/<pipeline_file>.ipynb
+sos run pipeline/<pipeline_file>.ipynb
 ```
 
 that is, executing the symbolic links directly to perform the analysis.

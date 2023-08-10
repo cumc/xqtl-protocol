@@ -5,7 +5,7 @@ Developed for reproducible & reusable molecular QTL analyses for the NIH/NIA Alz
 ![QTL Diagram](code/images/complete_workflow.png)
 
 
-## Overview of FunGen-xQTL Protocol Repository
+## Overview of the protocol
 
 ### Standardized reference data
 

@@ -5,7 +5,7 @@ Developed for reproducible & reusable molecular QTL analyses for the NIH/NIA Alz
 ![QTL Diagram](code/images/complete_workflow.png)
 
 
-## How to use this resource
+## Overview of FunGen-xQTL Protocol Repository
 
 ### Standardized reference data
 
@@ -26,6 +26,8 @@ We provide this [toy example for running SoS pipeline on a typical HPC cluster e
 - Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-pipeline/tree/main/code. 
 - Container specifications for required software environments are available at https://github.com/cumc/xqtl-pipeline/tree/main/container.
 
+## How to use the resource
+
 ### Organization of the resource
 
 The website https://cumc.github.io/xqtl-pipeline is generated from files under the `code` folder of the source code repository. The `pipeline` folder contains symbolic links automatically generated for pipeline files under `code.` The logic of the entire xQTL analysis workflow is roughly reflected on the **left sidebar**:
@@ -35,7 +37,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 - Other sections in bold fonts provide an array of available analyses, presented roughly from upstream to downstream processes. Most of these sections feature ***mini-protocols***, represented as clickable, non-bold text under each analysis category, leading to specific notebooks. These notebooks detail the commands necessary for the analyses defined in the respective mini-protocols. Predominantly tutorial-based, they are designed to be **executed interactively in Jupyter or via the command terminal**, allowing users to navigate through the SoS pipelines step by step. A few of these sections serve as actual ***pipeline modules*** which we'll discuss next (see below).
 - *Mini-protocols*, as mentioned earlier, can be expanded by clicking the downward arrows, revealing the SoS implementations of ***pipeline modules***. These represent the crux of the pipeline implementations and are intended to be **executed as command line software**. They're also **self-contained**, allowing for reusability beyond the specific context of xQTL data analysis.
 
-### Setting up
+### Computing environment setup
 
 - In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup). 
     - For Linux and Mac desktop users you can either install the container [`Singularity`](https://docs.sylabs.io/guides/3.2/user-guide/installation.html#) or [`Docker`](https://www.docker.com/). In the xQTL project we primarily use `Singularity`.

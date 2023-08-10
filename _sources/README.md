@@ -63,39 +63,47 @@ This repository is developed by the Analysis Working Group of the NIA FunGen-xQT
 
 ### Developers
 
-Lead developers
+**Lead developers**
 
 - Hao Sun, Department of Neurology, Columbia University
 - Gao Wang, Department of Neurology, Columbia University
 
-Main contributors (largely based on GitHub Pull Requests)
+**Main contributors** (largely based on GitHub Pull Requests)
 
-- Xuanhe Chen, Department of Biostatistics, Columbia University
-- Wenhao Gou & Liucheng Shi, Department of Biostatistics, Columbia University
-- Haochen Sun, Department of Biostatistics, Columbia University
-- Zining Qi, Department of Biostatistics, Columbia University
-- Ru Feng, Department of Neurology, Columbia University
-- Alexandre Pelletier, Department of Medicine, Boston University
-- Travyse Edwards, Mount Sinai & University of Pennsylvania
-- Daniel Nachun, Department of Pathology, Stanford University
-- Jiacheng Li, Department of Neurology, Columbia University
-- Mintao Lin, Department of Medicine, Boston University
+| Name             | Affiliation                                                       |
+|------------------|-------------------------------------------------------------------|
+| Xuanhe Chen      | Department of Biostatistics, Columbia University                  |
+| Wenhao Gou       | Department of Biostatistics, Columbia University                  |
+| Liucheng Shi     | Department of Biostatistics, Columbia University                  |
+| Haochen Sun      | Department of Biostatistics, Columbia University                  |
+| Zining Qi        | Department of Biostatistics, Columbia University                  |
+| Ru Feng          | Department of Neurology, Columbia University                      |
+| Alexandre Pelletier| Department of Medicine, Boston University                        |
+| Travyse Edwards  | Mount Sinai & University of Pennsylvania                           |
+| Daniel Nachun    | Department of Pathology, Stanford University                      |
+| Jiacheng Li      | Department of Neurology, Columbia University                      |
+| Mintao Lin       | Department of Medicine, Boston University                         |
 
 ### Leadership
 
-FunGen-AD
+**FunGen-AD**
 
-- Philip De Jager, Department of Neurology, Columbia University
-- Carlos Crunchaga, Department of Psychiatry, Neurology and Genetics, Washington University in St. Louis
+| Name             | Affiliation                                                       |
+|------------------|-------------------------------------------------------------------|
+| Philip De Jager  | Department of Neurology, Columbia University                      |
+| Carlos Crunchaga | Department of Psychiatry, Neurology and Genetics, Washington University in St. Louis|
 
-FunGen-xQTL Analysis Working Group
+**FunGen-xQTL Analysis Working Group**
 
-- Gao Wang, Department of Neurology, Columbia University
-- Xiaoling Zhang, Departments of Medicine and Biostatistics, Boston University
-- Edoardo Marcora, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
-- Fanny Leung (also leads data standardization WG), Department of the Pathology and Laboratory Medicine, University of Pennsylvania
-- Julia TCW, Department of Medicine, Boston University
-- Kushal K. Dey, Memorial Sloan Kettering 
-- Alan Renton, Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai
-- Stephen Montgomery, Department of Pathology, Stanford University
-- Xiaoquan Wen, Department of Biostatistics, University of Michigan
+| Name             | Affiliation                                                       |
+|------------------|-------------------------------------------------------------------|
+| Gao Wang         | Department of Neurology, Columbia University                      |
+| Xiaoling Zhang   | Departments of Medicine and Biostatistics, Boston University      |
+| Edoardo Marcora  | Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai |
+| Fanny Leung      | Department of the Pathology and Laboratory Medicine, University of Pennsylvania |
+| Julia TCW        | Department of Medicine, Boston University                         |
+| Kushal K. Dey    | Memorial Sloan Kettering                                          |
+| Alan Renton      | Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai |
+| Stephen Montgomery | Department of Pathology, Stanford University                    |
+| Xiaoquan Wen     | Department of Biostatistics, University of Michigan               |
+

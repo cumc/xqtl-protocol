@@ -1,521 +1,762 @@
 
-
 <!DOCTYPE html>
 
-
-<html lang="en" >
-
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quantifying alternative splicing from RNA-seq data &#8212; FunGen-xQTL Consortium</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'code/molecular_phenotypes/calling/splicing_calling';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Normalization and phenotype table generation for splicingQTL analysis" href="../QC/splicing_normalization.html" />
     <link rel="prev" title="Alternative splicing from RNA-seq data" href="../splicing.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="en"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="../../../search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
         
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
-
-<a class="navbar-brand logo" href="../../../README.html">
-  
-  
-  
-  
-    
-    
       
-    
-    
-    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
-  
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../../README.html">
-                    FunGen-xQTL Computational Protocol
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   FunGen-xQTL Computational Protocol
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../xqtl_protocol_demo.html">
+   Illustration of xQTL protocol
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Command Generator
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../data_preprocessing/reference_data.html">Reference data standardization</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">
+   RNA-seq calling and QC
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
+   Univariate xQTL Discovery
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference data
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../data_preprocessing/reference_data.html">
+   Reference data standardization
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../scnuc_expression.html">scRNA-seq expression calling</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="apa_calling.html">APA Calling</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="methylation_calling.html">Quantification of methylation data</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../splicing.html">Alternative splicing from RNA-seq data</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Quantifying alternative splicing from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">Principal component analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">Genomic relationship matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">Genotype data formatting</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">Factor analysis using Bi-Cross validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate data formatting</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/cisQTL_scan.html">cisQTL analysis workflows</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../association_scan/transQTL_scan.html">transQTL analysis workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">eQTL summary statistics formatting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mashr.html">Data overview</a></li>
-
-
-
-
-
-
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with SuSiE model</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../integrative_analysis/colocalization.html">QTL and GWAS Colocalization</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc_dap.html">Colocalization with FastENLOC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">Multivariate SuSiE and ENLOC model</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../integrative_analysis/functional_annotation.html">Functional annotation integration</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">Enrichment analysis: TORUS and GREGOR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">Stratified LD Score Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">Fine-mapping with PolyFun</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
-</ul>
-
-    </div>
-</nav></div>
-    </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
-
-
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
-
-<div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/molecular_phenotypes/calling/splicing_calling.ipynb" target="_blank"
-   class="btn btn-sm btn-source-edit-button dropdown-item"
-   title="Suggest edit"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-pencil-alt"></i>
-  </span>
-<span class="btn__text-container">Suggest edit</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/molecular_phenotypes/calling/splicing_calling.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../bulk_expression.html">
+   RNA-seq expression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="RNA_calling.html">
+     Quantifying expression from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../QC/bulk_expression_normalization.html">
+     Bulk RNA-seq counts normalization
+    </a>
+   </li>
   </ul>
-</div>
-
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../../_sources/code/molecular_phenotypes/calling/splicing_calling.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../apa.html">
+   Alternative polyadenylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="apa_calling.html">
+     APA Calling
+    </a>
+   </li>
   </ul>
-</div>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../methylation.html">
+   Methylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methylation_calling.html">
+     Quantification of methylation data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../splicing.html">
+   Alternative splicing from RNA-seq data
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Quantifying alternative splicing from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../QC/splicing_normalization.html">
+     Normalization and phenotype table generation for splicingQTL analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">
+     Genotype VCF file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
+     Genotype PLINK file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">
+     Gene coordinate annotation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">
+     Covariate data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../association_scan/cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL association testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/APEX/APEX.html">
+     APEX QTL association testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../association_scan/transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
+     Data overview
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc_dap.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
+     Multivariate SuSiE and ENLOC model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../integrative_analysis/functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+  <label for="toctree-checkbox-13">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">
+     Stratified LD Score Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_standardizer.html">
+   Summary statistics standardization and export
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
 
-
-
-
-<button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
     </div>
-  
-</div>
-</div>
-              
-              
+</nav> <!-- To handle the deprecated key -->
 
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Quantifying alternative splicing from RNA-seq data</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-            <div>
-                <h2> Contents </h2>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/code/molecular_phenotypes/calling/splicing_calling.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/molecular_phenotypes/calling/splicing_calling.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/molecular_phenotypes/calling/splicing_calling.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
             </div>
-            <nav aria-label="Page">
+            <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leafcutter"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#psichomics"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#methods-overview">
+   Methods overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input">
+   Input
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leafcutter">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       leafcutter
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#psichomics">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       psichomics
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       leafcutter
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       psichomics
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#minimal-working-example">
+   Minimal working example
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#for-leafcutter">
+     For
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       leafcutter
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#for-psichomics">
+     For
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       psichomics
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#command-interface">
+   Command interface
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup-and-global-parameters">
+   Setup and global parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id3">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     leafcutter
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-clustering-options">
+     Other clustering options:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#things-to-keep-in-mind">
+     Things to keep in mind:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id4">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     psichomics
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-options">
+     Other options
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#alternative-splicing-annotation-information">
+     Alternative Splicing Annotation Information
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-leafcutter">For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-psichomics">For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-clustering-options">Other clustering options:</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#things-to-keep-in-mind">Things to keep in mind:</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-options">Other options</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-splicing-annotation-information">Alternative Splicing Annotation Information</a></li>
-</ul>
-</li>
-</ul>
+
             </nav>
         </div>
     </div>
 </div>
-
-              
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
                 
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section class="tex2jax_ignore mathjax_ignore" id="quantifying-alternative-splicing-from-rna-seq-data">
-<h1>Quantifying alternative splicing from RNA-seq data<a class="headerlink" href="#quantifying-alternative-splicing-from-rna-seq-data" title="Permalink to this heading">#</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="quantifying-alternative-splicing-from-rna-seq-data">
+<h1>Quantifying alternative splicing from RNA-seq data<a class="headerlink" href="#quantifying-alternative-splicing-from-rna-seq-data" title="Permalink to this headline">¶</a></h1>
 <p>This pipeline implements our pipeline to call alternative splicing events from RNA-seq data, using <a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> and <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx/TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail. The choice of pipeline modules in this project is supported by internal (unpublished) benchmarks from GTEx group.</p>
 <p><strong>Various reference data needs to be prepared before using this workflow</strong>. <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">Here we provide a module</a> to download and prepare the reference data.</p>
 <p>The product of this workflow can be used in generating phenotype tables using /molecular_phenotyles/QC/splicing_normalization.ipynb.</p>
-<section id="methods-overview">
-<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this heading">#</a></h2>
+<div class="section" id="methods-overview">
+<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
 <p>There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
-<ol class="arabic simple">
+<ol class="simple">
 <li><p><a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> that quantifies each specific event. In particular the exon skipping event which is used also in GTEx sQTL analysis.</p></li>
 <li><p><a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> to quantify the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events. The method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.</p></li>
 </ol>
-</section>
-<section id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <p>Both leafcutter and psichomics section, a meta-data file, white space delimited, containing 4 columns: sample ID, RNA strandness and path to the BAM files input for leafcutter section and to SJ.out.tab files for psichomics section:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_id</span>       <span class="n">strand</span>          <span class="n">bam_list</span>                                <span class="n">SJ_list</span>
 <span class="n">sample_1</span>        <span class="n">rf</span>              <span class="n">sample_1</span><span class="o">.</span><span class="n">Aligned</span><span class="o">.</span><span class="n">sortedByCoord</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">bam</span>  <span class="n">sample_1</span><span class="o">.</span><span class="n">SJ</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">tab</span>
@@ -524,31 +765,31 @@ document.write(`
 </pre></div>
 </div>
 <p>If only one type of input files is prepared, one of the bam_list column and SJ_list column can be left empty.</p>
-<section id="leafcutter">
-<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this heading">#</a></h3>
+<div class="section" id="leafcutter">
+<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#leafcutter" title="Permalink to this headline">¶</a></h3>
 <p>The bam files can be generated by <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">STAR_align</span></code> workflow from our RNA_calling.ipynb module.</p>
 <p>All the BAM files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
 <p>If intend to blacklist some chromosomes and not analyze it, add one text file named black_list.txt with one chromosome name per line in the same directory of the meta-data file.</p>
-</section>
-<section id="psichomics">
-<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="psichomics">
+<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#psichomics" title="Permalink to this headline">¶</a></h3>
 <p>The SJ.out.tab files can be generated by <code class="docutils literal notranslate"><span class="pre">the</span> <span class="pre">STAR_align</span></code> workflow from our RNA_calling.ipynb module.</p>
 <p>All the SJ.out.tab files should be available under specified folder (default assumes the same folder as where the meta-data file is).</p>
-</section>
-</section>
-<section id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
-<section id="id1">
-<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">{sample_list}</span></code> below refers to the name of the meta-data file input.</p>
 <p>Main output include:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind.counts.gz</span></code> file with row id in format: “chromosome:intron_start:intron_end:cluster_id”, column labeled as input sample names and each type of intron usage ratio under each sample (i.e. #particular intron in a sample / #total introns classified in the same cluster in a sample) in each cells.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">{sample_list}_intron_usage_perind_numers.counts.gz</span></code> file with the same row and column label but the count of each intron in each cells.</p></li>
 </ul>
-</section>
-<section id="id2">
-<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="id2">
+<h3><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">psi_raw_data.tsv</span></code> A dataframe of PSI values (quantification of the alternative splicing events) with first column splicing event identifier (for instance, SE_1_-_2125078_2124414_2124284_2121220_C1orf86) is composed of:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>             Event type (SE stands for skipped exon)
@@ -560,7 +801,7 @@ document.write(`
 </div>
 </li>
 </ul>
-<table class="table">
+<table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Splicing Event Type</p></th>
 <th class="head"><p>Abbreviation</p></th>
@@ -602,13 +843,13 @@ document.write(`
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-<section id="minimal-working-example">
-<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
 <p>A minimal working example is uploaded in the <a class="reference external" href="https://drive.google.com/drive/folders/1lpcx3eKG2UpauntLUuJ6bMBjHyIhWW_R">google drive</a>. It contains example inputs for leafcutter/psichomics, two spliing annotations for psichomics, the meta-data file list, and a example of blacklist chromosome file for leafcutter.</p>
-<section id="for-leafcutter">
-<h3>For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#for-leafcutter" title="Permalink to this heading">#</a></h3>
+<div class="section" id="for-leafcutter">
+<h3>For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#for-leafcutter" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">leafcutter</span> \
@@ -619,9 +860,9 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="for-psichomics">
-<h3>For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#for-psichomics" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="for-psichomics">
+<h3>For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#for-psichomics" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psichomics</span> \
@@ -633,10 +874,10 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="command-interface">
-<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
@@ -696,9 +937,9 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="setup-and-global-parameters">
-<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="setup-and-global-parameters">
+<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -780,12 +1021,12 @@ Sections
 </div>
 </div>
 </div>
-</section>
-<section id="id3">
-<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="id3">
+<h2><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="https://davidaknowles.github.io/leafcutter/index.html"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a>. The choices of regtool parameters are <a class="reference external" href="https://github.com/davidaknowles/leafcutter/issues/127">discussed here</a>.</p>
-<section id="other-clustering-options">
-<h3>Other clustering options:<a class="headerlink" href="#other-clustering-options" title="Permalink to this heading">#</a></h3>
+<div class="section" id="other-clustering-options">
+<h3>Other clustering options:<a class="headerlink" href="#other-clustering-options" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>“-q”, “–quiet” : don’t print status messages to stdout, default=True.</p></li>
 <li><p>“-p”, “–mincluratio” : minimum fraction of reads in a cluster that support a junction, default 0.001.</p></li>
@@ -796,73 +1037,73 @@ Sections
 <p>The default parameter we used are:</p>
 <p><code class="docutils literal notranslate"><span class="pre">--min_clu_ratio</span> <span class="pre">0.001</span> <span class="pre">--max_intron_len</span> <span class="pre">500000</span> <span class="pre">--min_clu_reads</span> <span class="pre">30</span></code></p>
 <p>These parameter is based on <a class="reference external" href="https://www.science.org/action/downloadSupplement?doi=10.1126%2Fscience.aaz1776&amp;file=aaz1776_aguet_sm.pdf">GTEX’s sQTL discovery pipeline (Section 3.4.3) </a></p>
-</section>
-<section id="things-to-keep-in-mind">
-<h3>Things to keep in mind:<a class="headerlink" href="#things-to-keep-in-mind" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="things-to-keep-in-mind">
+<h3>Things to keep in mind:<a class="headerlink" href="#things-to-keep-in-mind" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>If .bam.bai index files of the .bam input are ready before using leafCutter, it can be placed in the same directory with input .bam files and the “samtools index ${_input}” line can be skipped.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[leafcutter_1, leafcutter_preprocessing_1]
-# anchor length (default 8)
-parameter: anchor_len = 8
-# minimum intron length to be analyzed (default 50)
-parameter: min_intron_len = 50
-# maximum intron length to be analyzed (default 500000)
-parameter: max_intron_len = 500000
-input: bam_data, group_by = 1, group_with = &quot;strandness&quot;
-output: f&#39;{cwd}/{_input:bn}.junc&#39; 
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
-bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint = entrypoint
-    samtools index ${_input}
-    regtools junctions extract -a ${anchor_len} -m ${min_intron_len} -M ${max_intron_len} -s ${_strandness} ${_input} -o ${_output}
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_1</span><span class="p">,</span> <span class="n">leafcutter_preprocessing_1</span><span class="p">]</span>
+<span class="c1"># anchor length (default 8)</span>
+<span class="kn">parameter:</span> <span class="n">anchor_len</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># minimum intron length to be analyzed (default 50)</span>
+<span class="kn">parameter:</span> <span class="n">min_intron_len</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="c1"># maximum intron length to be analyzed (default 500000)</span>
+<span class="kn">parameter:</span> <span class="n">max_intron_len</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="kn">input:</span> <span class="n">bam_data</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;strandness&quot;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.junc&#39;</span> 
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+    <span class="n">samtools</span> <span class="n">index</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span>
+    <span class="n">regtools</span> <span class="n">junctions</span> <span class="n">extract</span> <span class="o">-</span><span class="n">a</span> <span class="err">$</span><span class="p">{</span><span class="n">anchor_len</span><span class="p">}</span> <span class="o">-</span><span class="n">m</span> <span class="err">$</span><span class="p">{</span><span class="n">min_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">M</span> <span class="err">$</span><span class="p">{</span><span class="n">max_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="p">{</span><span class="n">_strandness</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[leafcutter_2]
-# minimum reads in a cluster (default 50 reads)
-parameter: min_clu_reads = 30 
-# maximum intron length to be analyzed (default 500000)
-parameter: max_intron_len = 500000 
-# minimum fraction of reads in a cluster that support a junction (default 0.001)
-parameter: min_clu_ratio = 0.001
-input: group_by = &#39;all&#39;
-output: f&#39;{cwd}/{samples:bn}_intron_usage_perind.counts.gz&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
-bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint = entrypoint
-    rm -f ${_output:nn}.junc
-    for i in ${_input:r}; do
-    echo $i &gt;&gt; ${_output:nn}.junc ; done
-    python /opt/leafcutter/clustering/leafcutter_cluster_regtools.py -j ${_output:nn}.junc -o ${f&#39;{_output:bnn}&#39;.replace(&quot;_perind&quot;,&quot;&quot;)} -m ${min_clu_reads} -l ${max_intron_len} -r ${cwd} -p ${min_clu_ratio}
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_2</span><span class="p">]</span>
+<span class="c1"># minimum reads in a cluster (default 50 reads)</span>
+<span class="kn">parameter:</span> <span class="n">min_clu_reads</span> <span class="o">=</span> <span class="mi">30</span> 
+<span class="c1"># maximum intron length to be analyzed (default 500000)</span>
+<span class="kn">parameter:</span> <span class="n">max_intron_len</span> <span class="o">=</span> <span class="mi">500000</span> 
+<span class="c1"># minimum fraction of reads in a cluster that support a junction (default 0.001)</span>
+<span class="kn">parameter:</span> <span class="n">min_clu_ratio</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_intron_usage_perind.counts.gz&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+    <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">};</span> <span class="n">do</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="p">;</span> <span class="n">done</span>
+    <span class="n">python</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">leafcutter</span><span class="o">/</span><span class="n">clustering</span><span class="o">/</span><span class="n">leafcutter_cluster_regtools</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_perind&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)}</span> <span class="o">-</span><span class="n">m</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_reads</span><span class="p">}</span> <span class="o">-</span><span class="n">l</span> <span class="err">$</span><span class="p">{</span><span class="n">max_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">r</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_ratio</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[leafcutter_preprocessing_2]
-input: group_by = &#39;all&#39;
-output: f&#39;{cwd}/{samples:bn}_intron_usage_perind.junc&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
-bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint = entrypoint
-    rm -f ${_output:r}
-    for i in ${_input:r}; do
-    echo $i &gt;&gt; ${_output:r} ; done
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">leafcutter_preprocessing_2</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">samples</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">_intron_usage_perind.junc&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+    <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">};</span> <span class="n">do</span>
+    <span class="n">echo</span> <span class="err">$</span><span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">}</span> <span class="p">;</span> <span class="n">done</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="id4">
-<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <p>Documentation: <a class="reference external" href="http://bioconductor.org/packages/release/bioc/html/psichomics.html"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></p>
-<section id="other-options">
-<h3>Other options<a class="headerlink" href="#other-options" title="Permalink to this heading">#</a></h3>
+<div class="section" id="other-options">
+<h3>Other options<a class="headerlink" href="#other-options" title="Permalink to this headline">¶</a></h3>
 <p>quantifySplicing( annotation,
 junctionQuant,
 eventType = c(“SE”, “MXE”, “ALE”, “AFE”, “A3SS”, “A5SS”),
@@ -870,124 +1111,124 @@ minReads = 10,
 genes = NULL
 )</p>
 <p>In function quantifySplicing, arguments eventType (Character: splicing event types to quantify), minReads (Integer: values whose number of total supporting read counts is below minReads are returned as NA) and genes (Character: gene symbols for which to quantify splicing events. If NULL, events from all genes are quantified.) can be specified. Usage and default values are shown above.</p>
-</section>
-<section id="alternative-splicing-annotation-information">
-<h3>Alternative Splicing Annotation Information<a class="headerlink" href="#alternative-splicing-annotation-information" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="alternative-splicing-annotation-information">
+<h3>Alternative Splicing Annotation Information<a class="headerlink" href="#alternative-splicing-annotation-information" title="Permalink to this headline">¶</a></h3>
 <p>Two alternative splicing annotations will be provided in this pipeline which can be download <a class="reference external" href="https://drive.google.com/drive/folders/1lpcx3eKG2UpauntLUuJ6bMBjHyIhWW_R">here</a>. The hg38_suppa.rds is created Via SUPPA using the gtf file of the xqtl-pipeline, and the modified_psichomics_hg38_splicing_annotation.rds is modified from the default Human hg38 (2018-04-30) annotation provided by psichomics package. Description of the database can be found in the Alternative splicing annotation section in the <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259?login=true#130023625">MATERIALS AND METHODS</a> part. Gene names of the original annotation are replaced by Ensembl ids for format unifying. The Ensembl IDs used in modifiction are matched from the gtf file, HGNC database, SUPPA and VASTTOOL records within the original annotation.</p>
 <p>Theoretically the annotation created using the gtf file only will give results more consistent with other part of the pipeline. The annotation modified from psichomics original hg38 annotation can identify more events since it was build based on information maximizing principle, however there will be risk of containing outdated information too.</p>
 <p>For details of generation method of the gtf file and the two splicing annotations, please check the GFF3 to GTF formatting, Generation of SUPPA annotation for psichomics, and Modification of psichomics default Hg38 splicing annotation sections in <a class="reference external" href="https://github.com/cumc/xqtl-pipeline/blob/main/code/data_preprocessing/reference_data.ipynb">reference_data.ipynb</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[psichomics_1]
-input: SJtab_data
-output: f&#39;{cwd}/psichomics_junctions.txt&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
-R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint = entrypoint
-    library(&quot;psichomics&quot;)
-    library(&quot;dplyr&quot;)
-    library(&quot;tidyr&quot;)
-    library(&quot;purrr&quot;)
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">psichomics_1</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">SJtab_data</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/psichomics_junctions.txt&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;psichomics&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>
 
-    df_replace &lt;- function (df, old, new){
-          if (is.na(old)) {
-              df[is.na(df)] &lt;- new
-          } else {
-              df[df == old] &lt;- new
-          }
-      return (df)
-      }
+    <span class="n">df_replace</span> <span class="o">&lt;-</span> <span class="n">function</span> <span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">){</span>
+          <span class="k">if</span> <span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">old</span><span class="p">))</span> <span class="p">{</span>
+              <span class="n">df</span><span class="p">[</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="n">new</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="n">df</span><span class="p">[</span><span class="n">df</span> <span class="o">==</span> <span class="n">old</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="n">new</span>
+          <span class="p">}</span>
+      <span class="k">return</span> <span class="p">(</span><span class="n">df</span><span class="p">)</span>
+      <span class="p">}</span>
 
-    options(scipen = 15) # to avoid writing in scientific notation
-    files = list()
+    <span class="n">options</span><span class="p">(</span><span class="n">scipen</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span> <span class="c1"># to avoid writing in scientific notation</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
   
-    # Get the structure of input data
-    for (f in c(${_input:ar,})){
-      filename = gsub(&quot;^.*/&quot;, &quot;&quot;, f)
-      directory = gsub(filename, &quot;&quot;, f)
-      if (length(files[[directory]]) == 0){
-        files[[directory]] = filename
-        } else {
-      files[[directory]] = append(files[[directory]], filename)
-      }
-    }
+    <span class="c1"># Get the structure of input data</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">f</span> <span class="ow">in</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">ar</span><span class="p">,})){</span>
+      <span class="n">filename</span> <span class="o">=</span> <span class="n">gsub</span><span class="p">(</span><span class="s2">&quot;^.*/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+      <span class="n">directory</span> <span class="o">=</span> <span class="n">gsub</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]]</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]]</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="n">directory</span><span class="p">]],</span> <span class="n">filename</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
 
-    batch_junction_list = list()
-    res = list()
+    <span class="n">batch_junction_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
   
-    # Since prepareJunctionQuant() somehow don&#39;t read file names with path, if orinigal data are from the same directory, 
-    #       just run it and write to the output folder, else run on each directory seperately and merge the junction tables.
-    if (length(files) == 1) {
-        setwd(names(files)[1])
-        prepareJunctionQuant(files[[1]], output = &#39;${cwd}/psichomics_junctions.txt&#39;)
-    } else {
-        for (i in 1: (length(files))) {
-        d = names(files[i])
-        setwd(d)
-        output_name = sprintf(&quot;${cwd}/psichomics_junctions_%s.txt&quot;,
-                               tail(as.list(strsplit(d, &#39;/&#39;)[[1]]), 1))
-        prepareJunctionQuant(files[[d]], output = output_name)
-        batch_junction_list = append(batch_junction_list, output_name)
-        }
+    <span class="c1"># Since prepareJunctionQuant() somehow don&#39;t read file names with path, if orinigal data are from the same directory, </span>
+    <span class="c1">#       just run it and write to the output folder, else run on each directory seperately and merge the junction tables.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setwd</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">files</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">prepareJunctionQuant</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{cwd}</span><span class="s1">/psichomics_junctions.txt&#39;</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">files</span><span class="p">)))</span> <span class="p">{</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">names</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">setwd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">output_name</span> <span class="o">=</span> <span class="n">sprintf</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">/psichomics_junctions_</span><span class="si">%s</span><span class="s2">.txt&quot;</span><span class="p">,</span>
+                               <span class="n">tail</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">strsplit</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)[[</span><span class="mi">1</span><span class="p">]]),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">prepareJunctionQuant</span><span class="p">(</span><span class="n">files</span><span class="p">[[</span><span class="n">d</span><span class="p">]],</span> <span class="n">output</span> <span class="o">=</span> <span class="n">output_name</span><span class="p">)</span>
+        <span class="n">batch_junction_list</span> <span class="o">=</span> <span class="n">append</span><span class="p">(</span><span class="n">batch_junction_list</span><span class="p">,</span> <span class="n">output_name</span><span class="p">)</span>
+        <span class="p">}</span>
   
-        for (file_name in batch_junction_list) {
-        res[[file_name]] = read.table(file_name, sep = &#39;\t&#39;, header = TRUE)
-        }
+        <span class="k">for</span> <span class="p">(</span><span class="n">file_name</span> <span class="ow">in</span> <span class="n">batch_junction_list</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">res</span><span class="p">[[</span><span class="n">file_name</span><span class="p">]]</span> <span class="o">=</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+        <span class="p">}</span>
   
-        # save the information of originally created NA if any
-        res = lapply(res, df_replace, old = NA, new = &quot;original_na&quot;)
+        <span class="c1"># save the information of originally created NA if any</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">lapply</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">df_replace</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">NA</span><span class="p">,</span> <span class="n">new</span> <span class="o">=</span> <span class="s2">&quot;original_na&quot;</span><span class="p">)</span>
 
-        # merge the junction tables and pad with 0
-        res = res %&gt;% reduce(full_join, by = &quot;Junction.ID&quot;)
-        res[is.na(res)] &lt;- 0
+        <span class="c1"># merge the junction tables and pad with 0</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="o">%&gt;%</span> <span class="n">reduce</span><span class="p">(</span><span class="n">full_join</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;Junction.ID&quot;</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">res</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="mi">0</span>
 
-        # fill the original NAs back
-        res = df_replace(res, &quot;original_na&quot;, NA)
-        write.table(res, file = &#39;${cwd}/psichomics_junctions.txt&#39;, quote = FALSE, sep = &#39;\t&#39;, row.names = FALSE)
+        <span class="c1"># fill the original NAs back</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">df_replace</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;original_na&quot;</span><span class="p">,</span> <span class="n">NA</span><span class="p">)</span>
+        <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{cwd}</span><span class="s1">/psichomics_junctions.txt&#39;</span><span class="p">,</span> <span class="n">quote</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">)</span>
   
-    }
+    <span class="p">}</span>
   
-    options(scipen = 0)
+    <span class="n">options</span><span class="p">(</span><span class="n">scipen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[psichomics_2]
-# splicing annotation for psichomics
-parameter: splicing_annotation = path
-output: f&#39;{cwd}/psi_raw_data.tsv&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
-R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint = entrypoint
-    library(&quot;psichomics&quot;)
-    library(&quot;dplyr&quot;)
-    library(&quot;tidyr&quot;)
-    library(&quot;purrr&quot;)    
-    data &lt;- read.table(&quot;${cwd}/psichomics_junctions.txt&quot;, sep = &#39;\t&#39;, header = TRUE)
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">psichomics_2</span><span class="p">]</span>
+<span class="c1"># splicing annotation for psichomics</span>
+<span class="kn">parameter:</span> <span class="n">splicing_annotation</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/psi_raw_data.tsv&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;psichomics&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;dplyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;tidyr&quot;</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;purrr&quot;</span><span class="p">)</span>    
+    <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cwd}</span><span class="s2">/psichomics_junctions.txt&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
     
-    names(data) &lt;- sub(&#39;X&#39;, &#39;&#39;, names(data))
-    data &lt;- data[- grep(&quot;chrM&quot;, data$Junction.ID),]
-    data &lt;- data[- grep(&quot;chrUn&quot;, data$Junction.ID),]
-    data &lt;- data[- grep(&quot;random&quot;, data$Junction.ID),]
+    <span class="n">names</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">sub</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">names</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;chrM&quot;</span><span class="p">,</span> <span class="n">data</span><span class="err">$</span><span class="n">Junction</span><span class="o">.</span><span class="n">ID</span><span class="p">),]</span>
+    <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;chrUn&quot;</span><span class="p">,</span> <span class="n">data</span><span class="err">$</span><span class="n">Junction</span><span class="o">.</span><span class="n">ID</span><span class="p">),]</span>
+    <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span> <span class="n">grep</span><span class="p">(</span><span class="s2">&quot;random&quot;</span><span class="p">,</span> <span class="n">data</span><span class="err">$</span><span class="n">Junction</span><span class="o">.</span><span class="n">ID</span><span class="p">),]</span>
   
-    junctionQuant &lt;- data[,-1]
-    rownames(junctionQuant) &lt;- data[,1]
+    <span class="n">junctionQuant</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rownames</span><span class="p">(</span><span class="n">junctionQuant</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[,</span><span class="mi">1</span><span class="p">]</span>
 
-    # Record of how original psichomics example did, we mimicked the format change loadLocalFiles() function did on our
-    #       data to avoid bugs.
-    #data &lt;- loadLocalFiles(&quot;${cwd}&quot;)
-    #junctionQuant &lt;- data[[1]]$`Junction quantification`
+    <span class="c1"># Record of how original psichomics example did, we mimicked the format change loadLocalFiles() function did on our</span>
+    <span class="c1">#       data to avoid bugs.</span>
+    <span class="c1">#data &lt;- loadLocalFiles(&quot;${cwd}&quot;)</span>
+    <span class="c1">#junctionQuant &lt;- data[[1]]$`Junction quantification`</span>
     
-    annotation = readRDS(&quot;${splicing_annotation:a}&quot;)
-    psi &lt;- quantifySplicing(annotation, junctionQuant)
-    write.table(psi, file=&#39;${cwd}/psi_raw_data.tsv&#39;, quote=FALSE, sep=&#39;\t&#39;)
+    <span class="n">annotation</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;${splicing_annotation:a}&quot;</span><span class="p">)</span>
+    <span class="n">psi</span> <span class="o">&lt;-</span> <span class="n">quantifySplicing</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">junctionQuant</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s1">&#39;$</span><span class="si">{cwd}</span><span class="s1">/psi_raw_data.tsv&#39;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1001,7 +1242,7 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
             mode: "sos"
         },
         kernelOptions: {
-            name: "sos",
+            kernelName: "sos",
             path: "./code/molecular_phenotypes/calling"
         },
         predefinedOutput: true
@@ -1009,132 +1250,46 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     </script>
     <script>kernelName = 'sos'</script>
 
-                </article>
+              </div>
               
-
-              
-              
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="../splicing.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Alternative splicing from RNA-seq data</p>
-      </div>
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../splicing.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Alternative splicing from RNA-seq data</p>
+        </div>
     </a>
-    <a class="right-next"
-       href="../QC/splicing_normalization.html"
-       title="next page">
-      <div class="prev-next-info">
+    <a class='right-next' id="next-link" href="../QC/splicing_normalization.html" title="next page">
+    <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Normalization and phenotype table generation for splicingQTL analysis</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div></div>
-  
-</div>
-
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leafcutter"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#psichomics"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-leafcutter">For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-psichomics">For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-clustering-options">Other clustering options:</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#things-to-keep-in-mind">Things to keep in mind:</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-options">Other options</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-splicing-annotation-information">Alternative Splicing Annotation Information</a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2021+, FunGen xQTL Analysis Working Group.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div>
-          </footer>
-        
-
-      </main>
     </div>
-  </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
-
-  <footer class="bd-footer">
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
+        
+            &copy; Copyright 2021+, FunGen xQTL Methods and Data Integration Working Group.<br/>
+      </p>
+    </div>
   </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
   </body>
 </html>

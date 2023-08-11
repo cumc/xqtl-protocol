@@ -858,11 +858,16 @@ Global Workflow Options:
                         Number of threads
   --job-size 1 (as int)
                         For cluster jobs, number commands to run per job
-  --walltime 5h
+  --walltime 24h
                         Walltime
   --mem 60G
+                        Usually a whole genome VCF.gz file has the size of
+                        200+GB, after testing, a minimum of 60GB of mem is
+                        requried.
   --container &#39;&#39;
                         Software container option
+  --entrypoint {(&#39;micromamba run -n&#39; + &#39; &#39; + container.split(&#39;/&#39;)[-1][:-4]) if container.endswith(&#39;.sif&#39;) else f&#39;&#39;}
+
   --[no-]add-chr (default to False)
                         use this function to edit memory string for PLINK input
 
@@ -881,8 +886,9 @@ Sections
       --[no-]snp-only (default to False)
   qc_2:                 genotype QC
     Workflow Options:
-      --geno-filter 0.1 (as float)
-                        Maximum missingess per-variant
+      --geno-filter 0.9 (as float)
+                        Maximum missingess per-variant, default to 0.9 which is
+                        very lanient
       --DP-snp 10 (as int)
                         Sample level QC - read depth (DP) to filter out SNPs
                         below this value Default to 10, with WES data in mind
@@ -901,8 +907,9 @@ Sections
                         Allele balance for snps
       --AB-indel 0.2 (as float)
                         Allele balance for indels
-      --hwe-filter 1e-06 (as float)
-                        HWE filter
+      --hwe-filter 0.0 (as float)
+                        HWE filter, default to 0.0 which means no HWE filter is
+                        applied
   qc_3:
     Workflow Options:
       --[no-]remove-duplicates (default to False)

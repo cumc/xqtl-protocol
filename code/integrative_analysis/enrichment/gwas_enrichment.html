@@ -1,521 +1,811 @@
 
-
 <!DOCTYPE html>
 
-
-<html lang="en" >
-
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Enrichment analysis: TORUS and GREGOR &#8212; FunGen-xQTL Consortium</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'code/integrative_analysis/enrichment/gwas_enrichment';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Stratified LD Score Regression" href="ldsc.html" />
     <link rel="prev" title="Functional annotation integration" href="../functional_annotation.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="en"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="../../../search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
         
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
-
-<a class="navbar-brand logo" href="../../../README.html">
-  
-  
-  
-  
-    
-    
       
-    
-    
-    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
-  
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../../README.html">
-                    FunGen-xQTL Computational Protocol
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   FunGen-xQTL Computational Protocol
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../xqtl_protocol_demo.html">
+   Illustration of xQTL protocol
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Command Generator
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">
+   RNA-seq calling and QC
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
+   Univariate xQTL Discovery
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference data
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../data_preprocessing/reference_data.html">Reference data standardization</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../data_preprocessing/reference_data.html">
+   Reference data standardization
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">
+   RNA-seq expression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">
+     Quantifying expression from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">
+     Bulk RNA-seq counts normalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/apa.html">
+   Alternative polyadenylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">
+     APA Calling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/methylation.html">
+   Methylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">
+     Quantification of methylation data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/splicing.html">
+   Alternative splicing from RNA-seq data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">
+     Quantifying alternative splicing from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">
+     Normalization and phenotype table generation for splicingQTL analysis
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">Principal component analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">Genomic relationship matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">Genotype data formatting</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">
+     Genotype VCF file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
+     Genotype PLINK file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">
+     Gene coordinate annotation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">
+     Covariate data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">Factor analysis using Bi-Cross validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate data formatting</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/cisQTL_scan.html">cisQTL analysis workflows</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../association_scan/cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL association testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/APEX/APEX.html">
+     APEX QTL association testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../association_scan/transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../association_scan/transQTL_scan.html">transQTL analysis workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
+     Data overview
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">eQTL summary statistics formatting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mashr.html">Data overview</a></li>
-
-
-
-
-
-
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with SuSiE model</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../colocalization.html">QTL and GWAS Colocalization</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../COLOC/fastenloc_dap.html">Colocalization with FastENLOC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../COLOC/mvenloc.html">Multivariate SuSiE and ENLOC model</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../COLOC/fastenloc_dap.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../COLOC/mvenloc.html">
+     Multivariate SuSiE and ENLOC model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+  <label for="toctree-checkbox-13">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="ldsc.html">
+     Stratified LD Score Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../functional_annotation.html">Functional annotation integration</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Enrichment analysis: TORUS and GREGOR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ldsc.html">Stratified LD Score Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../SuSiE_Ann/polyfun.html">Fine-mapping with PolyFun</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_standardizer.html">
+   Summary statistics standardization and export
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
 </ul>
 
     </div>
-</nav></div>
-    </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
+</nav> <!-- To handle the deprecated key -->
 
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH NIA</a>
+</div>
 
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
-
-<div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/integrative_analysis/enrichment/gwas_enrichment.ipynb" target="_blank"
-   class="btn btn-sm btn-source-edit-button dropdown-item"
-   title="Suggest edit"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-pencil-alt"></i>
-  </span>
-<span class="btn__text-container">Suggest edit</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/integrative_analysis/enrichment/gwas_enrichment.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
-  </ul>
 </div>
 
 
+          
 
 
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../../_sources/code/integrative_analysis/enrichment/gwas_enrichment.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-<button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
-    </div>
-  
-</div>
-</div>
-              
-              
-
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Enrichment analysis: TORUS and GREGOR</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-            <div>
-                <h2> Contents </h2>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/code/integrative_analysis/enrichment/gwas_enrichment.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/integrative_analysis/enrichment/gwas_enrichment.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/integrative_analysis/enrichment/gwas_enrichment.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
             </div>
-            <nav aria-label="Page">
+            <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-this-git-depository">Copy this GIT depository</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#to-run-enrichment-analysis-overview">To run enrichment analysis (overview)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-start-from-bed-format-annotation">Step 1 (start from <code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-start-from-binary-annotation-for-snps">Step 2 (start from binary annotation for SNPs)</a></li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#copy-this-git-depository">
+   Copy this GIT depository
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-run-enrichment-analysis-overview">
+   To run enrichment analysis (overview)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-start-from-bed-format-annotation">
+     Step 1 (start from
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       bed
+      </span>
+     </code>
+     format annotation)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-start-from-binary-annotation-for-snps">
+     Step 2 (start from binary annotation for SNPs)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#software-intallation">
+   Software intallation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sos">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       SoS
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#docker">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       docker
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reference-data-preparation">
+   Reference data preparation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hg19-fa">
+     hg19.fa
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#annotation-files">
+   Annotation files
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#annotation-files-download">
+     Annotation files download
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bed-format-annotation-input">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       bed
+      </span>
+     </code>
+     format annotation input
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#binary-annotations-of-interest">
+     Binary annotations of interest
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#torus-workflow-data-format">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     torus
+    </span>
+   </code>
+   workflow data format
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gwas-z-scores-specification">
+     GWAS z-scores specification
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ld-block-files">
+     LD block files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#snp-map">
+     SNP map
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#minimal-working-example-for-torus-workflow">
+     Minimal working example for
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       torus
+      </span>
+     </code>
+     workflow
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#workflow">
+   Workflow
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#utility-steps">
+   Utility steps
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#convert-variants-from-z-score-file-to-bed-format">
+     Convert variants from z-score file to bed format
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#merge-annotations-for-joint-torus-analysis">
+     Merge annotations for joint torus analysis
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-torus-format-binary-annotations">
+   Prepare
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     torus
+    </span>
+   </code>
+   format binary annotations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#enrichment-analysis-via-torus">
+   Enrichment analysis via
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     torus
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#apply-pre-trained-deepsea-model-to-variants">
+   Apply pre-trained
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     deepsea
+    </span>
+   </code>
+   model to variants
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#enrichment-analysis-via-gregor">
+   Enrichment analysis via GREGOR
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to-run-gregor">
+     To run GREGOR
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-intallation">Software intallation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sos"><code class="docutils literal notranslate"><span class="pre">SoS</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker"><code class="docutils literal notranslate"><span class="pre">docker</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-data-preparation">Reference data preparation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hg19-fa">hg19.fa</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annotation-files">Annotation files</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#annotation-files-download">Annotation files download</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bed-format-annotation-input"><code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation input</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-annotations-of-interest">Binary annotations of interest</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torus-workflow-data-format"><code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow data format</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwas-z-scores-specification">GWAS z-scores specification</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ld-block-files">LD block files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#snp-map">SNP map</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-for-torus-workflow">Minimal working example for <code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utility-steps">Utility steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-variants-from-z-score-file-to-bed-format">Convert variants from z-score file to bed format</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-annotations-for-joint-torus-analysis">Merge annotations for joint torus analysis</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-torus-format-binary-annotations">Prepare <code class="docutils literal notranslate"><span class="pre">torus</span></code> format binary annotations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-analysis-via-torus">Enrichment analysis via <code class="docutils literal notranslate"><span class="pre">torus</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-pre-trained-deepsea-model-to-variants">Apply pre-trained <code class="docutils literal notranslate"><span class="pre">deepsea</span></code> model to variants</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-analysis-via-gregor">Enrichment analysis via GREGOR</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#to-run-gregor">To run GREGOR</a></li>
-</ul>
-</li>
-</ul>
+
             </nav>
         </div>
     </div>
 </div>
-
-              
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
                 
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section class="tex2jax_ignore mathjax_ignore" id="enrichment-analysis-torus-and-gregor">
-<h1>Enrichment analysis: TORUS and GREGOR<a class="headerlink" href="#enrichment-analysis-torus-and-gregor" title="Permalink to this heading">#</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="enrichment-analysis-torus-and-gregor">
+<h1>Enrichment analysis: TORUS and GREGOR<a class="headerlink" href="#enrichment-analysis-torus-and-gregor" title="Permalink to this headline">¶</a></h1>
 <p>This workflow document has several pipelines written in SoS Workflow language to perform data preparation and analysis for enrichment of GWAS signals in given annotation features.</p>
 <p>For enrichment analysis currently it implements the <code class="docutils literal notranslate"><span class="pre">torus</span></code> pipeline, based on some <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> codes originally written by Jean at Xin He Lab, UChicago.</p>
 <div class="cell docutils container">
@@ -638,76 +928,76 @@ Sections
 </div>
 </div>
 </div>
-<section id="copy-this-git-depository">
-<h2>Copy this GIT depository<a class="headerlink" href="#copy-this-git-depository" title="Permalink to this heading">#</a></h2>
+<div class="section" id="copy-this-git-depository">
+<h2>Copy this GIT depository<a class="headerlink" href="#copy-this-git-depository" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">bioworkflows</span>
 </pre></div>
 </div>
-</section>
-<section id="to-run-enrichment-analysis-overview">
-<h2>To run enrichment analysis (overview)<a class="headerlink" href="#to-run-enrichment-analysis-overview" title="Permalink to this heading">#</a></h2>
-<section id="step-1-start-from-bed-format-annotation">
-<h3>Step 1 (start from <code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation)<a class="headerlink" href="#step-1-start-from-bed-format-annotation" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="to-run-enrichment-analysis-overview">
+<h2>To run enrichment analysis (overview)<a class="headerlink" href="#to-run-enrichment-analysis-overview" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-1-start-from-bed-format-annotation">
+<h3>Step 1 (start from <code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation)<a class="headerlink" href="#step-1-start-from-bed-format-annotation" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">fine</span><span class="o">-</span><span class="n">mapping</span><span class="o">/</span><span class="n">gwas_enrichment</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">range2var_annotation</span> <span class="o">--</span><span class="n">z</span><span class="o">-</span><span class="n">score</span> <span class="o">...</span> <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">annot</span> <span class="o">...</span> <span class="o">--</span><span class="n">multi</span><span class="o">-</span><span class="n">annot</span> <span class="o">...</span>
 </pre></div>
 </div>
-</section>
-<section id="step-2-start-from-binary-annotation-for-snps">
-<h3>Step 2 (start from binary annotation for SNPs)<a class="headerlink" href="#step-2-start-from-binary-annotation-for-snps" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="step-2-start-from-binary-annotation-for-snps">
+<h3>Step 2 (start from binary annotation for SNPs)<a class="headerlink" href="#step-2-start-from-binary-annotation-for-snps" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">fine</span><span class="o">-</span><span class="n">mapping</span><span class="o">/</span><span class="n">gwas_enrichment</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">enrichment</span> <span class="o">--</span><span class="n">z</span><span class="o">-</span><span class="n">score</span> <span class="o">...</span> <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">annot</span> <span class="o">...</span> <span class="o">--</span><span class="n">multi</span><span class="o">-</span><span class="n">annot</span> <span class="o">...</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="software-intallation">
-<h2>Software intallation<a class="headerlink" href="#software-intallation" title="Permalink to this heading">#</a></h2>
-<section id="sos">
-<h3><code class="docutils literal notranslate"><span class="pre">SoS</span></code><a class="headerlink" href="#sos" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="software-intallation">
+<h2>Software intallation<a class="headerlink" href="#software-intallation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sos">
+<h3><code class="docutils literal notranslate"><span class="pre">SoS</span></code><a class="headerlink" href="#sos" title="Permalink to this headline">¶</a></h3>
 <p>SoS introduction <a class="reference external" href="https://vatlab.github.io/sos-docs/">webpage</a></p>
 <p>Installation:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sos</span> <span class="n">sos</span><span class="o">-</span><span class="n">notebook</span>
 </pre></div>
 </div>
 <p>SoS basic usage <a class="reference external" href="https://vatlab.github.io/sos-docs/running.html#content">webpage</a></p>
-</section>
-<section id="docker">
-<h3><code class="docutils literal notranslate"><span class="pre">docker</span></code><a class="headerlink" href="#docker" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="docker">
+<h3><code class="docutils literal notranslate"><span class="pre">docker</span></code><a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h3>
 <p>Some steps in this pipeline uses docker images we prepare. If you do not have docker installed, you can install it via:</p>
 <ul class="simple">
 <li><p>Run commands below:</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>curl -fsSL get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $USER
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">fsSL</span> <span class="n">get</span><span class="o">.</span><span class="n">docker</span><span class="o">.</span><span class="n">com</span> <span class="o">-</span><span class="n">o</span> <span class="n">get</span><span class="o">-</span><span class="n">docker</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">sudo</span> <span class="n">sh</span> <span class="n">get</span><span class="o">-</span><span class="n">docker</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">sudo</span> <span class="n">usermod</span> <span class="o">-</span><span class="n">aG</span> <span class="n">docker</span> <span class="err">$</span><span class="n">USER</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Log out and log back in (no need to reboot computer).</p></li>
 </ul>
 <p><strong>In this pipeline, <code class="docutils literal notranslate"><span class="pre">bedops</span></code> and <code class="docutils literal notranslate"><span class="pre">torus</span></code> is executed via docker image we prepared and uploaded to <a class="reference external" href="http://dockerhub.com">dockerhub.com</a>. The pipeline should automatically download the image and run the docker container instance.</strong></p>
-</section>
-</section>
-<section id="reference-data-preparation">
-<h2>Reference data preparation<a class="headerlink" href="#reference-data-preparation" title="Permalink to this heading">#</a></h2>
-<section id="hg19-fa">
-<h3>hg19.fa<a class="headerlink" href="#hg19-fa" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="reference-data-preparation">
+<h2>Reference data preparation<a class="headerlink" href="#reference-data-preparation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hg19-fa">
+<h3>hg19.fa<a class="headerlink" href="#hg19-fa" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>only for <code class="docutils literal notranslate"><span class="pre">deepsea</span></code> and <code class="docutils literal notranslate"><span class="pre">gregor</span></code> steps; if you only use enrichment analysis, you do not need to download it.</p></li>
 <li><p>Genome Reference: hg19 (GRCh37) or hg38 (GRCh38).</p></li>
 <li><p>Download <a class="reference external" href="http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.fa.gz">link</a></p></li>
 </ul>
-</section>
-</section>
-<section id="annotation-files">
-<h2>Annotation files<a class="headerlink" href="#annotation-files" title="Permalink to this heading">#</a></h2>
-<section id="annotation-files-download">
-<h3>Annotation files download<a class="headerlink" href="#annotation-files-download" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="annotation-files">
+<h2>Annotation files<a class="headerlink" href="#annotation-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="annotation-files-download">
+<h3>Annotation files download<a class="headerlink" href="#annotation-files-download" title="Permalink to this headline">¶</a></h3>
 <p>Alkes Price’s lab has some annotation files in <code class="docutils literal notranslate"><span class="pre">bed</span></code> format available for download:</p>
 <p><a class="reference external" href="https://data.broadinstitute.org/alkesgroup/LDSCORE/">https://data.broadinstitute.org/alkesgroup/LDSCORE/</a></p>
 <p>eg <code class="docutils literal notranslate"><span class="pre">baselineLD_v2.2_bedfiles.tgz</span></code>.</p>
-</section>
-<section id="bed-format-annotation-input">
-<h3><code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation input<a class="headerlink" href="#bed-format-annotation-input" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="bed-format-annotation-input">
+<h3><code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation input<a class="headerlink" href="#bed-format-annotation-input" title="Permalink to this headline">¶</a></h3>
 <p><strong>If you use the type of annotation file below, you need to run step 1 and 2.</strong></p>
 <p>Annotation files are in <code class="docutils literal notranslate"><span class="pre">bed</span></code> format (for example: Promoter_UCSC.bed).</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    chr1	9873	16361
@@ -716,9 +1006,9 @@ sudo usermod -aG docker $USER
     ...
 </pre></div>
 </div>
-</section>
-<section id="binary-annotations-of-interest">
-<h3>Binary annotations of interest<a class="headerlink" href="#binary-annotations-of-interest" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="binary-annotations-of-interest">
+<h3>Binary annotations of interest<a class="headerlink" href="#binary-annotations-of-interest" title="Permalink to this headline">¶</a></h3>
 <p><strong>If you use the type of annotation file below, you only need to run step 2.</strong></p>
 <p>0/1 binary indicated. For example, a few lines in <code class="docutils literal notranslate"><span class="pre">Coding_UCSC_annotation.torus.gz</span></code>.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>SNP     Coding_UCSC_d
@@ -753,12 +1043,12 @@ DHS_peaks_Trynka
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="torus-workflow-data-format">
-<h2><code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow data format<a class="headerlink" href="#torus-workflow-data-format" title="Permalink to this heading">#</a></h2>
-<section id="gwas-z-scores-specification">
-<h3>GWAS z-scores specification<a class="headerlink" href="#gwas-z-scores-specification" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="torus-workflow-data-format">
+<h2><code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow data format<a class="headerlink" href="#torus-workflow-data-format" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gwas-z-scores-specification">
+<h3>GWAS z-scores specification<a class="headerlink" href="#gwas-z-scores-specification" title="Permalink to this headline">¶</a></h3>
 <p>Example GWAS data (European)</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.med.unc.edu/pgc/results-and-downloads/data-use-agreement-forms/SwedenSCZ_data_download_agreement">SCZ Sweden data</a></p></li>
@@ -771,9 +1061,9 @@ DHS_peaks_Trynka
 </pre></div>
 </div>
 <p>where the 2nd column is the analysis block ID (see below). All GWAS summary statistics have to be converted to this format in order to use.</p>
-</section>
-<section id="ld-block-files">
-<h3>LD block files<a class="headerlink" href="#ld-block-files" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="ld-block-files">
+<h3>LD block files<a class="headerlink" href="#ld-block-files" title="Permalink to this headline">¶</a></h3>
 <p>The last column indicates LD chunk. LD chunk blocks depend on chromosome and position. There are 1703 LD chunks in European human genome.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>            <span class="n">chr1</span>    <span class="mi">10583</span>       <span class="mi">1892607</span>     <span class="mi">1</span>
             <span class="n">chr1</span>    <span class="mi">1892607</span>     <span class="mi">3582736</span>     <span class="mi">2</span>
@@ -784,30 +1074,30 @@ DHS_peaks_Trynka
 <ul class="simple">
 <li><p>LD block reference paper <a class="reference external" href="https://academic.oup.com/bioinformatics/article/32/2/283/1743626">link</a>.</p></li>
 </ul>
-</section>
-<section id="snp-map">
-<h3>SNP map<a class="headerlink" href="#snp-map" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="snp-map">
+<h3>SNP map<a class="headerlink" href="#snp-map" title="Permalink to this headline">¶</a></h3>
 <p>GWAS SNP map. Identical number of SNPs with GWAS.</p>
 <p>Format <code class="docutils literal notranslate"><span class="pre">chrom.pos</span>&#160; <span class="pre">chr</span>&#160; <span class="pre">pos</span></code>. 3 columns in total: <code class="docutils literal notranslate"><span class="pre">chrom.pos</span></code> (example: <code class="docutils literal notranslate"><span class="pre">chr1.729679</span></code>), <code class="docutils literal notranslate"><span class="pre">chr</span></code> and <code class="docutils literal notranslate"><span class="pre">pos</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chr1</span><span class="mf">.729679</span>	<span class="mi">1</span>	<span class="mi">729679</span>
-<span class="n">chr1</span><span class="mf">.731718</span>	<span class="mi">1</span>	<span class="mi">731718</span>
-<span class="n">chr1</span><span class="mf">.734349</span>	<span class="mi">1</span>	<span class="mi">734349</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chr1</span><span class="o">.</span><span class="mi">729679</span>	<span class="mi">1</span>	<span class="mi">729679</span>
+<span class="n">chr1</span><span class="o">.</span><span class="mi">731718</span>	<span class="mi">1</span>	<span class="mi">731718</span>
+<span class="n">chr1</span><span class="o">.</span><span class="mi">734349</span>	<span class="mi">1</span>	<span class="mi">734349</span>
 <span class="o">...</span>
 </pre></div>
 </div>
-</section>
-<section id="minimal-working-example-for-torus-workflow">
-<h3>Minimal working example for <code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow<a class="headerlink" href="#minimal-working-example-for-torus-workflow" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="minimal-working-example-for-torus-workflow">
+<h3>Minimal working example for <code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow<a class="headerlink" href="#minimal-working-example-for-torus-workflow" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>GWAS z-score example <a class="reference external" href="https://www.dropbox.com/s/y2q29a71bb2wmr1/SCZGWAS.zscore.gz?dl=0">link</a></p></li>
 <li><p>SNP map example <a class="reference external" href="https://www.dropbox.com/s/oi4yr0au3oy3hi2/smap.gz?dl=0">link</a></p></li>
 <li><p>annotation example: <code class="docutils literal notranslate"><span class="pre">Promoter_UCSC.bed</span></code> download <a class="reference external" href="https://www.dropbox.com/s/huo5k78wptxmrpe/Promoter_UCSC.bed?dl=0">link</a>. 22,436 lines in total.</p></li>
 <li><p>analysis block example: <a class="reference external" href="https://www.dropbox.com/s/up78cnpkpoodark/ld_chunk.bed?dl=0">link</a>. Used to identify LD chunk for each GWAS SNP.</p></li>
 </ul>
-</section>
-</section>
-<section id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
 <p><strong>You can edit and change the following 5 directories and file pathes.</strong>
 First edit and run the following 5 command to define bash variables.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">work_dir</span><span class="o">=~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">GWAS_ATAC</span>
@@ -819,8 +1109,8 @@ First edit and run the following 5 command to define bash variables.</p>
 </pre></div>
 </div>
 <p>Then run following commands.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sos run fine-mapping/gwas_enrichment.ipynb range2var_annotation --cwd $work_dir --annotation_dir $anno_dir --z-score $z_file --single-annot $single
-sos run fine-mapping/gwas_enrichment.ipynb enrichment --cwd $work_dir --annotation_dir $anno_dir --z-score $z_file --single-annot $single --blocks $blk --snps $snps
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">fine</span><span class="o">-</span><span class="n">mapping</span><span class="o">/</span><span class="n">gwas_enrichment</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">range2var_annotation</span> <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="n">work_dir</span> <span class="o">--</span><span class="n">annotation_dir</span> <span class="err">$</span><span class="n">anno_dir</span> <span class="o">--</span><span class="n">z</span><span class="o">-</span><span class="n">score</span> <span class="err">$</span><span class="n">z_file</span> <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">annot</span> <span class="err">$</span><span class="n">single</span>
+<span class="n">sos</span> <span class="n">run</span> <span class="n">fine</span><span class="o">-</span><span class="n">mapping</span><span class="o">/</span><span class="n">gwas_enrichment</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">enrichment</span> <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="n">work_dir</span> <span class="o">--</span><span class="n">annotation_dir</span> <span class="err">$</span><span class="n">anno_dir</span> <span class="o">--</span><span class="n">z</span><span class="o">-</span><span class="n">score</span> <span class="err">$</span><span class="n">z_file</span> <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">annot</span> <span class="err">$</span><span class="n">single</span> <span class="o">--</span><span class="n">blocks</span> <span class="err">$</span><span class="n">blk</span> <span class="o">--</span><span class="n">snps</span> <span class="err">$</span><span class="n">snps</span>
 </pre></div>
 </div>
 <div class="cell docutils container">
@@ -858,82 +1148,82 @@ sos run fine-mapping/gwas_enrichment.ipynb enrichment --cwd $work_dir --annotati
 </div>
 </div>
 </div>
-</section>
-<section id="utility-steps">
-<h2>Utility steps<a class="headerlink" href="#utility-steps" title="Permalink to this heading">#</a></h2>
-<section id="convert-variants-from-z-score-file-to-bed-format">
-<h3>Convert variants from z-score file to bed format<a class="headerlink" href="#convert-variants-from-z-score-file-to-bed-format" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="utility-steps">
+<h2>Utility steps<a class="headerlink" href="#utility-steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="convert-variants-from-z-score-file-to-bed-format">
+<h3>Convert variants from z-score file to bed format<a class="headerlink" href="#convert-variants-from-z-score-file-to-bed-format" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Auxiliary step to get variant in bed format based on variant ID in z-score file
-[zscore2bed_1]
-parameter: in_file = path()
-input: in_file
-output: f&#39;{_input:n}.bed.unsorted&#39;
-R: expand = &quot;${ }&quot;, container = &#39;gaow/atac-gwas&#39;, workdir = cwd, stdout = f&#39;{_output:n}.stdout&#39;
-    library(readr)
-    library(stringr)
-    library(dplyr)
-    var_file &lt;- ${_input:r}
-    out_file &lt;- ${_output:r}
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Auxiliary step to get variant in bed format based on variant ID in z-score file</span>
+<span class="p">[</span><span class="n">zscore2bed_1</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">in_file</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">input:</span> <span class="n">in_file</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.bed.unsorted&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;gaow/atac-gwas&#39;</span><span class="p">,</span> <span class="kp">workdir</span> <span class="o">=</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+    <span class="n">var_file</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
+    <span class="n">out_file</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
 
-    variants &lt;- read_tsv(var_file, col_names=FALSE, col_types=&#39;ccd&#39;)
-    colnames(variants) = c(&#39;variant&#39;, &#39;ld&#39;, &#39;zscore&#39;)
-    var_info &lt;- str_split(variants$variant, &quot;:&quot;)
-    variants &lt;- mutate(variants, chr = paste0(&quot;chr&quot;, sapply(var_info, function(x){x[1]})), 
-                                 pos = sapply(var_info, function(x){x[2]})) %&gt;%
-                mutate(start = as.numeric(pos), stop=as.numeric(pos) + 1) %&gt;%
-                select(chr, start, stop, variant)
-    options(scipen=1000) # So that positions are always fully written out)
-    write.table(variants, file=out_file, quote=FALSE, col.names=FALSE, row.names=FALSE, sep=&quot;\t&quot;)
+    <span class="n">variants</span> <span class="o">&lt;-</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">var_file</span><span class="p">,</span> <span class="n">col_names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">col_types</span><span class="o">=</span><span class="s1">&#39;ccd&#39;</span><span class="p">)</span>
+    <span class="n">colnames</span><span class="p">(</span><span class="n">variants</span><span class="p">)</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;variant&#39;</span><span class="p">,</span> <span class="s1">&#39;ld&#39;</span><span class="p">,</span> <span class="s1">&#39;zscore&#39;</span><span class="p">)</span>
+    <span class="n">var_info</span> <span class="o">&lt;-</span> <span class="n">str_split</span><span class="p">(</span><span class="n">variants</span><span class="err">$</span><span class="n">variant</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">variants</span> <span class="o">&lt;-</span> <span class="n">mutate</span><span class="p">(</span><span class="n">variants</span><span class="p">,</span> <span class="nb">chr</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span> <span class="n">sapply</span><span class="p">(</span><span class="n">var_info</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]})),</span> 
+                                 <span class="n">pos</span> <span class="o">=</span> <span class="n">sapply</span><span class="p">(</span><span class="n">var_info</span><span class="p">,</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]}))</span> <span class="o">%&gt;%</span>
+                <span class="n">mutate</span><span class="p">(</span><span class="n">start</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">pos</span><span class="p">),</span> <span class="n">stop</span><span class="o">=</span><span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%&gt;%</span>
+                <span class="n">select</span><span class="p">(</span><span class="nb">chr</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">variant</span><span class="p">)</span>
+    <span class="n">options</span><span class="p">(</span><span class="n">scipen</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span> <span class="c1"># So that positions are always fully written out)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">variants</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">out_file</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 
-[zscore2bed_2]
-output: f&#39;{_input:n}&#39;
-bash: expand = True, container = &#39;gaow/atac-gwas&#39;, workdir = cwd
-     sort-bed {_input} &gt; {_output}
+<span class="p">[</span><span class="n">zscore2bed_2</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;gaow/atac-gwas&#39;</span><span class="p">,</span> <span class="kp">workdir</span> <span class="o">=</span> <span class="n">cwd</span>
+     <span class="n">sort</span><span class="o">-</span><span class="n">bed</span> <span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">&gt;</span> <span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 
-[get_variants: provides = &#39;{data}.bed&#39;]
-output: f&#39;{data}.bed&#39;
-sos_run(&#39;zscore2bed&#39;, in_file = f&#39;{_output:n}.gz&#39;)
+<span class="p">[</span><span class="n">get_variants</span><span class="p">:</span> <span class="kp">provides</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{data}</span><span class="s1">.bed&#39;</span><span class="p">]</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1">.bed&#39;</span>
+<span class="n">sos_run</span><span class="p">(</span><span class="s1">&#39;zscore2bed&#39;</span><span class="p">,</span> <span class="n">in_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.gz&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="merge-annotations-for-joint-torus-analysis">
-<h3>Merge annotations for joint torus analysis<a class="headerlink" href="#merge-annotations-for-joint-torus-analysis" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="merge-annotations-for-joint-torus-analysis">
+<h3>Merge annotations for joint torus analysis<a class="headerlink" href="#merge-annotations-for-joint-torus-analysis" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Auxiliary step to merge multiple annotations
-[merge_annotations]
-parameter: out_file=path()
-parameter: data_files=paths()
-input: data_files
-output: out_file
-R: expand = &#39;${ }&#39;, container = &#39;gaow/atac-gwas&#39;, workdir = cwd, stdout = f&#39;{_output:n}.stdout&#39;
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Auxiliary step to merge multiple annotations</span>
+<span class="p">[</span><span class="n">merge_annotations</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">out_file</span><span class="o">=</span><span class="n">path</span><span class="p">()</span>
+<span class="kn">parameter:</span> <span class="n">data_files</span><span class="o">=</span><span class="n">paths</span><span class="p">()</span>
+<span class="kn">input:</span> <span class="n">data_files</span>
+<span class="kn">output:</span> <span class="n">out_file</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;gaow/atac-gwas&#39;</span><span class="p">,</span> <span class="kp">workdir</span> <span class="o">=</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
 
-    library(readr)
-    library(dplyr)
-    library(stringr)
+    <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
 
-    out_name &lt;- ${_output:r}
-    annots &lt;- c(${_input:r,})
-    var_annot &lt;- read_tsv(annots[1], col_names=T)
-    for(i in 2:length(annots)){
-        var_annot2 &lt;- read_tsv(annots[i], col_names=T)
-        stopifnot(all(var_annot$SNP == var_annot2$SNP))
-        var_annot &lt;- cbind(var_annot, var_annot2[,2])
-    }
-    write.table(var_annot, file=gzfile(out_name),
-                row.names=FALSE, quote=FALSE, sep=&quot;\t&quot;)
+    <span class="n">out_name</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
+    <span class="n">annots</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">var_annot</span> <span class="o">&lt;-</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">annots</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">col_names</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">2</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">annots</span><span class="p">)){</span>
+        <span class="n">var_annot2</span> <span class="o">&lt;-</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">annots</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">col_names</span><span class="o">=</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">stopifnot</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">var_annot</span><span class="err">$</span><span class="n">SNP</span> <span class="o">==</span> <span class="n">var_annot2</span><span class="err">$</span><span class="n">SNP</span><span class="p">))</span>
+        <span class="n">var_annot</span> <span class="o">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">var_annot</span><span class="p">,</span> <span class="n">var_annot2</span><span class="p">[,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">}</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">var_annot</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">gzfile</span><span class="p">(</span><span class="n">out_name</span><span class="p">),</span>
+                <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="prepare-torus-format-binary-annotations">
-<h2>Prepare <code class="docutils literal notranslate"><span class="pre">torus</span></code> format binary annotations<a class="headerlink" href="#prepare-torus-format-binary-annotations" title="Permalink to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="prepare-torus-format-binary-annotations">
+<h2>Prepare <code class="docutils literal notranslate"><span class="pre">torus</span></code> format binary annotations<a class="headerlink" href="#prepare-torus-format-binary-annotations" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get variants in data that falls in target region</span>
@@ -949,30 +1239,30 @@ R: expand = &#39;${ }&#39;, container = &#39;gaow/atac-gwas&#39;, workdir = cwd,
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Make binary annotation file
-[range2var_annotation_2]
-parameter: discrete = 1
-depends: z_score
-output: f&#39;{_input:n}.gz&#39;
-R: expand = &quot;${ }&quot;, container = &#39;gaow/atac-gwas&#39;, workdir = cwd, stdout = f&#39;{_output:n}.stdout&#39;, volumes = [f&#39;{_input:d}:{_input:d}&#39;, f&#39;{_output:d}:{_output:d}&#39;]
-    library(readr)
-    library(dplyr)
-    library(stringr)
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make binary annotation file</span>
+<span class="p">[</span><span class="n">range2var_annotation_2</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">discrete</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">depends:</span> <span class="n">z_score</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.gz&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;gaow/atac-gwas&#39;</span><span class="p">,</span> <span class="kp">workdir</span> <span class="o">=</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">volumes</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
 
-    variant_tsv &lt;- ${z_score:r}
-    annotation_var_bed &lt;- ${_input:r}
-    annot_name &lt;- ${_input:bnr} %&gt;% str_replace(paste0(&quot;.&quot;,${z_score:bnr}), &quot;&quot;)
-    out_name &lt;- ${_output:r}
+    <span class="n">variant_tsv</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">z_score</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
+    <span class="n">annotation_var_bed</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
+    <span class="n">annot_name</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">bnr</span><span class="p">}</span> <span class="o">%&gt;%</span> <span class="n">str_replace</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span><span class="err">$</span><span class="p">{</span><span class="n">z_score</span><span class="p">:</span><span class="n">bnr</span><span class="p">}),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">out_name</span> <span class="o">&lt;-</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">}</span>
 
-    vars &lt;- read_tsv(variant_tsv, col_names=FALSE, col_types=&#39;ccd&#39;)[,1]
-    annot_vars = read_tsv(annotation_var_bed, col_names=FALSE, col_types=&#39;cddc&#39;)
-    names(vars) &lt;- &quot;SNP&quot;
-    vars &lt;- vars %&gt;%
-            mutate(annot_d = case_when(SNP %in% annot_vars$X4 ~ 1,
-                                                        TRUE ~ 0))
-    names(vars)[2] &lt;- paste0(annot_name, &#39;${&quot;_d&quot; if discrete else &quot;_c&quot;}&#39;)
-    write.table(vars, file=gzfile(out_name),
-                col.names=TRUE, row.names=FALSE, sep=&quot;\t&quot;, quote=FALSE)
+    <span class="nb">vars</span> <span class="o">&lt;-</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">variant_tsv</span><span class="p">,</span> <span class="n">col_names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">col_types</span><span class="o">=</span><span class="s1">&#39;ccd&#39;</span><span class="p">)[,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">annot_vars</span> <span class="o">=</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">annotation_var_bed</span><span class="p">,</span> <span class="n">col_names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">col_types</span><span class="o">=</span><span class="s1">&#39;cddc&#39;</span><span class="p">)</span>
+    <span class="n">names</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="s2">&quot;SNP&quot;</span>
+    <span class="nb">vars</span> <span class="o">&lt;-</span> <span class="nb">vars</span> <span class="o">%&gt;%</span>
+            <span class="n">mutate</span><span class="p">(</span><span class="n">annot_d</span> <span class="o">=</span> <span class="n">case_when</span><span class="p">(</span><span class="n">SNP</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">annot_vars</span><span class="err">$</span><span class="n">X4</span> <span class="o">~</span> <span class="mi">1</span><span class="p">,</span>
+                                                        <span class="n">TRUE</span> <span class="o">~</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">names</span><span class="p">(</span><span class="nb">vars</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">annot_name</span><span class="p">,</span> <span class="s1">&#39;${&quot;_d&quot; if discrete else &quot;_c&quot;}&#39;</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="nb">vars</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">gzfile</span><span class="p">(</span><span class="n">out_name</span><span class="p">),</span>
+                <span class="n">col</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">FALSE</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -987,9 +1277,9 @@ R: expand = &quot;${ }&quot;, container = &#39;gaow/atac-gwas&#39;, workdir = cw
 </div>
 </div>
 </div>
-</section>
-<section id="enrichment-analysis-via-torus">
-<h2>Enrichment analysis via <code class="docutils literal notranslate"><span class="pre">torus</span></code><a class="headerlink" href="#enrichment-analysis-via-torus" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="enrichment-analysis-via-torus">
+<h2>Enrichment analysis via <code class="docutils literal notranslate"><span class="pre">torus</span></code><a class="headerlink" href="#enrichment-analysis-via-torus" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run torus with annotation + z-score file</span>
@@ -1011,32 +1301,32 @@ R: expand = &quot;${ }&quot;, container = &#39;gaow/atac-gwas&#39;, workdir = cw
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Consolidate all torus result into one table
-[enrichment_2 (make output table)]
-input: group_by = &#39;all&#39;
-output: f&#39;{out_dir}/{z_score:bn}.torus.merged.csv&#39;
-python: expand = &#39;${ }&#39;, workdir = cwd
-    # get log2 folds of enrichment
-    import pandas as pd
-    def get_torus_res(fn):
-        import math, os
-        res = pd.read_table(fn, sep = &quot;\s+&quot;, header = None, names = [&quot;annotation&quot;, &quot;log2_fold_enrichment&quot;, &quot;CI_low&quot;, &quot;CI_high&quot;])
-        res = res.iloc[1:]
-        res[&quot;source&quot;] = [os.path.split(fn)[-1] for x in range(res.shape[0])]
-        res[&quot;annotation&quot;] = res[&quot;annotation&quot;].apply(lambda x: x.rsplit(&#39;.&#39;,1)[0])
-        res[&quot;log2_fold_enrichment&quot;] = [round(math.log2(math.exp(x)),4) for x in res[&quot;log2_fold_enrichment&quot;]]
-        res[&quot;CI_low&quot;] = [round(math.log2(math.exp(x)),4) for x in res[&quot;CI_low&quot;]]
-        res[&quot;CI_high&quot;] = [round(math.log2(math.exp(x)),4) for x in res[&quot;CI_high&quot;]]
-        return res
-    res = pd.concat([get_torus_res(x) for x in [${_input:r,}]])
-    res.to_csv(${_output:r}, index=False)
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># Consolidate all torus result into one table</span>
+<span class="p">[</span><span class="n">enrichment_2</span> <span class="p">(</span><span class="n">make</span> <span class="n">output</span> <span class="n">table</span><span class="p">)]</span>
+<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">out_dir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">z_score</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.torus.merged.csv&#39;</span>
+<span class="kn">python:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="kp">workdir</span> <span class="o">=</span> <span class="n">cwd</span>
+    <span class="c1"># get log2 folds of enrichment</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="k">def</span> <span class="nf">get_torus_res</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">os</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">,</span> <span class="s2">&quot;log2_fold_enrichment&quot;</span><span class="p">,</span> <span class="s2">&quot;CI_low&quot;</span><span class="p">,</span> <span class="s2">&quot;CI_high&quot;</span><span class="p">])</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fn</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;annotation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;log2_fold_enrichment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;log2_fold_enrichment&quot;</span><span class="p">]]</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;CI_low&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;CI_low&quot;</span><span class="p">]]</span>
+        <span class="n">res</span><span class="p">[</span><span class="s2">&quot;CI_high&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;CI_high&quot;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">get_torus_res</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,}]])</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="apply-pre-trained-deepsea-model-to-variants">
-<h2>Apply pre-trained <code class="docutils literal notranslate"><span class="pre">deepsea</span></code> model to variants<a class="headerlink" href="#apply-pre-trained-deepsea-model-to-variants" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="apply-pre-trained-deepsea-model-to-variants">
+<h2>Apply pre-trained <code class="docutils literal notranslate"><span class="pre">deepsea</span></code> model to variants<a class="headerlink" href="#apply-pre-trained-deepsea-model-to-variants" title="Permalink to this headline">¶</a></h2>
 <p>Credits to Yanyu Liang. Required inputs are:</p>
 <ul class="simple">
 <li><p>Path to hg19 reference genome</p></li>
@@ -1114,26 +1404,26 @@ python: expand = &#39;${ }&#39;, workdir = cwd
 </div>
 </div>
 </div>
-</section>
-<section id="enrichment-analysis-via-gregor">
-<h2>Enrichment analysis via GREGOR<a class="headerlink" href="#enrichment-analysis-via-gregor" title="Permalink to this heading">#</a></h2>
+</div>
+<div class="section" id="enrichment-analysis-via-gregor">
+<h2>Enrichment analysis via GREGOR<a class="headerlink" href="#enrichment-analysis-via-gregor" title="Permalink to this headline">¶</a></h2>
 <p>To properly perform enrichment analysis we want to match the control SNPs with the SNPs of interest – that is, SNPs inside CS – in terms of LD, distance to nearest gene and MAF. The <a class="reference external" href="http://csg.sph.umich.edu/GREGOR/index.php/site/download">GREGOR</a> software can generate list of matched SNPs. I will use SNPs inside CS as input and expect a list of output SNPs matching these inputs.</p>
 <p>GREGOR is release under University of Michigan license so I’ll not make it into a docker image. So path to GREGOR directory is required. Also we need reference files, prepared by:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> \
-    <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="mf">.0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="o">.</span><span class="n">part</span><span class="mf">.00</span> \
-    <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="mf">.0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="o">.</span><span class="n">part</span><span class="mf">.01</span> \
-    <span class="o">&gt;</span> <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="mf">.0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-<span class="n">tar</span> <span class="n">zxvf</span> <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="mf">.0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="o">.</span><span class="mf">0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="o">.</span><span class="n">part</span><span class="o">.</span><span class="mi">00</span> \
+    <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="o">.</span><span class="mf">0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span><span class="o">.</span><span class="n">part</span><span class="o">.</span><span class="mi">01</span> \
+    <span class="o">&gt;</span> <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="o">.</span><span class="mf">0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">zxvf</span> <span class="n">GREGOR</span><span class="o">.</span><span class="n">AFR</span><span class="o">.</span><span class="n">ref</span><span class="o">.</span><span class="n">r2</span><span class="o">.</span><span class="n">greater</span><span class="o">.</span><span class="n">than</span><span class="o">.</span><span class="mf">0.7</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 <p>MD5SUM check:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AFR</span><span class="o">.</span><span class="n">part</span><span class="mf">.0</span>	<span class="p">(</span> <span class="n">MD5</span><span class="p">:</span> <span class="mi">9926904128</span><span class="n">dd58d6bf1ad4f1e90638af</span> <span class="p">)</span>
-<span class="n">AFR</span><span class="o">.</span><span class="n">part</span><span class="mf">.1</span>	<span class="p">(</span> <span class="n">MD5</span><span class="p">:</span> <span class="n">c1d30aff89a584bfa8c1fa1bdc197f21</span> <span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AFR</span><span class="o">.</span><span class="n">part</span><span class="o">.</span><span class="mi">0</span>	<span class="p">(</span> <span class="n">MD5</span><span class="p">:</span> <span class="mi">9926904128</span><span class="n">dd58d6bf1ad4f1e90638af</span> <span class="p">)</span>
+<span class="n">AFR</span><span class="o">.</span><span class="n">part</span><span class="o">.</span><span class="mi">1</span>	<span class="p">(</span> <span class="n">MD5</span><span class="p">:</span> <span class="n">c1d30aff89a584bfa8c1fa1bdc197f21</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>Same for EUR data-set.</p>
-<section id="to-run-gregor">
-<h3>To run GREGOR<a class="headerlink" href="#to-run-gregor" title="Permalink to this heading">#</a></h3>
+<div class="section" id="to-run-gregor">
+<h3>To run GREGOR<a class="headerlink" href="#to-run-gregor" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">PGC3</span></code></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">workflow</span><span class="o">/</span><span class="n">gwas_enrichment</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">gregor</span> <span class="o">--</span><span class="n">gregor</span><span class="o">-</span><span class="nb">input</span> <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">GWAS_ATAC</span><span class="o">/</span><span class="n">scz2_zscore</span><span class="o">/</span><span class="n">gregor</span><span class="o">.</span><span class="n">scz2</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">annot</span> <span class="n">data</span><span class="o">/</span><span class="n">gregor</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
@@ -1144,52 +1434,52 @@ python: expand = &#39;${ }&#39;, workdir = cwd
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[gregor_1 (make SNP index)]
-depends: executable(&#39;zcat&#39;)
-parameter: gregor_input = path()
-input: gregor_input
-output: f&#39;{_input:nn}.rsid.txt&#39;, f&#39;{_input:nn}.annotations.list&#39;
-bash: expand = &#39;${ }&#39;
-    zcat ${_input} | cut -f 2,3 -d &quot;_&quot; | sed &#39;s/_/:/g&#39; &gt; ${_output[0]}
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">gregor_1</span> <span class="p">(</span><span class="n">make</span> <span class="n">SNP</span> <span class="n">index</span><span class="p">)]</span>
+<span class="kn">depends:</span> <span class="n">executable</span><span class="p">(</span><span class="s1">&#39;zcat&#39;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">gregor_input</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">input:</span> <span class="n">gregor_input</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.rsid.txt&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.annotations.list&#39;</span>
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span>
+    <span class="n">zcat</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">}</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot;_&quot;</span> <span class="o">|</span> <span class="n">sed</span> <span class="s1">&#39;s/_/:/g&#39;</span> <span class="o">&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
 
-with open(_output[1], &#39;w&#39;) as f:
-    f.write(&#39;\n&#39;.join(single_anno))
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">single_anno</span><span class="p">))</span>
 
-[gregor_2 (make configuration file)]
-depends: executable(&#39;sed&#39;)
-parameter: gregor_db = path(&#39;~/Documents/hg19/GREGOR_DB&#39;)
-parameter: pop = &#39;EUR&#39;
-output: f&#39;{_input[0]:nn}.gregor.conf&#39;
-report: output = f&#39;{_output}&#39;, expand = True
-    ##############################################################################
-    # CHIPSEQ ENRICHMENT CONFIGURATION FILE
-    # This configuration file contains run-time configuration of
-    # CHIP_SEQ ENRICHMENT
-    ###############################################################################
-    ## KEY ELEMENTS TO CONFIGURE : NEED TO MODIFY
-    ###############################################################################
-    INDEX_SNP_FILE = {_input[0]}
-    BED_FILE_INDEX = {_input[1]} 
-    REF_DIR = {gregor_db}
-    R2THRESHOLD = 0.7 ## must be greater than 0.7
-    LDWINDOWSIZE = 10000 ## must be less than 1MB; these two values define LD buddies
-    OUT_DIR = {_output:nn}_gregor_output
-    MIN_NEIGHBOR_NUM = 10 ## define the size of neighborhood
-    BEDFILE_IS_SORTED = true  ## false, if the bed files are not sorted
-    POPULATION = {pop}  ## define the population, you can specify EUR, AFR, AMR or ASN
-    TOPNBEDFILES = 2 
-    JOBNUMBER = 10
-    ###############################################################################
-    #BATCHTYPE = mosix ##  submit jobs on MOSIX
-    #BATCHOPTS = -E/tmp -i -m2000 -j10,11,12,13,14,15,16,17,18,19,120,122,123,124,125 sh -c
-    ###############################################################################
-    #BATCHTYPE = slurm   ##  submit jobs on SLURM
-    #BATCHOPTS = --partition=broadwl --account=pi-mstephens --time=0:30:0
-    ###############################################################################
-    BATCHTYPE = local ##  run jobs on local machine
+<span class="p">[</span><span class="n">gregor_2</span> <span class="p">(</span><span class="n">make</span> <span class="n">configuration</span> <span class="n">file</span><span class="p">)]</span>
+<span class="kn">depends:</span> <span class="n">executable</span><span class="p">(</span><span class="s1">&#39;sed&#39;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">gregor_db</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;~/Documents/hg19/GREGOR_DB&#39;</span><span class="p">)</span>
+<span class="kn">parameter:</span> <span class="n">pop</span> <span class="o">=</span> <span class="s1">&#39;EUR&#39;</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.gregor.conf&#39;</span>
+<span class="kn">report:</span> <span class="n">output</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1">##############################################################################</span>
+    <span class="c1"># CHIPSEQ ENRICHMENT CONFIGURATION FILE</span>
+    <span class="c1"># This configuration file contains run-time configuration of</span>
+    <span class="c1"># CHIP_SEQ ENRICHMENT</span>
+    <span class="c1">###############################################################################</span>
+    <span class="c1">## KEY ELEMENTS TO CONFIGURE : NEED TO MODIFY</span>
+    <span class="c1">###############################################################################</span>
+    <span class="n">INDEX_SNP_FILE</span> <span class="o">=</span> <span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+    <span class="n">BED_FILE_INDEX</span> <span class="o">=</span> <span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> 
+    <span class="n">REF_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">gregor_db</span><span class="p">}</span>
+    <span class="n">R2THRESHOLD</span> <span class="o">=</span> <span class="mf">0.7</span> <span class="c1">## must be greater than 0.7</span>
+    <span class="n">LDWINDOWSIZE</span> <span class="o">=</span> <span class="mi">10000</span> <span class="c1">## must be less than 1MB; these two values define LD buddies</span>
+    <span class="n">OUT_DIR</span> <span class="o">=</span> <span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="n">_gregor_output</span>
+    <span class="n">MIN_NEIGHBOR_NUM</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1">## define the size of neighborhood</span>
+    <span class="n">BEDFILE_IS_SORTED</span> <span class="o">=</span> <span class="n">true</span>  <span class="c1">## false, if the bed files are not sorted</span>
+    <span class="n">POPULATION</span> <span class="o">=</span> <span class="p">{</span><span class="n">pop</span><span class="p">}</span>  <span class="c1">## define the population, you can specify EUR, AFR, AMR or ASN</span>
+    <span class="n">TOPNBEDFILES</span> <span class="o">=</span> <span class="mi">2</span> 
+    <span class="n">JOBNUMBER</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="c1">###############################################################################</span>
+    <span class="c1">#BATCHTYPE = mosix ##  submit jobs on MOSIX</span>
+    <span class="c1">#BATCHOPTS = -E/tmp -i -m2000 -j10,11,12,13,14,15,16,17,18,19,120,122,123,124,125 sh -c</span>
+    <span class="c1">###############################################################################</span>
+    <span class="c1">#BATCHTYPE = slurm   ##  submit jobs on SLURM</span>
+    <span class="c1">#BATCHOPTS = --partition=broadwl --account=pi-mstephens --time=0:30:0</span>
+    <span class="c1">###############################################################################</span>
+    <span class="n">BATCHTYPE</span> <span class="o">=</span> <span class="n">local</span> <span class="c1">##  run jobs on local machine</span>
 
-bash: expand = True
-    sed -i &#39;/^$/d&#39; {_output}
+<span class="kn">bash:</span> <span class="n">expand</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="s1">&#39;/^$/d&#39;</span> <span class="p">{</span><span class="n">_output</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1216,9 +1506,9 @@ bash: expand = True
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1232,7 +1522,7 @@ bash: expand = True
             mode: "sos"
         },
         kernelOptions: {
-            name: "sos",
+            kernelName: "sos",
             path: "./code/integrative_analysis/enrichment"
         },
         predefinedOutput: true
@@ -1240,145 +1530,46 @@ bash: expand = True
     </script>
     <script>kernelName = 'sos'</script>
 
-                </article>
+              </div>
               
-
-              
-              
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="../functional_annotation.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Functional annotation integration</p>
-      </div>
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../functional_annotation.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Functional annotation integration</p>
+        </div>
     </a>
-    <a class="right-next"
-       href="ldsc.html"
-       title="next page">
-      <div class="prev-next-info">
+    <a class='right-next' id="next-link" href="ldsc.html" title="next page">
+    <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Stratified LD Score Regression</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div></div>
-  
-</div>
-
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-this-git-depository">Copy this GIT depository</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#to-run-enrichment-analysis-overview">To run enrichment analysis (overview)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-start-from-bed-format-annotation">Step 1 (start from <code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-start-from-binary-annotation-for-snps">Step 2 (start from binary annotation for SNPs)</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-intallation">Software intallation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sos"><code class="docutils literal notranslate"><span class="pre">SoS</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker"><code class="docutils literal notranslate"><span class="pre">docker</span></code></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-data-preparation">Reference data preparation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hg19-fa">hg19.fa</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annotation-files">Annotation files</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#annotation-files-download">Annotation files download</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bed-format-annotation-input"><code class="docutils literal notranslate"><span class="pre">bed</span></code> format annotation input</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-annotations-of-interest">Binary annotations of interest</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torus-workflow-data-format"><code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow data format</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwas-z-scores-specification">GWAS z-scores specification</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ld-block-files">LD block files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#snp-map">SNP map</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-for-torus-workflow">Minimal working example for <code class="docutils literal notranslate"><span class="pre">torus</span></code> workflow</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utility-steps">Utility steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-variants-from-z-score-file-to-bed-format">Convert variants from z-score file to bed format</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-annotations-for-joint-torus-analysis">Merge annotations for joint torus analysis</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-torus-format-binary-annotations">Prepare <code class="docutils literal notranslate"><span class="pre">torus</span></code> format binary annotations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-analysis-via-torus">Enrichment analysis via <code class="docutils literal notranslate"><span class="pre">torus</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-pre-trained-deepsea-model-to-variants">Apply pre-trained <code class="docutils literal notranslate"><span class="pre">deepsea</span></code> model to variants</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-analysis-via-gregor">Enrichment analysis via GREGOR</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#to-run-gregor">To run GREGOR</a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2021+, FunGen xQTL Analysis Working Group.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div>
-          </footer>
-        
-
-      </main>
     </div>
-  </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
-
-  <footer class="bd-footer">
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
+        
+            &copy; Copyright 2021+, FunGen xQTL Analysis Working Group.<br/>
+      </p>
+    </div>
   </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
   </body>
 </html>

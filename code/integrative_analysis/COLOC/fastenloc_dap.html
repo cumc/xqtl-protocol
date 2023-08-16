@@ -1,506 +1,693 @@
 
-
 <!DOCTYPE html>
 
-
-<html lang="en" >
-
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Colocalization with FastENLOC &#8212; FunGen-xQTL Consortium</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'code/integrative_analysis/COLOC/fastenloc_dap';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Multivariate SuSiE and ENLOC model" href="mvenloc.html" />
     <link rel="prev" title="QTL and GWAS Colocalization" href="../colocalization.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="en"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="../../../search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
         
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
-
-<a class="navbar-brand logo" href="../../../README.html">
-  
-  
-  
-  
-    
-    
       
-    
-    
-    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
-  
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../../README.html">
-                    FunGen-xQTL Computational Protocol
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+      
+      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../README.html">
+   FunGen-xQTL Computational Protocol
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../xqtl_protocol_demo.html">
+   Illustration of xQTL protocol
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Command Generator
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">
+   RNA-seq calling and QC
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
+   Univariate xQTL Discovery
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference data
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../data_preprocessing/reference_data.html">Reference data standardization</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../data_preprocessing/reference_data.html">
+   Reference data standardization
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">
+   RNA-seq expression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">
+     Quantifying expression from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">
+     Bulk RNA-seq counts normalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/apa.html">
+   Alternative polyadenylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">
+     APA Calling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/methylation.html">
+   Methylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">
+     Quantification of methylation data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../molecular_phenotypes/splicing.html">
+   Alternative splicing from RNA-seq data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">
+     Quantifying alternative splicing from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">
+     Normalization and phenotype table generation for splicingQTL analysis
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">Principal component analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">Genomic relationship matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">Genotype data formatting</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
+   Genotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">
+     Genotype VCF file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
+     Genotype PLINK file quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">
+     Principal component analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">
+     Genomic relationship matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">
+     Genotype data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">
+     Gene coordinate annotation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">
+     Phenotype data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
+   Covariate data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">
+     Factor analysis using Bi-Cross validation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">
+     Covariate data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">Factor analysis using Bi-Cross validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate data formatting</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/cisQTL_scan.html">cisQTL analysis workflows</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../association_scan/cisQTL_scan.html">
+   cisQTL analysis workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL association testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../association_scan/APEX/APEX.html">
+     APEX QTL association testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../association_scan/transQTL_scan.html">
+   transQTL analysis workflows
+  </a>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../association_scan/transQTL_scan.html">transQTL analysis workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
+     eQTL summary statistics formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
+     Data overview
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">eQTL summary statistics formatting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mashr.html">Data overview</a></li>
-
-
-
-
-
-
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with SuSiE model</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with SuSiE model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../colocalization.html">QTL and GWAS Colocalization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Colocalization with FastENLOC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mvenloc.html">Multivariate SuSiE and ENLOC model</a></li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="mvenloc.html">
+     Multivariate SuSiE and ENLOC model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+  <label for="toctree-checkbox-13">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../enrichment/ldsc.html">
+     Stratified LD Score Regression
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../SuSiE_Ann/polyfun.html">
+     Fine-mapping with PolyFun
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../functional_annotation.html">Functional annotation integration</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../enrichment/gwas_enrichment.html">Enrichment analysis: TORUS and GREGOR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../enrichment/ldsc.html">Stratified LD Score Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../SuSiE_Ann/polyfun.html">Fine-mapping with PolyFun</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/summary_stats_standardizer.html">
+   Summary statistics standardization and export
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
 </ul>
 
     </div>
-</nav></div>
-    </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
+</nav> <!-- To handle the deprecated key -->
 
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH NIA</a>
+</div>
 
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
-
-<div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/integrative_analysis/COLOC/fastenloc_dap.ipynb" target="_blank"
-   class="btn btn-sm btn-source-edit-button dropdown-item"
-   title="Suggest edit"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-pencil-alt"></i>
-  </span>
-<span class="btn__text-container">Suggest edit</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/integrative_analysis/COLOC/fastenloc_dap.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
-  </ul>
 </div>
 
 
+          
 
 
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../../_sources/code/integrative_analysis/COLOC/fastenloc_dap.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-<button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-  </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
-    </div>
-  
-</div>
-</div>
-              
-              
-
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Colocalization with FastENLOC</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-            <div>
-                <h2> Contents </h2>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/code/integrative_analysis/COLOC/fastenloc_dap.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/integrative_analysis/COLOC/fastenloc_dap.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/integrative_analysis/COLOC/fastenloc_dap.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
             </div>
-            <nav aria-label="Page">
+            <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aim">Aim</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Workflow</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-0-prepare-intermediate-input-files">Step 0 : Prepare Intermediate Input Files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-prepare-gwas-pip">Step 1: Prepare GWAS PIP</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-prepare-eqtl-annotation-file">Step 2: Prepare eQTL Annotation File</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files">Method 1: Use pre-computed GTEx multi-tissue eQTL annotation files</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g">Method 2: Derive annotations based on own eQTL data, using DAP-G</a></li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#aim">
+   Aim
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#input">
+   Input
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#workflow">
+   Workflow
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-0-prepare-intermediate-input-files">
+     Step 0 : Prepare Intermediate Input Files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">
+     FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-1-prepare-gwas-pip">
+     Step 1: Prepare GWAS PIP
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-2-prepare-eqtl-annotation-file">
+     Step 2: Prepare eQTL Annotation File
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files">
+       Method 1: Use pre-computed GTEx multi-tissue eQTL annotation files
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g">
+       Method 2: Derive annotations based on own eQTL data, using DAP-G
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#step-3-colocalization-with-fastenloc">
+     Step 3: Colocalization with fastENLOC
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#minimum-working-example">
+   Minimum Working Example:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     Summary:
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-colocalization-with-fastenloc">Step 3: Colocalization with fastENLOC</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-working-example">Minimum Working Example:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary:</a></li>
-</ul>
-</li>
-</ul>
+
             </nav>
         </div>
     </div>
 </div>
-
-              
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
                 
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section class="tex2jax_ignore mathjax_ignore" id="colocalization-with-fastenloc">
-<h1>Colocalization with FastENLOC<a class="headerlink" href="#colocalization-with-fastenloc" title="Permalink to this heading">#</a></h1>
-<section id="aim">
-<h2>Aim<a class="headerlink" href="#aim" title="Permalink to this heading">#</a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="colocalization-with-fastenloc">
+<h1>Colocalization with FastENLOC<a class="headerlink" href="#colocalization-with-fastenloc" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="aim">
+<h2>Aim<a class="headerlink" href="#aim" title="Permalink to this headline">¶</a></h2>
 <p>The purpose of this notebook is to demonstrate a colocalization analysis workflow utilizing fastENLOC</p>
-</section>
-<section id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
-<ol class="arabic simple">
+</div>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
 <li><p><strong>GWAS summary statistics file</strong> including the following columns at minimum (no header)</p></li>
 </ol>
 <ul class="simple">
@@ -509,7 +696,7 @@ document.write(`
 <li><p>pos: base pair position</p></li>
 <li><p>z_score: z-score values</p></li>
 </ul>
-<ol class="arabic simple" start="2">
+<ol class="simple">
 <li><p><strong>eQTL SNPs data file</strong> including the following columns (no header)</p></li>
 </ol>
 <ul class="simple">
@@ -520,7 +707,7 @@ document.write(`
 <li><p>beta: beta-hat, effect size</p></li>
 <li><p>se: standard error of beta-hat</p></li>
 </ul>
-<ol class="arabic simple" start="3">
+<ol class="simple">
 <li><p><strong>LD correlation matrix file</strong> for all SNPs included in eQTL data file. (no header)</p></li>
 <li><p><strong>eQTL Z-score file</strong> with the following columns (no header)</p></li>
 </ol>
@@ -528,7 +715,7 @@ document.write(`
 <li><p>snp: variant ID. Format: chr#_bp_a1_A2. Example: chr21_25380778_A_G</p></li>
 <li><p>z score</p></li>
 </ul>
-<ol class="arabic simple" start="5">
+<ol class="simple">
 <li><p><strong>SNP vcf file</strong> to annotate all SNP positions, with the following columns (include header)</p></li>
 </ol>
 <ul class="simple">
@@ -538,10 +725,10 @@ document.write(`
 <li><p>REF: Effect allele</p></li>
 <li><p>ALT: Other allele</p></li>
 </ul>
-</section>
-<section id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
-<ol class="arabic simple">
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
 <li><p>Enrichment analysis result <code class="docutils literal notranslate"><span class="pre">prefix.enloc.enrich.rst</span></code>: estimated enrichment parameters and standard errors.</p></li>
 <li><p>Signal-level colocalization result <code class="docutils literal notranslate"><span class="pre">prefix.enloc.sig.out</span></code>: the main output from the colocalization analysis wi th the following format</p></li>
 </ol>
@@ -553,7 +740,7 @@ document.write(`
 <li><p>column 5: cluster PIP of GWAS hits (with eQTL prior)</p></li>
 <li><p>column 6: regional colocalization probability (RCP)</p></li>
 </ul>
-<ol class="arabic simple" start="3">
+<ol class="simple">
 <li><p>SNP-level colocalization result <code class="docutils literal notranslate"><span class="pre">prefix.enloc.snp.out</span></code>: SNP-level colocalization output with the following form at</p></li>
 </ol>
 <ul class="simple">
@@ -564,21 +751,21 @@ document.write(`
 <li><p>column 5: SNP-level PIP of GWAS (with eQTL prior)</p></li>
 <li><p>column 6: SNP-level colocalization probability</p></li>
 </ul>
-<ol class="arabic simple" start="4">
+<ol class="simple">
 <li><p>Sorted list of colocalization signals with</p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">sort</span> <span class="pre">-grk6</span> <span class="pre">prefix.enloc.sig.out</span> </code></p>
-</section>
-<section id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading">#</a></h2>
-<section id="step-0-prepare-intermediate-input-files">
-<h3>Step 0 : Prepare Intermediate Input Files<a class="headerlink" href="#step-0-prepare-intermediate-input-files" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="step-0-prepare-intermediate-input-files">
+<h3>Step 0 : Prepare Intermediate Input Files<a class="headerlink" href="#step-0-prepare-intermediate-input-files" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gene.prior.txt.gz</span></code> : eQTL SNP data file</p></li>
 </ul>
-</section>
-<section id="fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">
-<h3>FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)<a class="headerlink" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">
+<h3>FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)<a class="headerlink" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -650,9 +837,9 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="step-1-prepare-gwas-pip">
-<h3>Step 1: Prepare GWAS PIP<a class="headerlink" href="#step-1-prepare-gwas-pip" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="step-1-prepare-gwas-pip">
+<h3>Step 1: Prepare GWAS PIP<a class="headerlink" href="#step-1-prepare-gwas-pip" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gwas_z.txt</span></code> : GWAS summary statistics file</p></li>
 </ul>
@@ -678,11 +865,11 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="step-2-prepare-eqtl-annotation-file">
-<h3>Step 2: Prepare eQTL Annotation File<a class="headerlink" href="#step-2-prepare-eqtl-annotation-file" title="Permalink to this heading">#</a></h3>
-<section id="method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files">
-<h4>Method 1: Use pre-computed GTEx multi-tissue eQTL annotation files<a class="headerlink" href="#method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files" title="Permalink to this heading">#</a></h4>
+</div>
+<div class="section" id="step-2-prepare-eqtl-annotation-file">
+<h3>Step 2: Prepare eQTL Annotation File<a class="headerlink" href="#step-2-prepare-eqtl-annotation-file" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files">
+<h4>Method 1: Use pre-computed GTEx multi-tissue eQTL annotation files<a class="headerlink" href="#method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files" title="Permalink to this headline">¶</a></h4>
 <p>download:</p>
 <ul class="simple">
 <li><p>hg38 Position ID: <a class="reference external" href="https://drive.google.com/open?id=1kfH_CffxyCtZcx3z7k63rIARNidLv1_P">https://drive.google.com/open?id=1kfH_CffxyCtZcx3z7k63rIARNidLv1_P</a></p></li>
@@ -693,9 +880,9 @@ document.write(`
 <li><p>gtex_v8.eqtl_annot.vcf.gz</p></li>
 <li><p>gtex_v8.eqtl_annot_rsid.vcf.gz</p></li>
 </ul>
-</section>
-<section id="method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g">
-<h4>Method 2: Derive annotations based on own eQTL data, using DAP-G<a class="headerlink" href="#method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g" title="Permalink to this heading">#</a></h4>
+</div>
+<div class="section" id="method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g">
+<h4>Method 2: Derive annotations based on own eQTL data, using DAP-G<a class="headerlink" href="#method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g" title="Permalink to this headline">¶</a></h4>
 <p>DAP-G annotations are produced through 2 parts:</p>
 <p><strong>Part 1</strong>: Estimate priors with <code class="docutils literal notranslate"><span class="pre">torus</span></code></p>
 <ul class="simple">
@@ -726,10 +913,10 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="step-3-colocalization-with-fastenloc">
-<h3>Step 3: Colocalization with fastENLOC<a class="headerlink" href="#step-3-colocalization-with-fastenloc" title="Permalink to this heading">#</a></h3>
+</div>
+</div>
+<div class="section" id="step-3-colocalization-with-fastenloc">
+<h3>Step 3: Colocalization with fastENLOC<a class="headerlink" href="#step-3-colocalization-with-fastenloc" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">fastenloc</span><span class="p">]</span>
@@ -739,29 +926,29 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="minimum-working-example">
-<h2>Minimum Working Example:<a class="headerlink" href="#minimum-working-example" title="Permalink to this heading">#</a></h2>
+</div>
+</div>
+<div class="section" id="minimum-working-example">
+<h2>Minimum Working Example:<a class="headerlink" href="#minimum-working-example" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">example</span><span class="p">]</span>
 <span class="kn">bash:</span>
     <span class="n">mkdir</span> <span class="n">dap_rst_dir</span> <span class="n">annot</span> 
-    <span class="n">perl</span> <span class="n">format2torus</span><span class="o">.</span><span class="n">pl</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">txt</span> <span class="o">&gt;</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span>
-    <span class="n">gzip</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span>
-    <span class="n">torus</span> <span class="o">-</span><span class="n">d</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">load_zval</span> <span class="o">-</span><span class="n">dump_pip</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span>
-    <span class="n">gzip</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span>
+    <span class="n">perl</span> <span class="n">format2torus</span><span class="o">.</span><span class="n">pl</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">txt</span> <span class="o">&gt;</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span>
+    <span class="n">gzip</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span>
+    <span class="n">torus</span> <span class="o">-</span><span class="n">d</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">zval</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">load_zval</span> <span class="o">-</span><span class="n">dump_pip</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span>
+    <span class="n">gzip</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span>
     <span class="n">torus</span> <span class="o">-</span><span class="n">d</span> <span class="n">for_prior</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">fastqtl</span> <span class="o">-</span><span class="n">dump_prior</span> <span class="n">dumpENSG00000203710</span>
     <span class="n">dap</span><span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">d_z</span> <span class="n">z_files</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">txt</span> <span class="o">-</span><span class="n">d_ld</span> <span class="n">lds</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">ld</span> <span class="o">-</span><span class="n">p</span> <span class="n">dumpENSG00000203710</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">prior</span> <span class="o">-</span><span class="n">ld_control</span> <span class="mf">0.5</span> <span class="o">--</span><span class="nb">all</span> <span class="o">-</span><span class="n">t</span> <span class="mi">4</span> <span class="o">&gt;</span> <span class="n">dap_rst_dir</span><span class="o">/</span><span class="n">ENSG00000110079</span><span class="o">.</span><span class="n">dap</span>
     <span class="n">perl</span> <span class="n">summarize_dap2enloc</span><span class="o">.</span><span class="n">pl</span> <span class="o">-</span><span class="nb">dir</span> <span class="n">dap_rst_dir</span> <span class="o">-</span><span class="n">vcf</span> <span class="n">vcfs</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="n">annot</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span>
-    <span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">annot</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">ad</span><span class="mf">.0921</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">annot</span><span class="o">/</span><span class="n">ENSG00000203710</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">ad</span><span class="o">.</span><span class="mf">0921.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 </div>
 </div>
-<section id="summary">
-<h3>Summary:<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h3>
+<div class="section" id="summary">
+<h3>Summary:<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="n">enloc</span><span class="o">.</span><span class="n">enrich</span><span class="o">.</span><span class="n">out</span>
@@ -805,9 +992,9 @@ ENSG00000203710:1   chr1_207738077_T_C   5.066e-01 3.540e-02    4.454e-01      4
 </div>
 </div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -821,7 +1008,7 @@ ENSG00000203710:1   chr1_207738077_T_C   5.066e-01 3.540e-02    4.454e-01      4
             mode: "sos"
         },
         kernelOptions: {
-            name: "sos",
+            kernelName: "sos",
             path: "./code/integrative_analysis/COLOC"
         },
         predefinedOutput: true
@@ -829,123 +1016,46 @@ ENSG00000203710:1   chr1_207738077_T_C   5.066e-01 3.540e-02    4.454e-01      4
     </script>
     <script>kernelName = 'sos'</script>
 
-                </article>
+              </div>
               
-
-              
-              
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="../colocalization.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">QTL and GWAS Colocalization</p>
-      </div>
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../colocalization.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">QTL and GWAS Colocalization</p>
+        </div>
     </a>
-    <a class="right-next"
-       href="mvenloc.html"
-       title="next page">
-      <div class="prev-next-info">
+    <a class='right-next' id="next-link" href="mvenloc.html" title="next page">
+    <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Multivariate SuSiE and ENLOC model</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div></div>
-  
-</div>
-
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aim">Aim</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Workflow</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-0-prepare-intermediate-input-files">Step 0 : Prepare Intermediate Input Files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixme-in-r-i-want-to-read-in-input-eqtl-snp-txt-file-somehow-obtain-the-full-file-name-create-a-z-score-txt-file-and-a-vcf-file-and-then-gzip-the-vcf-file-somehow-obtain-the-full-filename-of-this">FIXME:In R, I want to read in input eqtl snp .txt file (somehow obtain the full file name), create a z-score txt file and a vcf file, and then gzip the vcf file (somehow obtain the full filename of this)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-prepare-gwas-pip">Step 1: Prepare GWAS PIP</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-prepare-eqtl-annotation-file">Step 2: Prepare eQTL Annotation File</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-use-pre-computed-gtex-multi-tissue-eqtl-annotation-files">Method 1: Use pre-computed GTEx multi-tissue eQTL annotation files</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-derive-annotations-based-on-own-eqtl-data-using-dap-g">Method 2: Derive annotations based on own eQTL data, using DAP-G</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-colocalization-with-fastenloc">Step 3: Colocalization with fastENLOC</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-working-example">Minimum Working Example:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary:</a></li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2021+, FunGen xQTL Analysis Working Group.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div>
-          </footer>
-        
-
-      </main>
     </div>
-  </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
-
-  <footer class="bd-footer">
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
+        
+            &copy; Copyright 2021+, FunGen xQTL Analysis Working Group.<br/>
+      </p>
+    </div>
   </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
   </body>
 </html>

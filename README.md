@@ -46,7 +46,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 - We have provided example data-sets and `Singularity` container images in [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). For guidance on downloading the data programmatically, refer to [this documentation](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html). If you need to set up a Synapse client, consult [this guide](https://help.synapse.org/docs/Installing-Synapse-API-Clients.1985249668.html).
   - Within the `test_data` folder, datasets prefixed with **MWE** (Minimal Working Example) are provided. These are used for unit testing each module, ensuring the integrity of the code.
 - The `protocol_data` folder houses a comprehensive set of data, illustrating the full extent of our protocol. This is showcased in [this notebook](https://cumc.github.io/xqtl-pipeline/code/xqtl_protocol_demo.html), with the [source code](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb) available for reference.
-- The `container` folder contains the released Singularity images for the software environment. For Docker users (e.g., on Linux or Mac Desktops), downloading this folder is **not** necessary.
+- The `container/singularity` folder contains the released Singularity images for the software environment. For Docker users (e.g., on Linux or Mac Desktops), downloading this folder is **not** necessary.
 - Please clone this repository https://github.com/cumc/xqtl-pipeline onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing 
 
 ```

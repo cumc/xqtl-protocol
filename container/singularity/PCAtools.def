@@ -1,0 +1,23 @@
+Bootstrap: docker
+From: gaow/base-notebook
+
+
+%labels
+maintainer="Hao Sun<hs3163@cumc.columbia.edu>"
+%post
+su -  root # USER root
+apt-get update \
+&& apt install -y --no-install-recommends  git-all  libboost-all-dev libharfbuzz-dev
+R --slave -e "install.packages('BiocManager')"
+R --slave -e "BiocManager::install('PCAtools')"    
+R --slave -e "BiocManager::install('BiocSingular')"    
+R --slave -e "install.packages('readr')"
+R --slave -e "install.packages('RMTstat')"
+
+echo "cd /tmp" >> /entrypoint.sh
+echo "exec /bin/bash "$@"" >> /entrypoint.sh
+chmod u+x /entrypoint.sh
+%runscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"
+%startscript
+exec /bin/bash /bin/bash /entrypoint.sh "$@"

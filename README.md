@@ -39,14 +39,14 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 
 ### Computing environment setup
 
-- In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup). 
+- In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts (**version >= 0.24.1**) [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup). 
     - For Linux and Mac desktop users you can either install the container [`Singularity`](https://docs.sylabs.io/guides/3.2/user-guide/installation.html#) or [`Docker`](https://www.docker.com/). In the xQTL project we primarily use `Singularity`.
     - For Linux-based HPC users, your system may already have `Singularity` installed. If not please communicate with the IT support for the HPC. Typically Docker is not allowed on HPC.
     - For Windows users, you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1) and then install `Singularity` within WSL as instructed in this [post](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).
 - We have provided example data-sets and `Singularity` container images in [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). For guidance on downloading the data programmatically, refer to [this documentation](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html). If you need to set up a Synapse client, consult [this guide](https://help.synapse.org/docs/Installing-Synapse-API-Clients.1985249668.html).
   - Within the `test_data` folder, datasets prefixed with **MWE** (Minimal Working Example) are provided. These are used for unit testing each module, ensuring the integrity of the code.
 - The `protocol_data` folder houses a comprehensive set of data, illustrating the full extent of our protocol. This is showcased in [this notebook](https://cumc.github.io/xqtl-pipeline/code/xqtl_protocol_demo.html), with the [source code](https://github.com/cumc/xqtl-pipeline/blob/main/code/xqtl_protocol_demo.ipynb) available for reference.
-- The `container` folder contains the released Singularity images for the software environment. For Docker users (e.g., on Linux or Mac Desktops), downloading this folder is **not** necessary.
+- The `container/singularity` folder contains the released Singularity images for the software environment. For Docker users (e.g., on Linux or Mac Desktops), downloading this folder is **not** necessary.
 - Please clone this repository https://github.com/cumc/xqtl-pipeline onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing 
 
 ```

@@ -39,7 +39,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 
 ### Computing environment setup
 
-- In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts (**version >= 0.24.1**) [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup). 
+- In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts (**version >= 0.24.1**) [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup#setup-the-script-of-scripts-computing-environment). 
     - For Linux and Mac desktop users you can either install the container [`Singularity`](https://docs.sylabs.io/guides/3.2/user-guide/installation.html#) or [`Docker`](https://www.docker.com/). In the xQTL project we primarily use `Singularity`.
     - For Linux-based HPC users, your system may already have `Singularity` installed. If not please communicate with the IT support for the HPC. Typically Docker is not allowed on HPC.
     - For Windows users, you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1) and then install `Singularity` within WSL as instructed in this [post](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).

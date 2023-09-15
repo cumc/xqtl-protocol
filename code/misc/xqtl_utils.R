@@ -88,7 +88,8 @@ load_regional_association_data <- function(genotype, # PLINK file
                                            covariate, # a vector of covariate file names corresponding to the phenotype file vector
                                            maf_cutoff = 0,
                                            mac_cutoff = 0,
-                                           imiss_cutoff = 0) {
+                                           imiss_cutoff = 0,
+                                           y_as_matrix = FALSE) {
     library("dplyr")
     library("readr")
     library("stringr")
@@ -138,7 +139,7 @@ load_regional_association_data <- function(genotype, # PLINK file
     ## FIXME: return quantities should be these:
     return (list(
             residual_X_scaled =, # is a list of R conditions each is a matrix, with list names being the names of conditions, column names being SNP names and row names being sample names
-            residual_Y_scaled =, # is a matrix of R conditions, with column names being the names of the conditions (phenotypes) and row names being sample names. Even for one condition it has to be a matrix with just one column
-            X = # is the somewhat original genotype matrix output from `filter_X`, with column names being SNP names and row names being sample names. Sample names of X should match example sample names of residual_Y_scaled; but the matrices inside residual_X_scaled would be subsets of sample name of residual_Y_scaled.
+            residual_Y_scaled =, # if y_as_matrix is true, then return a matrix of R conditions, with column names being the names of the conditions (phenotypes) and row names being sample names. Even for one condition it has to be a matrix with just one column. if y_as_matrix is false, then return a list of y either vector or matrix (CpG for example), and they need to match with residual_X_scaled in terms of which samples are missing.
+            X = # is the somewhat original genotype matrix output from `filter_X`, with column names being SNP names and row names being sample names. Sample names of X should match example sample names of residual_Y_scaled matrix form (not list); but the matrices inside residual_X_scaled would be subsets of sample name of residual_Y_scaled matrix form (not list).
             ))
 }

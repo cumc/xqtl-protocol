@@ -82,7 +82,27 @@ filter_X <- function(X, missing_rate_thresh, maf_thresh) {
     return(mean_impute(X))
 }
 
+thisFile <- function() {
+  cmdArgs <- commandArgs(trailingOnly = FALSE)
+  needle  <- "--file="
+  match   <- grep(needle,cmdArgs)
+  if (length(match) > 0) {
+    ## Rscript
+    path <- cmdArgs[match]
+    path <- gsub("\\~\\+\\~", " ", path)
+    return(normalizePath(sub(needle, "", path)))
+  } else {
+    ## 'source'd via R console
+    return(sys.frames()[[1]]$ofile)
+  }
+}
 
+load_script <- function() {
+  fileName <- thisFile()
+  return(ifelse(!is.null(fileName) && file.exists(fileName),
+                readChar(fileName,file.info(fileName)$size),""))
+}
+             
 load_regional_association_data <- function(genotype, # PLINK file
                                            phenotype, # a vector of phenotype file names 
                                            covariate, # a vector of covariate file names corresponding to the phenotype file vector
@@ -134,12 +154,11 @@ load_regional_association_data <- function(genotype, # PLINK file
     ### FIXME: complete this -- let's just summarize genotype data is enough
     print("Dimension of filtered genotype data is")
     ### Finally, regress covariate from X to create a list of X residual matrices
-    ### Note: here each 
     X_list = phenotype_list%>%mutate( X_resid = map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale))%>%pull(X_resid)
     ## FIXME: return quantities should be these:
     return (list(
-            residual_X_scaled =, # is a list of R conditions each is a matrix, with list names being the names of conditions, column names being SNP names and row names being sample names
             residual_Y_scaled =, # if y_as_matrix is true, then return a matrix of R conditions, with column names being the names of the conditions (phenotypes) and row names being sample names. Even for one condition it has to be a matrix with just one column. if y_as_matrix is false, then return a list of y either vector or matrix (CpG for example), and they need to match with residual_X_scaled in terms of which samples are missing.
+            residual_X_scaled =, # is a list of R conditions each is a matrix, with list names being the names of conditions, column names being SNP names and row names being sample names
             X = # is the somewhat original genotype matrix output from `filter_X`, with column names being SNP names and row names being sample names. Sample names of X should match example sample names of residual_Y_scaled matrix form (not list); but the matrices inside residual_X_scaled would be subsets of sample name of residual_Y_scaled matrix form (not list).
             ))
 }

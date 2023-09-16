@@ -1,0 +1,143 @@
+name: Push containers to GitHub Packages
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  upload_containers:
+    permissions: write-all
+    if: github.event.pull_request.merged == true 
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download docker containers
+        id: download-docker-containers
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: container_build.yml
+          name: '.*_docker_${{ github.event.pull_request.head.sha }}'
+          name_is_regexp: true
+          path: /tmp/docker_artifacts
+          if_no_artifact_found: warn
+
+      - name: Download apptainer containers
+        id: download-apptainer-containers
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: container_build.yml
+          name: '.*_apptainer_${{ github.event.pull_request.head.sha }}'
+          name_is_regexp: true
+          path: /tmp/apptainer_artifacts
+          if_no_artifact_found: warn
+
+      - name: Log in to ghcr.io with docker
+        if: steps.download-docker-containers.outputs.found_artifact == 'true'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{github.repository_owner}}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push docker containers to ghcr.io
+        if: steps.download-docker-containers.outputs.found_artifact == 'true'
+        run: |
+          find /tmp/docker_artifacts -name *_docker.tar -exec bash -c \
+            'image_name=$(echo $(basename {}) | sed "s/_docker.tar//g") && \
+            docker load --input {} && \
+            docker tag ${image_name}_docker:latest ghcr.io/${{ github.repository_owner }}/${image_name}_docker:latest && \
+            docker push ghcr.io/${{ github.repository_owner }}/${image_name}_docker:latest' \;
+
+      - name: Setup micromamba
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: containers
+          create-args: apptainer
+          generate-run-shell: true
+      
+      - name: Log in to ghcr.io with apptainer
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        shell: micromamba-shell {0}
+        run: |
+          apptainer remote login --username ${{ github.repository_owner }} \
+            --password ${{ secrets.GITHUB_TOKEN }} \
+            docker://ghcr.io/${{ github.repository_owner }}
+
+      - name: Push apptainer containers to ghcr.io
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        shell: micromamba-shell {0}
+        run: |
+          find /tmp/apptainer_artifacts -name *_apptainer.sif -exec bash -c \
+            'image_name=$(echo $(basename {}) | sed "s/_apptainer.sif//g") && \
+            apptainer push {} oras://ghcr.io/${{ github.repository_owner }}/${image_name}_apptainer:latest' \;
+
+      - name: Log in to quay.io with docker
+        if: steps.download-docker-containers.outputs.found_artifact == 'true' 
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ vars.QUAYIO_USERNAME }}
+          password: ${{ secrets.QUAYIO_TOKEN }}
+
+      - name: Push docker containers to quay.io
+        if: steps.download-docker-containers.outputs.found_artifact == 'true'
+        run: |
+          find /tmp/docker_artifacts -name *_docker.tar -exec bash -c \
+            'image_name=$(echo $(basename {}) | sed "s/_docker.tar//g") && \
+            docker load --input {} && \
+            docker tag ${image_name}_docker:latest quay.io/${{ vars.QUAYIO_USERNAME }}/${image_name}_docker:latest && \
+            docker push quay.io/${{ vars.QUAYIO_USERNAME }}/${image_name}_docker:latest' \;
+
+      - name: Log in to quay.io with apptainer
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        shell: micromamba-shell {0}
+        run: |
+          apptainer remote login --username ${{ vars.QUAYIO_USERNAME }} \
+            --password ${{ secrets.QUAYIO_TOKEN }} \
+            docker://quay.io/${{ vars.QUAYIO_USERNAME }}
+
+      - name: Push apptainer containers to quay.io
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        shell: micromamba-shell {0}
+        run: |
+          find /tmp/apptainer_artifacts -name *_apptainer.sif -exec bash -c \
+            'image_name=$(echo $(basename {}) | sed "s/_apptainer.sif//g") && \
+            apptainer push {} oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${image_name}_apptainer:latest' \;
+
+      - name: Log in to docker.io with docker
+        if: steps.download-docker-containers.outputs.found_artifact == 'true' 
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ vars.DOCKERIO_USERNAME }}
+          password: ${{ secrets.DOCKERIO_TOKEN }}
+
+      - name: Push docker containers to docker.io
+        if: steps.download-docker-containers.outputs.found_artifact == 'true'
+        run: |
+          find /tmp/docker_artifacts -name *_docker.tar -exec bash -c \
+            'image_name=$(echo $(basename {}) | sed "s/_docker.tar//g") && \
+            docker load --input {} && \
+            docker tag ${image_name}_docker:latest docker.io/${{ vars.DOCKERIO_USERNAME }}/${image_name}_docker:latest && \
+            docker push docker.io/${{ vars.DOCKERIO_USERNAME }}/${image_name}_docker:latest' \;
+
+      - name: Log in to docker.io with apptainer
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        shell: micromamba-shell {0}
+        run: |
+          apptainer remote login --username ${{ vars.DOCKERIO_USERNAME }} \
+            --password ${{ secrets.DOCKERIO_TOKEN }} \
+            docker://docker.io
+
+      - name: Push apptainer containers to docker.io
+        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
+        shell: micromamba-shell {0}
+        run: |
+          find /tmp/apptainer_artifacts -name *_apptainer.sif -exec bash -c \
+            'image_name=$(echo $(basename {}) | sed "s/_apptainer.sif//g") && \
+            apptainer push {} oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${image_name}_apptainer:latest' \;

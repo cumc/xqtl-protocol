@@ -68,32 +68,33 @@ jobs:
           create-args: apptainer
           generate-run-shell: true
 
-      - name: Create working directory
-        run: mkdir /tmp/container
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
 
       - name: Build and export docker containers
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.context }}
           file: .github/docker.df
-          tags: ${{ matrix.context }}_docker:latest
-          outputs: type=docker,dest=/tmp/${{ matrix.context }}_docker.tar
+          tags: ${{ steps.context_basename.outputs.basename }}_docker:latest
+          outputs: type=docker,dest=/tmp/${{ steps.context_basename.outputs.basename }}_docker.tar
 
       - name: Upload docker containers to GitHub Actions
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.context }}_docker_${{ github.event.pull_request.head.sha }}
-          path: /tmp/${{ matrix.context }}_docker.tar
+          name: ${{ steps.context_basename.outputs.basename }}_docker_${{ github.event.pull_request.head.sha }}
+          path: /tmp/${{ steps.context_basename.outputs.basename }}_docker.tar
 
       - name: Build apptainer containers
         shell: micromamba-shell {0}
         run: |
           pushd ${{ matrix.context}}; \
-            apptainer build /tmp/${{ matrix.context }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
+            apptainer build /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
           popd
 
       - name: Upload apptainer containers to GitHub Actions
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.context }}_apptainer_${{ github.event.pull_request.head.sha }}
-          path: /tmp/${{ matrix.context }}_apptainer.sif
+          name: ${{ steps.context_basename.outputs.basename }}_apptainer_${{ github.event.pull_request.head.sha }}
+          path: /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif

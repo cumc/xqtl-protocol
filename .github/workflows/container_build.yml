@@ -3,8 +3,7 @@ name: Build containers from conda environments
 on:
   pull_request:
     paths:
-      - '*/*.yml'
-      - '*/*.yaml'
+      - 'container/*/*.yml'
 
 jobs:
   setup:
@@ -87,7 +86,7 @@ jobs:
         shell: micromamba-shell {0}
         run: |
           pushd ${{ matrix.context}}; \
-            apptainer build /tmp/${{ matrix.context }}_apptainer.sif ${{ github.workspace }}/.github/micromamba.def; \
+            apptainer build /tmp/${{ matrix.context }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
           popd
 
       - name: Upload apptainer containers to GitHub Actions

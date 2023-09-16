@@ -13,14 +13,7 @@ From: mambaorg/micromamba
             micromamba env create --quiet --yes --file ${yml};
         fi
     done
-    micromamba clean --yes
+    micromamba clean --all --yes
     echo 'export MAMBA_DOCKERFILE_ACTIVATE=1' >> ${SINGULARITY_ENVIRONMENT}
     echo 'export MAMBA_ROOT_PREFIX=/opt/conda' >> ${SINGULARITY_ENVIRONMENT}
     echo 'export CONDA_ROOT_PREFIX=/opt/conda' >> ${SINGULARITY_ENVIRONMENT}
-
-    cp /bin/bash /bin/bash.orig
-    echo '#!/bin/bash.orig' >> /bin/bash.new
-    echo 'source /usr/local/bin/_activate_current_env.sh' >> /bin/bash.new
-    echo '/bin/bash.orig "$@"' >> /bin/bash.new
-    chmod +x /bin/bash.new
-    mv /bin/bash.new /bin/bash

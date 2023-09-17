@@ -106,6 +106,7 @@ load_script <- function() {
 load_regional_association_data <- function(genotype, # PLINK file
                                            phenotype, # a vector of phenotype file names 
                                            covariate, # a vector of covariate file names corresponding to the phenotype file vector
+                                           region, # a vector of chr, start, end
                                            maf_cutoff = 0,
                                            mac_cutoff = 0,
                                            imiss_cutoff = 0,

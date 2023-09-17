@@ -103,6 +103,41 @@ load_script <- function() {
                 readChar(fileName,file.info(fileName)$size),""))
 }
              
+compute_cov_flash <- function(Y, error_cache = NULL){
+    covar <- diag(ncol(Y))
+    tryCatch({
+    fl <- flashier::flash(Y, var.type = 2, prior.family = c(flashier::prior.normal(), flashier::prior.normal.scale.mix()), backfit = TRUE, verbose.lvl=0)
+    if(fl$n.factors==0){
+      covar <- diag(fl$residuals.sd^2)
+    } else {
+      fsd <- sapply(fl$fitted.g[[1]], '[[', "sd")
+      covar <- diag(fl$residuals.sd^2) + crossprod(t(fl$flash.fit$EF[[2]]) * fsd)
+    }
+    if (nrow(covar) == 0) {
+      covar <- diag(ncol(Y))
+      stop("Computed covariance matrix has zero rows")
+    }
+    }, error = function(e) {
+      if (!is.null(error_cache)) {
+        saveRDS(list(data=Y, message=warning(e)), error_cache)
+        warning("FLASH failed. Using Identity matrix instead.")
+        warning(e)
+      } else {
+        stop(e)
+      }
+    })
+    s <- apply(Y, 2, sd, na.rm=T)
+    if (length(s)>1) s = diag(s)
+    else s = matrix(s,1,1)
+    covar <- s%*%cov2cor(covar)%*%s
+    return(covar)
+}
+
+compute_cov_diag <- function(Y){
+    covar <- diag(apply(Y, 2, var, na.rm=T))
+    return(covar)
+}
+             
 load_regional_association_data <- function(genotype, # PLINK file
                                            phenotype, # a vector of phenotype file names 
                                            covariate, # a vector of covariate file names corresponding to the phenotype file vector
@@ -136,6 +171,7 @@ load_regional_association_data <- function(genotype, # PLINK file
                                                            scale%>%t%>%as_tibble)) ## T so that it can be unnest
     if(y_as_matrix){
         Y_resid = phenotype_list%>%select(Y_resid)%>%tidyr::unnest(Y_resid)%>%t%>%as.matrix
+        print(paste("Dimension of Y matrix:", nrow(Y_resid), ncol(Y_resid)))
     } else {
         Y_resid = map(phenotype_list$Y_resid,~.x%>%t) # Transpose back 
     }
@@ -149,7 +185,7 @@ load_regional_association_data <- function(genotype, # PLINK file
     return (list(
             residual_Y_scaled = Y_resid,
             residual_X_scaled = X_list,
-            X = X ,
+            X = X,
             dropped_sample = phenotype_list$dropped_sample , # keep track of dropped samples due to a lack of overlap btw X,Y,Z
             conditions = phenotype_list$phenotype_path))
 }

@@ -11,43 +11,29 @@ jobs:
       fail-fast: false
     outputs:
       matrix: ${{ steps.export-directories.outputs.matrix }} 
-      any_changed: ${{ steps.changed-directories.outputs.any_changed }}
+      any_changed: ${{ steps.changed-directories.outputs.found_artifact }}
     if: github.event.pull_request.merged == true 
 
     steps:
-      - name: Checkout pull request branch
-        uses: actions/checkout@v3
+      - name: Download changed directories
+        id: download-changed-directories
+        uses: dawidd6/action-download-artifact@v2
         with:
-          fetch-depth: 0
-
-      - name: Get branch name
-        id: branch-name
-        uses: tj-actions/branch-names@v7
-
-      - name: Get SHA of last commit to main branch
-        uses: nrwl/nx-set-shas@v3
-        id: last_successful_commit_pull_request
-        with:
-          main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }} 
-
-      - name: Get changed directories
-        id: changed-directories
-        uses: tj-actions/changed-files@v36
-        with: 
-          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
-          dir_names: true
-          dir_names_exclude_current_dir: true
-          json: true
-          files: container/*/*.yml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: container_build.yml
+          name: 'changed_directories_${{ github.event.pull_request.head.sha }}'
+          name_is_regexp: true
+          path: /tmp
+          if_no_artifact_found: warn
 
       - name: Export changed directories
         id: export-directories
-        run: echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
+        run: cat /tmp/changed_directories.json >> "$GITHUB_OUTPUT"
 
   push_docker_containers:
     needs: setup
-    if: needs.setup.outputs.any_changed == 'true'
-    if: github.event.pull_request.merged == 'true'
+    if: needs.setup.outputs.any_changed == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -104,8 +90,8 @@ jobs:
 
   push_apptainer_containers:
     needs: setup
-    if: needs.setup.outputs.any_changed == 'true'
-    if: github.event.pull_request.merged == 'true'
+    if: needs.setup.outputs.any_changed == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -114,12 +100,22 @@ jobs:
       contents: read
       packages: write
 
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Setup micromamba
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-name: containers
           create-args: apptainer
           generate-run-shell: true
+
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
 
       - name: Build apptainer containers
         shell: micromamba-shell {0}
@@ -150,7 +146,6 @@ jobs:
             docker://quay.io/${{ vars.QUAYIO_USERNAME }}
 
       - name: Push apptainer containers to quay.io
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
             apptainer push \
@@ -158,7 +153,6 @@ jobs:
             oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest' 
 
       - name: Log in to docker.io with apptainer
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
           apptainer remote login --username ${{ vars.DOCKERIO_USERNAME }} \
@@ -166,7 +160,6 @@ jobs:
             docker://docker.io
 
       - name: Push apptainer containers to docker.io
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
           apptainer push \

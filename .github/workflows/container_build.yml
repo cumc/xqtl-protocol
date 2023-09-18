@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" > /tmp/changed_directories.json
           echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
-          cat $GITHUB_OUTPUT
+          cat ${{steps.changed-directories.outputs.any_changed}}
 
       - name: Upload changed directories
         if: steps.changed-directories.outputs.any_changed == 'true'

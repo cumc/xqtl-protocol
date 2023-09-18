@@ -80,21 +80,9 @@ jobs:
           tags: ${{ steps.context_basename.outputs.basename }}_docker:latest
           outputs: type=docker,dest=/tmp/${{ steps.context_basename.outputs.basename }}_docker.tar
 
-      - name: Upload docker containers to GitHub Actions
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.context_basename.outputs.basename }}_docker_${{ github.event.pull_request.head.sha }}
-          path: /tmp/${{ steps.context_basename.outputs.basename }}_docker.tar
-
       - name: Build apptainer containers
         shell: micromamba-shell {0}
         run: |
           pushd ${{ matrix.context}}; \
             apptainer build /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
           popd
-
-      - name: Upload apptainer containers to GitHub Actions
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.context_basename.outputs.basename }}_apptainer_${{ github.event.pull_request.head.sha }}
-          path: /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif

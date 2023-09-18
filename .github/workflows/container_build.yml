@@ -43,11 +43,11 @@ jobs:
       - name: Export changed directories
         id: export-directories
         run: |
-          echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" /tmp/changed_directories.json
+          echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" > /tmp/changed_directories.json
           echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
 
       - name: Upload changed directories
-        if: steps.changed-directories.outputs.any_changed == true
+        if: steps.changed-directories.outputs.any_changed == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: changed_directories_${{ github.event.pull_request.head.sha }}
@@ -55,7 +55,7 @@ jobs:
 
   build_containers:
     needs: setup
-    if: needs.setup.outputs.any_changed == true
+    if: needs.setup.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

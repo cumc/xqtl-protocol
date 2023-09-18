@@ -1,69 +1,128 @@
-name: Push containers to GitHub Packages
+name: Push containers to registries
 
 on:
   pull_request:
     types: [closed]
 
 jobs:
-  upload_containers:
+  setup:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    outputs:
+      matrix: ${{ steps.export-directories.outputs.matrix }} 
+      any_changed: ${{ steps.changed-directories.outputs.found_artifact }}
+    if: github.event.pull_request.merged == true 
+
+    steps:
+      - name: Download changed directories
+        id: download-changed-directories
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: container_build.yml
+          name: 'changed_directories_${{ github.event.pull_request.head.sha }}'
+          name_is_regexp: true
+          path: /tmp
+          if_no_artifact_found: warn
+
+      - name: Export changed directories
+        id: export-directories
+        run: cat /tmp/changed_directories.json >> "$GITHUB_OUTPUT"
+
+  push_docker_containers:
+    needs: setup
+    if: needs.setup.outputs.any_changed == true && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
     permissions: 
       contents: read
       packages: write
-    if: github.event.pull_request.merged == true 
-    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Download docker containers
-        id: download-docker-containers
-        uses: dawidd6/action-download-artifact@v2
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: container_build.yml
-          name: '.*_docker_${{ github.event.pull_request.head.sha }}'
-          name_is_regexp: true
-          path: /tmp/docker_artifacts
-          if_no_artifact_found: warn
+          fetch-depth: 0
 
-      - name: Download apptainer containers
-        id: download-apptainer-containers
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: container_build.yml
-          name: '.*_apptainer_${{ github.event.pull_request.head.sha }}'
-          name_is_regexp: true
-          path: /tmp/apptainer_artifacts
-          if_no_artifact_found: warn
+      - name: Setup up docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
 
       - name: Log in to ghcr.io with docker
-        if: steps.download-docker-containers.outputs.found_artifact == 'true'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{github.repository_owner}}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push docker containers to ghcr.io
-        if: steps.download-docker-containers.outputs.found_artifact == 'true'
-        run: |
-          find /tmp/docker_artifacts -name *_docker.tar -exec bash -c \
-            'image_name=$(echo $(basename {}) | sed "s/_docker.tar//g") && \
-            docker load --input {} && \
-            docker tag ${image_name}_docker:latest ghcr.io/${{ github.repository_owner }}/${image_name}_docker:latest && \
-            docker push ghcr.io/${{ github.repository_owner }}/${image_name}_docker:latest' \;
+      - name: Log in to quay.io with docker
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ vars.QUAYIO_USERNAME }}
+          password: ${{ secrets.QUAYIO_TOKEN }}
+
+      - name: Log in to docker.io with docker
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ vars.DOCKERIO_USERNAME }}
+          password: ${{ secrets.DOCKERIO_TOKEN }}
+
+      - name: Build and push docker containers
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ matrix.context }}
+          file: .github/docker.df
+          push: true
+          tags: |
+            ${{ steps.context_basename.outputs.basename }}_docker:latest
+            ghcr.io/${{ steps.context_basename.outputs.basename }}_docker:latest
+            quay.io/${{ steps.context_basename.outputs.basename }}_docker:latest
+            docker.io/${{ steps.context_basename.outputs.basename }}_docker:latest
+
+  push_apptainer_containers:
+    needs: setup
+    if: needs.setup.outputs.any_changed == true && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    permissions: 
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup micromamba
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         uses: mamba-org/setup-micromamba@v1
         with:
           environment-name: containers
           create-args: apptainer
           generate-run-shell: true
-      
+
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
+
+      - name: Build apptainer containers
+        shell: micromamba-shell {0}
+        run: |
+          pushd ${{ matrix.context}}; \
+            apptainer build /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
+          popd
+
       - name: Log in to ghcr.io with apptainer
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
           apptainer remote login --username ${{ github.repository_owner }} \
@@ -71,32 +130,13 @@ jobs:
             docker://ghcr.io/${{ github.repository_owner }}
 
       - name: Push apptainer containers to ghcr.io
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
-          find /tmp/apptainer_artifacts -name *_apptainer.sif -exec bash -c \
-            'image_name=$(echo $(basename {}) | sed "s/_apptainer.sif//g") && \
-            apptainer push {} oras://ghcr.io/${{ github.repository_owner }}/${image_name}_apptainer:latest' \;
-
-      - name: Log in to quay.io with docker
-        if: steps.download-docker-containers.outputs.found_artifact == 'true' 
-        uses: docker/login-action@v2
-        with:
-          registry: quay.io
-          username: ${{ vars.QUAYIO_USERNAME }}
-          password: ${{ secrets.QUAYIO_TOKEN }}
-
-      - name: Push docker containers to quay.io
-        if: steps.download-docker-containers.outputs.found_artifact == 'true'
-        run: |
-          find /tmp/docker_artifacts -name *_docker.tar -exec bash -c \
-            'image_name=$(echo $(basename {}) | sed "s/_docker.tar//g") && \
-            docker load --input {} && \
-            docker tag ${image_name}_docker:latest quay.io/${{ vars.QUAYIO_USERNAME }}/${image_name}_docker:latest && \
-            docker push quay.io/${{ vars.QUAYIO_USERNAME }}/${image_name}_docker:latest' \;
+          apptainer push \
+            /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif \
+            oras://ghcr.io/${{ github.repository_owner }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest'
 
       - name: Log in to quay.io with apptainer
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
           apptainer remote login --username ${{ vars.QUAYIO_USERNAME }} \
@@ -104,32 +144,13 @@ jobs:
             docker://quay.io/${{ vars.QUAYIO_USERNAME }}
 
       - name: Push apptainer containers to quay.io
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
-          find /tmp/apptainer_artifacts -name *_apptainer.sif -exec bash -c \
-            'image_name=$(echo $(basename {}) | sed "s/_apptainer.sif//g") && \
-            apptainer push {} oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${image_name}_apptainer:latest' \;
-
-      - name: Log in to docker.io with docker
-        if: steps.download-docker-containers.outputs.found_artifact == 'true' 
-        uses: docker/login-action@v2
-        with:
-          registry: docker.io
-          username: ${{ vars.DOCKERIO_USERNAME }}
-          password: ${{ secrets.DOCKERIO_TOKEN }}
-
-      - name: Push docker containers to docker.io
-        if: steps.download-docker-containers.outputs.found_artifact == 'true'
-        run: |
-          find /tmp/docker_artifacts -name *_docker.tar -exec bash -c \
-            'image_name=$(echo $(basename {}) | sed "s/_docker.tar//g") && \
-            docker load --input {} && \
-            docker tag ${image_name}_docker:latest docker.io/${{ vars.DOCKERIO_USERNAME }}/${image_name}_docker:latest && \
-            docker push docker.io/${{ vars.DOCKERIO_USERNAME }}/${image_name}_docker:latest' \;
+            apptainer push \
+            /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif \
+            oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest' 
 
       - name: Log in to docker.io with apptainer
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
           apptainer remote login --username ${{ vars.DOCKERIO_USERNAME }} \
@@ -137,9 +158,8 @@ jobs:
             docker://docker.io
 
       - name: Push apptainer containers to docker.io
-        if: steps.download-apptainer-containers.outputs.found_artifact == 'true'
         shell: micromamba-shell {0}
         run: |
-          find /tmp/apptainer_artifacts -name *_apptainer.sif -exec bash -c \
-            'image_name=$(echo $(basename {}) | sed "s/_apptainer.sif//g") && \
-            apptainer push {} oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${image_name}_apptainer:latest' \;
+          apptainer push \
+            /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif \
+            oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest'

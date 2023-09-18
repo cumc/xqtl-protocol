@@ -53,7 +53,7 @@ jobs:
           name: changed_directories_${{ github.event.pull_request.head.sha }}
           path: /tmp/changed_directories.json
 
-  build_containers:
+  docker_container:
     needs: setup
     if: needs.setup.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
@@ -70,13 +70,6 @@ jobs:
       - name: Setup up docker buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Setup micromamba
-        uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-name: containers
-          create-args: apptainer
-          generate-run-shell: true
-
       - name: Get basename
         id: context_basename
         run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
@@ -88,6 +81,31 @@ jobs:
           file: .github/docker.df
           tags: ${{ steps.context_basename.outputs.basename }}_docker:latest
           outputs: type=docker,dest=/tmp/${{ steps.context_basename.outputs.basename }}_docker.tar
+
+  apptainer_container:
+    needs: setup
+    if: needs.setup.outputs.any_changed == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: containers
+          create-args: apptainer
+          generate-run-shell: true
+
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
 
       - name: Build apptainer containers
         shell: micromamba-shell {0}

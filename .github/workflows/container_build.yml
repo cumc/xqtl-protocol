@@ -41,6 +41,7 @@ jobs:
           files: container/*/*.yml
 
       - name: Export changed directories
+        if: steps.changed-directories.outputs.any_changed == 'true'
         id: export-directories
         run: |
           echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" > /tmp/changed_directories.json

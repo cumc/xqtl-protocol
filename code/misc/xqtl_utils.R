@@ -1,5 +1,7 @@
 # This needs pgenlibr package
 # devtools::install_github("chrchang/plink-ng", subdir="/2.0/pgenlibr")
+# and PLINK2R
+# Sys.setenv("R_REMOTES_NO_ERRORS_FROM_WARNINGS"=TRUE); remotes::install_github('gabraham/plink2R', subdir='plink2R', ref='d74be015e8f54d662b96c6c2a52a614746f9030d')
 
 # read PLINK files
 read_pvar <- function(pgen){
@@ -139,15 +141,10 @@ compute_cov_diag <- function(Y){
 }
              
 
-read_pheno <- function(file,region){
-data.table::fread(cmd = paste0("tabix -h ",file ," ",region))%>%as_tibble() 
+tabix_region <- function(file, region){
+    data.table::fread(cmd = paste0("tabix -h ",file ," ",region))%>%as_tibble() 
 }
 
-
-
-
-
-             
 load_regional_association_data <- function(genotype, # PLINK file
                                            phenotype, # a vector of phenotype file names 
                                            covariate, # a vector of covariate file names corresponding to the phenotype file vector
@@ -165,13 +162,13 @@ load_regional_association_data <- function(genotype, # PLINK file
 
     ## Load genotype
     geno = read_plink(genotype)
-    rownames(geno$bed) = read.table(text = rownames(geno$bed), sep= ":" )$V2
+    rownames(geno$bed) = read.table(text = rownames(geno$bed), sep= ":")$V2
     
     ## Load phenotype and covariates and perform some pre-processing
     ### including Y ( cov ) and specific X and covar match, filter X variants based on the overlapped samples.
     phenotype_list = tibble(covariate_path = covariate, phenotype_path =phenotype) %>%
         mutate(covar = map(covariate_path, ~read_delim(.x,"\t")%>%select(-1)%>%na.omit%>%t()),
-              Y = map2(phenotype_path,covar, ~read_pheno(.x,region )%>%select(-4)%>%select(rownames(.y))%>%t()%>%as.matrix), # Y and covar 1st match
+              Y = map2(phenotype_path,covar, ~tabix_region(.x,region )%>%select(-4)%>%select(rownames(.y))%>%t()%>%as.matrix), # Y and covar 1st match
               Y = map(Y, ~.x%>%na.omit),    # remove na where Y raw data has na which block regression
               dropped_sample = map2(covar, Y , ~rownames(.x)[!rownames(.x) %in% rownames(.y)])  ,
               covar = map2(covar, Y , ~.x[intersect(.x%>%rownames,rownames(.y)),]), # remove the dropped samples from Y

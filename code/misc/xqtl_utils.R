@@ -138,10 +138,21 @@ compute_cov_diag <- function(Y){
     return(covar)
 }
              
+
+read_pheno <- function(file,region){
+data.table::fread(cmd = paste0("tabix -h ",file ," ",region))%>%as_tibble() 
+}
+
+
+
+
+
+             
 load_regional_association_data <- function(genotype, # PLINK file
                                            phenotype, # a vector of phenotype file names 
                                            covariate, # a vector of covariate file names corresponding to the phenotype file vector
                                            region, # a string of chr:start-end
+                                           conditions, # a vector of strings
                                            maf_cutoff = 0,
                                            mac_cutoff = 0,
                                            imiss_cutoff = 0,
@@ -160,7 +171,7 @@ load_regional_association_data <- function(genotype, # PLINK file
     ### including Y ( cov ) and specific X and covar match, filter X variants based on the overlapped samples.
     phenotype_list = tibble(covariate_path = covariate, phenotype_path =phenotype) %>%
         mutate(covar = map(covariate_path, ~read_delim(.x,"\t")%>%select(-1)%>%na.omit%>%t()),
-              Y = map2(phenotype_path,covar, ~read_delim(.x,"\t")%>%select(-4)%>%select(rownames(.y))%>%t()%>%as.matrix), # Y and covar 1st match
+              Y = map2(phenotype_path,covar, ~read_pheno(.x,region )%>%select(-4)%>%select(rownames(.y))%>%t()%>%as.matrix), # Y and covar 1st match
               Y = map(Y, ~.x%>%na.omit),    # remove na where Y raw data has na which block regression
               dropped_sample = map2(covar, Y , ~rownames(.x)[!rownames(.x) %in% rownames(.y)])  ,
               covar = map2(covar, Y , ~.x[intersect(.x%>%rownames,rownames(.y)),]), # remove the dropped samples from Y
@@ -171,11 +182,13 @@ load_regional_association_data <- function(genotype, # PLINK file
                                                            scale%>%t%>%as_tibble)) ## T so that it can be unnest
     if(y_as_matrix){
         Y_resid = phenotype_list%>%select(Y_resid)%>%tidyr::unnest(Y_resid)%>%t%>%as.matrix
+        colnames(Y_resid) = conditions
         print(paste("Dimension of Y matrix:", nrow(Y_resid), ncol(Y_resid)))
     } else {
         Y_resid = map(phenotype_list$Y_resid,~.x%>%t) # Transpose back 
+        names(Y_resid) = conditions
     }
-    
+    X = filter_X(geno$bed, imiss_cutoff, maf_cutoff) ## Filter X for mvSuSiE
     ## Get residue X for each of condition
     print(paste0("Dimension of input genotype data is row:", nrow(X), " column: ", ncol(X) ))
     X_list = phenotype_list%>%mutate( X_resid = map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale))%>%pull(X_resid)
@@ -186,6 +199,6 @@ load_regional_association_data <- function(genotype, # PLINK file
             residual_Y_scaled = Y_resid,
             residual_X_scaled = X_list,
             X = X,
-            dropped_sample = phenotype_list$dropped_sample , # keep track of dropped samples due to a lack of overlap btw X,Y,Z
-            conditions = phenotype_list$phenotype_path))
+            dropped_sample = phenotype_list$dropped_sample  # keep track of dropped samples due to a lack of overlap btw X,Y,Z
+            ))
 }

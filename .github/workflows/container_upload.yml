@@ -82,7 +82,6 @@ jobs:
           file: .github/docker.df
           push: true
           tags: |
-            ${{ steps.context_basename.outputs.basename }}_docker:latest
             ghcr.io/${{ steps.context_basename.outputs.basename }}_docker:latest
             quay.io/${{ steps.context_basename.outputs.basename }}_docker:latest
             docker.io/${{ steps.context_basename.outputs.basename }}_docker:latest
@@ -134,7 +133,7 @@ jobs:
         run: |
           apptainer push \
             /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif \
-            oras://ghcr.io/${{ github.repository_owner }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest'
+            oras://ghcr.io/${{ github.repository_owner }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest
 
       - name: Log in to quay.io with apptainer
         shell: micromamba-shell {0}
@@ -148,7 +147,7 @@ jobs:
         run: |
             apptainer push \
             /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif \
-            oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest' 
+            oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest 
 
       - name: Log in to docker.io with apptainer
         shell: micromamba-shell {0}
@@ -162,4 +161,4 @@ jobs:
         run: |
           apptainer push \
             /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif \
-            oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest'
+            oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ steps.context_basename.outputs.basename }}_apptainer:latest

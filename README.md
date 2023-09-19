@@ -57,7 +57,7 @@ that is, executing the symbolic links directly to perform the analysis.
 
 ### See Also
 
-- Analysis from FunGen-xQTL consortium using this protocol can be found at https://github.com/cumc/brain-xqtl-analysis
+- Analysis from FunGen-xQTL consortium using this protocol can be found at https://github.com/cumc/fungen-xqtl-analysis
 
 ## Our team
 

@@ -188,6 +188,7 @@ load_regional_association_data <- function(genotype, # PLINK file
         Y_resid = map(phenotype_list$Y_resid,~.x%>%t) # Transpose back 
         names(Y_resid) = conditions
     }
+    maf_cutoff = max(maf_cutoff,mac_cutoff/(2*nrow(geno$fam)))
     X = filter_X(geno$bed, imiss_cutoff, maf_cutoff) ## Filter X for mvSuSiE
     ## Get residue X for each of condition
     print(paste0("Dimension of input genotype data is row:", nrow(X), " column: ", ncol(X) ))

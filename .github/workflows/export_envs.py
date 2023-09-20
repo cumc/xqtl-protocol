@@ -46,7 +46,7 @@ for environment in yaml_dict.keys():
 
 for environment in yaml_dict.keys():
     yml_file = f"../../container/{environment}/{environment}.yml"
-    yml_path = Path(yml_file)
+    yml_path = Path(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), yml_file))
     yml_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(yml_file, 'w') as file_handle:
+    with open(yml_path, 'w') as file_handle:
         yaml.dump(yaml_dict[environment], file_handle, sort_keys = False, Dumper=IndentDumper)

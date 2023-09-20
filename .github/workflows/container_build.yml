@@ -1,0 +1,116 @@
+name: Build containers from conda environments
+
+on:
+  pull_request:
+    paths:
+      - 'container/*/*.yml'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    outputs:
+      matrix: ${{ steps.export-directories.outputs.matrix }} 
+      all_changed_files_count: ${{ steps.changed-directories.outputs.all_changed_files_count }}
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v7
+
+      - name: Get SHA of last commit to main branch
+        uses: nrwl/nx-set-shas@v3
+        id: last_successful_commit_pull_request
+        with:
+          main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }} 
+
+      - name: Get changed directories
+        id: changed-directories
+        uses: tj-actions/changed-files@v36
+        with: 
+          base_sha: ${{ steps.last_successful_commit_pull_request.outputs.base }}
+          dir_names: true
+          dir_names_exclude_current_dir: true
+          json: true
+          files: container/*/*.yml
+
+      - name: Export changed directories
+        if: steps.changed-directories.outputs.all_changed_files_count > 0
+        id: export-directories
+        run: |
+          echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" > /tmp/changed_directories.json
+          echo "matrix={\"context\":${{ steps.changed-directories.outputs.all_changed_files }}}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload changed directories
+        if: steps.changed-directories.outputs.all_changed_files_count > 0
+        uses: actions/upload-artifact@v3
+        with:
+          name: changed_directories_${{ github.event.pull_request.head.sha }}
+          path: /tmp/changed_directories.json
+
+  docker_container:
+    needs: setup
+    if: needs.setup.outputs.all_changed_files_count > 0
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup up docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
+
+      - name: Build and export docker containers
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ matrix.context }}
+          file: .github/docker.df
+          tags: ${{ steps.context_basename.outputs.basename }}_docker:latest
+          outputs: type=docker,dest=/tmp/${{ steps.context_basename.outputs.basename }}_docker.tar
+
+  apptainer_container:
+    needs: setup
+    if: needs.setup.outputs.all_changed_files_count > 0
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: containers
+          create-args: apptainer
+          generate-run-shell: true
+
+      - name: Get basename
+        id: context_basename
+        run: echo "basename=$(basename ${{ matrix.context }})" >> "$GITHUB_OUTPUT"
+
+      - name: Build apptainer containers
+        shell: micromamba-shell {0}
+        run: |
+          pushd ${{ matrix.context}}; \
+            apptainer build /tmp/${{ steps.context_basename.outputs.basename }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
+          popd

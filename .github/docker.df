@@ -1,0 +1,12 @@
+FROM mambaorg/micromamba
+COPY *.yml /environments/
+RUN for yml in $(ls /environments/*.yml); do \
+    env_name=$(grep "name: " < ${yml} | cut -d ' ' --fields 2); \
+        if [ $env_name = "base" ]; then \
+            micromamba install --quiet --yes --name base --file ${yml}; \
+        else \
+            micromamba env create --quiet --yes --file ${yml}; \
+        fi; \
+    done
+RUN micromamba clean --all --yes
+ENV MAMBA_ACTIVATE_DOCKERFILE=1

@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'container/containers.csv'
+      - 'container/*/*.yml'
 
 jobs:
   update_csv:
@@ -81,7 +82,7 @@ jobs:
         if: steps.changed-directories.outputs.all_changed_files_count > 0
         uses: actions/upload-artifact@v3
         with:
-          name: changed_directories_${{ github.event.pull_request.head.sha }}
+          name: changed_directories_${{ github.event.push.head.sha }}
           path: /tmp/changed_directories.json
 
   docker_container:

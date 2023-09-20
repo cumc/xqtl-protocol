@@ -1,4 +1,5 @@
 import os
+import sys
 import re
 from pathlib import Path
 from functools import reduce
@@ -11,7 +12,7 @@ class IndentDumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
         return super(IndentDumper, self).increase_indent(flow, False)
 
-container_table = pd.read_csv("../../container/containers.csv")
+container_table = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../../container/containers.csv"))
 container_table_universal = container_table[(container_table.Environment == "universal")]
 container_table_envs = container_table[(container_table.Environment != "universal")]
 

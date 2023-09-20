@@ -3,7 +3,7 @@ name: Build containers from conda environments
 on:
   pull_request:
     paths:
-      - 'container/*/*.yml'
+      - 'container/containers.csv'
 
 jobs:
   setup:
@@ -29,6 +29,20 @@ jobs:
         id: last_successful_commit_pull_request
         with:
           main-branch-name: ${{ steps.branch-name.outputs.base_ref_branch }} 
+
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: containers
+          create-args: numpy pandas pyyaml
+          generate-run-shell: true
+
+      - name: Regenerate environment YAML files
+        shell: micromamba-shell {0}
+        run: python3 .github/workflows/export_envs.py
+
+      - name: Commit changes to YAML files
+        uses: EndBug/add-and-commit@v9
 
       - name: Get changed directories
         id: changed-directories

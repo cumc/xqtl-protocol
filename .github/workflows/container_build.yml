@@ -1,11 +1,9 @@
 name: Build containers from conda environments
 
 on:
-  workflow_call:
-    inputs: 
-      commit_sha:
-        required: true
-        type: string
+  pull_request:
+    paths:
+      - 'container/*/*.yml'
 
 jobs:
   setup:
@@ -53,7 +51,7 @@ jobs:
         if: steps.changed-directories.outputs.all_changed_files_count > 0
         uses: actions/upload-artifact@v3
         with:
-          name: changed_directories_${{ inputs.commit_sha }}
+          name: changed_directories_${{ github.event.pull_request.head.sha }}
           path: /tmp/changed_directories.json
 
   docker_container:

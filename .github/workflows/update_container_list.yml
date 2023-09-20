@@ -15,6 +15,7 @@ jobs:
       - name: Checkout pull request branch
         uses: actions/checkout@v3
         with:
+          token: ${{ secrets.CI_TOKEN }}
           fetch-depth: 0
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
@@ -34,10 +35,4 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           push: true
-
-  call_container_build:
-    needs: update_csv
-    uses: ./.github/workflows/container_build.yml 
-    with:
-      commit_sha: ${{ github.event.pull_request.head.sha }}
 

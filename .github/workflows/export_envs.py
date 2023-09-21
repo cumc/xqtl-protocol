@@ -50,3 +50,14 @@ for environment in yaml_dict.keys():
     yml_path.parent.mkdir(parents=True, exist_ok=True)
     with open(yml_path, 'w') as file_handle:
         yaml.dump(yaml_dict[environment], file_handle, sort_keys = False, Dumper=IndentDumper)
+
+container_mdtable = container_table[["Package", "Homepage", "Conda package", "Environment", "Version", "Channel", "License"]]
+container_mdtable.loc[:,"Homepage"] = [f"[Link]({url})" for url in container_table["Homepage"]]
+container_mdtable.loc[:,"Conda package"] = [f"[Link]({url})" for url in container_table["Conda package"]]
+container_mdtable.loc[:,"Version"] = container_mdtable.loc[:,"Version"].fillna("")
+container_mdtable.loc[:,"License"] = [f'<span style="white-space:nowrap;">{license}</span>' for license in container_mdtable["License"]]
+container_mdtable.loc[:,"Channel"] = [f'<span style="white-space:nowrap;">{license}</span>' for license in container_mdtable["Channel"]]
+container_mdtable.sort_values(by = ["Environment", "Package"])
+
+mdtable_path = Path(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "../../container/readme/containers.md"))
+container_mdtable.to_markdown(buf = mdtable_path, index = False)

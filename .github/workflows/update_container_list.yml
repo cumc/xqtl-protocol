@@ -27,13 +27,16 @@ jobs:
           create-args: numpy pandas pyyaml
           generate-run-shell: true
 
-      - name: Regenerate environment YAML files
+      - name: Update YAML files and Markdown table
         shell: micromamba-shell {0}
-        run: python3 .github/workflows/export_envs.py
+        run: |
+          python3 .github/workflows/export_envs.py
+          cat container/readme/README.md > container/README.md
+          cat container/readme/containers.md >> container/README.md
 
-      - name: Commit changes to YAML files
+      - name: Commit changes to YAML files and Markdown table
         uses: EndBug/add-and-commit@v9
         with:
           push: true
-          message: Update YAML files          
+          message: Update YAML files and Markdown table
 

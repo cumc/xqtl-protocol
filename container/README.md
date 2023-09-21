@@ -28,7 +28,7 @@ The table requires several pieces of information for each package:
 5. The **git revision** of the package.  This is only needed for packages built from GitHub that are not tagged, or have had many changes since their last tag.  This only applies to some packages hosted on the personal channel of @danielnachun – please ask for help if you not sure what to add here.
 6. The **channel** the package is available at on anaconda.org.  The preferred order is conda-forge > bioconda > dnachun.
 7. The **environment** the package is needed in.  Multiple environment can be separated by a comma.  Currently we are trying to use the same versions across all environments, but accomodations can be made if this is not possible.
-8. The **license** for the pacakge.  Please follow the formating used in the identified column at https://spdx.org/licenses/ – you will be asked to change the format if you do not.  If you are not sure what the license should be for a package, please ask for help with this in the pull request.
+8. The **license** for the package.  Please follow the formating used in the identified column at https://spdx.org/licenses/ – you will be asked to change the format if you do not.  If you are not sure what the license should be for a package, please ask for help with this in the pull request.
 9. The URL of the **conda package**.  It should always be of the form https:// anaconda.org / [CHANNEL] / [PACKAGE] e.g. https://anaconda.org/dnachun/hello.
 
 ## Troubleshooting

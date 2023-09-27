@@ -103,7 +103,7 @@ This repository is developed by the Analysis Working Group of the NIA FunGen-xQT
 | Xiaoling Zhang   | Departments of Medicine and Biostatistics, Boston University      |
 | Edoardo Marcora  | Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai |
 | Fanny Leung      | Department of the Pathology and Laboratory Medicine, University of Pennsylvania |
-| Julia TCW        | Department of Medicine, Boston University                         |
+| Julia TCW        | DDepartment of Pharmacology and Bioinformatics, Boston University                         |
 | Kushal K. Dey    | Memorial Sloan Kettering                                          |
 | Alan Renton      | Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai |
 | Stephen Montgomery | Department of Pathology, Stanford University                    |

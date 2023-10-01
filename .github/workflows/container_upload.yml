@@ -1,7 +1,7 @@
 name: Push containers to registries
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     outputs:
       matrix: ${{ steps.export-directories.outputs.matrix }} 
       any_changed: ${{ steps.download-changed-directories.outputs.found_artifact }}
-    if: github.event.pull_request.merged == true 
+    if: github.event.pull_request_target.merged == true 
 
     steps:
       - name: Download changed directories
@@ -21,14 +21,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: container_build.yml
-          name: 'changed_directories_${{ github.event.pull_request.head.sha }}'
+          name: 'changed_directories_${{ github.event.pull_request_target.head.sha }}'
           name_is_regexp: true
           path: /tmp
           if_no_artifact_found: warn
 
       - name: Export changed directories
         id: export-directories
-        run: cat /tmp/changed_directories_${{ github.event.pull_request.head.sha }}/changed_directories.json >> "$GITHUB_OUTPUT"
+        run: cat /tmp/changed_directories_${{ github.event.pull_request_target.head.sha }}/changed_directories.json >> "$GITHUB_OUTPUT"
 
   push_docker_containers:
     needs: setup

@@ -1,6 +1,8 @@
 # Container provisioning pipeline
 Containers in the xQTL pipeline are built from conda environments and pushed to container registry using GitHub Actions.  We use the [micromamba container](https://hub.docker.com/r/mambaorg/micromamba) as our base image and install a Conda environment into the container.  Conda packages are only used from [conda-forge](https://anaconda.org/conda-forge), [bioconda](https://anaconda.org/bioconda), and the [personal channel](https://anaconda.org/dnachun) of contributor @danielnachun.
 
+Note: the minimum required version of Singularity for our containers is **3.6.0**.  This release made backwards incompatibile changes to the container signature format that mean any containers built with Singularity 3.6.0 or newer will not work on 3.5.3 or older.  We use the latest version of Apptainer (renamed from Singularity) to build and sign our containers. 
+
 ## Pipeline description
 The GitHub Actions are located in the [.github/workflows](https://github.com/cumc/xqtl-pipeline/tree/main/.github/workflows) folder, while the Conda environments and the CSV table used to generate those environments are found in this folder.  The environments for a single container are each in their own folder e.g. `bioinfo/bioinfo.yml` – currently each container only has a single environment in it, but our pipeline allows for multiple environments in the same container should the need arise.  We build containers for both Docker and Singularity and push the containers to the registries at [ghcr.io](https://ghcr.io), [quay.io](https://quay.io), and [docker.io](https://docker.io).
 

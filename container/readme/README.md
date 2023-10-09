@@ -23,6 +23,9 @@ To update an existing container with new packages or new versions of packages or
 6. Push the branch to the upstream: `git push -f origin my_container_update`.
 7. Once the checks all pass with no errors, ask @gaow or @danielnachun to merge the pull request.
 
+## Updating this README
+Do not update the [main README file](https://github.com/cumc/xqtl-pipeline/tree/main/container/README.md) as it is generated automatically.  Instead, open a pull request as described in the previous section and update the [file in the readme subfolder](https://github.com/cumc/xqtl-pipeline/tree/main/container/readme/README.md).  A GitHub Actions workflow will automatically add a commit to update the main README file.
+
 ## Layout of container list
 The table requires several pieces of information for each package:
 1. The **package name** exactly as it is written for the package in anaconda.org.  Conda package names are not case sensitive but please use all lowercase letters for readability.  Please note the naming conventions for conda packages - for some languages such as R and Perl, most package names begin with `r-`/`perl-`, which Python and C/C++, for example do not.  Also note that Bioconductor R packages begin with `bioconductor-` instead of `r-`.

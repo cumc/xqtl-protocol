@@ -14,12 +14,14 @@ The GitHub Actions are located in the [.github/workflows](https://github.com/cum
 
 ## How to update or build new containers
 To update an existing container with new packages or new versions of packages or to build a new container, make a pull request in this repository to change `containers.csv`.  Do **not** directly modify the YML files - they are automatically generated and will be overriden by the next pull request.  To get started:
-1. If you have not already done so, create a fork of this repository to your own GitHub account and clone it locally with `git clone git@github.com:YOUR_USERNAME/xqtl-pipeline`.  
-2. Checkout a new branch: `git checkout -b my_container_update`.
-3. Edit container.csv to make the changes you want to the environments using your preferred spreadsheet editor (Excel, Google Sheets, Numbers, LibreOffice, etc.).  Please refer to the documentation in the next section for details on what to add to the table.
-4. Commit the changes you have made with `git commit -m "update my_container"`.
-5. Push the branch to the upstream wtih `git push -f origin my_container_update`.
-6. Once the checks all pass with no errors, ask @gaow or @danielnachun to merge the pull request.
+1. If you have not already done so, create a fork of this repository to your own GitHub account and clone it locally: `git clone git@github.com:YOUR_USERNAME/xqtl-pipeline`.  
+2. Add the original repo as an additional remote: `git remote add upstream git@github.com:cumc/xqtl-pipeline.git`
+3. Fetch the upstream remote: `git fetch upstream`
+3. Checkout a new branch from the upstream main branch: `git checkout -b my_container_update upstream/main`.
+4. Edit container.csv to make the changes you want to the environments using your preferred spreadsheet editor (Excel, Google Sheets, Numbers, LibreOffice, etc.).  Please refer to the documentation in the next section for details on what to add to the table.
+4. Commit the changes you have made: `git commit -m "update my_container"`.
+6. Push the branch to the upstream: `git push -f origin my_container_update`.
+7. Once the checks all pass with no errors, ask @gaow or @danielnachun to merge the pull request.
 
 ## Layout of container list
 The table requires several pieces of information for each package:

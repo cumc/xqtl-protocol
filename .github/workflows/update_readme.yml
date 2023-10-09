@@ -1,0 +1,32 @@
+name: Update README
+
+on:
+  pull_request_target:
+    paths:
+      - 'container/readme/README.md'
+
+jobs:
+  update_csv:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          fetch-depth: 0
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Update README
+        run: |
+          cat container/readme/README.md > container/README.md
+          cat container/readme/containers.md >> container/README.md
+
+      - name: Commit changes to README
+        uses: EndBug/add-and-commit@v9
+        with:
+          push: true
+          message: Update README

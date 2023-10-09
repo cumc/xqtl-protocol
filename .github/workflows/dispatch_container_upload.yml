@@ -1,0 +1,118 @@
+name: Push containers to registries
+
+on:
+  workflow_dispatch:
+    inputs:
+      container_name:
+        description: Name of container to rebuild
+        required: true
+
+jobs:
+  push_docker_containers:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    permissions: 
+      contents: read
+      packages: write
+
+    steps:
+      - name: Setup up docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to ghcr.io with docker
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{github.repository_owner}}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to quay.io with docker
+        uses: docker/login-action@v2
+        with:
+          registry: quay.io
+          username: ${{ vars.QUAYIO_USERNAME }}
+          password: ${{ secrets.QUAYIO_TOKEN }}
+
+      - name: Log in to docker.io with docker
+        uses: docker/login-action@v2
+        with:
+          registry: docker.io
+          username: ${{ vars.DOCKERIO_USERNAME }}
+          password: ${{ secrets.DOCKERIO_TOKEN }}
+
+      - name: Build and push docker containers
+        uses: docker/build-push-action@v4
+        with:
+          context: container/${{ github.event.inputs.container_name }}
+          file: .github/docker.df
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.container_name }}_docker:latest
+            quay.io/${{ vars.QUAYIO_USERNAME }}/${{ github.event.inputs.container_name }}_docker:latest
+            docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ github.event.inputs.container_name }}_docker:latest
+
+  push_apptainer_containers:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    permissions: 
+      contents: read
+      packages: write
+
+    steps:
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: containers
+          create-args: apptainer
+          generate-run-shell: true
+
+      - name: Build apptainer containers
+        shell: micromamba-shell {0}
+        run: |
+          pushd container/${{ github.events.inputs.container_name }}; \
+            apptainer build /tmp/${{ github.events.inputs.container_name }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
+          popd
+
+      - name: Log in to ghcr.io with apptainer
+        shell: micromamba-shell {0}
+        run: |
+          apptainer remote login --username ${{ github.repository_owner }} \
+            --password ${{ secrets.GITHUB_TOKEN }} \
+            docker://ghcr.io/${{ github.repository_owner }}
+
+      - name: Push apptainer containers to ghcr.io
+        shell: micromamba-shell {0}
+        run: |
+          apptainer push \
+            /tmp/${{ github.events.inputs.container_name }}_apptainer.sif \
+            oras://ghcr.io/${{ github.repository_owner }}/${{ github.events.inputs.container_name }}_apptainer:latest
+
+      - name: Log in to quay.io with apptainer
+        shell: micromamba-shell {0}
+        run: |
+          apptainer remote login --username ${{ vars.QUAYIO_USERNAME }} \
+            --password ${{ secrets.QUAYIO_TOKEN }} \
+            docker://quay.io/${{ vars.QUAYIO_USERNAME }}
+
+      - name: Push apptainer containers to quay.io
+        shell: micromamba-shell {0}
+        run: |
+            apptainer push \
+            /tmp/${{ github.events.inputs.container_name }}_apptainer.sif \
+            oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ github.events.inputs.container_name }}_apptainer:latest 
+
+      - name: Log in to docker.io with apptainer
+        shell: micromamba-shell {0}
+        run: |
+          apptainer remote login --username ${{ vars.DOCKERIO_USERNAME }} \
+            --password ${{ secrets.DOCKERIO_TOKEN }} \
+            docker://docker.io
+
+      - name: Push apptainer containers to docker.io
+        shell: micromamba-shell {0}
+        run: |
+          apptainer push \
+            /tmp/${{ github.events.inputs.container_name }}_apptainer.sif \
+            oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ github.events.inputs.container_name }}_apptainer:latest

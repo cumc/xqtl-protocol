@@ -79,8 +79,8 @@ jobs:
       - name: Build apptainer containers
         shell: micromamba-shell {0}
         run: |
-          pushd container/${{ github.events.inputs.container_name }}; \
-            apptainer build /tmp/${{ github.events.inputs.container_name }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
+          pushd container/${{ github.event.inputs.container_name }}; \
+            apptainer build /tmp/${{ github.event.inputs.container_name }}_apptainer.sif ${{ github.workspace }}/.github/apptainer.def; \
           popd
 
       - name: Log in to ghcr.io with apptainer
@@ -94,8 +94,8 @@ jobs:
         shell: micromamba-shell {0}
         run: |
           apptainer push \
-            /tmp/${{ github.events.inputs.container_name }}_apptainer.sif \
-            oras://ghcr.io/${{ github.repository_owner }}/${{ github.events.inputs.container_name }}_apptainer:latest
+            /tmp/${{ github.event.inputs.container_name }}_apptainer.sif \
+            oras://ghcr.io/${{ github.repository_owner }}/${{ github.event.inputs.container_name }}_apptainer:latest
 
       - name: Log in to quay.io with apptainer
         shell: micromamba-shell {0}
@@ -108,8 +108,8 @@ jobs:
         shell: micromamba-shell {0}
         run: |
             apptainer push \
-            /tmp/${{ github.events.inputs.container_name }}_apptainer.sif \
-            oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ github.events.inputs.container_name }}_apptainer:latest 
+            /tmp/${{ github.event.inputs.container_name }}_apptainer.sif \
+            oras://quay.io/${{ vars.QUAYIO_USERNAME }}/${{ github.event.inputs.container_name }}_apptainer:latest 
 
       - name: Log in to docker.io with apptainer
         shell: micromamba-shell {0}
@@ -122,5 +122,5 @@ jobs:
         shell: micromamba-shell {0}
         run: |
           apptainer push \
-            /tmp/${{ github.events.inputs.container_name }}_apptainer.sif \
-            oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ github.events.inputs.container_name }}_apptainer:latest
+            /tmp/${{ github.event.inputs.container_name }}_apptainer.sif \
+            oras://docker.io/${{ vars.DOCKERIO_USERNAME }}/${{ github.event.inputs.container_name }}_apptainer:latest

@@ -1,677 +1,493 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Quantification of methylation data &#8212; FunGen-xQTL Consortium</title>
-    
-  <link href="../../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
     <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/togglebutton.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/molecular_phenotypes/calling/methylation_calling';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Alternative splicing from RNA-seq data" href="../splicing.html" />
     <link rel="prev" title="Methylation" href="../methylation.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../../index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../../_static/xqtl_wf.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../README.html">
-   FunGen-xQTL Computational Protocol
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Getting started
- </span>
-</p>
+    
+    
+    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../xqtl_protocol_demo.html">
-   Illustration of xQTL protocol
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Command Generator
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">
-   RNA-seq calling and QC
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">
-   Univariate xQTL Discovery
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Reference data
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../data_preprocessing/reference_data.html">
-   Reference data standardization
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_preprocessing/reference_data.html">Reference data standardization</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Molecular Phenotypes
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../bulk_expression.html">
-   RNA-seq expression
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="RNA_calling.html">
-     Quantifying expression from RNA-seq data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../QC/bulk_expression_QC.html">
-     Sample level RNA-seq quality control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../QC/bulk_expression_normalization.html">
-     Bulk RNA-seq counts normalization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../scnuc_expression.html">
-   scRNA-seq expression calling
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../apa.html">
-   Alternative polyadenylation
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="apa_calling.html">
-     APA Calling
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../methylation.html">
-   Methylation
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Quantification of methylation data
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../splicing.html">
-   Alternative splicing from RNA-seq data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="splicing_calling.html">
-     Quantifying alternative splicing from RNA-seq data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../QC/splicing_normalization.html">
-     Normalization and phenotype table generation for splicingQTL analysis
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Data Pre-processing
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">
-   Genotype data preprocessing
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">
-     Genotype VCF file quality control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">
-     Genotype PLINK file quality control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">
-     Principal component analysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">
-     Genomic relationship matrices
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">
-     Genotype data formatting
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">
-   Phenotype data preprocessing
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">
-     Gene coordinate annotation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">
-     Phenotype data formatting
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_imputation.html">
-     Phenotype data imputation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">
-   Covariate data preprocessing
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/covariate/covariate_hidden_factor.html">
-     Hidden factor analysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">
-     Covariate data formatting
-    </a>
-   </li>
-  </ul>
- </li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="apa_calling.html">APA Calling</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  QTL Association Testing
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../association_scan/qtl_association_testing.html">
-   QTL association analysis
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">
-     TensorQTL QTL association testing
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../association_scan/APEX/APEX.html">
-     APEX QTL association testing
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../association_scan/qtl_association_postprocessing.html">
-   QTL data postprocessing
-  </a>
- </li>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../methylation.html">Methylation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Quantification of methylation data</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Statistical Fine-mapping
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">
-   Univariate fine-mapping workflows
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">
-     Fine-mapping with individual level data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">
-     Fine-mapping with SuSiE RSS model
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">
-   Multivariate fine-mapping workflows
-  </a>
- </li>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Multivariate Analysis
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../multivariate/METAL_pipeline.html">
-   Meta-analysis with METAL
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../multivariate/METAL/METAL.html">
-     Meta-analysis with METAL
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../multivariate/MASH_pipeline.html">
-   Multivariate association with MASH
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">
-     eQTL summary statistics formatting
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">
-     A multivariate EBNM approach for mixture multivariate distribution estimate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../multivariate/MASH/mashr.html">
-     Data overview
-    </a>
-   </li>
-  </ul>
- </li>
+</li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Multi-omics integration
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../integrative_analysis/colocalization.html">
-   QTL and GWAS Colocalization
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc_dap.html">
-     Colocalization with FastENLOC
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">
-     Multivariate SuSiE and ENLOC model
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../integrative_analysis/functional_annotation.html">
-   Functional annotation integration
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
-  <label for="toctree-checkbox-13">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">
-     Enrichment analysis: TORUS and GREGOR
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">
-     Stratified LD Score Regression
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">
-     Fine-mapping with PolyFun
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">Principal component analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">Genomic relationship matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">Genotype data formatting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Utilities
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/BiCV_factor.html">Factor analysis using Bi-Cross validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate data formatting</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../misc/summary_stats_standardizer.html">
-   Summary statistics standardization and export
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../misc/rds_to_vcf.html">
-   Summary statistics in VCF format
-  </a>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/cisQTL_scan.html">cisQTL analysis workflows</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../association_scan/transQTL_scan.html">transQTL analysis workflows</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">eQTL summary statistics formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mashr.html">Data overview</a></li>
+
+
+
+
+
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with SuSiE model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integrative_analysis/colocalization.html">QTL and GWAS Colocalization</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc_dap.html">Colocalization with FastENLOC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">Multivariate SuSiE and ENLOC model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integrative_analysis/functional_annotation.html">Functional annotation integration</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">Enrichment analysis: TORUS and GREGOR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">Stratified LD Score Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/SuSiE_Ann/polyfun.html">Fine-mapping with PolyFun</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH NIA</a>
-</div>
-
-</div>
-
-
-          
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../../_sources/code/molecular_phenotypes/calling/methylation_calling.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
         
-        <a class="issues-button"
-            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/molecular_phenotypes/calling/methylation_calling.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/molecular_phenotypes/calling/methylation_calling.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/molecular_phenotypes/calling/methylation_calling.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/molecular_phenotypes/calling/methylation_calling.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-        </div>
 
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/code/molecular_phenotypes/calling/methylation_calling.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantification of methylation data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#methods-overview">
-   Methods overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input">
-   Input
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#output">
-   Output
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#minimal-working-example">
-   Minimal working example
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#command-interface">
-   Command interface
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#global-parameters">
-   Global parameters
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#sesame">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     Sesame
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#minfi">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     minfi
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#annotate-probes">
-   Annotate probes
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-parameters">Global parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sesame"><code class="docutils literal notranslate"><span class="pre">Sesame</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minfi"><code class="docutils literal notranslate"><span class="pre">minfi</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annotate-probes">Annotate probes</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="quantification-of-methylation-data">
-<h1>Quantification of methylation data<a class="headerlink" href="#quantification-of-methylation-data" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="methods-overview">
-<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantification-of-methylation-data">
+<h1>Quantification of methylation data<a class="headerlink" href="#quantification-of-methylation-data" title="Permalink to this heading">#</a></h1>
+<section id="methods-overview">
+<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this heading">#</a></h2>
 <p>This notebook implements two methods to quantify methylation data, using <code class="docutils literal notranslate"><span class="pre">sesame</span></code> and <code class="docutils literal notranslate"><span class="pre">minfi</span></code>. We recommend <code class="docutils literal notranslate"><span class="pre">sesame</span></code> over <code class="docutils literal notranslate"><span class="pre">minfi</span></code>.</p>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Procedure</p></th>
 <th class="head"><p><code class="docutils literal notranslate"><span class="pre">minfi</span></code></p></th>
@@ -701,24 +517,24 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">sample_sheet</span></code>: path to csv/tsv file that documenting all the meta-information of the bisulfite sequencing. The user need to manually ensure/rename the column names corresponding  to the first and second half of the idat file names are “Sentrix_ID” and “Sentrix_Position”</p></li>
 <li><p>[optional] <code class="docutils literal notranslate"><span class="pre">idat_folder</span></code>: path to the folder containing all the IDAT files to generate methylation data matrices from. Default is set to using the same folder where <code class="docutils literal notranslate"><span class="pre">sample_sheet</span></code> locates.</p></li>
 <li><p>[optional] <code class="docutils literal notranslate"><span class="pre">cross_reactive_probes</span></code>: A list of CpG probes that are reported to <a class="reference external" href="https://academic.oup.com/nargab/article/2/4/lqaa105/6040968">map to multiple regions in the genome.</a></p></li>
 </ol>
-</div>
-<div class="section" id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>A pair bed.gz file for <code class="docutils literal notranslate"><span class="pre">beta</span></code> and <code class="docutils literal notranslate"><span class="pre">M</span></code> value.</p></li>
 <li><p>Probe to gene annotation.</p></li>
 </ul>
-</div>
-<div class="section" id="minimal-working-example">
-<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">methylation_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">sesame</span> \
@@ -741,9 +557,9 @@
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="command-interface">
-<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">methylation_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
@@ -813,9 +629,9 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="global-parameters">
-<h2>Global parameters<a class="headerlink" href="#global-parameters" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="global-parameters">
+<h2>Global parameters<a class="headerlink" href="#global-parameters" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">keep_only_cpg_probes</span></code> option dictate whether only cpg probes should be kept:</p>
 <ul>
 <li><p>On an Illumina methylation bead chip, there are three types of probes,whose nature were indicated by their names.
@@ -853,14 +669,14 @@ Sections
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="sesame">
-<h2><code class="docutils literal notranslate"><span class="pre">Sesame</span></code><a class="headerlink" href="#sesame" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sesame">
+<h2><code class="docutils literal notranslate"><span class="pre">Sesame</span></code><a class="headerlink" href="#sesame" title="Permalink to this heading">#</a></h2>
 <p>Getting the beta value from EPIC450 IDAT for 750 samples from 3000 wells take ~40 mins.</p>
 <p>Based on <a class="reference external" href="https://www.bioconductor.org/packages/release/bioc/vignettes/sesame/inst/doc/sesame.html">sesame documentation</a>, the processing procedure suitable for human on EPIC 450 and 850 platform is “QCDPB”</p>
 <p>The code for each processing procedure are as followed:</p>
 <hr class="docutils" />
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Name</p></th>
@@ -891,7 +707,7 @@ Sections
 </tbody>
 </table>
 <p>Other potential procedures are</p>
-<table class="colwidths-auto table">
+<table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Name</p></th>
@@ -925,119 +741,119 @@ Sections
 The way we handle beta == 0 or beta == 1 is by replacing them with the next min/max value among the beta matrix, which is based on <a class="reference external" href="https://github.com/xuz1/ENmix/blob/master/R/utils.R">here</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">sesame_1</span><span class="p">]</span>
-<span class="n">processing_option</span> <span class="o">=</span> <span class="s2">&quot;QCDGPB&quot;</span> <span class="k">if</span> <span class="n">keep_only_cpg_probes</span> <span class="k">else</span> <span class="s2">&quot;QCDPB&quot;</span>
-<span class="c1"># threshold to filter out samples based on frac_dt (Percentage of probe Detection Success)  percentage</span>
-<span class="kn">parameter:</span> <span class="n">samples_frac_dt_cutoff</span> <span class="o">=</span> <span class="mf">0.8</span>
-<span class="c1"># The header rows in the sample sheet csv. Use 0 for no headers. Typically it should be 7. </span>
-<span class="kn">parameter:</span> <span class="n">sample_sheet_header_rows</span> <span class="o">=</span> <span class="nb">float</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[sesame_1]
+processing_option = &quot;QCDGPB&quot; if keep_only_cpg_probes else &quot;QCDPB&quot;
+# threshold to filter out samples based on frac_dt (Percentage of probe Detection Success)  percentage
+parameter: samples_frac_dt_cutoff = 0.8
+# The header rows in the sample sheet csv. Use 0 for no headers. Typically it should be 7. 
+parameter: sample_sheet_header_rows = float
 
-<span class="c1"># The number of cores to use. if set to 0 (default), the effective number of cores to used is automatically determined by BiocParallel::multicoreWorkers() function (i.e. n_available_cores-2)</span>
-<span class="kn">parameter:</span> <span class="n">n_cores</span> <span class="o">=</span> <span class="mi">1</span>
+# The number of cores to use. if set to 0 (default), the effective number of cores to used is automatically determined by BiocParallel::multicoreWorkers() function (i.e. n_available_cores-2)
+parameter: n_cores = 1
 
-<span class="kn">input:</span> <span class="n">sample_sheet</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.sesame.rds&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.sesame.beta.tsv&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.sesame.M.tsv&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.sample_qcs.sesame.tsv&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">sesame</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">)</span>
-    <span class="n">setDTthreads</span><span class="p">(</span><span class="n">threads</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">require</span><span class="p">(</span><span class="n">parallel</span><span class="p">)</span>
-    <span class="n">require</span><span class="p">(</span><span class="n">BiocParallel</span><span class="p">)</span>
+input: sample_sheet
+output: f&#39;{cwd}/{_input:bn}.sesame.rds&#39;,f&#39;{cwd}/{_input:bn}.sesame.beta.tsv&#39;,f&#39;{cwd}/{_input:bn}.sesame.M.tsv&#39;,f&#39;{cwd}/{_input:bn}.sample_qcs.sesame.tsv&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+R: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    library(sesame)
+    library(data.table)
+    setDTthreads(threads = 0)
+    require(parallel)
+    require(BiocParallel)
     
-    <span class="n">n_cores</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">n_cores</span><span class="p">}</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">n_cores</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="n">n_cores</span><span class="o">=</span><span class="n">BiocParallel</span><span class="p">::</span><span class="n">multicoreWorkers</span><span class="p">()</span> 
-    <span class="c1"># Cache the sesameData, it will not actually download anything if the data is here alerady</span>
-    <span class="n">sesameData</span><span class="p">::</span><span class="n">sesameDataCache</span><span class="p">()</span>
-    <span class="c1"># Define function </span>
-    <span class="n">B2M</span><span class="o">&lt;-</span><span class="n">function</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="p">{</span>
-    <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
-    <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">])</span>
-    <span class="n">log2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">log2</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="c1"># Load the sample sheet to get the sample names</span>
-    <span class="n">sample_sheet</span> <span class="o">=</span> <span class="n">fread</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input}</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">skip</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">sample_sheet_header_rows</span><span class="p">}</span> <span class="p">)</span>
-    <span class="k">if</span><span class="p">(</span><span class="s2">&quot;Sentrix_Row_Column&quot;</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">colnames</span><span class="p">(</span><span class="n">sample_sheet</span><span class="p">)){</span>
-    <span class="n">sample_sheet</span><span class="p">[,</span><span class="n">well_name</span><span class="o">:=</span><span class="n">paste</span><span class="p">(</span><span class="n">Sentrix_ID</span><span class="p">,</span><span class="n">Sentrix_Row_Column</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="n">sample_sheet</span><span class="p">[,</span><span class="n">well_name</span><span class="o">:=</span><span class="n">paste</span><span class="p">(</span><span class="n">Sentrix_ID</span><span class="p">,</span><span class="n">Sentrix_Position</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
-      <span class="p">}</span>
-    <span class="n">sample_sheet</span><span class="p">[,</span><span class="n">Sample_Name</span><span class="o">:=.</span><span class="n">SD</span><span class="p">,</span><span class="o">.</span><span class="n">SDcols</span><span class="o">=</span><span class="n">colnames</span><span class="p">(</span><span class="n">sample_sheet</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="n">sample_sheet</span><span class="err">$</span><span class="n">Sample_Name</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">character</span><span class="p">(</span><span class="n">sample_sheet</span><span class="err">$</span><span class="n">Sample_Name</span><span class="p">)</span>
+    n_cores=${n_cores}
+    if(n_cores==0)n_cores=BiocParallel::multicoreWorkers() 
+    # Cache the sesameData, it will not actually download anything if the data is here alerady
+    sesameData::sesameDataCache()
+    # Define function 
+    B2M&lt;-function (x)
+    {
+    x[x == 0] &lt;- min(x[x != 0])
+    x[x == 1] &lt;- max(x[x != 1])
+    log2(x) - log2(1 - x)
+    }
+    # Load the sample sheet to get the sample names
+    sample_sheet = fread(&quot;${_input}&quot; , skip = ${sample_sheet_header_rows} )
+    if(&quot;Sentrix_Row_Column&quot; %in% colnames(sample_sheet)){
+    sample_sheet[,well_name:=paste(Sentrix_ID,Sentrix_Row_Column,sep=&#39;_&#39;)]
+      } else { sample_sheet[,well_name:=paste(Sentrix_ID,Sentrix_Position,sep=&#39;_&#39;)]
+      }
+    sample_sheet[,Sample_Name:=.SD,.SDcols=colnames(sample_sheet)[1]]
+    sample_sheet$Sample_Name = as.character(sample_sheet$Sample_Name)
 
-    <span class="c1"># scan and load the data</span>
-    <span class="n">sdfs</span> <span class="o">&lt;-</span> <span class="n">openSesame</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">idat_folder</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="n">prep</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span><span class="n">BPPARAM</span> <span class="o">=</span> <span class="n">BiocParallel</span><span class="p">::</span><span class="n">MulticoreParam</span><span class="p">(</span><span class="n">n_cores</span><span class="p">))</span>
-    <span class="c1"># Keep only the samples in the sample_sheet to save memory</span>
-    <span class="n">sdfs</span> <span class="o">&lt;-</span> <span class="n">sdfs</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">sdfs</span><span class="p">)</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">sample_sheet</span><span class="err">$</span><span class="n">well_name</span><span class="p">)]</span>
+    # scan and load the data
+    sdfs &lt;- openSesame(${idat_folder:r}, prep = &quot;&quot;, func = NULL,BPPARAM = BiocParallel::MulticoreParam(n_cores))
+    # Keep only the samples in the sample_sheet to save memory
+    sdfs &lt;- sdfs[which(names(sdfs)%in%sample_sheet$well_name)]
 
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;IDAT files loaded.&quot;</span><span class="p">)</span>
-    <span class="c1"># Get Sample level QC:</span>
-    <span class="n">qcs</span> <span class="o">&lt;-</span> <span class="n">openSesame</span><span class="p">(</span><span class="n">sdfs</span><span class="p">,</span> <span class="n">prep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">sesameQC_calcStats</span><span class="p">,</span><span class="n">BPPARAM</span> <span class="o">=</span> <span class="n">BiocParallel</span><span class="p">::</span><span class="n">MulticoreParam</span><span class="p">(</span><span class="n">n_cores</span><span class="p">))</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;Sample-level QC completed.&quot;</span><span class="p">)</span>
-    <span class="c1"># Get poor samples base on percentage of probe fail</span>
-    <span class="n">qcs_dt</span><span class="o">&lt;-</span><span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">do</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">rbind</span><span class="p">,</span> <span class="n">lapply</span><span class="p">(</span><span class="n">qcs</span><span class="p">,</span> <span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">)),</span><span class="n">keep</span><span class="o">.</span><span class="n">rownames</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+    message(&quot;IDAT files loaded.&quot;)
+    # Get Sample level QC:
+    qcs &lt;- openSesame(sdfs, prep=&quot;&quot;, func=sesameQC_calcStats,BPPARAM = BiocParallel::MulticoreParam(n_cores))
+    message(&quot;Sample-level QC completed.&quot;)
+    # Get poor samples base on percentage of probe fail
+    qcs_dt&lt;-data.table(do.call(rbind, lapply(qcs, as.data.frame)),keep.rownames=&#39;id&#39;)
 
-    <span class="n">poor_samples</span><span class="o">&lt;-</span><span class="n">qcs_dt</span><span class="p">[</span><span class="n">frac_dt</span><span class="o">&lt;</span><span class="err">$</span><span class="p">{</span><span class="n">samples_frac_dt_cutoff</span><span class="p">}]</span><span class="err">$</span><span class="nb">id</span> <span class="c1">#all samples with &lt; 80% probes detection are deened as poor</span>
+    poor_samples&lt;-qcs_dt[frac_dt&lt;${samples_frac_dt_cutoff}]$id #all samples with &lt; 80% probes detection are deened as poor
 
-    <span class="c1">## This handles the case where poor_sample is empty</span>
-    <span class="n">sdfs</span> <span class="o">&lt;-</span> <span class="n">sdfs</span><span class="p">[</span><span class="n">which</span><span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">sdfs</span><span class="p">)</span><span class="o">%</span><span class="ow">in</span><span class="o">%</span><span class="n">poor_samples</span><span class="p">))]</span>
-    <span class="n">message</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="n">ifelse</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">poor_samples</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">poor_samples</span> <span class="p">,</span> <span class="s2">&quot;No sample&quot;</span> <span class="p">)</span> <span class="p">,</span> <span class="s2">&quot; removed due to low quality based on frac_dt &lt; $</span><span class="si">{samples_frac_dt_cutoff}</span><span class="s2"> &quot;</span><span class="p">))</span>
+    ## This handles the case where poor_sample is empty
+    sdfs &lt;- sdfs[which(!(names(sdfs)%in%poor_samples))]
+    message(paste0(ifelse(length(poor_samples) &gt; 0, poor_samples , &quot;No sample&quot; ) , &quot; removed due to low quality based on frac_dt &lt; ${samples_frac_dt_cutoff} &quot;))
     
-    <span class="c1"># Preprocess the data via QCDPB procedure</span>
-    <span class="c1">## The masking procedure of sesame is not removing the probes, but instead introduce NA in the masked probes. Therefore it makesense to na.rm it.</span>
-    <span class="n">beta</span> <span class="o">&lt;-</span> <span class="n">openSesame</span><span class="p">(</span><span class="n">sdfs</span><span class="p">,</span><span class="n">prep</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{processing_option}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">BPPARAM</span> <span class="o">=</span> <span class="n">BiocParallel</span><span class="p">::</span><span class="n">MulticoreParam</span><span class="p">(</span><span class="n">n_cores</span><span class="p">))</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;Beta calculated!&quot;</span><span class="p">)</span>
-    <span class="n">beta</span> <span class="o">&lt;-</span> <span class="n">beta</span><span class="p">[</span><span class="n">rowSums</span><span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">beta</span><span class="p">))</span> <span class="o">!=</span> <span class="n">ncol</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span> <span class="p">]</span> <span class="c1"># Use this instead of na.omit because if not the full rows are NA, then the probe is not masked.</span>
+    # Preprocess the data via QCDPB procedure
+    ## The masking procedure of sesame is not removing the probes, but instead introduce NA in the masked probes. Therefore it makesense to na.rm it.
+    beta &lt;- openSesame(sdfs,prep = &quot;${processing_option}&quot;,BPPARAM = BiocParallel::MulticoreParam(n_cores))
+    message(&quot;Beta calculated!&quot;)
+    beta &lt;- beta[rowSums(is.na(beta)) != ncol(beta), ] # Use this instead of na.omit because if not the full rows are NA, then the probe is not masked.
     
-    <span class="c1">#replace well_name by sample name in the matrix column names</span>
-    <span class="n">colnames</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span><span class="o">&lt;-</span><span class="n">sample_sheet</span><span class="p">[</span><span class="n">colnames</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span><span class="n">on</span><span class="o">=</span><span class="s1">&#39;well_name&#39;</span><span class="p">]</span><span class="err">$</span><span class="n">Sample_Name</span>
+    #replace well_name by sample name in the matrix column names
+    colnames(beta)&lt;-sample_sheet[colnames(beta),on=&#39;well_name&#39;]$Sample_Name
     
-    <span class="c1">#calculate the M value</span>
-    <span class="n">M</span> <span class="o">&lt;-</span> <span class="n">B2M</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;M values calculated.&quot;</span><span class="p">)</span>
+    #calculate the M value
+    M &lt;- B2M(beta)
+    message(&quot;M values calculated.&quot;)
     
-    <span class="c1">#Save the outputs</span>
-    <span class="n">fwrite</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span><span class="n">keep</span><span class="o">.</span><span class="n">rownames</span> <span class="o">=</span> <span class="s1">&#39;ID&#39;</span><span class="p">),</span><span class="s2">&quot;$</span><span class="si">{_output[1]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fwrite</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">M</span><span class="p">,</span><span class="n">keep</span><span class="o">.</span><span class="n">rownames</span> <span class="o">=</span> <span class="s1">&#39;ID&#39;</span><span class="p">),</span><span class="s2">&quot;$</span><span class="si">{_output[2]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">fwrite</span><span class="p">(</span><span class="n">qcs_dt</span><span class="p">,</span><span class="s2">&quot;$</span><span class="si">{_output[3]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">saveRDS</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;sdfs&quot;</span> <span class="o">=</span> <span class="n">sdfs</span><span class="p">,</span><span class="s2">&quot;qcs&quot;</span> <span class="o">=</span> <span class="n">qcs</span><span class="p">),</span><span class="s2">&quot;$</span><span class="si">{_output[0]}</span><span class="s2">&quot;</span><span class="p">)</span>
+    #Save the outputs
+    fwrite(data.table(beta,keep.rownames = &#39;ID&#39;),&quot;${_output[1]}&quot;,sep=&quot;\t&quot;)
+    fwrite(data.table(M,keep.rownames = &#39;ID&#39;),&quot;${_output[2]}&quot;,sep=&quot;\t&quot;)
+    fwrite(qcs_dt,&quot;${_output[3]}&quot;,sep=&quot;\t&quot;)
+    saveRDS(list(&quot;sdfs&quot; = sdfs,&quot;qcs&quot; = qcs),&quot;${_output[0]}&quot;)
 
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;sesame analysis completed!&quot;</span><span class="p">)</span>
+    message(&quot;sesame analysis completed!&quot;)
 
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span>
-        <span class="n">stdout</span><span class="o">=</span><span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">stdout</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="p">;</span> <span class="n">do</span> 
-        <span class="n">echo</span> <span class="s2">&quot;output_info: $i &quot;</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;This is the file containing the intermediate QC table of sesame&quot;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_size:&quot;</span> <span class="err">`</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">5</span>  <span class="o">-</span><span class="n">d</span>  <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">done</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="p">;</span> <span class="n">do</span> 
-        <span class="n">echo</span> <span class="s2">&quot;output_info: $i &quot;</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_size:&quot;</span> <span class="err">`</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">5</span>  <span class="o">-</span><span class="n">d</span>  <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_rows:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_headerow:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_column:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">V</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">w</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_preview:&quot;</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">cat</span> <span class="err">$</span><span class="n">i</span>  <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span> <span class="p">;</span> <span class="n">done</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="p">;</span> <span class="n">do</span> 
-        <span class="n">echo</span> <span class="s2">&quot;output_info: $i &quot;</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_size:&quot;</span> <span class="err">`</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">5</span>  <span class="o">-</span><span class="n">d</span>  <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_rows:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_headerow:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_column:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">V</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">w</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_preview:&quot;</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">cat</span> <span class="err">$</span><span class="n">i</span>  <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span> <span class="p">;</span> <span class="n">done</span>
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
+        stdout=$[_output[0]:n].stdout
+        for i in $[_output[0]] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;This is the file containing the intermediate QC table of sesame&quot;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        done
+        for i in $[_output[1]] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `cat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_headerow:&quot; `cat $i | grep &quot;##&quot; | wc -l `   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `cat $i | grep -V &quot;##&quot; | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        cat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10   &gt;&gt; $stdout ; done
+        for i in $[_output[2]] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `cat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_headerow:&quot; `cat $i | grep &quot;##&quot; | wc -l `   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `cat $i | grep -V &quot;##&quot; | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        cat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10   &gt;&gt; $stdout ; done
     
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="minfi">
-<h2><code class="docutils literal notranslate"><span class="pre">minfi</span></code><a class="headerlink" href="#minfi" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="minfi">
+<h2><code class="docutils literal notranslate"><span class="pre">minfi</span></code><a class="headerlink" href="#minfi" title="Permalink to this heading">#</a></h2>
 <p>By default, for Infinium MethylationEPIC the data will be annotated based on hg38 using <a class="reference external" href="https://github.com/achilleasNP/IlluminaHumanMethylationEPICanno.ilm10b5.hg38">this annotation</a>, alternatively user can set the <code class="docutils literal notranslate"><span class="pre">--hg-build</span></code> parameter back to 19 to use the <a class="reference external" href="https://bioconductor.org/packages/release/data/annotation/html/IlluminaHumanMethylationEPICanno.ilm10b4.hg19.html">hg19 annotation</a>.</p>
 <p>For 450K data however, only hg19 annotation is availble, which is what we would use would use for minfi to work. However, we will reannotate everything to hg38 anyways in the next step.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>All the IDAT file in the specified folder and sub-folder will be loaded for samples in input sample CSV file</p></li>
 <li><p>The methylation data samples will first be filtered based on <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4527772/">bisulphite conversation rate</a>. This operation is done using the <a class="reference external" href="http://www.bioconductor.org/packages/release/bioc/vignettes/wateRmelon/inst/doc/wateRmelon.html#introduction">bscon function from watermelon package</a></p></li>
 <li><p>samples will then be filtered based on a <a class="reference external" href="https://www.rdocumentation.org/packages/minfi/versions/1.18.4/topics/detectionP">detection pvalue</a>, which indicates the quality of the signal at each genomics position</p></li>
@@ -1048,154 +864,154 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
 <p><a class="reference external" href="https://github.com/cumc/xqtl-pipeline/issues/312">As documented here</a> when the batch of IDAT data are different, there will be a problem reading the IDAT file without specifing the force = TRUE option in the <code class="docutils literal notranslate"><span class="pre">read.metharray.exp(targets</span> <span class="pre">=</span> <span class="pre">targets,force</span> <span class="pre">=</span> <span class="pre">TRUE)</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">minfi_1</span><span class="p">]</span>
-<span class="c1"># threshold to filter out samples based on detection P value</span>
-<span class="kn">parameter:</span> <span class="n">samples_pval_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="c1"># threshold to filter out probes based on detection P value</span>
-<span class="kn">parameter:</span> <span class="n">probe_pval_cutoff</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="c1"># FIXME: document here where this list is obtained from. Also the documentation below doesn&#39;t sound right. Please fix.</span>
-<span class="c1">## Use the default list in our docker, if want to skip methylation, specify it as &quot;.&quot;</span>
-<span class="kn">parameter:</span> <span class="n">cross_reactive_probes</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;/opt/cross_reactive_probe_Hop2020.txt&quot;</span><span class="p">)</span>
-<span class="c1"># 38 (hg38) or 19 (hg19) for epic data, by default 38. Noted for 450K data only GRCh37 is availble</span>
-<span class="kn">parameter:</span> <span class="n">hg_build</span> <span class="o">=</span> <span class="mi">38</span> 
-<span class="kn">input:</span> <span class="n">sample_sheet</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.minfi.rds&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.minfi.beta.tsv&#39;</span><span class="p">,</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">_input</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">.minfi.M.tsv&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span>
-    <span class="c1">## load libraries</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">tibble</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">minfi</span><span class="p">)</span>
-    <span class="n">sessionInfo</span><span class="p">()</span>
-    <span class="n">cross_reactive</span> <span class="o">=</span> <span class="n">readr</span><span class="p">::</span><span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{cross_reactive_probes}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="err">$</span><span class="n">probe</span>
-    <span class="c1">## 1. read idat files</span>
-    <span class="n">targets</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">metharray</span><span class="o">.</span><span class="n">sheet</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">adr</span><span class="p">})</span>
-    <span class="n">colnames</span><span class="p">(</span><span class="n">targets</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Sample_Name&quot;</span>
-    <span class="c1">## Only read samples with data</span>
-    <span class="n">Missing_sample</span> <span class="o">=</span> <span class="n">targets</span><span class="o">%&gt;%</span><span class="nb">filter</span><span class="p">(</span><span class="err">!</span><span class="n">stringr</span><span class="p">::</span><span class="n">str_detect</span><span class="p">(</span><span class="n">targets</span><span class="err">$</span><span class="n">Basename</span> <span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="p">)</span><span class="o">%&gt;%</span><span class="n">pull</span><span class="p">(</span><span class="n">Sample_Name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">Missing_sample</span><span class="p">))</span> <span class="n">message</span><span class="p">(</span><span class="n">paste0</span><span class="p">(</span><span class="s2">&quot;Samples &quot;</span><span class="p">,</span><span class="n">paste0</span><span class="p">(</span><span class="n">Missing_sample</span><span class="p">,</span><span class="n">collapse</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="p">),</span> <span class="s2">&quot; do not have IDAT data&quot;</span> <span class="p">))</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[minfi_1]
+# threshold to filter out samples based on detection P value
+parameter: samples_pval_cutoff = 0.05
+# threshold to filter out probes based on detection P value
+parameter: probe_pval_cutoff = 0.01
+# FIXME: document here where this list is obtained from. Also the documentation below doesn&#39;t sound right. Please fix.
+## Use the default list in our docker, if want to skip methylation, specify it as &quot;.&quot;
+parameter: cross_reactive_probes = path(&quot;/opt/cross_reactive_probe_Hop2020.txt&quot;)
+# 38 (hg38) or 19 (hg19) for epic data, by default 38. Noted for 450K data only GRCh37 is availble
+parameter: hg_build = 38 
+input: sample_sheet
+output: f&#39;{cwd}/{_input:bn}.minfi.rds&#39;,f&#39;{cwd}/{_input:bn}.minfi.beta.tsv&#39;,f&#39;{cwd}/{_input:bn}.minfi.M.tsv&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+R: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    ## load libraries
+    library(dplyr)
+    library(readr)
+    library(tibble)
+    library(minfi)
+    sessionInfo()
+    cross_reactive = readr::read_delim(&quot;${cross_reactive_probes}&quot;,&quot;\t&quot;)$probe
+    ## 1. read idat files
+    targets &lt;- read.metharray.sheet(${_input:adr})
+    colnames(targets)[1] = &quot;Sample_Name&quot;
+    ## Only read samples with data
+    Missing_sample = targets%&gt;%filter(!stringr::str_detect(targets$Basename ,&quot;/&quot;) )%&gt;%pull(Sample_Name)
+    if (length(Missing_sample)) message(paste0(&quot;Samples &quot;,paste0(Missing_sample,collapse = &quot;, &quot;), &quot; do not have IDAT data&quot; ))
 
-    <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">%&gt;%</span><span class="nb">filter</span><span class="p">(</span><span class="n">stringr</span><span class="p">::</span><span class="n">str_detect</span><span class="p">(</span><span class="n">targets</span><span class="err">$</span><span class="n">Basename</span> <span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="p">)</span>     
-    <span class="n">rgSet</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">metharray</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="p">)</span>
-    <span class="k">if</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">hg_build</span><span class="p">}</span> <span class="o">==</span> <span class="mi">38</span> <span class="o">&amp;&amp;</span> <span class="n">rgSet</span><span class="nd">@annotation</span><span class="p">[</span><span class="s2">&quot;array&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;IlluminaHumanMethylationEPIC&#39;</span> <span class="p">){</span><span class="n">rgSet</span><span class="nd">@annotation</span><span class="p">[</span><span class="s1">&#39;annotation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ilm10b5.hg38&quot;</span><span class="p">}</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;RGSet object created.&quot;</span><span class="p">)</span>
+    targets = targets%&gt;%filter(stringr::str_detect(targets$Basename ,&quot;/&quot;) )     
+    rgSet &lt;- read.metharray.exp(targets = targets)
+    if(${hg_build} == 38 &amp;&amp; rgSet@annotation[&quot;array&quot;] == &#39;IlluminaHumanMethylationEPIC&#39; ){rgSet@annotation[&#39;annotation&#39;] = &quot;ilm10b5.hg38&quot;}
+    message(&quot;RGSet object created.&quot;)
     
-    <span class="c1"># Quality Control and Normalization</span>
+    # Quality Control and Normalization
 
-    <span class="c1">## 2. QC based on p-value, remove samples with average p value less than 0.05</span>
+    ## 2. QC based on p-value, remove samples with average p value less than 0.05
     
-    <span class="n">detP</span> <span class="o">&lt;-</span> <span class="n">detectionP</span><span class="p">(</span><span class="n">rgSet</span><span class="p">)</span>
-    <span class="n">keep</span> <span class="o">&lt;-</span> <span class="n">colMeans</span><span class="p">(</span><span class="n">detP</span><span class="p">)</span> <span class="o">&lt;</span> <span class="err">$</span><span class="p">{</span><span class="n">samples_pval_cutoff</span><span class="p">}</span>
-    <span class="n">rgSet</span> <span class="o">&lt;-</span> <span class="n">rgSet</span><span class="p">[,</span><span class="n">keep</span><span class="p">]</span>
-    <span class="n">targets</span> <span class="o">&lt;-</span> <span class="n">targets</span><span class="p">[</span><span class="n">keep</span><span class="p">,]</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;Samples with average detection p-value &lt; $</span><span class="si">{samples_pval_cutoff}</span><span class="s2"> removed.&quot;</span><span class="p">)</span>
+    detP &lt;- detectionP(rgSet)
+    keep &lt;- colMeans(detP) &lt; ${samples_pval_cutoff}
+    rgSet &lt;- rgSet[,keep]
+    targets &lt;- targets[keep,]
+    message(&quot;Samples with average detection p-value &lt; ${samples_pval_cutoff} removed.&quot;)
 
-    <span class="c1">## 3. Normalize the data - Quantile</span>
-    <span class="n">mSetSq</span> <span class="o">&lt;-</span> <span class="n">preprocessQuantile</span><span class="p">(</span><span class="n">rgSet</span><span class="p">)</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;RGSet data quantile normalized&quot;</span><span class="p">)</span>
+    ## 3. Normalize the data - Quantile
+    mSetSq &lt;- preprocessQuantile(rgSet)
+    message(&quot;RGSet data quantile normalized&quot;)
     
-    <span class="c1">## 4. Remove cross-reactive probes</span>
-    <span class="n">no_cross_reactive</span> <span class="o">&lt;-</span> <span class="err">!</span><span class="p">(</span><span class="n">featureNames</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">)</span> <span class="o">%</span><span class="ow">in</span><span class="o">%</span> <span class="n">cross_reactive</span><span class="p">)</span>
-    <span class="n">mSetSq</span> <span class="o">&lt;-</span> <span class="n">mSetSq</span><span class="p">[</span><span class="n">no_cross_reactive</span><span class="p">,</span> <span class="p">]</span>
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;Cross-reactive probes removed&quot;</span><span class="p">)</span>
+    ## 4. Remove cross-reactive probes
+    no_cross_reactive &lt;- !(featureNames(mSetSq) %in% cross_reactive)
+    mSetSq &lt;- mSetSq[no_cross_reactive, ]
+    message(&quot;Cross-reactive probes removed&quot;)
     
-    <span class="c1">## 5. Drop probes that are also SNPs</span>
-    <span class="k">if</span> <span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">keep_only_cpg_probes</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">}</span> <span class="p">){</span>
-        <span class="n">mSetSq</span> <span class="o">&lt;-</span> <span class="n">dropLociWithSnps</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">)</span>
-        <span class="n">message</span><span class="p">(</span><span class="s2">&quot;probes overlapping with SNPs removed&quot;</span><span class="p">)</span>
-    <span class="p">}</span>
+    ## 5. Drop probes that are also SNPs
+    if (${&quot;T&quot; if keep_only_cpg_probes else &quot;F&quot;} ){
+        mSetSq &lt;- dropLociWithSnps(mSetSq)
+        message(&quot;probes overlapping with SNPs removed&quot;)
+    }
   
-    <span class="c1">## 6. Remove probes with &lt; ${probe_pval_cutoff} detection p-values</span>
-    <span class="n">detP</span> <span class="o">&lt;-</span> <span class="n">detP</span><span class="p">[</span><span class="n">match</span><span class="p">(</span><span class="n">featureNames</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">),</span><span class="n">rownames</span><span class="p">(</span><span class="n">detP</span><span class="p">)),]</span>
-    <span class="n">keep</span> <span class="o">&lt;-</span> <span class="n">rowSums</span><span class="p">(</span><span class="n">detP</span> <span class="o">&lt;</span> <span class="err">$</span><span class="p">{</span><span class="n">probe_pval_cutoff</span><span class="p">})</span> <span class="o">==</span> <span class="n">ncol</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">)</span>
-    <span class="n">mSetSq</span> <span class="o">&lt;-</span> <span class="n">mSetSq</span><span class="p">[</span><span class="n">keep</span><span class="p">,]</span>
+    ## 6. Remove probes with &lt; ${probe_pval_cutoff} detection p-values
+    detP &lt;- detP[match(featureNames(mSetSq),rownames(detP)),]
+    keep &lt;- rowSums(detP &lt; ${probe_pval_cutoff}) == ncol(mSetSq)
+    mSetSq &lt;- mSetSq[keep,]
   
-    <span class="c1">## 7. get Beta and M values</span>
-    <span class="n">mSetSqbval</span> <span class="o">&lt;-</span> <span class="n">getBeta</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s2">&quot;ID&quot;</span><span class="p">)</span>
-    <span class="n">mSetSqMval</span> <span class="o">&lt;-</span> <span class="n">getM</span><span class="p">(</span><span class="n">mSetSq</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">(</span><span class="n">rownames</span> <span class="o">=</span> <span class="s2">&quot;ID&quot;</span><span class="p">)</span>
+    ## 7. get Beta and M values
+    mSetSqbval &lt;- getBeta(mSetSq)%&gt;%as_tibble(rownames = &quot;ID&quot;)
+    mSetSqMval &lt;- getM(mSetSq)%&gt;%as_tibble(rownames = &quot;ID&quot;)
 
-    <span class="n">message</span><span class="p">(</span><span class="s2">&quot;Beta-value and M value obtained&quot;</span><span class="p">)</span>
+    message(&quot;Beta-value and M value obtained&quot;)
     
-    <span class="c1">## 8. output data</span>
-    <span class="n">mSetSqbval</span> <span class="o">=</span> <span class="n">mSetSqbval</span><span class="o">%&gt;%</span><span class="n">rename_at</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">rgSet</span><span class="nd">@colData</span><span class="o">%&gt;%</span><span class="n">rownames</span><span class="p">()),</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">rgSet</span><span class="nd">@colData</span><span class="p">[</span><span class="n">x</span><span class="p">,]</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="o">%&gt;%</span><span class="n">pull</span><span class="p">(</span><span class="n">Sample_Name</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">mSetSqMval</span> <span class="o">=</span> <span class="n">mSetSqMval</span><span class="o">%&gt;%</span><span class="n">rename_at</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">rgSet</span><span class="nd">@colData</span><span class="o">%&gt;%</span><span class="n">rownames</span><span class="p">()),</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">rgSet</span><span class="nd">@colData</span><span class="p">[</span><span class="n">x</span><span class="p">,]</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="o">%&gt;%</span><span class="n">pull</span><span class="p">(</span><span class="n">Sample_Name</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">mSetSqbval</span><span class="o">%&gt;%</span><span class="n">readr</span><span class="p">::</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[1]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">mSetSqMval</span><span class="o">%&gt;%</span><span class="n">readr</span><span class="p">::</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[2]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s2">&quot;rgSet&quot;</span> <span class="o">=</span> <span class="n">rgSet</span><span class="p">,</span><span class="n">mSetSq</span> <span class="o">=</span> <span class="s2">&quot;mSetSq&quot;</span><span class="p">,</span> <span class="n">mSetSqbval</span> <span class="o">=</span> <span class="s2">&quot;mSetSqbval&quot;</span><span class="p">)</span>
-    <span class="n">output</span><span class="o">%&gt;%</span><span class="n">saveRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">r</span><span class="p">})</span>
+    ## 8. output data
+    mSetSqbval = mSetSqbval%&gt;%rename_at(vars(rgSet@colData%&gt;%rownames()), function(x) rgSet@colData[x,]%&gt;%as_tibble%&gt;%pull(Sample_Name) )
+    mSetSqMval = mSetSqMval%&gt;%rename_at(vars(rgSet@colData%&gt;%rownames()), function(x) rgSet@colData[x,]%&gt;%as_tibble%&gt;%pull(Sample_Name) )
+    mSetSqbval%&gt;%readr::write_delim(&quot;${_output[1]}&quot;,&quot;\t&quot;)
+    mSetSqMval%&gt;%readr::write_delim(&quot;${_output[2]}&quot;,&quot;\t&quot;)
+    output = list(&quot;rgSet&quot; = rgSet,mSetSq = &quot;mSetSq&quot;, mSetSqbval = &quot;mSetSqbval&quot;)
+    output%&gt;%saveRDS(${_output[0]:r})
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="annotate-probes">
-<h2>Annotate probes<a class="headerlink" href="#annotate-probes" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="annotate-probes">
+<h2>Annotate probes<a class="headerlink" href="#annotate-probes" title="Permalink to this heading">#</a></h2>
 <p>The probes are annotated via <code class="docutils literal notranslate"><span class="pre">sesameData</span></code> package and formatted as bgzipped bed files, regardless of method used to process the IDAT.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">*</span><span class="n">_2</span><span class="p">]</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.bed.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.bed.gz&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.gene_id.annot.tsv&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span>
-<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">sesame</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">tibble</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">readr</span><span class="p">)</span> 
-    <span class="n">sesameData</span><span class="p">::</span><span class="n">sesameDataCache</span><span class="p">()</span>
-    <span class="n">betas</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input[1]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">M</span> <span class="o">=</span> <span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_input[2]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">probe_annot</span> <span class="o">=</span> <span class="n">sesameData</span><span class="p">::</span><span class="n">sesameData_annoProbes</span><span class="p">(</span><span class="n">betas</span><span class="err">$</span><span class="n">ID</span><span class="p">,</span><span class="n">column</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span><span class="p">)</span>
-    <span class="n">probe_annot</span> <span class="o">=</span> <span class="n">cbind</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span> <span class="o">=</span> <span class="n">probe_annot</span><span class="o">%&gt;%</span><span class="n">names</span><span class="p">,</span><span class="n">probe_annot</span><span class="o">%&gt;%</span><span class="n">as_tibble</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">as_tibble</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[*_2]
+output: f&#39;{_input[1]:n}.bed.gz&#39;, f&#39;{_input[2]:n}.bed.gz&#39;, f&#39;{_input[0]:n}.gene_id.annot.tsv&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+R: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    library(sesame)
+    library(tibble)
+    library(dplyr)
+    library(readr) 
+    sesameData::sesameDataCache()
+    betas = read_delim(&quot;${_input[1]}&quot;,&quot;\t&quot;)
+        M = read_delim(&quot;${_input[2]}&quot;,&quot;\t&quot;)
+    probe_annot = sesameData::sesameData_annoProbes(betas$ID,column = &quot;gene_id&quot;)
+    probe_annot = cbind(&quot;ID&quot; = probe_annot%&gt;%names,probe_annot%&gt;%as_tibble)%&gt;%as_tibble
   
-    <span class="n">betas</span> <span class="o">=</span> <span class="n">inner_join</span><span class="p">(</span><span class="n">probe_annot</span><span class="o">%&gt;%</span><span class="n">dplyr</span><span class="p">::</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;#chr&quot;</span> <span class="o">=</span> <span class="n">seqnames</span><span class="p">,</span> <span class="n">start</span> <span class="p">,</span> <span class="n">end</span> <span class="p">,</span> <span class="n">ID</span> <span class="p">),</span><span class="n">betas</span> <span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;ID&quot;</span> <span class="p">)</span><span class="o">%&gt;%</span>
-          <span class="n">mutate</span><span class="p">(</span><span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span><span class="mi">1</span> <span class="p">,</span><span class="n">chr_num</span> <span class="o">=</span> <span class="n">stringr</span><span class="p">::</span><span class="n">str_remove</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr`,&quot;chr&quot;)%&gt;%as.numeric)%&gt;%arrange(chr_num,`#chr`,start)%&gt;%select(-chr_num) </span>
-    <span class="n">M</span> <span class="o">=</span> <span class="n">inner_join</span><span class="p">(</span><span class="n">probe_annot</span><span class="o">%&gt;%</span><span class="n">dplyr</span><span class="p">::</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;#chr&quot;</span> <span class="o">=</span> <span class="n">seqnames</span><span class="p">,</span> <span class="n">start</span> <span class="p">,</span> <span class="n">end</span> <span class="p">,</span> <span class="n">ID</span> <span class="p">),</span> <span class="n">M</span> <span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;ID&quot;</span> <span class="p">)</span><span class="o">%&gt;%</span>
-          <span class="n">mutate</span><span class="p">(</span><span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span><span class="mi">1</span> <span class="p">,</span> <span class="n">chr_num</span> <span class="o">=</span> <span class="n">stringr</span><span class="p">::</span><span class="n">str_remove</span><span class="p">(</span><span class="err">`</span><span class="c1">#chr`,&quot;chr&quot;)%&gt;%as.numeric)%&gt;%arrange(chr_num,`#chr`,start)%&gt;%select(-chr_num) </span>
+    betas = inner_join(probe_annot%&gt;%dplyr::select(&quot;#chr&quot; = seqnames, start , end , ID ),betas , by = &quot;ID&quot; )%&gt;%
+          mutate(end = start +1 ,chr_num = stringr::str_remove(`#chr`,&quot;chr&quot;)%&gt;%as.numeric)%&gt;%arrange(chr_num,`#chr`,start)%&gt;%select(-chr_num) 
+    M = inner_join(probe_annot%&gt;%dplyr::select(&quot;#chr&quot; = seqnames, start , end , ID ), M , by = &quot;ID&quot; )%&gt;%
+          mutate(end = start +1 , chr_num = stringr::str_remove(`#chr`,&quot;chr&quot;)%&gt;%as.numeric)%&gt;%arrange(chr_num,`#chr`,start)%&gt;%select(-chr_num) 
   
-    <span class="n">betas</span><span class="o">%&gt;%</span><span class="n">readr</span><span class="p">::</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[0]:n}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">M</span><span class="o">%&gt;%</span><span class="n">readr</span><span class="p">::</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[1]:n}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">probe_annot</span><span class="o">%&gt;%</span><span class="n">write_delim</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{_output[2]}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    betas%&gt;%readr::write_delim(&quot;${_output[0]:n}&quot;,&quot;\t&quot;)
+    M%&gt;%readr::write_delim(&quot;${_output[1]:n}&quot;,&quot;\t&quot;)
+    probe_annot%&gt;%write_delim(&quot;${_output[2]}&quot;,&quot;\t&quot;)
   
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">=</span><span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span>
-    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> 
-    <span class="n">tabix</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-    <span class="n">bgzip</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> 
-    <span class="n">tabix</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
-    <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">n</span><span class="p">}</span>
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    bgzip -f ${_output[0]:n} 
+    tabix ${_output[0]}
+    bgzip -f ${_output[1]:n} 
+    tabix ${_output[1]}
+    rm -f ${_output[0]:n} ${_output[1]:n}
 
-<span class="kn">bash:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span><span class="o">=</span><span class="n">entrypoint</span>
-        <span class="n">stdout</span><span class="o">=</span><span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">stdout</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="p">;</span> <span class="n">do</span> 
-        <span class="n">echo</span> <span class="s2">&quot;output_info: $i &quot;</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_size:&quot;</span> <span class="err">`</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">5</span>  <span class="o">-</span><span class="n">d</span>  <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_rows:&quot;</span> <span class="err">`</span><span class="n">zcat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_headerow:&quot;</span> <span class="err">`</span><span class="n">zcat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_column:&quot;</span> <span class="err">`</span><span class="n">zcat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">V</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">w</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_preview:&quot;</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">zcat</span> <span class="err">$</span><span class="n">i</span>  <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span> <span class="p">;</span> <span class="n">done</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="p">;</span> <span class="n">do</span> 
-        <span class="n">echo</span> <span class="s2">&quot;output_info: $i &quot;</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_size:&quot;</span> <span class="err">`</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">5</span>  <span class="o">-</span><span class="n">d</span>  <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_rows:&quot;</span> <span class="err">`</span><span class="n">zcat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_headerow:&quot;</span> <span class="err">`</span><span class="n">zcat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_column:&quot;</span> <span class="err">`</span><span class="n">zcat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">V</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">w</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_preview:&quot;</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">zcat</span> <span class="err">$</span><span class="n">i</span>  <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span> <span class="p">;</span> <span class="n">done</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">[</span><span class="n">_output</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span> <span class="p">;</span> <span class="n">do</span> 
-        <span class="n">echo</span> <span class="s2">&quot;output_info: $i &quot;</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_size:&quot;</span> <span class="err">`</span><span class="n">ls</span> <span class="o">-</span><span class="n">lh</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">5</span>  <span class="o">-</span><span class="n">d</span>  <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_rows:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="o">-</span><span class="n">d</span> <span class="s2">&quot; &quot;</span><span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_headerow:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_column:&quot;</span> <span class="err">`</span><span class="n">cat</span> <span class="err">$</span><span class="n">i</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">V</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span> <span class="o">-</span><span class="mi">1</span> <span class="o">|</span> <span class="n">wc</span> <span class="o">-</span><span class="n">w</span> <span class="err">`</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">echo</span> <span class="s2">&quot;output_preview:&quot;</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span><span class="p">;</span>
-        <span class="n">cat</span> <span class="err">$</span><span class="n">i</span>  <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="s2">&quot;##&quot;</span> <span class="o">|</span> <span class="n">head</span>  <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span>   <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="n">stdout</span> <span class="p">;</span> <span class="n">done</span>
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint=entrypoint
+        stdout=$[_output[0]:n].stdout
+        for i in $[_output[0]] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_headerow:&quot; `zcat $i | grep &quot;##&quot; | wc -l `   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `zcat $i | grep -V &quot;##&quot; | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        zcat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10   &gt;&gt; $stdout ; done
+        for i in $[_output[1]] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_headerow:&quot; `zcat $i | grep &quot;##&quot; | wc -l `   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `zcat $i | grep -V &quot;##&quot; | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        zcat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10   &gt;&gt; $stdout ; done
+        for i in $[_output[2]] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `cat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_headerow:&quot; `cat $i | grep &quot;##&quot; | wc -l `   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `cat $i | grep -V &quot;##&quot; | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        cat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10   &gt;&gt; $stdout ; done
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1209,7 +1025,7 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
             mode: "sos"
         },
         kernelOptions: {
-            kernelName: "sos",
+            name: "sos",
             path: "./code/molecular_phenotypes/calling"
         },
         predefinedOutput: true
@@ -1217,46 +1033,113 @@ The way we handle beta == 0 or beta == 1 is by replacing them with the next min/
     </script>
     <script>kernelName = 'sos'</script>
 
-              </div>
+                </article>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../methylation.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Methylation</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../methylation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Methylation</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="../splicing.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="../splicing.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Alternative splicing from RNA-seq data</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
-    </a>
-</div>
-        
-        </div>
-    </div>
-    <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
-        
-            &copy; Copyright 2021+, FunGen xQTL Analysis Working Group.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
-
-
       </div>
-    </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
   
-  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+</div>
 
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-parameters">Global parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sesame"><code class="docutils literal notranslate"><span class="pre">Sesame</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minfi"><code class="docutils literal notranslate"><span class="pre">minfi</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#annotate-probes">Annotate probes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

@@ -168,11 +168,15 @@ load_regional_association_data <- function(genotype, # PLINK file
     ### including Y ( cov ) and specific X and covar match, filter X variants based on the overlapped samples.
     phenotype_list = tibble(covariate_path = covariate, phenotype_path =phenotype) %>%
         mutate(covar = map(covariate_path, ~read_delim(.x,"\t")%>%select(-1)%>%na.omit%>%t()),
-              Y = map2(phenotype_path,covar, ~tabix_region(.x,region )%>%select(-4)%>%select(rownames(.y))%>%t()%>%as.matrix), # Y and covar 1st match
-              Y = map(Y, ~.x%>%na.omit),    # remove na where Y raw data has na which block regression
-              dropped_sample = map2(covar, Y , ~rownames(.x)[!rownames(.x) %in% rownames(.y)])  ,
-              covar = map2(covar, Y , ~.x[intersect(.x%>%rownames,rownames(.y)),]), # remove the dropped samples from Y
-              X_data = map(covar,~ filter_X( geno$bed[intersect(rownames(.x),rownames(geno$bed)),], imiss_cutoff, max(maf_cutoff, mac_cutoff/(2*length(intersect(rownames(.x),rownames(geno$bed))) ) ))   ))   
+        Y = map2(phenotype_path,covar, ~{
+          y_data <- tabix_region(.x,region )%>%select(-4)%>%select(rownames(.y))%>%t()%>%as.matrix
+          colnames(y_data) <- region
+          return(y_data)
+          }),
+        Y = map(Y, ~.x%>%na.omit),    # remove na where Y raw data has na which block regression
+          dropped_sample = map2(covar, Y , ~rownames(.x)[!rownames(.x) %in% rownames(.y)])  ,
+          covar = map2(covar, Y , ~.x[intersect(.x%>%rownames,rownames(.y)),]), # remove the dropped samples from Y
+          X_data = map(covar,~ filter_X( geno$bed[intersect(rownames(.x),rownames(geno$bed)),], imiss_cutoff, max(maf_cutoff, mac_cutoff/(2*length(intersect(rownames(.x),rownames(geno$bed))) ) ))   ))
               
     ## Get residue Y for each of condition
     phenotype_list = phenotype_list%>%mutate(Y_resid = map2(Y,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%
@@ -188,6 +192,7 @@ load_regional_association_data <- function(genotype, # PLINK file
     total_samples = map(phenotype_list$covar, ~rownames(.x))%>%unlist%>%unique()
     maf_cutoff = max(maf_cutoff,mac_cutoff/(2*nrow(total_samples)))
     X = filter_X(geno$bed[total_samples,], imiss_cutoff, maf_cutoff) ## Filter X for mvSuSiE
+    maf = compute_maf(X) 
     ## Get residue X for each of condition
     print(paste0("Dimension of input genotype data is row:", nrow(X), " column: ", ncol(X) ))
     X_list = phenotype_list%>%mutate( X_resid = map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale))%>%pull(X_resid)
@@ -198,6 +203,21 @@ load_regional_association_data <- function(genotype, # PLINK file
             residual_Y_scaled = Y_resid,
             residual_X_scaled = X_list,
             X = X,
-            dropped_sample = phenotype_list$dropped_sample  # keep track of dropped samples due to a lack of overlap btw X,Y,Z
+            maf = maf,
+            dropped_sample = phenotype_list$dropped_sample,
+            covar = phenotype_list$covar,
+            Y = phenotype_list$Y,
+            X_raw = X_data = phenotype_list$X_data
             ))
+}
+
+load_regional_finemapping_data <- function(...) {
+  dat <- load_regional_association_data(...)
+  return (list(
+          residual_Y_scaled = dat$Y_resid,
+          residual_X_scaled = dat$X_list,
+          X = dat$X,
+          maf = dat$maf,
+          dropped_sample = dat$phenotype_list$dropped_sample
+          ))
 }

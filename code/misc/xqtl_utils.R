@@ -200,8 +200,8 @@ load_regional_association_data <- function(genotype, # PLINK file
     ## residual_X_scaled: is a list of R conditions each is a matrix, with list names being the names of conditions, column names being SNP names and row names being sample names.
     ## X: is the somewhat original genotype matrix output from `filter_X`, with column names being SNP names and row names being sample names. Sample names of X should match example sample names of residual_Y_scaled matrix form (not list); but the matrices inside residual_X_scaled would be subsets of sample name of residual_Y_scaled matrix form (not list).
     return (list(
-            Y_resid = Y_resid,
-            X_list = X_list,
+            residual_Y_scaled = Y_resid,
+            residual_X_scaled = X_list,
             X = X,
             maf = maf,
             dropped_sample = phenotype_list$dropped_sample,
@@ -214,8 +214,8 @@ load_regional_association_data <- function(genotype, # PLINK file
 load_regional_finemapping_data <- function(...) {
   dat <- load_regional_association_data(...)
   return (list(
-          residual_Y_scaled = dat$Y_resid,
-          residual_X_scaled = dat$X_list,
+          residual_Y_scaled = dat$residual_Y_scaled,
+          residual_X_scaled = dat$residual_X_scaled,
           X = dat$X,
           maf = dat$maf,
           dropped_sample = dat$dropped_sample

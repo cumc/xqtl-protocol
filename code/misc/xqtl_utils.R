@@ -192,7 +192,7 @@ load_regional_association_data <- function(genotype, # PLINK file
     total_samples = map(phenotype_list$covar, ~rownames(.x))%>%unlist%>%unique()
     maf_cutoff = max(maf_cutoff,mac_cutoff/(2*nrow(total_samples)))
     X = filter_X(geno$bed[total_samples,], imiss_cutoff, maf_cutoff) ## Filter X for mvSuSiE
-    maf = compute_maf(X) 
+    maf =  apply(X, 2, compute_maf)
     ## Get residue X for each of condition
     print(paste0("Dimension of input genotype data is row:", nrow(X), " column: ", ncol(X) ))
     X_list = phenotype_list%>%mutate( X_resid = map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale))%>%pull(X_resid)
@@ -200,14 +200,14 @@ load_regional_association_data <- function(genotype, # PLINK file
     ## residual_X_scaled: is a list of R conditions each is a matrix, with list names being the names of conditions, column names being SNP names and row names being sample names.
     ## X: is the somewhat original genotype matrix output from `filter_X`, with column names being SNP names and row names being sample names. Sample names of X should match example sample names of residual_Y_scaled matrix form (not list); but the matrices inside residual_X_scaled would be subsets of sample name of residual_Y_scaled matrix form (not list).
     return (list(
-            residual_Y_scaled = Y_resid,
-            residual_X_scaled = X_list,
+            Y_resid = Y_resid,
+            X_list = X_list,
             X = X,
             maf = maf,
             dropped_sample = phenotype_list$dropped_sample,
             covar = phenotype_list$covar,
             Y = phenotype_list$Y,
-            X_raw = X_data = phenotype_list$X_data
+            X_raw =  phenotype_list$X_data
             ))
 }
 
@@ -218,6 +218,6 @@ load_regional_finemapping_data <- function(...) {
           residual_X_scaled = dat$X_list,
           X = dat$X,
           maf = dat$maf,
-          dropped_sample = dat$phenotype_list$dropped_sample
+          dropped_sample = dat$dropped_sample
           ))
 }

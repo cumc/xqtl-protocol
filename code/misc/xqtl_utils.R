@@ -245,19 +245,18 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
         fobj$sample_names = rownames(fdat$residual_Y_scaled[[r]])
         fobj$variant_names = names(fobj$pip)
         variants_index = c(which(fobj$pip >= signal_cutoff), unlist(fobj$sets$cs)) %>% unique %>% sort
-        if (length(variants_index)>0) {
-            maf = fdat$maf[[r]][variants_index]
-            variants = names(fobj$pip)[variants_index]
-            pip = fobj$pip[variants_index]
-            cs_info = map_int(variants_index, ~get_cs_index(.x, fobj))
-            cs_index = ifelse(is.na(cs_info), 0, str_replace(names(fobj$sets$cs)[cs_info], "L", "") %>% as.numeric)
-            univariate_res = univariate_regression(fdat$residual_X_scaled[[r]][, variants_index, drop=F], fdat$residual_Y_scaled[[r]])
-            fobj$qtl_identified = cbind(variants, maf, univariate_res$betahat, univariate_res$sebetahat, pip, cs_index)
-            colnames(fobj$qtl_identified) = c("variant_id", "maf", "bhat", "sbhat", "pip", "cs_index")
-            rownames(fobj$qtl_identified) = NULL
-        } else {
-            fobj$qtl_identified = data.frame()
+        if (length(variants_index)==0) {
+            variants_index = which.max(fobj$pip)
         }
+        maf = fdat$maf[[r]][variants_index]
+        variants = names(fobj$pip)[variants_index]
+        pip = fobj$pip[variants_index]
+        cs_info = map_int(variants_index, ~get_cs_index(.x, fobj))
+        cs_index = ifelse(is.na(cs_info), 0, str_replace(names(fobj$sets$cs)[cs_info], "L", "") %>% as.numeric)
+        univariate_res = univariate_regression(fdat$residual_X_scaled[[r]][, variants_index, drop=F], fdat$residual_Y_scaled[[r]])
+        fobj$top_loci = cbind(variants, maf, univariate_res$betahat, univariate_res$sebetahat, pip, cs_index)
+        colnames(fobj$top_loci) = c("variant_id", "maf", "bhat", "sbhat", "pip", "cs_index")
+        rownames(fobj$top_loci) = NULL
         # trim effects
         fobj$alpha = fobj$alpha[eff_idx,,drop=F]
         fobj$mu = fobj$mu[eff_idx,,drop=F]

@@ -1,0 +1,42 @@
+name: Update YAML from container CSV
+
+on:
+  pull_request_target:
+    paths:
+      - 'container/containers.csv'
+
+jobs:
+  update_csv:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          fetch-depth: 0
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: containers
+          create-args: numpy pandas pyyaml tabulate
+          generate-run-shell: true
+
+      - name: Update YAML files and Markdown table
+        shell: micromamba-shell {0}
+        run: |
+          python3 .github/workflows/export_envs.py
+          cat container/readme/README.md > container/README.md
+          cat container/readme/containers.md >> container/README.md
+
+      - name: Commit changes to YAML files and Markdown table
+        uses: EndBug/add-and-commit@v9
+        with:
+          push: true
+          message: Update YAML files and Markdown table
+

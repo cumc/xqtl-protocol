@@ -40,7 +40,7 @@ The website https://cumc.github.io/xqtl-pipeline is generated from files under t
 ### Computing environment setup
 
 - In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts (**version >= 0.24.1**) [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup#setup-the-script-of-scripts-computing-environment). 
-    - For Linux and Mac desktop users you can either install the container [`Singularity`](https://docs.sylabs.io/guides/3.2/user-guide/installation.html#) or [`Docker`](https://www.docker.com/). In the xQTL project we primarily use `Singularity`.
+    - For Linux and Mac desktop users you can either install the container [`Singularity`](https://docs.sylabs.io/guides/3.2/user-guide/installation.html#) or [`Docker`](https://www.docker.com/). In the xQTL project we use `Singularity`. Here are [some tips to set up Singularity on MacOS](https://wanggroup.org/productivity_tips/macos-setup#singularity-on-mac).
     - For Linux-based HPC users, your system may already have `Singularity` installed. If not please communicate with the IT support for the HPC. Typically Docker is not allowed on HPC.
     - For Windows users, you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1) and then install `Singularity` within WSL as instructed in this [post](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).
 - We have provided example data-sets and `Singularity` container images in [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). For guidance on downloading the data programmatically, refer to [this documentation](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html). If you need to set up a Synapse client, consult [this guide](https://help.synapse.org/docs/Installing-Synapse-API-Clients.1985249668.html).
@@ -57,7 +57,7 @@ that is, executing the symbolic links directly to perform the analysis.
 
 ### See Also
 
-- Analysis from FunGen-xQTL consortium using this protocol can be found at https://github.com/cumc/brain-xqtl-analysis
+- Analysis from FunGen-xQTL consortium using this protocol can be found at https://github.com/cumc/fungen-xqtl-analysis
 
 ## Our team
 
@@ -103,7 +103,7 @@ This repository is developed by the Analysis Working Group of the NIA FunGen-xQT
 | Xiaoling Zhang   | Departments of Medicine and Biostatistics, Boston University      |
 | Edoardo Marcora  | Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai |
 | Fanny Leung      | Department of the Pathology and Laboratory Medicine, University of Pennsylvania |
-| Julia TCW        | Department of Medicine, Boston University                         |
+| Julia TCW        | Department of Pharmacology and Bioinformatics, Boston University                         |
 | Kushal K. Dey    | Memorial Sloan Kettering                                          |
 | Alan Renton      | Departments of Neuroscience, Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai |
 | Stephen Montgomery | Department of Pathology, Stanford University                    |

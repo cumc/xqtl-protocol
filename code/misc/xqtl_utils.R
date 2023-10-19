@@ -218,6 +218,7 @@ load_regional_association_data <- function(genotype, # PLINK file
             covar = data_list$covar,
             Y = data_list$Y,
             X = X,
+            X_data = data_list$X_data,
             maf = maf_list
             ))
 }
@@ -230,6 +231,17 @@ load_regional_finemapping_data <- function(...) {
           residual_Y_sd = dat$residual_Y_sd,
           residual_X_sd = dat$residual_X_sd,
           X = dat$X,
+          dropped_sample = dat$dropped_sample,
+          maf = dat$maf
+          ))
+}
+
+load_regional_quantile_data <- function(...) {
+  dat <- load_regional_association_data(...)
+  return (list(
+          Y = dat$Y,
+          X_data = dat$X_data,
+          covar = dat$covar,
           dropped_sample = dat$dropped_sample,
           maf = dat$maf
           ))

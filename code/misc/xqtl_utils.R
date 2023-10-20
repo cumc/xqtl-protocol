@@ -153,7 +153,7 @@ load_regional_association_data <- function(genotype, # PLINK file
                                            mac_cutoff = 0,
                                            imiss_cutoff = 0,
                                            y_as_matrix = FALSE,
-                                           indel = FALSE) {
+                                           indel = TRUE) {
     library(plink2R)
     library(dplyr)
     library(readr)
@@ -164,8 +164,8 @@ load_regional_association_data <- function(genotype, # PLINK file
     geno = read_plink(genotype)
     rownames(geno$bed) = read.table(text = rownames(geno$bed), sep= ":")$V2
     ## if indel is true, remove the indel in the genotype
-    if (indel == TRUE){
-    geno_bim = geno$bim%>%rename("chrom" = "V1","variant_id" = "V2","alt" = "V5","ref"="V6")%>%mutate(indel =    ifelse(nchar(alt)!=nchar(ref),1, 0))
+    if (indel==TRUE){
+    geno_bim = geno$bim%>%rename("chrom" = "V1","variant_id" = "V2","alt" = "V5","ref"="V6")%>%mutate(indel = ifelse(alt=="*"|ref=="*"|nchar(alt)!=nchar(ref),1, 0))
     geno_bed = geno$bed[,geno_bim$indel==0]}
     else {
     geno_bed = geno$bed
@@ -275,7 +275,7 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
             variants_index = which.max(fobj$pip)
         }
         maf = fdat$maf[[r]][variants_index]
-        variants = names(fobj$pip)[variants_index]
+        variants = gsub("_",":",names(fobj$pip)[variants_index])
         pip = fobj$pip[variants_index]
         cs_info = map_int(variants_index, ~get_cs_index(.x, fobj))
         cs_index = ifelse(is.na(cs_info), 0, str_replace(names(fobj$sets$cs)[cs_info], "L", "") %>% as.numeric)

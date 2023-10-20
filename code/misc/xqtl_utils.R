@@ -165,7 +165,7 @@ load_regional_association_data <- function(genotype, # PLINK file
     rownames(geno$bed) = read.table(text = rownames(geno$bed), sep= ":")$V2
     ## if indel is true, remove the indel in the genotype
     if (indel==TRUE){
-    geno_bim = geno$bim%>%rename("chrom" = "V1","variant_id" = "V2","alt" = "V5","ref"="V6")%>%mutate(indel = ifelse(alt=="*"|ref=="*"|nchar(alt)!=nchar(ref),1, 0))
+    geno_bim = geno$bim%>%rename("chrom" = "V1","variant_id" = "V2","alt" = "V5","ref"="V6")%>%mutate(indel = ifelse(grepl("[^ATCG]",alt)=="TRUE"|grepl("[^ATCG]",ref)=="TRUE"|nchar(alt)!=nchar(ref),1, 0))
     geno_bed = geno$bed[,geno_bim$indel==0]}
     else {
     geno_bed = geno$bed

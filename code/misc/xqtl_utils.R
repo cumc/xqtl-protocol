@@ -153,7 +153,7 @@ load_regional_association_data <- function(genotype, # PLINK file
                                            mac_cutoff = 0,
                                            imiss_cutoff = 0,
                                            y_as_matrix = FALSE,
-                                           indel = TRUE) {
+                                           indel = FALSE) {
     library(plink2R)
     library(dplyr)
     library(readr)

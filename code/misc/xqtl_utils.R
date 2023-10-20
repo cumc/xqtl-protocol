@@ -153,7 +153,7 @@ load_regional_association_data <- function(genotype, # PLINK file
                                            mac_cutoff = 0,
                                            imiss_cutoff = 0,
                                            y_as_matrix = FALSE,
-                                           indel = TRUE) {
+                                           keep_indel = TRUE) {
     library(plink2R)
     library(dplyr)
     library(readr)
@@ -163,8 +163,8 @@ load_regional_association_data <- function(genotype, # PLINK file
     ## Load genotype
     geno = read_plink(genotype)
     rownames(geno$bed) = read.table(text = rownames(geno$bed), sep= ":")$V2
-    ## if indel is true, remove the indel in the genotype
-    if (indel==TRUE){
+    ## if indel is false, remove the indel in the genotype
+    if (!keep_indel){
     geno_bim = geno$bim%>%rename("chrom" = "V1","variant_id" = "V2","alt" = "V5","ref"="V6")%>%mutate(indel = ifelse(grepl("[^ATCG]",alt)=="TRUE"|grepl("[^ATCG]",ref)=="TRUE"|nchar(alt)!=nchar(ref),1, 0))
     geno_bed = geno$bed[,geno_bim$indel==0]}
     else {

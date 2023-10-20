@@ -152,7 +152,8 @@ load_regional_association_data <- function(genotype, # PLINK file
                                            maf_cutoff = 0,
                                            mac_cutoff = 0,
                                            imiss_cutoff = 0,
-                                           y_as_matrix = FALSE) {
+                                           y_as_matrix = FALSE,
+                                           indel = TRUE) {
     library(plink2R)
     library(dplyr)
     library(readr)
@@ -162,7 +163,13 @@ load_regional_association_data <- function(genotype, # PLINK file
     ## Load genotype
     geno = read_plink(genotype)
     rownames(geno$bed) = read.table(text = rownames(geno$bed), sep= ":")$V2
-    
+    ## if indel is true, remove the indel in the genotype
+    if (indel==TRUE){
+    geno_bim = geno$bim%>%rename("chrom" = "V1","variant_id" = "V2","alt" = "V5","ref"="V6")%>%mutate(indel = ifelse(grepl("[^ATCG]",alt)=="TRUE"|grepl("[^ATCG]",ref)=="TRUE"|nchar(alt)!=nchar(ref),1, 0))
+    geno_bed = geno$bed[,geno_bim$indel==0]}
+    else {
+    geno_bed = geno$bed
+    }
     ## Load phenotype and covariates and perform some pre-processing
     ### including Y ( cov ) and specific X and covar match, filter X variants based on the overlapped samples.
     data_list = tibble(covariate_path = covariate, phenotype_path =phenotype) %>%
@@ -174,11 +181,12 @@ load_regional_association_data <- function(genotype, # PLINK file
         Y = map(Y, ~.x%>%na.omit),    # remove na where Y raw data has na which block regression
         dropped_sample = map2(covar, Y , ~rownames(.x)[!rownames(.x) %in% rownames(.y)]),
         covar = map2(covar, Y , ~.x[intersect(.x%>%rownames,rownames(.y)),]), # remove the dropped samples from Y
-        X_data = map(covar,~ filter_X( geno$bed[intersect(rownames(.x),rownames(geno$bed)),], imiss_cutoff, max(maf_cutoff, mac_cutoff/(2*length(intersect(rownames(.x),rownames(geno$bed))) ) ))   ))
+        X_data = map(covar,~ filter_X( geno_bed[intersect(rownames(.x),rownames(geno_bed)),], imiss_cutoff, max(maf_cutoff, mac_cutoff/(2*length(intersect(rownames(.x),rownames(geno_bed))) ) ))   ))
               
-    ## Get residue Y for each of condition
-    data_list = data_list%>%mutate(Y_resid = map2(Y,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%
-                                                           scale%>%t%>%as_tibble)) ## T so that it can be unnest
+    ## Get residue Y for each of condition and its mean and sd
+    data_list = data_list%>%mutate(Y_resid_mean = map2(Y,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%mean),
+                               Y_resid_sd = map2(Y,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%sd),
+                               Y_resid = map2(Y,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale%>%t%>%as_tibble)) ## T so that it can be unnest
     if(y_as_matrix) {
         Y_resid = data_list%>%select(Y_resid)%>%tidyr::unnest(Y_resid)%>%t%>%as.matrix
         colnames(Y_resid) = conditions
@@ -190,18 +198,22 @@ load_regional_association_data <- function(genotype, # PLINK file
     # Get X matrix for union of samples
     all_samples = map(data_list$covar, ~rownames(.x))%>%unlist%>%unique()
     maf_cutoff = max(maf_cutoff,mac_cutoff/(2*length(all_samples)))
-    X = filter_X(geno$bed[all_samples,], imiss_cutoff, maf_cutoff) ## Filter X for mvSuSiE
+    X = filter_X(geno_bed[all_samples,], imiss_cutoff, maf_cutoff) ## Filter X for mvSuSiE
     #
     maf_list = lapply(data_list$X_data, function(x) apply(x, 2, compute_maf))
-    ## Get residue X for each of condition
+    ## Get residue X for each of condition and its mean and sd
     print(paste0("Dimension of input genotype data is row:", nrow(X), " column: ", ncol(X) ))
-    X_list = data_list%>%mutate(X_resid = map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale))%>%pull(X_resid)
+    X_list = data_list%>%mutate(X_resid_mean= map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%data.frame()%>%apply(.,2,mean)),
+                               X_resid_sd= map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%data.frame()%>%apply(.,2,sd)),
+                               X_resid = map2(X_data,covar,~.lm.fit(x = cbind(1,.y), y = .x)$residuals%>%scale))%>%select(X_resid_mean,X_resid_sd,X_resid)
     ## residual_Y_scaled: if y_as_matrix is true, then return a matrix of R conditions, with column names being the names of the conditions (phenotypes) and row names being sample names. Even for one condition it has to be a matrix with just one column. if y_as_matrix is false, then return a list of y either vector or matrix (CpG for example), and they need to match with residual_X_scaled in terms of which samples are missing.
     ## residual_X_scaled: is a list of R conditions each is a matrix, with list names being the names of conditions, column names being SNP names and row names being sample names.
     ## X: is the somewhat original genotype matrix output from `filter_X`, with column names being SNP names and row names being sample names. Sample names of X should match example sample names of residual_Y_scaled matrix form (not list); but the matrices inside residual_X_scaled would be subsets of sample name of residual_Y_scaled matrix form (not list).
     return (list(
             residual_Y_scaled = Y_resid,
-            residual_X_scaled = X_list,
+            residual_X_scaled = X_list$X_resid,
+            residual_Y_sd = data_list$Y_resid_sd,
+            residual_X_sd = X_list$X_resid_sd,
             dropped_sample = data_list$dropped_sample,
             covar = data_list$covar,
             Y = data_list$Y,
@@ -216,6 +228,8 @@ load_regional_finemapping_data <- function(...) {
   return (list(
           residual_Y_scaled = dat$residual_Y_scaled,
           residual_X_scaled = dat$residual_X_scaled,
+          residual_Y_sd = dat$residual_Y_sd,
+          residual_X_sd = dat$residual_X_sd,
           X = dat$X,
           dropped_sample = dat$dropped_sample,
           maf = dat$maf
@@ -251,22 +265,24 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
     if (length(eff_idx)>0) {
         fobj$analysis_script = load_script()
         fobj$cs_corr = get_cs_correlation(fobj, X=fdat$residual_X_scaled[[r]])
-        fobj$cs_snps = names(fobj$pip[unlist(fobj$sets$cs)])
+        fobj$cs_snps = gsub("_",":",names(fobj$pip[unlist(fobj$sets$cs)]))
         fobj$phenotype_name = colnames(fdat$residual_Y_scaled[[r]])
         fobj$dropped_samples = fdat$dropped_sample[[r]]
         fobj$sample_names = rownames(fdat$residual_Y_scaled[[r]])
-        fobj$variant_names = names(fobj$pip)
+        fobj$variant_names = gsub("_",":",names(fobj$pip))
         variants_index = c(which(fobj$pip >= signal_cutoff), unlist(fobj$sets$cs)) %>% unique %>% sort
         if (length(variants_index)==0) {
             variants_index = which.max(fobj$pip)
         }
         maf = fdat$maf[[r]][variants_index]
-        variants = names(fobj$pip)[variants_index]
+        variants = gsub("_",":",names(fobj$pip)[variants_index])
         pip = fobj$pip[variants_index]
         cs_info = map_int(variants_index, ~get_cs_index(.x, fobj))
         cs_index = ifelse(is.na(cs_info), 0, str_replace(names(fobj$sets$cs)[cs_info], "L", "") %>% as.numeric)
+        Y_resid_sd = fdat$residual_Y_sd[[r]]
+        X_resid_sd = fdat$residual_X_sd[[r]]
         univariate_res = univariate_regression(fdat$residual_X_scaled[[r]][, variants_index, drop=F], fdat$residual_Y_scaled[[r]])
-        fobj$top_loci = cbind(variants, maf, univariate_res$betahat, univariate_res$sebetahat, pip, cs_index)
+        fobj$top_loci = cbind(variants, maf, univariate_res$betahat*Y_resid_sd/X_resid_sd, univariate_res$sebetahat*Y_resid_sd/X_resid_sd, pip, cs_index)
         colnames(fobj$top_loci) = c("variant_id", "maf", "bhat", "sbhat", "pip", "cs_index")
         rownames(fobj$top_loci) = NULL
         # trim effects

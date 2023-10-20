@@ -265,11 +265,11 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
     if (length(eff_idx)>0) {
         fobj$analysis_script = load_script()
         fobj$cs_corr = get_cs_correlation(fobj, X=fdat$residual_X_scaled[[r]])
-        fobj$cs_snps = names(fobj$pip[unlist(fobj$sets$cs)])
+        fobj$cs_snps = gsub("_",":",names(fobj$pip[unlist(fobj$sets$cs)]))
         fobj$phenotype_name = colnames(fdat$residual_Y_scaled[[r]])
         fobj$dropped_samples = fdat$dropped_sample[[r]]
         fobj$sample_names = rownames(fdat$residual_Y_scaled[[r]])
-        fobj$variant_names = names(fobj$pip)
+        fobj$variant_names = gsub("_",":",names(fobj$pip))
         variants_index = c(which(fobj$pip >= signal_cutoff), unlist(fobj$sets$cs)) %>% unique %>% sort
         if (length(variants_index)==0) {
             variants_index = which.max(fobj$pip)

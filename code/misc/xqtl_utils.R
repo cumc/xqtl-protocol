@@ -301,7 +301,8 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
         names(fobj$pip) = NULL
         class(fobj) = "list"
     } else {
-        fobj = load_script()
+        fobj = list(analysis_script = load_script(), pip = fobj$pip, variant_names = gsub("_",":",names(fobj$pip)))
+        names(fobj$pip) = NULL
     }
     return(fobj)
 }

@@ -28,11 +28,13 @@ bash: expand = True
 	docker push gaow/{repo}
 
 [export_utils, default_1]
+output: "pipeline/xqtl_utils.R"
 download:
 	https://raw.githubusercontent.com/cumc/pecotmr/main/R/utils.R
 	https://raw.githubusercontent.com/cumc/pecotmr/main/R/twas.R
 	https://raw.githubusercontent.com/cumc/pecotmr/main/R/mr.R
 bash:
+	rm -rf pipeline/*
 	cat utils.R twas.R mr.R > pipeline/xqtl_utils.R
 	rm -f utils.R twas.R mr.R 
 python:
@@ -65,7 +67,6 @@ bash:
 	jupyter-book build .  --path-output . --config website/_config.yml --toc website/_toc.yml 
 	rsync -auzP code/images/* _build/html/_images/
 	ghp-import -n -p -f _build/html
-	rm -rf pipeline/*
 
 [make_link, default_3]
 from glob import glob

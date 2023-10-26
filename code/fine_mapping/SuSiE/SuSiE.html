@@ -251,7 +251,6 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">eQTL summary statistics formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
 </ul>
 </li>
@@ -783,7 +782,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
                              compute_univariate_zscore=FALSE,
                              coverage=${coverage})
             fitted[[r]]$analysis_time &lt;- proc.time() - st
-            fitted[[r]] &lt;- post_process_susie(fitted[[r]], fdat, r, signal_cutoff = ${pip_cutoff})
+            fitted[[r]] &lt;- post_process_susie(fitted[[r]], fdat, r, secondary_coverage = ${secondary_coverage}, signal_cutoff = ${pip_cutoff})
             if (!is.null(fitted[[r]]$sets$cs)) {
                 if (length(fitted[[r]]$sets$cs)&gt;=L &amp;&amp; L&lt;=${max_L}) {
                   L = L + l_step

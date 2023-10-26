@@ -250,10 +250,10 @@ load_regional_quantile_data <- function(...) {
 post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
     library(susieR)
     library(dplyr)
-    get_cs_index <- function(snps_idx, fitted_data) {
+    get_cs_index <- function(snps_idx, susie_cs) {
         idx <- tryCatch(
             which(
-                pmap(list(a = fitted_data), function(a) snps_idx %in% a) %>% unlist()
+                pmap(list(a = susie_cs), function(a) snps_idx %in% a) %>% unlist()
             ),
             error = function(e) NA_integer_
         )
@@ -271,12 +271,15 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
         fobj$sample_names = rownames(fdat$residual_Y_scaled[[r]])
         fobj$variant_names = gsub("_",":",names(fobj$pip))
         variants_index = c(which(fobj$pip >= signal_cutoff), unlist(fobj$sets$cs)) %>% unique %>% sort
-        #######variants index under the secondary coverage
-        variants_index_secondary = c(which(fobj$pip >= signal_cutoff), unlist(fobj$sets_secondary$cs)) %>% unique %>% sort
-        variants_merge = unique(c(variants_index, variants_index_secondary))%>%sort
         if (length(variants_index)==0) {
             variants_index = which.max(fobj$pip)
         }
+        ## variants index for the secondary coverage
+        variants_index_secondary = c(which(fobj$pip >= signal_cutoff), unlist(fobj$sets_secondary$cs)) %>% unique %>% sort
+        if (length(variants_index_secondary)==0) {
+            variants_index_secondary = which.max(fobj$pip)
+        }
+        variants_merge = unique(c(variants_index, variants_index_secondary))%>%sort
         maf = fdat$maf[[r]][variants_merge]
         variants = gsub("_",":",names(fobj$pip)[variants_merge])
         pip = fobj$pip[variants_merge]
@@ -286,9 +289,9 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.7) {
         cs_sec= ifelse(is.na(cs_info_sec), 0, str_replace(names(fobj$sets_secondary$cs)[cs_info_sec], "L", "") %>% as.numeric)
         cs_index_primary = cs_index_secondary = rep(NA, length(variants_merge))
         cs_index_primary[match(variants_index,variants_merge)]=cs_pri
-        ######add one column of cs_index under the secondary coverage
+        ## add one column of cs_index under the secondary coverage
         cs_index_secondary[match(variants_index_secondary,variants_merge)]=cs_sec
-        ######add two outputs of Y_resid_sd and X_resid_sd for transforming back the susie output
+        ## add two outputs of Y_resid_sd and X_resid_sd for transforming back the susie output
         Y_resid_sd = fdat$residual_Y_sd[[r]]
         X_resid_sd = fdat$residual_X_sd[[r]]
         univariate_res = univariate_regression(fdat$residual_X_scaled[[r]][, variants_index, drop=F], fdat$residual_Y_scaled[[r]])

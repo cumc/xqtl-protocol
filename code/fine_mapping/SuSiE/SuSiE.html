@@ -770,7 +770,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     fitted = list()
     for (r in 1:length(fdat$residual_Y_scaled)) { ## Cant have a universal way to specify names due to the accomodation of missingness, use index instead
         L = ${init_L}
-        # Dynamically increase L
+        # Perform SuSiE by dynamically increase L
         while (TRUE) {
             st = proc.time()
             fitted[[r]] &lt;- susie(fdat$residual_X_scaled[[r]],
@@ -795,6 +795,15 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
               break
            }
         }
+      # generate weights for TWAS using some alternative approaches --- this is not exactly fine-mapping but makes sense to do it here for data production
+      fitted[[r]]$susie_weights = susie_weights(fdat$fitted[[r]])
+      fitted[[r]]$susie_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$susie_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$enet_weights = glmnet_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$enet_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$enet_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$lasso_weights = glmnet_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], alpha = 1)
+      fitted[[r]]$lasso_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$lasso_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$mr_ash_weights = mr_ash_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], beta.init=fitted[[r]]$lasso_weights)
+      fitted[[r]]$mr_ash_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$mr_ash_weights, fdat$residual_Y_scaled[[r]])
     }
     names(fitted) &lt;- names(fdat$residual_Y_scaled)
     saveRDS(fitted, ${_output:ar}, compress=&#39;xz&#39;)

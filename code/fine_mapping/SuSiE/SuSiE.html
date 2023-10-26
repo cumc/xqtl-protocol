@@ -782,7 +782,6 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
                              refine=TRUE,
                              compute_univariate_zscore=FALSE,
                              coverage=${coverage})
-            fitted[[r]]$sets_secondary = susie_get_cs(fitted[[r]], fdat$residual_X_scaled[[r]], coverage=${secondary_coverage})
             fitted[[r]]$analysis_time &lt;- proc.time() - st
             fitted[[r]] &lt;- post_process_susie(fitted[[r]], fdat, r, signal_cutoff = ${pip_cutoff})
             if (!is.null(fitted[[r]]$sets$cs)) {
@@ -797,13 +796,13 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
         }
       # generate weights for TWAS using some alternative approaches --- this is not exactly fine-mapping but makes sense to do it here for data production
       fitted[[r]]$susie_weights = susie_weights(fdat$fitted[[r]])
-      fitted[[r]]$susie_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$susie_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$susie_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$susie_weights, fdat$residual_Y_scaled[[r]])^2
       fitted[[r]]$enet_weights = glmnet_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]])
-      fitted[[r]]$enet_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$enet_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$enet_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$enet_weights, fdat$residual_Y_scaled[[r]])^2
       fitted[[r]]$lasso_weights = glmnet_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], alpha = 1)
-      fitted[[r]]$lasso_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$lasso_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$lasso_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$lasso_weights, fdat$residual_Y_scaled[[r]])^2
       fitted[[r]]$mr_ash_weights = mr_ash_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], beta.init=fitted[[r]]$lasso_weights)
-      fitted[[r]]$mr_ash_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$mr_ash_weights, fdat$residual_Y_scaled[[r]])
+      fitted[[r]]$mr_ash_r2 = cor(fdat$residual_X_scaled[[r]] %*% fitted[[r]]$mr_ash_weights, fdat$residual_Y_scaled[[r]])^2
     }
     names(fitted) &lt;- names(fdat$residual_Y_scaled)
     saveRDS(fitted, ${_output:ar}, compress=&#39;xz&#39;)

@@ -229,7 +229,7 @@ load_regional_quantile_data <- function(...) {
           ))
 }
 
-post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.1) {
+post_process_susie <- function(fobj, fdat, r, secondary_coverage = 0.7,signal_cutoff = 0.1) {
     get_cs_index <- function(snps_idx, susie_cs) {
         idx <- tryCatch(
             which(
@@ -242,6 +242,7 @@ post_process_susie <- function(fobj, fdat, r, signal_cutoff = 0.1) {
     }
     eff_idx = which(fobj$V>0)
     if (length(eff_idx)>0) {
+        fobj$sets_secondary = susie_get_cs(fobj, fdat$residual_X_scaled[[r]], coverage=secondary_coverage)
         fobj$analysis_script = load_script()
         fobj$cs_corr = get_cs_correlation(fobj, X=fdat$residual_X_scaled[[r]])
         fobj$cs_snps = gsub("_",":",names(fobj$pip[unlist(fobj$sets$cs)]))

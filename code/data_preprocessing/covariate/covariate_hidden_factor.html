@@ -1,0 +1,1347 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Hidden factor analysis &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/data_preprocessing/covariate/covariate_hidden_factor';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Covariate data formatting" href="covariate_formatting.html" />
+    <link rel="prev" title="Covariate data preprocessing" href="../covariate_preprocessing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../reference_data.html">Reference data standardization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../genotype/PCA.html">Principal component analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../genotype/GRM.html">Genomic relationship matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../genotype/genotype_formatting.html">Genotype data formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../covariate_preprocessing.html">Covariate data preprocessing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hidden factor analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covariate_formatting.html">Covariate data formatting</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/qtl_association_testing.html">QTL association analysis</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/fastqtl_to_mash.html">eQTL summary statistics formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integrative_analysis/colocalization.html">QTL and GWAS Colocalization</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/COLOC/fastenloc_dap.html">Colocalization with FastENLOC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/COLOC/mvenloc.html">Multivariate SuSiE and ENLOC model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../integrative_analysis/functional_annotation.html">Functional annotation integration</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/enrichment/gwas_enrichment.html">Enrichment analysis: TORUS and GREGOR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../integrative_analysis/enrichment/ldsc.html">Stratified LD Score Regression</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/data_preprocessing/covariate/covariate_hidden_factor.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/data_preprocessing/covariate/covariate_hidden_factor.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/code/data_preprocessing/covariate/covariate_hidden_factor.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hidden factor analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main-outputs">Main outputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-outputs">Other outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#number-of-factors-to-use">Number of factors to use</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#peer">PEER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apex">APEX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pca">PCA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">PEER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">PCA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">APEX</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bicv-factor-analysis-with-apex">BiCV factor analysis with APEX</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hidden-factor-analysis">
+<h1>Hidden factor analysis<a class="headerlink" href="#hidden-factor-analysis" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This workflow implements 3 procedures for hidden factor analysis from omcis data:</p>
+<ol class="arabic simple">
+<li><p>The <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">Probabilistic Estimation of Expression Residuals (PEER) method</a>, a method also used for GTEx eQTL data analysis.</p></li>
+<li><p>Factor analysis using Bi-Cross validation, Owen, Art &amp; Wang, Jingshu. (2015). Bi-Cross-Validation for Factor Analysis. Statistical Science. 31. 10.1214/15-STS539. with software package <code class="docutils literal notranslate"><span class="pre">APEX</span></code> (Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin, bioRxiv 2020.12.18.423490; doi: <a class="reference external" href="https://doi.org/10.1101/2020.12.18.423490">https://doi.org/10.1101/2020.12.18.423490</a>)</p></li>
+<li><p>PCA with automatic determination of the number of factors to use. This is mainly inspired by a <a class="reference external" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02761-4">recent benchmark from Jessica Li’s group</a>.</p></li>
+</ol>
+<p>Overall, we will pick PCA based approach for the xQTL project, although additional considerations should be taken for single-cell eQTL analysis as investigated in <a class="reference external" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02873-5">this paper</a>.</p>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Molecular phenotype in <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> file format with indexing:</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="kn">readr:</span><span class="p">:</span><span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;data/example_data.bed.gz&quot;</span><span class="p">,</span><span class="n">show_col_types</span><span class="o">=</span> <span class="n">F</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 3 × 8</caption>
+<thead>
+	<tr><th scope=col>#chr</th><th scope=col>start</th><th scope=col>end</th><th scope=col>gene_name</th><th scope=col>Sample1</th><th scope=col>Sample2</th><th scope=col>Sample3</th><th scope=col>Sample4</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>1</td><td>  1</td><td>100</td><td>Gene1</td><td> -1.627455</td><td> 1.684725</td><td> -0.0807924</td><td> 1.510522</td></tr>
+	<tr><td>1</td><td>101</td><td>200</td><td>Gene2</td><td>-12.626715</td><td>17.746163</td><td>-14.2519447</td><td> 5.254536</td></tr>
+	<tr><td>1</td><td>201</td><td>300</td><td>Gene3</td><td>  3.337390</td><td>-7.259074</td><td>  6.2643526</td><td>-1.375911</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>A covariate file in text format with the first column <code class="docutils literal notranslate"><span class="pre">#id</span></code> that lists the name of all covariates, followed by other columns each being a sample with sample names matching that in the molecular phenotype file:</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="kn">readr:</span><span class="p">:</span><span class="n">read_delim</span><span class="p">(</span><span class="s2">&quot;data/example_cov.txt&quot;</span><span class="p">,</span><span class="n">show_col_types</span><span class="o">=</span> <span class="n">F</span><span class="p">)[,</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 2 × 8</caption>
+<thead>
+	<tr><th scope=col>#id</th><th scope=col>Sample1</th><th scope=col>Sample2</th><th scope=col>Sample3</th><th scope=col>Sample4</th><th scope=col>Sample5</th><th scope=col>Sample6</th><th scope=col>Sample7</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Cov1</td><td> 1.6243454</td><td>-2.301539</td><td> 1.462108</td><td>-1.0998913</td><td>-1.100619</td><td>-0.6837279</td><td>-0.6916608</td></tr>
+	<tr><td>Cov2</td><td>-0.6117564</td><td> 1.744812</td><td>-2.060141</td><td>-0.1724282</td><td> 1.144724</td><td>-0.1228902</td><td>-0.3967535</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Covariates file is optional to the PEER method but it should be supplied in order to construct a proper PEER model in the context of xQTL mapping.</p>
+<ol class="arabic simple" start="3">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">APEX</span></code> we need an indexed VCF file to get the command to work, although this file is not used.</p></li>
+</ol>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
+<section id="main-outputs">
+<h3>Main outputs<a class="headerlink" href="#main-outputs" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*.cov.gz</span></code>: hidden factors inferred.</p></li>
+</ul>
+</section>
+<section id="other-outputs">
+<h3>Other outputs<a class="headerlink" href="#other-outputs" title="Permalink to this heading">#</a></h3>
+<p>PEER:</p>
+<ul class="simple">
+<li><p>Diagnosis polts for check of convergence</p></li>
+<li><p>peer precision /residuals /weights</p></li>
+</ul>
+</section>
+</section>
+<section id="number-of-factors-to-use">
+<h2>Number of factors to use<a class="headerlink" href="#number-of-factors-to-use" title="Permalink to this heading">#</a></h2>
+<section id="peer">
+<h3>PEER<a class="headerlink" href="#peer" title="Permalink to this heading">#</a></h3>
+<p>By default the pipeline applies recommendations from <a class="reference external" href="https://gtexportal.org/home/documentationPage">GTEx</a>:</p>
+<blockquote>
+<div><p>A set of covariates identified using the Probabilistic Estimation of Expression Residuals (PEER) method (Stegle et al., PLoS Comp. Biol., 2010 ), calculated for the normalized expression matrices (described below). For eQTL analyses, the number of PEER factors was determined as function of sample size (N): 15 factors for N&lt;150, 30 factors for 150≤ N&lt;250, 45 factors for 250≤ N&lt;350, and 60 factors for N≥350, as a result of optimizing for the number of eGenes discovered. For sQTL analyses, 15 PEER factors were computed for each tissue.</p>
+</div></blockquote>
+<p>Although one can specify fixed number of factors using <code class="docutils literal notranslate"><span class="pre">--N</span></code> option in this pipeline.</p>
+</section>
+<section id="apex">
+<h3>APEX<a class="headerlink" href="#apex" title="Permalink to this heading">#</a></h3>
+<p>We will do the same as PEER</p>
+</section>
+<section id="pca">
+<h3>PCA<a class="headerlink" href="#pca" title="Permalink to this heading">#</a></h3>
+<p>We will use Marchenko’s approach to determine the number of PC to use. FIXME: citation.</p>
+</section>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
+<p>An MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1yjTwoO0DYGi-J9ouMsh9fHKfDmsXJ_4I?usp=sharing">google drive</a>.
+The singularity image (sif) for running this MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1mLOS3AVQM8yTaWtCbO8Q3xla98Nr5bZQ">google drive</a></p>
+<p>FIXME: need updated links</p>
+<section id="id1">
+<h3>PEER<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Because the MWE only contains 10 genes but 400+ samples. The computed N will be far greater than the number of genes. Therefore in the MWE the N is fixed to be 3.</p>
+<p>FIXME: need updated examples</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">PEER_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">PEER</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+   <span class="o">--</span><span class="n">phenoFile</span> <span class="n">ALL</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">chr12</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">PEER</span><span class="o">.</span><span class="n">sif</span>  \
+   <span class="o">--</span><span class="n">N</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">./</span><span class="n">output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">./output</span>
+├── MWE.Cov_PEER.PEER.cov
+├── MWE.Cov_PEER.PEER.cov.stderr
+├── MWE.Cov_PEER.PEER.cov.stdout
+├── MWE.Cov_PEER.PEER_diagnosis.pdf
+├── MWE.Cov_PEER.PEER.peer_precisions.txt
+├── MWE.Cov_PEER.PEER.peer_residuals.txt
+└── MWE.Cov_PEER.PEER.peer_weights.txt
+
+0 directories, 7 files
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">preview</span> <span class="o">./</span><span class="n">output</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">Cov_PEER</span><span class="o">.</span><span class="n">PEER_diagnosis</span><span class="o">.</span><span class="n">pdf</span> <span class="o">-</span><span class="n">s</span> <span class="n">png</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div class="sos_hint">> ./peer_output/example_data.bed_diagnosis_plot.jpeg (22.2 KiB):</div></div><img alt="../../../_images/429dca9b037f6cebd6580ac9b87760d969f0c1f38fd5728bc7b6011c4f8f3929.jpg" src="../../../_images/429dca9b037f6cebd6580ac9b87760d969f0c1f38fd5728bc7b6011c4f8f3929.jpg" />
+<div class="output text_html"><div class="sos_hint">> ./peer_output/example_data.bed_diagnosis_plot.jpeg:</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bash: ./peer_output/example_data.bed_diagnosis_plot.jpeg: Permission denied
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">./</span><span class="n">output</span><span class="o">/</span><span class="n">MWE</span><span class="o">.</span><span class="n">Cov_PEER</span><span class="o">.</span><span class="n">PEER</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">stdout</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PEER: loading input data... PEER: loading covariate file ...done!
+PEER: Input summary: 200 samples with 100 genes and 2 covariates 
+Setting initialization parameters ...Done.
+PEER: estimating hidden confounders (30)
+	iteration 0/1000
+	iteration 1/1000
+	iteration 2/1000
+	iteration 3/1000
+	iteration 4/1000
+	iteration 5/1000
+Converged (var(residuals)) after 5 iterations
+
+Exporting results ... Done.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>PCA<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>In our pipeline, it is designed to include the pca as part of our cov input. This can be achieved by the merge_covariate step</p>
+<p><strong>FIXME: complete MWE</strong></p>
+</section>
+<section id="id3">
+<h3>APEX<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">BiCV_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">BiCV</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+   <span class="o">--</span><span class="n">phenoFile</span> <span class="n">ALL</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">chr12</span><span class="o">.</span><span class="n">mol_phe</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>  \
+   <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">apex</span><span class="o">.</span><span class="n">sif</span>  \
+   <span class="o">--</span><span class="n">N</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">covariate_hidden_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run covariate_hidden_factor.ipynb
+               [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  Marchenko_PC
+  PEER
+  BiCV
+
+Global Workflow Options:
+  --cwd output (as path)
+                        The output directory for generated files. MUST BE FULL
+                        PATH
+  --covFile VAL (as path, required)
+                        Merged Covariates File
+  --phenoFile VAL (as path, required)
+                        Path to the input molecular phenotype data.
+  --name  f&#39;{phenoFile:bnn}.{covFile:bn}&#39;
+
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16G
+                        Memory expected
+  --numThreads 8 (as int)
+                        Number of threads
+  --container &#39;&#39;
+                        Software container option
+  --entrypoint {(&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + container.split(&#39;/&#39;)[-1][:-4]) if container.endswith(&#39;.sif&#39;) else f&#39;&#39;}
+
+
+Sections
+  *_1:
+  Marchenko_PC_2:
+  PEER_2:
+    Workflow Options:
+      --N 0 (as int)
+                        N PEER factors, If do not specify or specified as 0,
+                        default values suggested by GTEx (based on different
+                        sample size) will be used
+      --iteration 1000 (as int)
+                        Default values from PEER software: The number of max
+                        iteration
+      --tol 0.001 (as float)
+                        Prior parameters parameter: Alpha_a = 0.001 parameter:
+                        Alpha_b = 0.1 parameter: Eps_a = 0.1 parameter: Eps_b =
+                        10.0 Tolarance parameters
+      --[no-]r2-tol (default to False)
+                        parameter: var_tol = 0.00001 minimum variance explained
+                        criteria to drop factors while training
+      --convergence-mode fast
+                        Convergence mode: Convergence mode for MOFAr &quot;slow&quot;,
+                        &quot;medium&quot; or &quot;fast&quot;, corresponding to 1e-5%, 1e-4% or
+                        1e-3% deltaELBO change.
+  PEER_3:
+  BiCV_2:
+  BiCV_3:
+    Workflow Options:
+      --N 0 (as int)
+                        N factors, if not specify, calculated based on sample
+                        size according to GTeX
+      --iteration 10 (as int)
+                        The number of iteration
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># The output directory for generated files. MUST BE FULL PATH</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="c1"># Merged Covariates File</span>
+<span class="kn">parameter:</span> <span class="n">covFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># Path to the input molecular phenotype data.</span>
+<span class="kn">parameter:</span> <span class="n">phenoFile</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">phenoFile</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">covFile</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="c1"># For cluster jobs, number commands to run per job</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Wall clock time expected</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
+<span class="c1"># Memory expected</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
+<span class="c1"># Number of threads</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># Software container option</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">parameter:</span> <span class="n">entrypoint</span><span class="o">=</span> <span class="p">(</span><span class="s1">&#39;micromamba run -a &quot;&quot; -n&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="k">if</span> <span class="n">container</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[*_1(computing residual on merged covariates)]
+parameter: mean_impute_missing = False
+input: phenoFile, covFile
+output: f&#39;{cwd}/{name}.residual.bed.gz&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: expand = &quot;${ }&quot;, stderr = f&#39;{_output:nn}.stderr&#39;, stdout = f&#39;{_output:nn}.stdout&#39; , container = container, entrypoint = entrypoint
+
+    mean_impute &lt;- function(d){
+      f &lt;- apply(d, 2, function(x) mean(x, na.rm = TRUE))
+      for (i in 1:length(f)) d[,i][which(is.na(d[,i]))] &lt;- f[i]
+      return(d)
+    }
+  
+    library(dplyr)
+    library(readr)
+    pheno = read_delim(${_input[0]:r},delim = &quot;\t&quot;)
+    covariate= read_delim(${_input[1]:r},delim = &quot;\t&quot;) 
+
+    # Extract samples in both files (Outliers will be removed in here as they are no longer presented in the header of factor)
+    extraction_sample_list &lt;- intersect(colnames(pheno), colnames(covariate)) 
+    
+    
+    if(length(extraction_sample_list) == 0){
+      stop(&quot;No samples are overlapped in two files!&quot;)
+    }
+    
+    ## Report sample counts:
+    print(paste((ncol(pheno) - 4), &quot;samples are in the phenotype file&quot;, sep = &quot; &quot;))
+    print(paste((ncol(covariate) - 1), &quot;samples are in the covariate file&quot;, sep = &quot; &quot;))
+
+    ## Report identical samples:
+    print(paste(length(extraction_sample_list), &quot;samples overlap between phenotype &amp; covariate files and are included in the analysis:&quot;, sep = &quot; &quot;))
+    print(extraction_sample_list)
+
+    ## Report non-overlapping samples :
+    covariate_missing = covariate %&gt;% select(-all_of(&#39;#id&#39;)) %&gt;% select(-all_of(extraction_sample_list))
+    print(paste(ncol(covariate_missing), &quot;samples in the covariate file are missing from the phenotype file:&quot;, sep = &quot; &quot;))
+    print(colnames(covariate_missing))
+
+    pheno_missing = pheno %&gt;% select(-c(1:4)) %&gt;% select(-all_of(extraction_sample_list))
+    print(paste(ncol(pheno_missing), &quot;samples in the phenotype file are missing from the covariate file:&quot;, sep = &quot; &quot;))
+    print(colnames(pheno_missing))
+
+    # Subset the data:
+    covariate = covariate[,extraction_sample_list]%&gt;%as.matrix()%&gt;%t()
+    pheno_id = pheno%&gt;%select(1:4)
+    pheno = pheno%&gt;%select(all_of(rownames(covariate)))%&gt;%as.matrix()%&gt;%t()
+    if (${&quot;T&quot; if mean_impute_missing else &quot;F&quot;}) {
+      pheno = mean_impute(pheno)
+    } else {
+      if(sum(is.na(pheno)) &gt; 0){ stop(&quot;NA in phenotype input is not allowed!&quot;) }
+    }
+    # Get residual 
+    pheno_resid = .lm.fit(x = cbind(1,covariate), y = pheno)$residuals
+    pheno_output = cbind(pheno_id, pheno_resid%&gt;%t())
+    pheno_output%&gt;%write_delim(&quot;${_output:n}&quot;,delim = &quot;\t&quot;)
+  
+bash: expand = &quot;${ }&quot;, stderr = f&#39;{_output:nn}.stderr&#39;, stdout = f&#39;{_output:nn}.stdout&#39;, container = container, entrypoint = entrypoint
+    bgzip -f ${_output:n}
+    tabix -p bed ${_output}
+
+    stdout=${_output:n}.stdout 
+    for i in ${_output} ; do 
+    echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+    echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+    echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+    echo &quot;output_column:&quot; `zcat $i | head -1 | wc -w `   &gt;&gt; $stdout;
+    echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+    zcat $i | head  | cut -f 1,2,3,4,5,6   &gt;&gt; $stdout ; done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[Marchenko_PC_2]
+output: f&#39;{cwd}/{_input:bnnn}.Marchenko_PC.gz&#39;
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint = entrypoint
+    library(&quot;dplyr&quot;)
+    library(&quot;readr&quot;)
+    library(&quot;PCAtools&quot;)
+    library(&#39;BiocSingular&#39;)
+    residExpPath  = &quot;${_input}&quot;
+    covPath = &quot;${covFile}&quot;
+    residExpDF &lt;- read_delim(residExpPath, show_col_types=FALSE)
+    covDF &lt;- read_delim(covPath, show_col_types=FALSE)
+    commonMPSamples &lt;- intersect(colnames(covDF), colnames(residExpDF))
+    covDFcommon &lt;- cbind(covDF[, 1], covDF[, commonMPSamples])
+  
+    residExpPC &lt;- pca(
+        residExpDF[,commonMPSamples], # The first four columns are: chr, start, end, and gene_id; so we skip those.
+        scale = TRUE,
+        center = TRUE,
+        BSPARAM = ExactParam())
+    M &lt;- apply(residExpDF[, commonMPSamples], 1, function(X){ (X - mean(X))/sqrt(var(X))});
+    residSigma2 &lt;- var(as.vector(M));
+    paste(&#39;sigma2:&#39;, residSigma2)
+    
+    MPPCNum &lt;- chooseMarchenkoPastur(
+        .dim = dim(residExpDF[, commonMPSamples]), var.explained=residExpPC$sdev^2, noise=residSigma2)
+    
+    MPPCsDF &lt;- as.data.frame(residExpPC$rotated[, 1:MPPCNum])
+
+    MPColMatrix &lt;-  matrix(c(rep(&#39;Hidden_Factor_PC&#39;, times=MPPCNum), seq(1, MPPCNum)), ncol=2, nrow=MPPCNum)
+    colnames(MPPCsDF) &lt;- apply(MPColMatrix, 1, function(X){return(paste0(X[1], X[2]))})
+    rownames(MPPCsDF) &lt;- colnames(residExpDF[, 5:ncol(residExpDF)])
+    # Add #id Column
+    MPPCsDF &lt;- as.data.frame(t(MPPCsDF))
+    MPPCsDF$id &lt;- rownames(MPPCsDF)
+    MPPCsDF &lt;- MPPCsDF %&gt;% select(id, everything()) %&gt;% rename(&quot;#id&quot; = &quot;id&quot;)
+    write_delim((rbind(covDFcommon, MPPCsDF)), &quot;${_output}&quot;, &quot;\t&quot;)
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint = entrypoint
+        stdout=$[_output:n].stdout
+        for i in $[_output] ; do 
+        echo &quot;output_info $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `zcat $i | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        zcat $i | head  | cut -f 1,2,3,4,5,6   &gt;&gt; $stdout ; done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[PEER_2]
+# N PEER factors, If do not specify or specified as 0, default values suggested by 
+# GTEx (based on different sample size) will be used
+parameter: N = 0
+# Default values from PEER software:
+## The number of max iteration
+parameter: iteration = 1000
+### Prior parameters
+#parameter: Alpha_a = 0.001
+#parameter: Alpha_b = 0.1
+#parameter: Eps_a = 0.1
+#parameter: Eps_b = 10.0
+# Tolarance parameters
+parameter: tol = 0.001
+#parameter: var_tol = 0.00001
+# minimum variance explained criteria to drop factors while training
+parameter: r2_tol = False
+# Convergence mode: Convergence mode for MOFAr &quot;slow&quot;, &quot;medium&quot; or &quot;fast&quot;, corresponding to 1e-5%, 1e-4% or 1e-3% deltaELBO change.
+parameter: convergence_mode = &quot;fast&quot;
+# input is the residual file from the first step
+output: f&#39;{cwd:a}/{_input:bnn}.PEER_MODEL.hd5&#39;
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, entrypoint = entrypoint
+    from mofapy2.run.entry_point import entry_point
+    import pandas as pd
+    import os
+    ## Force the number of threads used in numpy.
+    os.environ[&quot;OMP_NUM_THREADS&quot;] = &quot;${numThreads}&quot; # export OMP_NUM_THREADS=4
+    os.environ[&quot;OPENBLAS_NUM_THREADS&quot;] = &quot;${numThreads}&quot; # export OPENBLAS_NUM_THREADS=4 
+    os.environ[&quot;MKL_NUM_THREADS&quot;] = &quot;${numThreads}&quot; # export MKL_NUM_THREADS=6
+    import numpy as np
+    ## Data
+    data = pd.read_csv(${_input:r},&quot;\t&quot;,index_col = 3).drop([&quot;#chr&quot;,&quot;start&quot;,&quot;end&quot;],axis = 1)
+    # initialise the entry point
+    ent = entry_point()
+    # Guess number of factor
+    # Suggest the number of factors to use if no input value
+    num_factor = ${N}
+    if num_factor == 0:
+        if len(data.columns) &lt; 150:
+            num_factor = 15
+        elif len(data.columns) &lt; 250:
+            num_factor = 30
+        elif len(data.columns) &lt; 350:
+            num_factor = 45
+        else:
+            num_factor = 60
+    # Set data
+    # MOFA is a multi-view and multi-group inference framework. 
+    # If usig only a single view and a single group (as in PEER), the data needs to be embedded into a nested list
+    ent.set_data_matrix([[data.transpose()]],samples_names=[data.columns.values.tolist()], features_names=[data.index.values.tolist()])
+    ent.set_model_options(factors= num_factor , spikeslab_weights=False, ard_weights=False)
+    ent.set_train_options(iter=${iteration}, convergence_mode=&quot;${convergence_mode}&quot; ${f&#39;,dropR2 = {r2_tol}&#39; if r2_tol else &quot;&quot; }, startELBO=1, freqELBO=1,tolerance=${tol}, gpu_mode=False, verbose=True, seed=42)
+    ent.build()
+    ent.run()
+    ent.save(${_output:ar})
+    ## To fix issue https://github.com/cumc/xqtl-pipeline/issues/420
+    import h5py
+    right_name = [x.encode(&quot;UTF-8&quot;) for x in  ent.data_opts[&quot;features_names&quot;][0]] 
+    new_hd5 = h5py.File(${_output:ar}, &quot;r+&quot;)
+    del new_hd5[&quot;features/view0&quot;]
+    new_hd5[&quot;features&quot;].create_dataset(&quot;view0&quot;, data=np.array(right_name))
+    new_hd5.close()
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[PEER_3]
+output: f&#39;{cwd:a}/{_input:bnn}.PEER.gz&#39;, f&#39;{cwd:a}/{_input:bnn}.PEER.diag.pdf&#39;
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+R:  container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint = entrypoint
+    ####################
+    ## Load libraries ##
+    ####################
+    
+    library(MOFA2)
+    library(dplyr)
+    library(readr)
+    ################
+    ## Load model ##
+    ################
+    
+    file &lt;- &quot;${_input}&quot;
+    model &lt;- load_model(file)
+    
+    ####################################
+    ## (Optional) add sample metadata ##
+    ####################################
+    
+    # Important: 
+    # (1) the row names in the sample metadata data.frame have to match the sample names in the MOFA model
+    # (2) the sample name has to contain at least two columns: 
+    # 		- sample: sample names
+    #		- group: group name. Only required for multi-group inference. In your case just set the entire column to the same value
+    
+    # Load metadata
+    
+    # stopifnot(all(samples(model)[[1]]==metadata$sample))
+    # samples_metadata(model) &lt;- metadata
+    
+    ###############################
+    ## (Optional) Subset factors ##
+    ###############################
+    
+    # We can remove factors that explain little variance (in this case, we require at least 0.01%)
+    # r2 &lt;- model@cache$variance_explained$r2_per_factor
+    # factors &lt;- sapply(r2, function(x) x[,1]&gt;0.0001)
+    # model &lt;- subset_factors(model, which(apply(factors,1,sum) &gt;= 1))
+    
+    # fetch factors in matrix format, with dimensions (nfactors,nsamples)
+    factors &lt;- get_factors(model)[[1]]
+    dim(factors)
+    factors = as_tibble(t(factors),rownames = &quot;#id&quot;)
+    covPath = &quot;${covFile}&quot;
+    options(readr.show_col_types = FALSE)
+    covDF &lt;- read_delim(covPath, delim = &#39;\t&#39;)
+    commonMPSamples &lt;- intersect(colnames(covDF), colnames(factors))      
+    (rbind(covDF[, commonMPSamples], factors[, commonMPSamples])%&gt;%write_delim(&quot;${_output[0]}&quot;,&quot;\t&quot;))
+    # Plot save to vcf
+    pdf(&quot;${_output[1]}&quot;)
+    #############################
+    ## Plot variance explained ##
+    #############################
+    
+    # Plot variance explained using individual factors
+    plot_variance_explained(model, factors=&quot;all&quot;)
+    plot_variance_explained(model, factors=c(1,2,3))
+    
+    # Plot total variance explained using all factors
+    plot_variance_explained(model, plot_total = TRUE)[[2]]
+    
+    ########################
+    ## Plot factor values ##
+    ########################
+    
+    plot_factor(model, factor = 1)
+    plot_factors(model, factor = c(1,2))
+    
+    ###########################
+    ## Plot feature loadings ##
+    ###########################
+    
+    # The weights or loadings provide a score for each gene on each factor. 
+    # Genes with no association with the factor are expected to have values close to zero
+    # Genes with strong association with the factor are expected to have large absolute values. 
+    # The sign of the loading indicates the direction of the effect: a positive loading indicates that the feature is more active in the cells with positive factor values, and viceversa.
+    
+    # Plot the distribution of loadings for Factor 1.
+    plot_weights(model,
+      view = 1,
+      factor = 1,
+      nfeatures = 10,     # Top number of features to highlight
+      scale = T           # Scale loadings from -1 to 1
+    )
+    
+    # If you are not interested in the full distribution, but just on the top loadings:
+    plot_top_weights(model, 
+      view = 1, 
+      factor = 1, 
+      nfeatures = 10,
+      scale = T
+    )
+    
+    ######################################
+    ## Plot correlation between factors ##
+    ######################################
+    
+    plot_factor_cor(model)
+    
+    ###################
+    ## Fetch factors ##
+    ###################
+    invisible(dev.off())
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint = entrypoint
+        for i in $[_output[0]] ; do 
+        echo &quot;output_info $i &quot; &gt;&gt; $[_output[0]:n].stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $[_output[0]:n].stdout;
+        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $[_output[0]:n].stdout;
+        echo &quot;output_column:&quot; `zcat $i | head -1 | wc -w `   &gt;&gt; $[_output[0]:n].stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $[_output[0]:n].stdout;
+        zcat $i | head  | cut -f 1,2,3,4,5,6   &gt;&gt; $[_output[0]:n].stdout ; done
+</pre></div>
+</div>
+</div>
+</div>
+<section id="reference">
+<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>PEER codes are adapted from <a class="reference external" href="https://github.com/RTIInternational/biocloud_docker_tools/blob/master/peer/v1.3/run_peer.R">here</a></p></li>
+<li><p>GTEx recommandation of PEER factors is <a class="reference external" href="https://gtexportal.org/home/documentationPage">here</a></p></li>
+<li><p>Examples by PEER is at <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">github</a></p></li>
+</ul>
+</section>
+<section id="bicv-factor-analysis-with-apex">
+<h3>BiCV factor analysis with APEX<a class="headerlink" href="#bicv-factor-analysis-with-apex" title="Permalink to this heading">#</a></h3>
+<p>Notice that the command options are different from those on the APEX website documentation. The commands on the documentation page does not work (last updated September 2021). The commands below were constructed and tested by our team based on our understanding of the program, without input from APEX authors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[BiCV_2]
+# For cluster jobs, number commands to run per job
+import time
+output: f&#39;{cwd:a}/{_input:bn}.fake.vcf.gz&#39;
+#task: trunk_workers = 1,trunk_size = job_size , walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output}.stderr&#39;, stdout = f&#39;{_output}.stdout&#39;, entrypoint = entrypoint
+    library(&quot;dplyr&quot;)
+    library(&quot;readr&quot;)
+    ## Add fake header
+    cat(paste(&quot;##fileformat=VCFv4.2\n##fileDate=$[time.strftime(&quot;%Y%m%d&quot;,time.localtime())]\n##source=FAKE\n&quot;), file=$[_output:nr], append=FALSE)
+    ## Add colnames based on bed
+    pheno = read_delim(&quot;$[_input]&quot;, delim = &quot;\t&quot;,n_max = 1)
+    colnames(pheno)[1:3] = c(&quot;#CHROM&quot;,&quot;POS&quot;,&quot;ID&quot;) 
+    pheno = cbind(pheno[1:3]%&gt;%mutate(REF = &quot;A&quot;, ALT = &quot;C&quot;, QUAL = &quot;.&quot;,FILTER = &quot;.&quot;, INFO = &quot;PR&quot;, FORMAT = &quot;GT&quot;),pheno[,5:ncol(pheno)])
+    pheno%&gt;%write_delim($[_output:nr],delim = &quot;\t&quot;,col_names = T, append = T)
+bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, entrypoint = entrypoint
+    bgzip -f $[_output:n]
+    tabix -p vcf $[_output]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[BiCV_3]
+# N factors, if not specify, calculated based on sample size according to GTeX
+parameter: N = 0
+# The number of iteration
+parameter: iteration = 10
+
+import pandas as pd
+data = pd.read_csv(phenoFile,&quot;\t&quot;,index_col = 3).drop([&quot;#chr&quot;,&quot;start&quot;,&quot;end&quot;],axis = 1)
+if N == 0:
+    if len(data.columns) &lt; 150:
+        N = 15
+    elif len(data.columns) &lt; 250:
+        N = 30
+    elif len(data.columns) &lt; 350:
+        N = 45
+    else:
+        N = 60
+input: output_from(1), output_from(2)
+output: f&#39;{cwd:a}/{_input[0]:bnn}.BiCV.gz&#39;
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, entrypoint = entrypoint
+    apex factor \
+        --out $[_output[0]:nn] \
+        --iter $[iteration] \
+        --factors $[N] \
+        --bed $[_input[0]] \
+        --vcf $[_input[1]] \
+        --threads $[numThreads]  $[ f&#39;--cov {covFile}&#39; if covFile.is_file() else &#39;&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/data_preprocessing/covariate"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../covariate_preprocessing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Covariate data preprocessing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="covariate_formatting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Covariate data formatting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#main-outputs">Main outputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-outputs">Other outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#number-of-factors-to-use">Number of factors to use</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#peer">PEER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apex">APEX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pca">PCA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">PEER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">PCA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">APEX</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference">Reference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bicv-factor-analysis-with-apex">BiCV factor analysis with APEX</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,535 +1,689 @@
 
-
 <!DOCTYPE html>
 
-
-<html lang="en" >
-
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Genotype data preprocessing &#8212; FunGen-xQTL Consortium</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
-  <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
-  
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
+    
+      
+
+    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'code/data_preprocessing/genotype_preprocessing';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Genotype VCF file quality control" href="genotype/VCF_QC.html" />
+    <link rel="next" title="Genotype VCF File Quality Control" href="genotype/VCF_QC.html" />
     <link rel="prev" title="Normalization and phenotype table generation for splicingQTL analysis" href="../molecular_phenotypes/QC/splicing_normalization.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="en"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <div id="pst-scroll-pixel-helper"></div>
+    
 
-  
-  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
-
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="../../search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
       
-      <div class="bd-sidebar-primary bd-sidebar">
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
         
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
-
-<a class="navbar-brand logo" href="../../README.html">
-  
-  
-  
-  
-  
-    
-    
       
-    
-    
-    <img src="../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
-    <script>document.write(`<img src="../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
-  
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../../README.html">
-                    FunGen-xQTL Computational Protocol
-                </a>
-            </li>
-        </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+      
+      <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   FunGen-xQTL Computational Protocol
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../xqtl_protocol_demo.html">
+   Illustration of xQTL protocol
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Command Generator
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../commands_generator/bulk_expression_commands.html">
+   RNA-seq calling and QC
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">
+   Univariate xQTL Discovery
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference data
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="reference_data.html">Reference data standardization</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="reference_data.html">
+   Reference data standardization
+  </a>
+ </li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Molecular Phenotypes
+ </span>
+</p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">
+   RNA-seq expression
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">
+     Quantifying expression from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">
+     Sample level RNA-seq quality control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">
+     Bulk RNA-seq counts normalization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">
+   scRNA-seq expression calling
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../molecular_phenotypes/apa.html">
+   Alternative polyadenylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">
+     APA Calling
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../molecular_phenotypes/methylation.html">
+   Methylation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">
+     Quantification of methylation data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../molecular_phenotypes/splicing.html">
+   Alternative splicing from RNA-seq data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">
+     Quantifying alternative splicing from RNA-seq data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">
+     Normalization and phenotype table generation for splicingQTL analysis
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data Pre-processing
+ </span>
+</p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Genotype data preprocessing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genotype/PCA.html">Principal component analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genotype/GRM.html">Genomic relationship matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genotype/genotype_formatting.html">Genotype data formatting</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="covariate_preprocessing.html">Covariate data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="covariate/covariate_hidden_factor.html">Hidden factor analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="covariate/covariate_formatting.html">Covariate data formatting</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../association_scan/qtl_association_testing.html">QTL association analysis</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
-
-<li class="toctree-l2"><a class="reference internal" href="../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with individual level data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../integrative_analysis/colocalization.html">QTL and GWAS Colocalization</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../integrative_analysis/COLOC/fastenloc_dap.html">Colocalization with FastENLOC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../integrative_analysis/COLOC/mvenloc.html">Multivariate SuSiE and ENLOC model</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../integrative_analysis/functional_annotation.html">Functional annotation integration</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../integrative_analysis/enrichment/gwas_enrichment.html">Enrichment analysis: TORUS and GREGOR</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../integrative_analysis/enrichment/ldsc.html">Stratified LD Score Regression</a></li>
-</ul>
-</li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
-</ul>
-
-    </div>
-</nav></div>
-    </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
-
-
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
-
-<div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/data_preprocessing/genotype_preprocessing.ipynb" target="_blank"
-   class="btn btn-sm btn-source-edit-button dropdown-item"
-   title="Suggest edit"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-pencil-alt"></i>
-  </span>
-<span class="btn__text-container">Suggest edit</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/data_preprocessing/genotype_preprocessing.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
+   Genotype data preprocessing
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="genotype/VCF_QC.html">
+     Genotype VCF File Quality Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="genotype/GWAS_QC.html">
+     Genotype PLINK File Quality Control
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="genotype/PCA.html">
+     Principal Component Analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="genotype/GRM.html">
+     Genomic Relationship Matrices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="genotype/genotype_formatting.html">
+     Genotype Data Formatting
+    </a>
+   </li>
   </ul>
-</div>
-
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="../../_sources/code/data_preprocessing/genotype_preprocessing.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="phenotype_preprocessing.html">
+   Phenotype data preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="phenotype/gene_annotation.html">
+     Gene coordinate annotation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="phenotype/phenotype_formatting.html">
+     Phenotype Data Formatting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="phenotype/phenotype_imputation.html">
+     Phenotype data imputation
+    </a>
+   </li>
   </ul>
-</div>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="covariate_preprocessing.html">
+   Covariate Data Preprocessing
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="covariate/covariate_hidden_factor.html">
+     Hidden factor analysis
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="covariate/covariate_formatting.html">
+     Covariate data formatting
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  QTL Association Testing
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../association_scan/qtl_association_testing.html">
+   QTL Association Analysis
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">
+     TensorQTL QTL Association Testing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../association_scan/APEX/APEX.html">
+     APEX QTL association testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">
+   QTL data postprocessing
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistical Fine-mapping
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../fine_mapping/univariate_fine_mapping.html">
+   Univariate fine-mapping workflows
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fine_mapping/SuSiE/SuSiE.html">
+     Fine-mapping with individual level data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../fine_mapping/SuSiE/SuSiE_RSS.html">
+     Fine-mapping with SuSiE RSS model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fine_mapping/multivariate_fine_mapping.html">
+   Multivariate fine-mapping workflows
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multivariate Analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../multivariate/METAL_pipeline.html">
+   Meta-analysis with METAL
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+  <label for="toctree-checkbox-10">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../multivariate/METAL/METAL.html">
+     Meta-analysis with METAL
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../multivariate/MASH_pipeline.html">
+   Multivariate association with MASH
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+  <label for="toctree-checkbox-11">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../multivariate/MASH/mixture_prior.html">
+     A multivariate EBNM approach for mixture multivariate distribution estimate
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multi-omics integration
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../integrative_analysis/colocalization.html">
+   QTL and GWAS Colocalization
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+  <label for="toctree-checkbox-12">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/COLOC/fastenloc_dap.html">
+     Colocalization with FastENLOC
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/COLOC/mvenloc.html">
+     Multivariate SuSiE and ENLOC model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../integrative_analysis/functional_annotation.html">
+   Functional annotation integration
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+  <label for="toctree-checkbox-13">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/enrichment/gwas_enrichment.html">
+     Enrichment analysis: TORUS and GREGOR
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../integrative_analysis/enrichment/ldsc.html">
+     Stratified LD Score Regression
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Utilities
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/summary_stats_standardizer.html">
+   Summary statistics standardization and export
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/rds_to_vcf.html">
+   Summary statistics in VCF format
+  </a>
+ </li>
+</ul>
 
-
-
-
-<button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
     </div>
-  
-</div>
-</div>
-              
-              
+</nav> <!-- To handle the deprecated key -->
 
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Genotype data preprocessing</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
+<div class="navbar_extra_footer">
+  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH NIA</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
             
-            <div>
-                <h2> Contents </h2>
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/code/data_preprocessing/genotype_preprocessing.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        <a class="issues-button"
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/data_preprocessing/genotype_preprocessing.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/data_preprocessing/genotype_preprocessing.ipynb"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
             </div>
-            <nav aria-label="Page">
+            <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-input">Data Input</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-output">Data Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-in-detail">Steps in detail</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qc-for-vcf-files">QC for VCF files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-separated-bed-files-into-one">Merge separated bed files into one</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qc-for-plink-files">QC for PLINK files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genotype-data-partition-by-chromosome">Genotype data partition by chromosome</a></li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#miniprotocol-timing">
+   Miniprotocol Timing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#steps">
+   Steps
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#i-qc-for-vcf-files">
+     i. QC for VCF files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ii-merge-separated-bed-files-into-one">
+     ii. Merge separated bed files into one
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#iii-qc-for-plink-files">
+     iii. QC for PLINK files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#iv-genotype-data-partition-by-chromosome">
+     iv. Genotype data partition by chromosome
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#v-sample-match-with-genotype">
+     v. Sample match with genotype
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vi-kinship">
+     vi. Kinship
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vii-prepare-unrelated-individuals-data-for-pca">
+     vii. Prepare unrelated individuals data for PCA
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#viii-pca-on-genotype">
+     viii. PCA on genotype
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#anticipated-results">
+   Anticipated Results
+  </a>
+ </li>
 </ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-on-genotypes-of-selected-samples">PCA on genotypes of selected samples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Data Input</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Data Output</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kinship-qc-only-on-proteomics-samples">Kinship QC only on proteomics samples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-match-with-genotype">Sample match with genotype</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kinship">Kinship</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-unrelated-individuals-data-for-pca">Prepare unrelated individuals data for PCA</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-on-genotype">PCA on genotype</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+
             </nav>
         </div>
     </div>
 </div>
-
-              
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
                 
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-preprocessing">
-<h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this heading">#</a></h1>
-<p>This notebook outlines the workflow for processing genotype files, transitioning from VCF format to chromosome-specific PLINK files.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="genotype-data-preprocessing">
+<h1>Genotype data preprocessing<a class="headerlink" href="#genotype-data-preprocessing" title="Permalink to this headline">¶</a></h1>
+<p>This notebook outlines the workflow for processing genotype files, transitioning from VCF format to chromosome-specific PLINK files, running PLINK QC, preparing unrelated individuals for PCA, and conducting PCA.</p>
 <p><strong>Note</strong>: in order to reuse the workflow for your data, for some of the steps you might need to change paths to files.</p>
-<section id="methods-overview">
-<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this heading">#</a></h2>
+<div class="section" id="miniprotocol-timing">
+<h2>Miniprotocol Timing<a class="headerlink" href="#miniprotocol-timing" title="Permalink to this headline">¶</a></h2>
+<p>This represents the total duration for all miniprotocol phases. While module-specific timings are provided separately on their respective pages, they are also included in this overall estimate.</p>
+<p>Timing &lt; X minutes</p>
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This workflow is an application of the genotype related workflows from the xQTL project pipeline.</p>
-</section>
-<section id="data-input">
-<h2>Data Input<a class="headerlink" href="#data-input" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Joint</span> <span class="pre">VCF</span> <span class="pre">files</span></code>: /mnt/vast/hpc/bvardarajan_lab/data/Family_WGS/vcfs/vcf_b38_with_rosmap_2022/joint_vcf</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">00-All.add_chr.variants.gz</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta</span></code> reference files created via Reference_data_notebook</p></li>
-</ul>
-</section>
-<section id="data-output">
-<h2>Data Output<a class="headerlink" href="#data-output" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>QCed Genotype:</p></li>
-</ul>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.bed</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.bim</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.fam</span></code></p></li>
-</ul>
-</section>
-<section id="steps-in-detail">
-<h2>Steps in detail<a class="headerlink" href="#steps-in-detail" title="Permalink to this heading">#</a></h2>
-<section id="qc-for-vcf-files">
-<h3>QC for VCF files<a class="headerlink" href="#qc-for-vcf-files" title="Permalink to this heading">#</a></h3>
-<p>This step will run QC for vcf files, <code class="docutils literal notranslate"><span class="pre">qc_1</span></code> and <code class="docutils literal notranslate"><span class="pre">qc_2</span></code> will process ~14G files every hour. <code class="docutils literal notranslate"><span class="pre">qc_3</span></code> will summarize the quality metrics for the VCF files.</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">VCF_QC.ipynb</span></code> (step i): QC on VCF files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">genotype_formatting.ipynb</span></code> (step ii, iv): convert VCF to PLINK and merge the files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GWAS_QC.ipynb</span></code> (step iii, v-vii): QC on PLINK files, Kinship, and prepare unrelated individuals for PCA</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PCA.ipynb</span></code> (viii): Conduct PCA</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GRM.ipynb</span></code> (): Generates genomic relationship matrices (GRM) under the leave-one-chromosome-out (LOCO) theme</p></li>
+</ol>
+</div>
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="i-qc-for-vcf-files">
+<h3>i. QC for VCF files<a class="headerlink" href="#i-qc-for-vcf-files" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># We only do this for autosomal variants</span>
@@ -547,39 +701,37 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="merge-separated-bed-files-into-one">
-<h3>Merge separated bed files into one<a class="headerlink" href="#merge-separated-bed-files-into-one" title="Permalink to this heading">#</a></h3>
-<p>Converting VCF to PLINK keep only ROSMAP samples.</p>
-<p><code class="docutils literal notranslate"><span class="pre">ROSMAP_sample_list.txt</span></code> is a list that includes all ROSMAP samples we need for analysis, in formatting of FID, IID. This file has been uploaded to ftp: <code class="docutils literal notranslate"><span class="pre">/ftp_fgc_xqtl/projects/WGS/ROSMAP</span></code></p>
+</div>
+<div class="section" id="ii-merge-separated-bed-files-into-one">
+<h3>ii. Merge separated bed files into one<a class="headerlink" href="#ii-merge-separated-bed-files-into-one" title="Permalink to this headline">¶</a></h3>
+<p>Converting VCF to PLINK keeping only the ROSMAP samples.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb vcf_to_plink
-    --genoFile `ls vcf_qc/*.leftnorm.bcftools_qc.vcf.gz` \
-    --cwd Genotype/ \
-    --keep_samples ./ROSMAP_sample_list.txt
-    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-    -J 22 -q csg -c csg.yml --mem 120G
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">vcf_to_plink</span>
+    <span class="o">--</span><span class="n">genoFile</span> <span class="err">`</span><span class="n">ls</span> <span class="n">vcf_qc</span><span class="o">/*.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span><span class="err">`</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">Genotype</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">keep_samples</span> <span class="o">./</span><span class="n">ROSMAP_sample_list</span><span class="o">.</span><span class="n">txt</span>
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">-</span><span class="n">J</span> <span class="mi">22</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">--</span><span class="kp">mem</span> <span class="mi">120</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>This step merges all the files and may require anout 300G mem to run, because there are some variants’ ID with 80+ characters. And only plink can do the merge job, plink2 doesn’t support merge.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run xqtl-pipeline/pipeline/genotype_formatting.ipynb merge_plink \
-    --genoFile `ls *.leftnorm.bcftools_qc.bed` \
-    --name ROSMAP_NIA_WGS.leftnorm.bcftools_qc  \
-    --cwd Genotype/ \
-    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-    -J 5 -q csg -c csg.yml --mem 300G
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge_plink</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="err">`</span><span class="n">ls</span> <span class="o">*.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">bed</span><span class="err">`</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span>  \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">Genotype</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">-</span><span class="n">J</span> <span class="mi">5</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">--</span><span class="kp">mem</span> <span class="mi">300</span><span class="n">G</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="qc-for-plink-files">
-<h3>QC for PLINK files<a class="headerlink" href="#qc-for-plink-files" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="iii-qc-for-plink-files">
+<h3>iii. QC for PLINK files<a class="headerlink" href="#iii-qc-for-plink-files" title="Permalink to this headline">¶</a></h3>
 <p>Using PLINK-based workflows we:</p>
 <ul class="simple">
 <li><p>Filter out those have more than 10% missing</p></li>
@@ -601,61 +753,24 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The genotype files after this step had been uploaded to ftp: <code class="docutils literal notranslate"><span class="pre">/ftp_fgc_xqtl/projects/WGS/ROSMAP</span></code></p>
-</section>
-<section id="genotype-data-partition-by-chromosome">
-<h3>Genotype data partition by chromosome<a class="headerlink" href="#genotype-data-partition-by-chromosome" title="Permalink to this heading">#</a></h3>
+</div>
+<div class="section" id="iv-genotype-data-partition-by-chromosome">
+<h3>iv. Genotype data partition by chromosome<a class="headerlink" href="#iv-genotype-data-partition-by-chromosome" title="Permalink to this headline">¶</a></h3>
 <p>This step is necessary for TensorQTL applications.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
-    --genoFile protocol_example/protocol_example.genotype.chr21_22.bed \
-    --cwd output \
-    --chrom `cut -f 1 protocol_example/protocol_example.genotype.chr21_22.bim | uniq | sed &quot;s/chr//g&quot;` \
-    --container containers/bioinfo.sif 
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">genotype_by_chrom_1</span>: 
-INFO: <span class=" -Color -Color-Green">genotype_by_chrom_1</span> (index=0) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_chrom_1</span> (index=1) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_chrom_1</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_by_chrom/protocol_example.genotype.chr21_22.21.bed /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_by_chrom/protocol_example.genotype.chr21_22.22.bed in 2 groups</span>
-INFO: Running <span class=" -Color -Color-Green">genotype_by_chrom_2</span>: 
-INFO: <span class=" -Color -Color-Green">genotype_by_chrom_2</span> is <span class=" -Color -Color-Green">completed</span> (pending nested workflow).
-INFO: Running <span class=" -Color -Color-Green">write_data_list</span>: 
-INFO: <span class=" -Color -Color-Green">write_data_list</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">write_data_list</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_by_chrom/protocol_example.genotype.chr21_22.genotype_by_chrom_files.txt</span>
-INFO: <span class=" -Color -Color-Green">genotype_by_chrom_2</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_by_chrom/protocol_example.genotype.chr21_22.genotype_by_chrom_files.txt</span>
-INFO: Workflow genotype_by_chrom (ID=wb8ff438150766a67) is executed successfully with 3 completed steps and 4 completed substeps.
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">genotype_by_chrom</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">protocol_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">chrom</span> <span class="err">`</span><span class="n">cut</span> <span class="o">-</span><span class="n">f</span> <span class="mi">1</span> <span class="n">protocol_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bim</span> <span class="o">|</span> <span class="n">uniq</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;s/chr//g&quot;</span><span class="err">`</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> 
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="pca-on-genotypes-of-selected-samples">
-<h2>PCA on genotypes of selected samples<a class="headerlink" href="#pca-on-genotypes-of-selected-samples" title="Permalink to this heading">#</a></h2>
-<p>This workflow is an application of <code class="docutils literal notranslate"><span class="pre">PCA.ipynb</span></code> from the xQTL project pipeline.</p>
-<section id="id1">
-<h3>Data Input<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">protocol_example.genotype.chr21_22.bed</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">protocol_example.genotype.chr21_22.bim</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">protocol_example.genotype.chr21_22.fam</span></code></p></li>
-</ul>
-</section>
-<section id="id2">
-<h3>Data Output<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ROSMAP_NIA_WGS.leftnorm.filtered.pQTL.unrelated.filtered.prune.pca.rds</span></code></p></li>
-</ul>
-</section>
-<section id="kinship-qc-only-on-proteomics-samples">
-<h3>Kinship QC only on proteomics samples<a class="headerlink" href="#kinship-qc-only-on-proteomics-samples" title="Permalink to this heading">#</a></h3>
-<p>To accuratly estimate the PCs for the genotype. We split participants based on their kinship coefficients, estimated by KING</p>
-<section id="sample-match-with-genotype">
-<h4>Sample match with genotype<a class="headerlink" href="#sample-match-with-genotype" title="Permalink to this heading">#</a></h4>
+</div>
+<div class="section" id="v-sample-match-with-genotype">
+<h3>v. Sample match with genotype<a class="headerlink" href="#v-sample-match-with-genotype" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">genotype_phenotype_sample_overlap</span> \
@@ -667,18 +782,11 @@ INFO: Workflow genotype_by_chrom (ID=wb8ff438150766a67) is executed successfully
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">genotype_phenotype_sample_overlap</span>: This workflow extracts overlapping samples for genotype data with phenotype data, and output the filtered sample genotype list as well as sample phenotype list
-INFO: <span class=" -Color -Color-Green">genotype_phenotype_sample_overlap</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_phenotype_sample_overlap</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/samples/protocol_example.protein.sample_overlap.txt /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/samples/protocol_example.protein.sample_genotypes.txt</span>
-INFO: Workflow genotype_phenotype_sample_overlap (ID=wb6cc0b72d21c80e5) is executed successfully with 1 completed step.
-</pre></div>
 </div>
 </div>
-</div>
-</section>
-<section id="kinship">
-<h4>Kinship<a class="headerlink" href="#kinship" title="Permalink to this heading">#</a></h4>
+<div class="section" id="vi-kinship">
+<h3>vi. Kinship<a class="headerlink" href="#vi-kinship" title="Permalink to this headline">¶</a></h3>
+<p>To accuratly estimate the PCs for the genotype. We split participants based on their kinship coefficients, estimated by KING</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">king</span> \
@@ -692,32 +800,10 @@ INFO: Workflow genotype_phenotype_sample_overlap (ID=wb6cc0b72d21c80e5) is execu
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">king_1</span>: Inference of relationships in the sample to identify closely related individuals
-INFO: <span class=" -Color -Color-Green">king_1</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">king_1</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/kinship/protocol_example.genotype.chr21_22.pQTL.kin0</span>
-INFO: Running <span class=" -Color -Color-Green">king_2</span>: Select a list of unrelated individual with an attempt to maximize the unrelated individuals selected from the data
-INFO: <span class=" -Color -Color-Green">king_2</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">king_2</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/kinship/protocol_example.genotype.chr21_22.pQTL.related_id</span>
-INFO: Running <span class=" -Color -Color-Green">king_3</span>: Split genotype data into related and unrelated samples, if related individuals are detected
-INFO: <span class=" -Color -Color-Green">king_3</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">king_3</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/kinship/protocol_example.genotype.chr21_22.pQTL.unrelated.bed /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/kinship/protocol_example.genotype.chr21_22.pQTL.related.bed</span>
-INFO: Workflow king (ID=wdd0b0fe5517b6ca9) is executed successfully with 3 completed steps.
-</pre></div>
 </div>
 </div>
-</div>
-<ol class="arabic simple">
-<li><p>Variant level and sample level QC on unrelated individuals using missingness &gt; 10%, and LD-prunning in preparation for PCA analysis.</p></li>
-<li><p>There is no related samples in these ROSMAP samples, so there is an additional step to only keep those samples in <code class="docutils literal notranslate"><span class="pre">rosmap_pheno.sample_genotypes.txt</span></code> to do PCA.</p></li>
-</ol>
-<p><strong>Be aware:</strong></p>
-<p><strong>If the message from <code class="docutils literal notranslate"><span class="pre">king_2</span></code> shown as <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">related</span> <span class="pre">individuals</span> <span class="pre">detected</span> <span class="pre">from</span> <span class="pre">*.kin0</span></code>, this means no related individuals detected for the samples in <code class="docutils literal notranslate"><span class="pre">--keep_samples</span></code>. In this case, there will be no output for unrelated individuals from this step.</strong></p>
-</section>
-<section id="prepare-unrelated-individuals-data-for-pca">
-<h4>Prepare unrelated individuals data for PCA<a class="headerlink" href="#prepare-unrelated-individuals-data-for-pca" title="Permalink to this heading">#</a></h4>
-<p>Here we write data to <code class="docutils literal notranslate"><span class="pre">cache</span></code> folder instead of <code class="docutils literal notranslate"><span class="pre">output</span></code> because this genotype data can be removed later after PCA. Also filter out minor allel accout &lt; 5.</p>
-<p><strong>If your data has <code class="docutils literal notranslate"><span class="pre">*.unrelated.bed</span></code> generated, that means there are related individuals in your data. In cases, we will use output from the KING step for unrelated individuals.</strong></p>
+<div class="section" id="vii-prepare-unrelated-individuals-data-for-pca">
+<h3>vii. Prepare unrelated individuals data for PCA<a class="headerlink" href="#vii-prepare-unrelated-individuals-data-for-pca" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
@@ -729,24 +815,13 @@ INFO: Workflow king (ID=wdd0b0fe5517b6ca9) is executed successfully with 3 compl
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">basic QC filters</span>: Filter SNPs and select individuals
-INFO: <span class=" -Color -Color-Green">basic QC filters</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">basic QC filters</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/cache/protocol_example.genotype.chr21_22.pQTL.unrelated.plink_qc.bed</span>
-INFO: Running <span class=" -Color -Color-Green">LD pruning</span>: LD prunning and remove related individuals (both ind of a pair) Plink2 has multi-threaded calculation for LD prunning
-INFO: <span class=" -Color -Color-Green">LD pruning</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">LD pruning</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/cache/protocol_example.genotype.chr21_22.pQTL.unrelated.plink_qc.prune.bed /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/cache/protocol_example.genotype.chr21_22.pQTL.unrelated.plink_qc.prune.in</span>
-INFO: Workflow qc (ID=w3a34828bd2888342) is executed successfully with 2 completed steps.
-</pre></div>
 </div>
-</div>
-</div>
-<p><strong>In other cases eg ROSMAP proteomics data, message <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">related</span> <span class="pre">individuals</span> <span class="pre">detected</span> <span class="pre">from</span> <span class="pre">*.kin0</span></code> occured, there is no separate genotype data generated for unrelated individuals. In this case, we need to work from the original genotype data and must use <code class="docutils literal notranslate"><span class="pre">--keep-samples</span></code> to run <code class="docutils literal notranslate"><span class="pre">qc</span></code> to extract samples for PCA.</strong>. For example:</p>
+<p><strong>If <code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">related</span> <span class="pre">individuals</span> <span class="pre">detected</span> <span class="pre">from</span> <span class="pre">*.kin0</span></code> occurs, there is no separate genotype data generated for unrelated individuals. In this case, we need to work from the original genotype data and must use <code class="docutils literal notranslate"><span class="pre">--keep-samples</span></code> to run <code class="docutils literal notranslate"><span class="pre">qc</span></code> to extract samples for PCA.</strong> For example:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">GWAS_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">qc</span> \
    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">cache</span> \
-   <span class="o">--</span><span class="n">genoFile</span> <span class="n">protocol_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">genoFile</span> <span class="nb">input</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span> \
    <span class="o">--</span><span class="n">keep</span><span class="o">-</span><span class="n">samples</span> <span class="n">output</span><span class="o">/</span><span class="n">sample_meta</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">sample_genotypes</span><span class="o">.</span><span class="n">txt</span> \
    <span class="o">--</span><span class="kp">name</span> <span class="n">pQTL</span> \
    <span class="o">--</span><span class="n">mac</span><span class="o">-</span><span class="nb">filter</span> <span class="mi">5</span> \
@@ -755,22 +830,10 @@ INFO: Workflow qc (ID=w3a34828bd2888342) is executed successfully with 2 complet
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">basic QC filters</span>: Filter SNPs and select individuals
-INFO: <span class=" -Color -Color-Green">basic QC filters</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">basic QC filters</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/cache/protocol_example.genotype.chr21_22.pQTL.plink_qc.bed</span>
-INFO: Running <span class=" -Color -Color-Green">LD pruning</span>: LD prunning and remove related individuals (both ind of a pair) Plink2 has multi-threaded calculation for LD prunning
-INFO: <span class=" -Color -Color-Green">LD pruning</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">LD pruning</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/cache/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.bed /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/cache/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.in</span>
-INFO: Workflow qc (ID=wd519554233f99db1) is executed successfully with 2 completed steps.
-</pre></div>
 </div>
 </div>
-</div>
-</section>
-<section id="pca-on-genotype">
-<h4>PCA on genotype<a class="headerlink" href="#pca-on-genotype" title="Permalink to this heading">#</a></h4>
-<p>Note PC1 vs 2 outlier</p>
+<div class="section" id="viii-pca-on-genotype">
+<h3>viii. PCA on genotype<a class="headerlink" href="#viii-pca-on-genotype" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">PCA</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flashpca</span> \
@@ -781,34 +844,15 @@ INFO: Workflow qc (ID=wd519554233f99db1) is executed successfully with 2 complet
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">flashpca_1</span>: Run PCA analysis using flashpca
-INFO: <span class=" -Color -Color-Green">flashpca_1</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">flashpca_1</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.rds</span>
-INFO: Running <span class=" -Color -Color-Green">flashpca_2</span>: 
-INFO: <span class=" -Color -Color-Green">flashpca_2</span> is <span class=" -Color -Color-Green">completed</span> (pending nested workflow).
-INFO: Running <span class=" -Color -Color-Green">detect_outliers</span>: Calculate Mahalanobis distance per population and report outliers
-INFO: <span class=" -Color -Color-Green">detect_outliers</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">detect_outliers</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.mahalanobis.rds /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.outliers... (5 items)</span>
-INFO: <span class=" -Color -Color-Green">flashpca_2</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.mahalanobis.rds /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.outliers... (5 items)</span>
-INFO: Running <span class=" -Color -Color-Green">flashpca_3</span>: 
-INFO: <span class=" -Color -Color-Green">flashpca_3</span> is <span class=" -Color -Color-Green">completed</span> (pending nested workflow).
-INFO: Running <span class=" -Color -Color-Green">plot_pca</span>: Plot PCA results. Can be used independently as &quot;plot_pca&quot; or combined with other workflow as eg &quot;flashpca+plot_pca&quot;
-INFO: <span class=" -Color -Color-Green">plot_pca</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">plot_pca</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.pc.png /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.scree.png... (3 items)</span>
-INFO: <span class=" -Color -Color-Green">flashpca_3</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.pc.png /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.scree.png</span>
-INFO: Workflow flashpca (ID=w09c13a6e20629b3d) is executed successfully with 5 completed steps.
-</pre></div>
 </div>
 </div>
 </div>
-<p>The plot of PCA is under figure folder. FIXME: please show the preview in this notebook as well.</p>
-</section>
-</section>
-</section>
+<div class="section" id="anticipated-results">
+<h2>Anticipated Results<a class="headerlink" href="#anticipated-results" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="toctree-wrapper compound">
 </div>
-</section>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -822,7 +866,7 @@ INFO: Workflow flashpca (ID=w09c13a6e20629b3d) is executed successfully with 5 c
             mode: "sos"
         },
         kernelOptions: {
-            name: "sos",
+            kernelName: "sos",
             path: "./code/data_preprocessing"
         },
         predefinedOutput: true
@@ -830,122 +874,46 @@ INFO: Workflow flashpca (ID=w09c13a6e20629b3d) is executed successfully with 5 c
     </script>
     <script>kernelName = 'sos'</script>
 
-                </article>
+              </div>
               
-
-              
-              
-              
-              
-                <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="../molecular_phenotypes/QC/splicing_normalization.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Normalization and phenotype table generation for splicingQTL analysis</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="genotype/VCF_QC.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Genotype VCF file quality control</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div>
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-input">Data Input</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-output">Data Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-in-detail">Steps in detail</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qc-for-vcf-files">QC for VCF files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-separated-bed-files-into-one">Merge separated bed files into one</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qc-for-plink-files">QC for PLINK files</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genotype-data-partition-by-chromosome">Genotype data partition by chromosome</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-on-genotypes-of-selected-samples">PCA on genotypes of selected samples</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Data Input</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Data Output</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kinship-qc-only-on-proteomics-samples">Kinship QC only on proteomics samples</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-match-with-genotype">Sample match with genotype</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kinship">Kinship</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-unrelated-individuals-data-for-pca">Prepare unrelated individuals data for PCA</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-on-genotype">PCA on genotype</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2021+, FunGen xQTL Analysis Working Group.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div>
-          </footer>
         
-
-      </main>
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../molecular_phenotypes/QC/splicing_normalization.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Normalization and phenotype table generation for splicingQTL analysis</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="genotype/VCF_QC.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Genotype VCF File Quality Control</p>
     </div>
-  </div>
-  
-  <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
-
-  <footer class="bd-footer">
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
+        
+            &copy; Copyright 2021+, FunGen xQTL Analysis Working Group.<br/>
+      </p>
+    </div>
   </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
   </body>
 </html>

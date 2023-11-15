@@ -588,8 +588,8 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#methods-overview">
-   Methods overview
+  <a class="reference internal nav-link" href="#description">
+   Description
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -643,31 +643,33 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#minimal-working-example">
-   Minimal working example
+  <a class="reference internal nav-link" href="#minimal-working-example-steps">
+   Minimal Working Example Steps
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-leafcutter">
-     For
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       leafcutter
-      </span>
-     </code>
+    <a class="reference internal nav-link" href="#i-splicing-quantification">
+     i. Splicing Quantification
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#for-psichomics">
-     For
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       psichomics
-      </span>
-     </code>
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#a-leafcutter">
+       a. Leafcutter
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#b-psichomics">
+       b. Psichomics
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#troubleshooting">
+   Troubleshooting
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#command-interface">
@@ -734,19 +736,17 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="quantifying-alternative-splicing-from-rna-seq-data">
 <h1>Quantifying alternative splicing from RNA-seq data<a class="headerlink" href="#quantifying-alternative-splicing-from-rna-seq-data" title="Permalink to this headline">¶</a></h1>
-<p>This pipeline implements our pipeline to call alternative splicing events from RNA-seq data, using <a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> and <a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> to call the RNA-seq data from original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data. It implements the GTEx pipeline for GTEx/TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail. The choice of pipeline modules in this project is supported by internal (unpublished) benchmarks from GTEx group.</p>
-<p><strong>Various reference data needs to be prepared before using this workflow</strong>. <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">Here we provide a module</a> to download and prepare the reference data.</p>
-<p>The product of this workflow can be used in generating phenotype tables using /molecular_phenotyles/QC/splicing_normalization.ipynb.</p>
-<div class="section" id="methods-overview">
-<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this headline">¶</a></h2>
-<p>There are many types of alternative splicing events. See <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/18978772/">Wang et al (2008)</a> and <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/29304370/">Park et al (2018)</a> for an illustration on different events and how splicings are controlled. We will apply two methods to quantify alternative splicing:</p>
-<ol class="simple">
-<li><p><a class="reference external" href="https://academic.oup.com/nar/article/47/2/e7/5114259"><code class="docutils literal notranslate"><span class="pre">psichomics</span></code></a> that quantifies each specific event. In particular the exon skipping event which is used also in GTEx sQTL analysis.</p></li>
-<li><p><a class="reference external" href="https://www.nature.com/articles/s41588-017-0004-9"><code class="docutils literal notranslate"><span class="pre">leafcutter</span></code></a> to quantify the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events. The method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.</p></li>
-</ol>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Our pipeline calls alternative splicing events from RNA-seq data using leafcutter and psichomics to call the RNA-seq data from <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> data which has been mapped to a reference genome using STAR with the wasp option. It implements the GTEx pipeline for GTEx/TOPMed project. Please refer to <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">this page</a> for detail. The choice of pipeline modules in this project is supported by internal (unpublished) benchmarks from GTEx group.</p>
+<p>We use two different tools to quantify the many types of splicing events which are outlined in [<a class="reference external" href="https://doi.org/10.1038/nature07509">cf. Wang et al (2008)</a>] and [<a class="reference external" href="https://doi.org/10.1016/j.ajhg.2017.11.002">cf. Park et al (2018)</a>]. The first, leafcutter, quantifies the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events [<a class="reference external" href="https://doi.org/10.1038/s41588-017-0004-9">cf. Li et al 2018</a>]. This method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.  The second, psichomics, quantifies specific splicing events [<a class="reference external" href="https://doi.org/10.1093/nar/gky888">cf. Agostinho et al. 2019</a>].</p>
 </div>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p><strong>Various reference data needs to be prepared before using this workflow</strong>. <a class="reference external" href="https://cumc.github.io/xqtl-pipeline/code/data_preprocessing/reference_data.html">Here we provide a module</a> to download and prepare the reference data.</p>
+<p>A minimal working example is uploaded in the <a class="reference external" href="https://drive.google.com/drive/folders/1lpcx3eKG2UpauntLUuJ6bMBjHyIhWW_R">google drive</a>. It contains example inputs for leafcutter/psichomics, two spliing annotations for psichomics, the meta-data file list, and a example of blacklist chromosome file for leafcutter.</p>
+<p>The leafcutter and psichomics tools may be run in parallel and are not dependent on one another.</p>
+<p>The product of this workflow can be used in generating phenotype tables using /molecular_phenotyles/QC/splicing_normalization.ipynb.</p>
 <p>Both leafcutter and psichomics section, a meta-data file, white space delimited, containing 4 columns: sample ID, RNA strandness and path to the BAM files input for leafcutter section and to SJ.out.tab files for psichomics section:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_id</span>       <span class="n">strand</span>          <span class="n">bam_list</span>                                <span class="n">SJ_list</span>
 <span class="n">sample_1</span>        <span class="n">rf</span>              <span class="n">sample_1</span><span class="o">.</span><span class="n">Aligned</span><span class="o">.</span><span class="n">sortedByCoord</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">bam</span>  <span class="n">sample_1</span><span class="o">.</span><span class="n">SJ</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">tab</span>
@@ -835,36 +835,133 @@
 </table>
 </div>
 </div>
-<div class="section" id="minimal-working-example">
-<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
-<p>A minimal working example is uploaded in the <a class="reference external" href="https://drive.google.com/drive/folders/1lpcx3eKG2UpauntLUuJ6bMBjHyIhWW_R">google drive</a>. It contains example inputs for leafcutter/psichomics, two spliing annotations for psichomics, the meta-data file list, and a example of blacklist chromosome file for leafcutter.</p>
-<div class="section" id="for-leafcutter">
-<h3>For <code class="docutils literal notranslate"><span class="pre">leafcutter</span></code><a class="headerlink" href="#for-leafcutter" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="minimal-working-example-steps">
+<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="i-splicing-quantification">
+<h3>i. Splicing Quantification<a class="headerlink" href="#i-splicing-quantification" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="a-leafcutter">
+<h4>a. Leafcutter<a class="headerlink" href="#a-leafcutter" title="Permalink to this headline">¶</a></h4>
+<p>Timing: &lt;30min</p>
+<p>Quantify the usage of alternatively excised introns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">leafcutter</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">leafcutter_output</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">sample_bam</span><span class="o">.</span><span class="n">list</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">leafcutter</span><span class="o">.</span><span class="n">sif</span> 
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">leafcutter</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">../../</span><span class="n">output_test</span><span class="o">/</span><span class="n">leafcutter</span> \
+    <span class="o">--</span><span class="n">samples</span> <span class="o">../../</span><span class="n">PCC_sample_list_subset_leafcutter</span> \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="o">../../</span><span class="n">output_test</span><span class="o">/</span><span class="n">star_output_wasp</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">leafcutter_apptainer</span><span class="p">:</span><span class="n">latest</span> \
+    <span class="o">-</span><span class="n">c</span> <span class="o">../</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">neurology</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">leafcutter_1</span>: 
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=1) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=2) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=3) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=4) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=5) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=6) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=7) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=8) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> (index=9) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">leafcutter_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/leafcutter/1000-PCC.bam.Aligned.sortedByCoord.out_wasp_qc.md.junc /restricted/projectnb/xqtl/xqtl_protocol/output_test/leafcutter/1001-PCC.bam.Aligned.sortedByCoord.out_wasp_qc.md.junc... (10 items in 10 groups)</span>
+INFO: Running <span class=" -Color -Color-Green">leafcutter_2</span>: 
+INFO: t53ce7f911566d133 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2489088 (&quot;job_t53ce7f911566d133&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">leafcutter_2</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/leafcutter/PCC_sample_list_subset_leafcutter_intron_usage_perind.counts.gz</span>
+INFO: Workflow leafcutter (ID=w2d4888af18ce85b3) is executed successfully with 1 completed step, 1 ignored step, 10 ignored substeps and 1 completed task.
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="for-psichomics">
-<h3>For <code class="docutils literal notranslate"><span class="pre">psichomics</span></code><a class="headerlink" href="#for-psichomics" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="b-psichomics">
+<h4>b. Psichomics<a class="headerlink" href="#b-psichomics" title="Permalink to this headline">¶</a></h4>
+<p>Timing: ~30min</p>
+<p>Quantify specific splicing events.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psichomics</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">psidata</span><span class="o">/</span><span class="n">output</span><span class="o">/</span> \
-    <span class="o">--</span><span class="n">samples</span> <span class="n">psidata</span><span class="o">/</span><span class="n">sample_SJ</span><span class="o">.</span><span class="n">list</span> \
-    <span class="o">--</span><span class="n">splicing_annotation</span> <span class="n">hg38_suppa</span><span class="o">.</span><span class="n">rds</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">container</span><span class="o">/</span><span class="n">psichomics</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">sos</span> <span class="n">run</span> <span class="n">splicing_calling</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">psichomics</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">../../</span><span class="n">output_test</span><span class="o">/</span><span class="n">psichomics</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">samples</span> <span class="o">../../</span><span class="n">PCC_sample_list_subset_leafcutter</span> \
+    <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="nb">dir</span> <span class="o">../../</span><span class="n">output_test</span><span class="o">/</span><span class="n">star_output_wasp</span> \
+    <span class="o">--</span><span class="n">splicing_annotation</span> <span class="o">../../</span><span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">SUPPA_annotation</span><span class="o">.</span><span class="n">rds</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">psichomics_apptainer</span><span class="p">:</span><span class="n">latest</span> \
+    <span class="o">-</span><span class="n">c</span> <span class="o">../</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">neurology</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">psichomics_1</span>: 
+INFO: t9842e29b618d1fad <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">failed</span>
+INFO: t9842e29b618d1fad <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2490344 (&quot;job_t9842e29b618d1fad&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">psichomics_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/psichomics/psichomics_junctions.txt</span>
+INFO: Running <span class=" -Color -Color-Green">psichomics_2</span>: 
+INFO: t4908c2bee8ddf317 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2490387 (&quot;job_t4908c2bee8ddf317&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">psichomics_2</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/psichomics/psi_raw_data.tsv</span>
+INFO: Workflow psichomics (ID=w2c5d88bef5022bf9) is executed successfully with 2 completed steps and 2 completed tasks.
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Substep</p></th>
+<th class="head"><p>Problem</p></th>
+<th class="head"><p>Possible Reason</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="command-interface">
 <h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
@@ -979,11 +1076,11 @@ Sections
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">strandness</span><span class="p">)):</span>
         <span class="c1"># for regtools command usage, replace 0 = unstranded/XS, 1 = first-strand/RF, 2 = second-strand/FR</span>
         <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;rf&#39;</span><span class="p">:</span>
-            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;RF&#39;</span>
         <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;fr&#39;</span><span class="p">:</span>
-            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;FR&#39;</span>
         <span class="k">if</span> <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;strand_missing&#39;</span><span class="p">:</span>
-            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">strandness</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;XS&#39;</span>
             
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bam_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;NA&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bam_list</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">bam_list</span><span class="p">:</span>
@@ -1069,7 +1166,7 @@ Sections
     <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">};</span> <span class="n">do</span>
     <span class="n">echo</span> <span class="err">$</span><span class="n">i</span> <span class="o">&gt;&gt;</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="p">;</span> <span class="n">done</span>
-    <span class="n">python</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">leafcutter</span><span class="o">/</span><span class="n">clustering</span><span class="o">/</span><span class="n">leafcutter_cluster_regtools</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_perind&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)}</span> <span class="o">-</span><span class="n">m</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_reads</span><span class="p">}</span> <span class="o">-</span><span class="n">l</span> <span class="err">$</span><span class="p">{</span><span class="n">max_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">r</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_ratio</span><span class="p">}</span>
+    <span class="n">leafcutter_cluster_regtools</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">j</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">nn</span><span class="p">}</span><span class="o">.</span><span class="n">junc</span> <span class="o">-</span><span class="n">o</span> <span class="err">$</span><span class="p">{</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bnn</span><span class="si">}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_perind&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)}</span> <span class="o">-</span><span class="n">m</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_reads</span><span class="p">}</span> <span class="o">-</span><span class="n">l</span> <span class="err">$</span><span class="p">{</span><span class="n">max_intron_len</span><span class="p">}</span> <span class="o">-</span><span class="n">r</span> <span class="err">$</span><span class="p">{</span><span class="n">cwd</span><span class="p">}</span> <span class="o">-</span><span class="n">p</span> <span class="err">$</span><span class="p">{</span><span class="n">min_clu_ratio</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

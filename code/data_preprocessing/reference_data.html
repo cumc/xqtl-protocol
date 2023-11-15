@@ -841,11 +841,15 @@
 </div>
 <div class="section" id="reference-files-for-methylation">
 <h3>Reference files for Methylation<a class="headerlink" href="#reference-files-for-methylation" title="Permalink to this headline">¶</a></h3>
-<p>FIXME &#64;hao</p>
+<ol class="simple">
+<li><p>To be added by Alexandre</p></li>
+</ol>
 </div>
 <div class="section" id="reference-files-for-alternative-splicing">
 <h3>Reference files for alternative splicing<a class="headerlink" href="#reference-files-for-alternative-splicing" title="Permalink to this headline">¶</a></h3>
-<p>FIXME &#64;xuanhe</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">psichomics_hg38_annotation.rds</span></code> for psichomics.</p></li>
+</ol>
 </div>
 </div>
 <div class="section" id="input-and-output">
@@ -1239,20 +1243,47 @@ INFO: Workflow SUPPA_annotation (ID=wc2895daedb91047b) is executed successfully 
 </div>
 <div class="section" id="viii-extract-rsids-for-known-variants">
 <h3>viii. Extract rsIDs for known variants<a class="headerlink" href="#viii-extract-rsids-for-known-variants" title="Permalink to this headline">¶</a></h3>
-<p>Timing:</p>
+<p>Timing: &lt;30min</p>
 <p>Extract the rsID for the known varriants so that we can distinguish them from the novel variants we had in our study. The procedure/rationale is explained in this post</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">sos</span> <span class="n">run</span> <span class="n">VCF_QC</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">dbsnp_annotate</span> \
     <span class="o">--</span><span class="n">genoFile</span> <span class="o">../</span><span class="n">reference_data</span><span class="o">/</span><span class="mi">00</span><span class="o">-</span><span class="n">All</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="o">../</span><span class="n">reference_data</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span> \
-    <span class="o">-</span><span class="n">J</span> <span class="mi">50</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">neurology</span> <span class="o">--</span><span class="n">add_chr</span>
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">bioinfo_apptainer</span><span class="p">:</span><span class="n">latest</span> \
+    <span class="o">--</span><span class="n">numThreads</span> <span class="mi">10</span> \
+    <span class="o">-</span><span class="n">J</span> <span class="mi">10</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">neurology</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR: Failed to locate VCF_QC.ipynb.sos
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">dbsnp_annotate</span>: 
+INFO: tb731222e5323dc2d <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tb731222e5323dc2d <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2546318 (&quot;job_tb731222e5323dc2d&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">dbsnp_annotate</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/reference_data/00-All.variants.gz</span>
+INFO: Workflow dbsnp_annotate (ID=w6bb14ba9b9686b80) is executed successfully with 1 completed step and 1 completed task.
 </pre></div>
 </div>
 </div>
@@ -1652,7 +1683,7 @@ Sections
 <div class="section" id="step-output">
 <h3>Step Output<a class="headerlink" href="#step-output" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">{cwd}/STAR_index</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">STAR</span></code></p></li>
+<li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">{cwd}/STAR_Index</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">STAR</span></code></p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1696,7 +1727,7 @@ Sections
 <div class="section" id="step-outputs">
 <h3>Step Outputs<a class="headerlink" href="#step-outputs" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">RSEM_index_dir</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></p></li>
+<li><p>Indexing file stored in <code class="docutils literal notranslate"><span class="pre">RSEM_Index</span></code>, which will be used by <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1945,7 +1976,12 @@ Sections
 </div>
 <div class="section" id="generate-tad-associated-index">
 <h2>Generate TAD associated index<a class="headerlink" href="#generate-tad-associated-index" title="Permalink to this headline">¶</a></h2>
-<p>We use <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7895846/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7895846/</a> to define the genotype cis region for fine mapping with different phenotypes. The actual TAD dataframe for each cell types and tissues are download from the hg38 TAD link from  <a class="reference external" href="http://3dgenome.fsm.northwestern.edu/publications.html">http://3dgenome.fsm.northwestern.edu/publications.html</a>.</p>
+<p>We use <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7895846/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7895846/</a> to define the genotype cis region for fine mapping with different phenotypes. The actual TAD dataframe for each cell types and tissues are download from the hg38 TAD link from  <a class="reference external" href="http://3dgenome.fsm.northwestern.edu/publications.html">http://3dgenome.fsm.northwestern.edu/publications.html</a>. The generation of this TAD file follows three steps:</p>
+<ol class="simple">
+<li><p>Union of TADs across tissues</p></li>
+<li><p>Extend with TAD boundaries</p></li>
+<li><p>Extend with cis windows</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Tad_annotateion</span><span class="p">]</span>

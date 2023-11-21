@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The PECOTMR intergration framework &#8212; FunGen-xQTL Consortium</title>
+    <title>TWAS and COLOC integration &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -51,8 +51,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="xQTL and GWAS region alignment" href="pecotmr_preprocessing.html" />
-    <link rel="prev" title="Stratified LD Score Regression" href="../enrichment/ldsc.html" />
+    <link rel="next" title="Meta-analysis with METAL" href="../multivariate_genome/METAL_pipeline.html" />
+    <link rel="prev" title="Mendelian Randomization using fine-mapping IV" href="fine_mr.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -449,7 +449,7 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
-  <a class="current reference internal" href="#">
+  <a class="reference internal" href="pecotmr.html">
    The PECOTMR intergration framework
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
@@ -457,7 +457,7 @@
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2">
     <a class="reference internal" href="pecotmr_preprocessing.html">
      xQTL and GWAS region alignment
@@ -473,8 +473,8 @@
      Mendelian Randomization using fine-mapping IV
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="intact.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      TWAS and COLOC integration
     </a>
    </li>
@@ -483,7 +483,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Multivariate Integration
+  Multivariate Analysis
  </span>
 </p>
 <ul class="nav bd-sidenav">
@@ -616,7 +616,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/code/pecotmr_analysis/pecotmr.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/code/pecotmr_integration/intact.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
@@ -633,10 +633,10 @@
     <div class="dropdown-buttons sourcebuttons">
         
         <a class="issues-button"
-            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/pecotmr_analysis/pecotmr.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/pecotmr_integration/intact.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/pecotmr_analysis/pecotmr.ipynb"><button
+        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/pecotmr_integration/intact.ipynb"><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
     </div>
@@ -656,6 +656,19 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   Example
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -664,10 +677,117 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="the-pecotmr-intergration-framework">
-<h1>The PECOTMR intergration framework<a class="headerlink" href="#the-pecotmr-intergration-framework" title="Permalink to this headline">¶</a></h1>
-<p>FIXME: need PECOTMR mini protocol</p>
-<div class="toctree-wrapper compound">
+  <div class="tex2jax_ignore mathjax_ignore section" id="twas-and-coloc-integration">
+<h1>TWAS and COLOC integration<a class="headerlink" href="#twas-and-coloc-integration" title="Permalink to this headline">¶</a></h1>
+<p>run intact on the ptwas and fastenloc output</p>
+<p>The posterior probabilities in the intact function are calculated through the following steps:</p>
+<ul class="simple">
+<li><p>Compute Bayes Factors: The function converts TWAS z-scores into Bayes factors by computing a grid of Bayes factors using different values of <code class="docutils literal notranslate"><span class="pre">K</span></code> (a vector of values over which Bayesian model averaging is performed, default: c(1,2,4,8,16)), then performing Bayesian model averaging using the log sum exp trick.</p></li>
+<li><p>Compute Prior Probabilities: The <code class="docutils literal notranslate"><span class="pre">prior_fun</span></code> function converts <code class="docutils literal notranslate"><span class="pre">GLCP</span></code> into prior probabilities. <code class="docutils literal notranslate"><span class="pre">prior_fun</span></code> is set as linear by default.</p></li>
+<li><p>Compute Posterior Probabilities</p></li>
+</ul>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>We now run an example based on <a class="reference external" href="https://github.com/tyeulalio/QTL_pipeline">example fastenloc and ptwas output from Tiffany, Montgomery lab</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">intact</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">intact</span> \
+    <span class="o">--</span><span class="n">fastenloc_file</span> <span class="n">output</span><span class="o">/</span><span class="n">fastenloc</span><span class="o">/*</span><span class="n">enloc</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">out</span> \
+    <span class="o">--</span><span class="n">ptwas_file</span> <span class="n">output</span><span class="o">/</span><span class="n">ptwas</span><span class="o">/*.</span><span class="n">ptwas</span><span class="o">.</span><span class="n">output</span> \
+    <span class="o">--</span><span class="n">tissue</span> <span class="n">DLPFC</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">intact</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">intact</span> \
+    <span class="o">--</span><span class="n">fastenloc_file</span> <span class="n">output</span><span class="o">/</span><span class="n">fastenloc</span><span class="o">/*</span><span class="n">enloc</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">out</span> \
+    <span class="o">--</span><span class="n">ptwas_file</span> <span class="n">output</span><span class="o">/</span><span class="n">ptwas</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">output</span> \
+    <span class="o">--</span><span class="n">tissue</span> <span class="n">DLPFC</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># Workdir</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="c1"># fastenloc output</span>
+<span class="kn">parameter:</span> <span class="n">fastenloc_file</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># ptwas output</span>
+<span class="kn">parameter:</span> <span class="n">ptwas_file</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># dataset </span>
+<span class="kn">parameter:</span> <span class="n">tissue</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="kn">parameter:</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="c1"># QTL data type</span>
+<span class="kn">parameter:</span> <span class="n">QTL</span> <span class="o">=</span> <span class="s1">&#39;eQTL&#39;</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">parameter:</span> <span class="n">entrypoint</span><span class="o">=</span> <span class="p">(</span><span class="s1">&#39;micromamba run -a &quot;&quot; -n&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="k">if</span> <span class="n">container</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;5h&quot;</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;8G&quot;</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">intact</span><span class="p">]</span>
+<span class="kn">input:</span> <span class="n">ptwas_file</span><span class="p">,</span> <span class="n">fastenloc_file</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">tissue</span><span class="si">}</span><span class="s1">.INTACT.rds&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">nn</span><span class="si">}</span><span class="s1">.stdout&#39;</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">INTACT</span><span class="p">)</span>
+    <span class="c1">#library(biomaRt)</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+
+    <span class="c1"># run intact on the ptwas and colocalization output</span>
+
+
+    <span class="n">run_intact</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">ptwas</span><span class="p">,</span> <span class="n">fastenloc</span><span class="p">,</span> <span class="n">alpha</span><span class="p">){</span>
+        <span class="c1"># join the columns that we want</span>
+        <span class="n">sub_ptwas</span> <span class="o">&lt;-</span> <span class="n">ptwas</span> <span class="o">%&gt;%</span>
+            <span class="n">select</span><span class="p">(</span><span class="n">gene</span><span class="o">=</span><span class="n">GENE</span><span class="p">,</span> <span class="n">zscore</span><span class="o">=</span><span class="n">STAT</span><span class="p">)</span>
+
+        <span class="c1"># match the gene names </span>
+        <span class="n">sub_fastenloc</span> <span class="o">&lt;-</span> <span class="n">fastenloc</span> <span class="o">%&gt;%</span>
+            <span class="n">select</span><span class="p">(</span><span class="n">gene</span><span class="o">=</span><span class="n">Gene</span><span class="p">,</span> <span class="n">GLCP</span><span class="p">)</span> <span class="o">%&gt;%</span>
+            <span class="n">mutate</span><span class="p">(</span><span class="n">gene</span> <span class="o">=</span> <span class="n">str_replace_all</span><span class="p">(</span><span class="n">gene</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">.&quot;</span><span class="p">))</span>
+
+        <span class="n">ptwas_fastenloc</span> <span class="o">&lt;-</span> <span class="n">sub_ptwas</span> <span class="o">%&gt;%</span>
+            <span class="n">inner_join</span><span class="p">(</span><span class="n">sub_fastenloc</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">&lt;-</span> <span class="n">intact</span><span class="p">(</span><span class="n">GLCP_vec</span><span class="o">=</span><span class="n">ptwas_fastenloc</span><span class="err">$</span><span class="n">GLCP</span><span class="p">,</span>
+                    <span class="n">z_vec</span><span class="o">=</span><span class="n">ptwas_fastenloc</span><span class="err">$</span><span class="n">zscore</span><span class="p">,</span>
+                    <span class="n">prior_fun</span><span class="o">=</span><span class="n">linear</span>
+        <span class="p">)</span>
+        <span class="n">pip_fdr</span> <span class="o">&lt;-</span> <span class="n">fdr_rst</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+
+        <span class="c1"># combine results</span>
+        <span class="n">intact_res</span> <span class="o">&lt;-</span> <span class="n">cbind</span><span class="p">(</span><span class="n">ptwas_fastenloc</span><span class="p">,</span> <span class="n">intact_pip</span><span class="o">=</span><span class="n">res</span><span class="p">,</span> <span class="n">fdr_sig</span> <span class="o">=</span> <span class="n">pip_fdr</span><span class="p">[[</span><span class="s2">&quot;sig&quot;</span><span class="p">]])</span> <span class="o">%&gt;%</span>
+            <span class="n">arrange</span><span class="p">(</span><span class="o">-</span><span class="n">intact_pip</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">intact_res</span><span class="p">)</span>
+        
+    <span class="p">}</span>
+
+
+        <span class="c1"># load ptwas data</span>
+        <span class="c1">#ptwas &lt;- read.csv(&quot;${ptwas_file}&quot;,sep=&#39;\t&#39;)</span>
+        <span class="n">ptwas</span> <span class="o">&lt;-</span> <span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{ptwas_file}</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">check</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">)</span> <span class="o">%&gt;%</span>
+            <span class="n">distinct</span><span class="p">(</span><span class="n">GENE</span><span class="p">,</span> <span class="n">SUBCLASS</span><span class="p">,</span> <span class="o">.</span><span class="n">keep_all</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
+        <span class="c1"># load fastenloc GLCP data</span>
+        <span class="n">fastenloc</span> <span class="o">&lt;-</span> <span class="n">read_table</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{fastenloc_file}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nb">filter</span><span class="p">(</span><span class="n">GLCP</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span><span class="c1">##FIX</span>
+
+        <span class="n">res</span> <span class="o">&lt;-</span> <span class="n">run_intact</span><span class="p">(</span><span class="n">ptwas</span><span class="p">,</span> <span class="n">fastenloc</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span> <span class="s1">&#39;$</span><span class="si">{alpha}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">saveRDS</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;$</span><span class="si">{_output}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -684,7 +804,7 @@
         },
         kernelOptions: {
             kernelName: "sos",
-            path: "./code/pecotmr_analysis"
+            path: "./code/pecotmr_integration"
         },
         predefinedOutput: true
     }
@@ -696,17 +816,17 @@
         
             <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="../enrichment/ldsc.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="fine_mr.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Stratified LD Score Regression</p>
+            <p class="prev-next-title">Mendelian Randomization using fine-mapping IV</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="pecotmr_preprocessing.html" title="next page">
+    <a class='right-next' id="next-link" href="../multivariate_genome/METAL_pipeline.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">xQTL and GWAS region alignment</p>
+        <p class="prev-next-title">Meta-analysis with METAL</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

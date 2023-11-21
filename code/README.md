@@ -25,3 +25,14 @@
 
 1. `quantile_qtl`: an experiment of applying quantile regression to xQTL studies
 2. `integrative_prototype`: approaches we have tried but decided to not pursue further 
+
+
+\textbf{Currently, what's completely missing are:}
+
+- Workflow to generate LD reference panel, documented in `reference_data.ipynb` (OO).
+- The pecotmr preprocessing steps including padding and formatting (GW).
+- The new SuSiE RSS for AD GWAS with discrepancy between Z and LD fixed, and imputation applied (GW).
+- Enrichment and colocalization pipeline using the pecotmr method (RF).
+- mvSuSiE related workflows (AW).
+- ColocBoost related workflows (PT&HS).
+- MRAID or whatever trans MR (CY&DN).

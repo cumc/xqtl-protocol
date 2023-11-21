@@ -12,7 +12,7 @@
 2. `trans_analysis`: SuSiE_RSS (genome-wide, including GWAS), polyfun, MRAID
 3. `multivariate_genome`: MASH, METAL (genome-wide multivariate analysis)
 4. `enrichment`: GREGOR, sLDSC, and a customized implementation using VEP
-5. `pecotmr_analysis`: pair-wise enrichment, colocalization, TWAS and MR using the pecotmr framework
+5. `pecotmr_integration`: pair-wise enrichment, colocalization, TWAS and MR using the pecotmr framework
 6. `rare_xqtl`: watershed pipeline
 
 ## Utilities

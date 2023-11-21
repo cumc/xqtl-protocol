@@ -8,9 +8,9 @@
 
 ## Advanced QTL analysis and integration
 
-1. `cis_analysis`: SuSiE, fSuSiE, mvSuSiE, univariate TWAS weights, mr.mash, mmQTL (individual level data)
+1. `cis_analysis`: SuSiE, fSuSiE, mvSuSiE, ColocBoost (for mvSuSiE and ColocBoost input can be QTL individual level data, xQTL summary statistics data and GWAS summary statistics), univariate TWAS weights, mr.mash, mmQTL (individual level data)
 2. `trans_analysis`: SuSiE_RSS (genome-wide, including GWAS), polyfun, MRAID
-3. `multivariate`: MASH, METAL, ColocBoost (input must be both QTL individual level data and GWAS summary statistics)
+3. `multivariate_genome`: MASH, METAL (genome-wide multivariate analysis)
 4. `enrichment`: GREGOR, sLDSC, and a customized implementation using VEP
 5. `pecotmr_analysis`: pair-wise enrichment, colocalization, TWAS and MR using the pecotmr framework
 6. `rare_xqtl`: watershed pipeline

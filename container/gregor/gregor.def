@@ -1,0 +1,55 @@
+Bootstrap: docker
+From: debian:buster-slim
+
+%post
+    # Update and install dependencies
+    apt-get update && apt-get install -y \
+        build-essential \
+        wget \
+        file \
+        curl \
+        git-all \
+        libboost-all-dev \
+        libgsl-dev \
+        locales \
+        tar
+
+    # Set up locales to support UTF-8
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+    locale-gen en_US.UTF-8
+
+    # Install Perl
+    export PERL_VERSION=5.32.1
+    wget http://www.cpan.org/src/5.0/perl-${PERL_VERSION}.tar.gz \
+        && tar -xzf perl-${PERL_VERSION}.tar.gz \
+        && cd perl-${PERL_VERSION} \
+        && ./Configure -des -Dusethreads \
+        && make \
+        && make test \
+        && make install
+
+    # Install cpanminus and Perl modules
+    cpan App::cpanminus
+    cpanm DBI Switch DBD::SQLite
+
+    # Clean up
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+
+    # Install GREGOR
+    curl -L http://csg.sph.umich.edu/GREGOR/index.php/site/downloadFile?fileTag=source_codes -o GREGOR.tar.gz
+    mkdir -p /opt/GREGOR
+    tar -xzvf GREGOR.tar.gz -C /opt/GREGOR
+    chmod -R +x /opt/GREGOR
+
+%environment
+    export PATH=/opt/GREGOR:$PATH
+    export LANGUAGE=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
+    export LC_TERMINAL=iTerm2
+    export PERL_BADLANG=0
+
+%runscript
+    exec "$@"
+

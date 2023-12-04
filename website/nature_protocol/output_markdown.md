@@ -89,30 +89,6 @@ We use two different tools to quantify the many types of splicing events which a
 
 Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. 
 #### Data Pre-processing (Step 2)
-##### A.  Covariate Data Preprocessing
-
-
-
-
-
-
-This workflow implements 3 procedures for hidden factor analysis from omcis data:
-
-
-
-1. The [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. 
-
-2. Factor analysis using Bi-Cross validation, Owen, Art & Wang, Jingshu. (2015). Bi-Cross-Validation for Factor Analysis. Statistical Science. 31. 10.1214/15-STS539. with software package `APEX` (Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin, bioRxiv 2020.12.18.423490; doi: https://doi.org/10.1101/2020.12.18.423490)
-
-3. PCA with automatic determination of the number of factors to use. This is mainly inspired by a [recent benchmark from Jessica Li's group](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02761-4).
-
-
-
-
-
-Overall, we will pick PCA based approach for the xQTL project, although additional considerations should be taken for single-cell eQTL analysis as investigated in [this paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02873-5).
-
-This module is used to merge various sources of previously computed or obtained covariates into one file, for downstreams QTL analysis.
 
 ### Expertise needed to implement the protocol
 
@@ -334,75 +310,6 @@ Timing ~20min
 
 
 ### 2. Data Pre-processing
-#### A.  Covariate Data Preprocessing
-
-
-```
-sos run pipeline/PEER_factor.ipynb PEER \
-   --cwd output \
-   --phenoFile ALL.log2cpm.bed.chr12.mol_phe.bed.gz  \
-   --container containers/PEER.sif  \
-   --N 3
-```
-
-
-
-```
-tree ./output
-```
-
-
-
-```
-%preview ./output/MWE.Cov_PEER.PEER_diagnosis.pdf -s png
-```
-
-
-
-```
-cat ./output/MWE.Cov_PEER.PEER.cov.stdout
-```
-
-
-##### Compute residule on merged covariates and perform hidden factor analysis
-
-
-```
-sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
-   --cwd output/covariate \
-   --phenoFile output/phenotype/protocol_example.protein.bed.gz  \
-   --covFile output/covariate/protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.gz \
-   --mean-impute-missing \
-   --container containers/PCAtools.sif
-```
-
-
-##### APEX
-
-
-```
-sos run pipeline/BiCV_factor.ipynb BiCV \
-   --cwd output \
-   --phenoFile ALL.log2cpm.bed.chr12.mol_phe.bed.gz  \
-   --container containers/apex.sif  \
-   --N 3
-```
-
-
-##### Merge Covariates and Genotype PCA
-
-
-```
-sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
-    --cwd output/covariate \
-    --pcaFile output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.rds \
-    --covFile  input/protocol_example.samples.tsv \
-    --tol_cov 0.4  \
-    --k `awk '$3 < 0.8' output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.scree.txt | tail -1 | cut -f 1 ` \
-    --container containers/bioinfo.sif
-```
-
-
 
 ## Timing
 
@@ -413,7 +320,6 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 |------|-----|----|
 |Molecular Phenotypes| RNA-seq expression| <3.5 hours|
 | | Alternative splicing from RNA-seq data| <2 hours|
-|Data Pre-processing| Covariate Data Preprocessing| < X minutes|
 
 ## Troubleshooting
 
@@ -431,8 +337,6 @@ The final output contained QCed and normalized expression data in a bed.gz file.
 #### B.  Alternative splicing from RNA-seq data
 
 The final output contains the QCed and normalized splicing data from leafcutter and psichonics.
-#### A.  Covariate Data Preprocessing
-
 
 ## Figures
 

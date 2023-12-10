@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Summary statistics formatting &#8212; FunGen-xQTL Consortium</title>
+    <title>Extract genome-wide data for multivariate analysis &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../../_static/css/theme.css" rel="stylesheet">
   <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -42,6 +42,8 @@
     <script src="../../../_static/copybutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -516,7 +518,7 @@
   <ul class="current">
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Summary statistics formatting
+     Extract genome-wide data for multivariate analysis
     </a>
    </li>
    <li class="toctree-l2">
@@ -662,6 +664,11 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#description">
+   Description
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#input">
    Input
   </a>
@@ -694,20 +701,29 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="summary-statistics-formatting">
-<h1>Summary statistics formatting<a class="headerlink" href="#summary-statistics-formatting" title="Permalink to this headline">¶</a></h1>
-<p>This notebook takes in more than one collections of sumstat text file,  to produce a collections of merged.rds per gene files that can served as the input of both MASH and MVSuSiE analysis.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="extract-genome-wide-data-for-multivariate-analysis">
+<h1>Extract genome-wide data for multivariate analysis<a class="headerlink" href="#extract-genome-wide-data-for-multivariate-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This notebook prepares input data for Utimate Decomposition to generate mixture prior (for mvSuSiE) or to use for MASH analysis. It outputs 3 sets of data: <span class="math notranslate nohighlight">\(Z_s\)</span>, <span class="math notranslate nohighlight">\(Z_n\)</span> and <span class="math notranslate nohighlight">\(Z_r\)</span> (strong, null and random)</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Z_s\)</span>: <strong>this is now extracted from genome-wide cis analysis fine-mapping results</strong>. We extract the top loci data frame of each condition, where the CS threshold is set to be 0.7. Then we merge the z-scores of them into one data frame.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Z_n\)</span>: (null <span class="math notranslate nohighlight">\(Z\)</span>-scores): we first extract up to <span class="math notranslate nohighlight">\(M\)</span> candidate SNPs from each region which satisify <span class="math notranslate nohighlight">\(|z| \le 2\)</span>, then overlap it with the list of independent SNPs to keep only independent variants, then finally take the union of the extracted.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Z_r\)</span>: we randomly extract variants based on input independent list of variants.</p></li>
+</ul>
+<p><strong>FIXME: We need to apply the independent list of variants Anqi developed and use it here. Also, it might be a good idea we take some of these utility functions into pecotmr package for better maintenance — I will make some recommendations on slack</strong></p>
+</div>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
-<li><p><strong>Sumstats Files</strong>: Bgzipped summary statistics for chromosomes 1-22, indexed by Tabix.</p></li>
-<li><p><strong>Region File</strong>: Defines genomic regions for each gene; enhanced cis regions available elsewhere.</p></li>
-<li><p><strong>Susie List</strong>: Paths list for fine-mapped RDS files from finemapping output.</p></li>
+<li><p><strong>Marginal summary statistics files</strong>: Bgzipped summary statistics for chromosomes 1-22, generated by tensorQTL cis-analysis and indexed by <code class="docutils literal notranslate"><span class="pre">tabix</span></code>.</p></li>
+<li><p><strong>Fine-mapping results file index</strong>: Path to lists of fine-mapped RDS files from finemapping output.</p></li>
+<li><p><strong>Genome region partition</strong> (optional): Defines genomic regions for each gene as enhanced cis regions where we should extract <span class="math notranslate nohighlight">\(Z_n\)</span> and <span class="math notranslate nohighlight">\(Z_r\)</span> from. This list is used for fine-mapping, so if the complete list of fine-mapping RDS (rather than a handful of it) is already avaiable (#2 above) then there is no need to provide this file. Otherwise, it’s going to be limited to only certaion regions, which is also good for testing purpose.</p></li>
 </ol>
 </div>
 <div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
-<p><strong>mashr input</strong>: A list of 10</p>
+<p>A list of 10 elements:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">List</span> <span class="n">of</span> <span class="mi">10</span>
  <span class="err">$</span> <span class="n">random</span><span class="o">.</span><span class="n">z</span><span class="p">:</span> <span class="n">num</span> <span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">36</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span><span class="mf">0.785</span> <span class="o">-</span><span class="mf">0.785</span> <span class="o">-</span><span class="mf">0.785</span> <span class="o">-</span><span class="mf">0.785</span> <span class="o">-</span><span class="mf">0.785</span> <span class="o">...</span>
   <span class="o">..-</span> <span class="n">attr</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s2">&quot;dimnames&quot;</span><span class="p">)</span><span class="o">=</span><span class="n">List</span> <span class="n">of</span> <span class="mi">2</span>
@@ -796,12 +812,13 @@
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="nb">str</span>
-
 <span class="kn">parameter:</span> <span class="n">pheno_names</span> <span class="o">=</span> <span class="nb">str</span>
 <span class="c1"># Path to work directory where output locates</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s2">&quot;./output&quot;</span><span class="p">)</span>
 <span class="c1"># Containers that contains the necessary packages</span>
-<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">parameter:</span> <span class="n">entrypoint</span><span class="o">=</span> <span class="p">(</span><span class="s1">&#39;micromamba run -a &quot;&quot; -n&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="k">if</span> <span class="n">container</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
 <span class="c1"># For cluster jobs, number commands to run per job</span>
 <span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="c1"># Wall clock time expected</span>
@@ -820,10 +837,12 @@
 <span class="kn">parameter:</span> <span class="n">exclude_condition</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="kn">parameter:</span> <span class="n">datadir</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 <span class="kn">parameter:</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">999</span>
-<span class="kn">parameter:</span> <span class="n">n_random</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="kn">parameter:</span> <span class="n">n_null</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="kn">parameter:</span> <span class="n">n_random</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="kn">parameter:</span> <span class="n">n_null</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="kn">parameter:</span> <span class="n">z_only</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="kn">parameter:</span> <span class="n">na_remove</span> <span class="o">=</span> <span class="s2">&quot;TRUE&quot;</span>
+<span class="c1"># This is in principle required; but in practice it can be optional if we are not exactly stringent about getting independent SNPs</span>
+<span class="kn">parameter:</span> <span class="n">independent_variant_list</span> <span class="o">=</span> <span class="n">path</span>
 <span class="n">ran_null</span> <span class="o">=</span> <span class="n">file_target</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.random.null.rds&quot;</span><span class="p">)</span>
 <span class="n">strong</span> <span class="o">=</span> <span class="n">file_target</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s2">.strong.rds&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1141,8 +1160,7 @@
     <span class="n">out</span><span class="err">$</span><span class="n">strong</span><span class="o">.</span><span class="n">s</span> <span class="o">&lt;-</span> <span class="n">strong</span><span class="err">$</span><span class="n">sbhat</span>
     <span class="n">X</span> <span class="o">&lt;-</span> <span class="n">out</span><span class="err">$</span><span class="n">strong</span><span class="o">.</span><span class="n">z</span> <span class="o">&lt;-</span> <span class="n">strong</span><span class="err">$</span><span class="n">z</span>
     <span class="n">X</span><span class="p">[</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">X</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">out</span><span class="err">$</span><span class="n">XtX</span> <span class="o">=</span> <span class="n">t</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">%*%</span> <span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">/</span> <span class="n">nrow</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-  
+    <span class="n">out</span><span class="err">$</span><span class="n">ZtZ</span> <span class="o">=</span> <span class="n">t</span><span class="p">(</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="o">%*%</span> <span class="k">as</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">/</span> <span class="n">nrow</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">saveRDS</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
 </pre></div>
 </div>

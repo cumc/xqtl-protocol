@@ -132,7 +132,7 @@
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../reference_data.html">
+  <a class="reference internal" href="../../reference_data/reference_data.html">
    Reference Data
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
@@ -142,13 +142,18 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../reference_data_preparation.html">
+    <a class="reference internal" href="../../reference_data/reference_data_preparation.html">
      Reference Data Standardization
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../generalized_TADB.html">
+    <a class="reference internal" href="../../reference_data/generalized_TADB.html">
      Generation of Topologically Associated Domains and their Boundaries
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../reference_data/ld_prune_reference.html">
+     Independent list of variants using LD clumping
     </a>
    </li>
   </ul>
@@ -736,6 +741,7 @@
 <p>This implements some recommendations from UK Biobank on <a class="reference external" href="https://www.medrxiv.org/content/10.1101/2020.11.02.20222232v1.full-text">sequence data quality control</a>.</p>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>A major challenge in biomedical research is the quality control (QC) of sequencing data. False positive variant calls can hinder the ability to detect disease associated variants or introduce spurious associations, therefore the need for a rigorous QC. Our pipeline focuses on QC after the variant calling stage and requires project Variant Calling Format (pVCF) as input files. We have defined default thresholds for genotype and variant-level hard filtering based on recommendations from the UK Biobank team and a thorough review of the literature [<a class="reference external" href="https://doi.org/10.1186/1471-2105-15-125">cf. Carson et al. BMC Bioinformatics (2014)</a>,<a class="reference external" href="https://doi.org/10.1038/nature19057">cf. Lek et al. Nature (2016)</a>,<a class="reference external" href="https://doi.org/10.1038/s41588-021-00885-0">cf. Szustakowski et al. Nature Genetics (2021)</a>]. Genotypes are kept if they have a Genotype Depth (DP) &gt;= 10 and a Genotype Quality (GQ) &gt;= 20. Variants are included if at least one sample has an allelic balance (AB) &gt;= 0.15 for Single Nucleotide Variants (SNVs) and AB&gt;=0.2 for indels, variant missigness is below 20% and Hardy-Weinberg Equilibrium p-value is &gt; 1e-08. Our pipeline uses bcftools to handle the left-normalization of indels, the formatting of multiallellic sites, annotate known/novel variants based on dnSNP, perfom genotype and variant level filtering based on genotype calling qualities and output summary statitics (TS/TV ratio) before and after QC to assess its effectiveness. The output of this mini-protocol is a quality contolled <code class="docutils literal notranslate"><span class="pre">vcg.gz</span></code> file for downstream analysis.</p>
 <p>The goal of this module is to perform QC on VCF files, including</p>
 <ol class="simple">
 <li><p>Handling the formatting of multi-allelic sites.</p></li>

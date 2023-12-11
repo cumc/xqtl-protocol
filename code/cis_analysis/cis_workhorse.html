@@ -1,752 +1,520 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
     <title>Advanced cis-QTL analysis with individual level data &#8212; FunGen-xQTL Consortium</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/cis_analysis/cis_workhorse';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="SuSiE fine-mapping workflow" href="SuSiE.html" />
     <link rel="prev" title="Overview of advanced cis-QTL analysis" href="cis_advanced_overview.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/xqtl_wf.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">FunGen-xQTL Consortium</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../README.html">
-   FunGen-xQTL Computational Protocol
-  </a>
- </li>
-</ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Getting started
- </span>
-</p>
+    
+    
+    <img src="../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../xqtl_protocol_demo.html">
-   Illustration of xQTL protocol
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Command Generator
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../commands_generator/bulk_expression_commands.html">
-   RNA-seq calling and QC
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">
-   Univariate xQTL Discovery
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Reference data
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../reference_data/reference_data.html">
-   Reference Data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../reference_data/reference_data_preparation.html">
-     Reference Data Standardization
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../reference_data/generalized_TADB.html">
-     Generation of Topologically Associated Domains and their Boundaries
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../reference_data/ld_prune_reference.html">
-     Independent list of variants using LD clumping
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_data/reference_data.html">Reference Data</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Molecular Phenotypes
- </span>
-</p>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">
-   RNA-seq expression
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">
-     Quantifying expression from RNA-seq data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">
-     Sample level RNA-seq quality control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">
-     Bulk RNA-seq counts normalization
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">
-   scRNA-seq expression calling
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../molecular_phenotypes/apa.html">
-   Alternative polyadenylation
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">
-     APA Calling
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../molecular_phenotypes/methylation.html">
-   Methylation
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-  <label for="toctree-checkbox-4">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">
-     Quantification of methylation data
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../molecular_phenotypes/splicing.html">
-   Alternative splicing from RNA-seq data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">
-     Quantifying alternative splicing from RNA-seq data
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">
-     Normalization and phenotype table generation for splicingQTL analysis
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Data Pre-processing
- </span>
-</p>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">
-   Genotype data preprocessing
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-  <label for="toctree-checkbox-6">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/genotype/VCF_QC.html">
-     Genotype VCF File Quality Control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">
-     Genotype PLINK File Quality Control
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/genotype/PCA.html">
-     Principal Component Analysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/genotype/GRM.html">
-     Genomic Relationship Matrices
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">
-     Genotype Data Formatting
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">
-   Phenotype data preprocessing
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">
-     Gene Coordinate Annotation
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">
-     Phenotype Data Formatting
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">
-     Phenotype Data Imputation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">
-   Covariate Data Preprocessing
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-  <label for="toctree-checkbox-8">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">
-     Hidden Factor Analysis
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">
-     Covariate Data Formatting
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">Genotype Data Formatting</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  QTL Association Testing
- </span>
-</p>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../association_scan/qtl_association_testing.html">
-   QTL Association Analysis
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-  <label for="toctree-checkbox-9">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">
-     TensorQTL QTL Association Testing
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../association_scan/APEX/APEX.html">
-     APEX QTL association testing
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">
-   QTL data postprocessing
-  </a>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../association_scan/qtl_association_testing.html">QTL Association Analysis</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Advanced cis-QTL Analysis
- </span>
-</p>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced cis-QTL Analysis</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="cis_advanced_overview.html">
-   Overview of advanced cis-QTL analysis
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-  <label for="toctree-checkbox-10">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Advanced cis-QTL analysis with individual level data
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="SuSiE.html">
-   SuSiE fine-mapping workflow
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="fSuSiE.html">
-   fSuSiE workflows
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mvSuSiE.html">
-   Multivariate fine-mapping workflows
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="mrmash.html">
-   Multivariate TWAS prediction model
-  </a>
- </li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="cis_advanced_overview.html">Overview of advanced cis-QTL analysis</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Advanced cis-QTL analysis with individual level data</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Enrichment Analysis
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../enrichment/gregor.html">
-   GREGOR enrichment analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../enrichment/ldsc.html">
-   Stratified LD Score Regression
-  </a>
- </li>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SuSiE.html">SuSiE fine-mapping workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fSuSiE.html">fSuSiE workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mvSuSiE.html">Multivariate fine-mapping workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mrmash.html">Multivariate TWAS prediction model</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  xQTL-GWAS Integration
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment Analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../pecotmr_integration/pecotmr.html">
-   The PECOTMR intergration framework
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-  <label for="toctree-checkbox-11">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../pecotmr_integration/pecotmr_preprocessing.html">
-     xQTL and GWAS region alignment
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../pecotmr_integration/ptwas.html">
-     TWAS for xQTL
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../pecotmr_integration/fine_mr.html">
-     Mendelian Randomization using fine-mapping IV
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../pecotmr_integration/intact.html">
-     TWAS and COLOC integration
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/gregor.html">GREGOR enrichment analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/ldsc.html">Stratified LD Score Regression</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Multivariate Analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">xQTL-GWAS Integration</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../multivariate_genome/METAL_pipeline.html">
-   Meta-analysis with METAL
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-  <label for="toctree-checkbox-12">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../multivariate_genome/METAL/METAL.html">
-     Meta-analysis with METAL
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../multivariate_genome/MASH_pipeline.html">
-   Multivariate association with MASH
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
-  <label for="toctree-checkbox-13">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../multivariate_genome/MASH/mash_preprocessing.html">
-     Summary statistics formatting
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../multivariate_genome/MASH/mixture_prior.html">
-     A multivariate EBNM approach for mixture multivariate distribution estimate
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../multivariate_genome/MASH/mash_fit.html">
-     MASH analysis pipeline with data-driven prior matrices
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../multivariate_genome/MASH/mash_posterior.html">
-     MASH analysis pipeline with posterior computation
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pecotmr_integration/pecotmr.html">The PECOTMR intergration framework</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pecotmr_integration/pecotmr_preprocessing.html">xQTL and GWAS region alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pecotmr_integration/twas_mr.html">xQTL and GWAS integration: TWAS and MR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pecotmr_integration/intact.html">TWAS and COLOC integration</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Rare xQTL
- </span>
-</p>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../rare_xqtl/watershed.html">
-   watershed analysis for rare xQTL
-  </a>
- </li>
+</li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Post Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../post_processing/sumstats_standardizer.html">
-   Summary statistics standardization and export
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../post_processing/rds_to_vcf.html">
-   Summary statistics in VCF format
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../post_processing/association_scan_post_processing.html">
-   Association result processing
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../post_processing/fine_mapping_post_processing.html">
-   SuSIE results post process
-  </a>
- </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/METAL/METAL.html">Meta-analysis with METAL</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_preprocessing.html">Extract genome-wide data for multivariate analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_posterior.html">MASH analysis pipeline with posterior computation</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Rare xQTL</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../rare_xqtl/watershed.html">watershed analysis for rare xQTL</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Post Processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/sumstats_standardizer.html">Summary statistics standardization and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/rds_to_vcf.html">Summary statistics in VCF format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/association_scan_post_processing.html">Association result processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/fine_mapping_post_processing.html">SuSIE results post process</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Supported by <a href="https://www.nia.nih.gov/research/ad-genetics">NIH NIA</a>
-</div>
-
-</div>
-
-
-          
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/code/cis_analysis/cis_workhorse.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
         
-        <a class="issues-button"
-            href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/cis_analysis/cis_workhorse.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/cis_analysis/cis_workhorse.ipynb"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/cis_analysis/cis_workhorse.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/cis_analysis/cis_workhorse.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-        </div>
 
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/code/cis_analysis/cis_workhorse.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Advanced cis-QTL analysis with individual level data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#input">
-   Input
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-genotype-list">
-     Example genotype list
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-phenotype-list">
-     Example phenotype list
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#output">
-   Output
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#minimal-working-example">
-   Minimal working example
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#susie-with-twas-weights">
-     SuSiE with TWAS weights
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#fsusie">
-     fSuSiE
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#univariate-analysis-susie-and-twas">
-   Univariate analysis: SuSiE and TWAS
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#multivariate-analysis-mvsusie-and-mr-mash">
-   Multivariate analysis: mvSuSiE and mr.mash
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mvsusie">
-     mvSuSiE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mr-mash">
-     mr.mash
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functional-regression-fsusie-for-trait">
-   Functional regression fSuSiE for trait
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functional-regression-fsusie-with-other-modality">
-   Functional regression fSuSiE with other modality
-  </a>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-genotype-list">Example genotype list</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-phenotype-list">Example phenotype list</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#susie-with-twas-weights">SuSiE with TWAS weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie">fSuSiE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-analysis-susie-and-twas">Univariate analysis: SuSiE and TWAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-analysis-mvsusie-and-mr-mash">Multivariate analysis: mvSuSiE and mr.mash</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mvsusie">mvSuSiE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mr-mash">mr.mash</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-regression-fsusie-for-trait">Functional regression fSuSiE for trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-regression-fsusie-with-other-modality">Functional regression fSuSiE with other modality</a></li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="advanced-cis-qtl-analysis-with-individual-level-data">
-<h1>Advanced cis-QTL analysis with individual level data<a class="headerlink" href="#advanced-cis-qtl-analysis-with-individual-level-data" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="advanced-cis-qtl-analysis-with-individual-level-data">
+<h1>Advanced cis-QTL analysis with individual level data<a class="headerlink" href="#advanced-cis-qtl-analysis-with-individual-level-data" title="Permalink to this heading">#</a></h1>
 <p>This notebook performs various advanced statistical analysis on multiple xQTL in a given region. Current procedures implemented include:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Univariate analysis</p>
 <ul class="simple">
 <li><p>SuSiE</p></li>
@@ -765,9 +533,9 @@
 </ul>
 </li>
 </ol>
-<div class="section" id="input">
-<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
 <li><p>A list of regions to be analyzed (optional); the last column of this file should be region name.</p></li>
 <li><p>A list of genotype files per region to be analyzed, in PLINK <code class="docutils literal notranslate"><span class="pre">bed</span></code> format.</p></li>
 <li><p>vector of lists of phenotype files per region to be analyzed, in UCSC <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> with index in <code class="docutils literal notranslate"><span class="pre">bed.gz.tbi</span></code> formats.</p></li>
@@ -775,8 +543,8 @@
 <li><p>Optionally a vector of names of the phenotypic conditions in the form of <code class="docutils literal notranslate"><span class="pre">cond1</span> <span class="pre">cond2</span> <span class="pre">cond3</span></code> separated with whitespace.</p></li>
 </ol>
 <p>Input 2 and 3 should be outputs from <code class="docutils literal notranslate"><span class="pre">genotype_per_region</span></code> and <code class="docutils literal notranslate"><span class="pre">annotate_coord</span></code> modules in previous preprocessing steps. 4 should be output of <code class="docutils literal notranslate"><span class="pre">covariate_preprocessing</span></code> pipeline that contains genotype PC, phenotypic hidden confounders and fixed covariates.</p>
-<div class="section" id="example-genotype-list">
-<h3>Example genotype list<a class="headerlink" href="#example-genotype-list" title="Permalink to this headline">¶</a></h3>
+<section id="example-genotype-list">
+<h3>Example genotype list<a class="headerlink" href="#example-genotype-list" title="Permalink to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># region        path</span>
 <span class="n">ENSG00000000457</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">genotype_per_region</span><span class="o">/</span><span class="n">ENSG00000000457</span><span class="o">.</span><span class="n">bed</span>
 <span class="n">ENSG00000000460</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">genotype_per_region</span><span class="o">/</span><span class="n">ENSG00000000460</span><span class="o">.</span><span class="n">bed</span>
@@ -788,9 +556,9 @@
 <span class="n">ENSG00000001460</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mfs</span><span class="o">/</span><span class="n">statgen</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">genotype_per_region</span><span class="o">/</span><span class="n">ENSG00000001460</span><span class="o">.</span><span class="n">bed</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="example-phenotype-list">
-<h3>Example phenotype list<a class="headerlink" href="#example-phenotype-list" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="example-phenotype-list">
+<h3>Example phenotype list<a class="headerlink" href="#example-phenotype-list" title="Permalink to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#chr    start   end ID  path</span>
 <span class="n">chr12</span>   <span class="mi">752578</span>  <span class="mi">752579</span>  <span class="n">ENSG00000060237</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
 <span class="n">chr12</span>   <span class="mi">990508</span>  <span class="mi">990509</span>  <span class="n">ENSG00000082805</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
@@ -800,16 +568,16 @@
 <span class="n">chr12</span>   <span class="mi">6534516</span> <span class="mi">6534517</span> <span class="n">ENSG00000111640</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="output">
-<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
 <p>For each analysis region, the output is SuSiE model fitted and saved in RDS format.</p>
-</div>
-<div class="section" id="minimal-working-example">
-<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="susie-with-twas-weights">
-<h3>SuSiE with TWAS weights<a class="headerlink" href="#susie-with-twas-weights" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
+<section id="susie-with-twas-weights">
+<h3>SuSiE with TWAS weights<a class="headerlink" href="#susie-with-twas-weights" title="Permalink to this heading">#</a></h3>
 <p>Below we duplicate the examples for phenotype and covariates to demonstrate that when there are multiple phenotypes for the same genotype it is possible to use this pipeline to analyze all of them (more than two is accepted as well)</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># suggested output naming convention is cohort_modality, eg ROSMAP_snRNA_pseudobulk</span>
 <span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span> \
@@ -893,9 +661,9 @@
         <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">stephenslab_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="fsusie">
-<h3>fSuSiE<a class="headerlink" href="#fsusie" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="fsusie">
+<h3>fSuSiE<a class="headerlink" href="#fsusie" title="Permalink to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># suggested output naming convention is cohort_modality, eg ROSMAP_snRNA_pseudobulk</span>
 <span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie</span> \
     <span class="o">--</span><span class="n">name</span> <span class="n">protocol_example_methylation</span> \
@@ -1025,401 +793,401 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="univariate-analysis-susie-and-twas">
-<h2>Univariate analysis: SuSiE and TWAS<a class="headerlink" href="#univariate-analysis-susie-and-twas" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="univariate-analysis-susie-and-twas">
+<h2>Univariate analysis: SuSiE and TWAS<a class="headerlink" href="#univariate-analysis-susie-and-twas" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">susie_twas_1</span><span class="p">]</span>
-<span class="c1"># initial number of single effects for SuSiE</span>
-<span class="kn">parameter:</span> <span class="n">init_L</span> <span class="o">=</span> <span class="mi">8</span>
-<span class="c1"># maximum number of single effects to use for SuSiE</span>
-<span class="kn">parameter:</span> <span class="n">max_L</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="c1"># remove a variant if it has more than imiss missing individual level data</span>
-<span class="kn">parameter:</span> <span class="n">imiss</span> <span class="o">=</span> <span class="mf">1.0</span>
-<span class="c1"># MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">maf</span> <span class="o">=</span> <span class="mf">0.005</span>
-<span class="c1"># MAC cutoff, on top of MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">mac</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="c1"># Remove indels if indel = False</span>
-<span class="kn">parameter:</span> <span class="n">indel</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">parameter:</span> <span class="n">pip_cutoff</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="kn">parameter:</span> <span class="n">coverage</span> <span class="o">=</span> <span class="mf">0.95</span>
-<span class="kn">parameter:</span> <span class="n">secondary_coverage</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="c1"># Compute TWAS weights as well</span>
-<span class="kn">parameter:</span> <span class="n">twas_weights</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="c1"># Perform CV for TWAS</span>
-<span class="kn">parameter:</span> <span class="n">twas_cv</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;regional_data&quot;</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[susie_twas_1]
+# initial number of single effects for SuSiE
+parameter: init_L = 8
+# maximum number of single effects to use for SuSiE
+parameter: max_L = 30
+# remove a variant if it has more than imiss missing individual level data
+parameter: imiss = 1.0
+# MAF cutoff
+parameter: maf = 0.005
+# MAC cutoff, on top of MAF cutoff
+parameter: mac = 5
+# Remove indels if indel = False
+parameter: indel = True
+parameter: pip_cutoff = 0.1
+parameter: coverage = 0.95
+parameter: secondary_coverage = 0.5
+# Compute TWAS weights as well
+parameter: twas_weights = True
+# Perform CV for TWAS
+parameter: twas_cv = False
+depends: sos_variable(&quot;regional_data&quot;)
 
-<span class="n">meta_info</span> <span class="o">=</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;meta_info&#39;</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">group_by_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;meta_info&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">step_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.susie</span><span class="si">{</span><span class="s2">&quot;_twas&quot;</span> <span class="k">if</span> <span class="n">twas_weights</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="si">}</span><span class="s1">.rds&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">pecotmr</span><span class="p">)</span>
-    <span class="c1"># Load regional association data</span>
-    <span class="n">fdat</span> <span class="o">=</span> <span class="n">load_regional_univariate_data</span><span class="p">(</span><span class="n">genotype</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">anr</span><span class="p">},</span>
-                                          <span class="n">phenotype</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">covariate</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">region</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_meta_info[0]}</span><span class="s2">&quot;</span><span class="p">,</span>
-                                          <span class="n">conditions</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;$</span><span class="si">{_meta_info[2]}</span><span class="s1">&#39;</span><span class="p">),</span>
-                                          <span class="n">maf_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">maf</span><span class="p">},</span>
-                                          <span class="n">mac_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">mac</span><span class="p">},</span>
-                                          <span class="n">imiss_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">imiss</span><span class="p">},</span>
-                                          <span class="n">keep_indel</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">indel</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">})</span>
+meta_info = regional_data[&#39;meta_info&#39;]
+input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
+output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[1]}.susie{&quot;_twas&quot; if twas_weights else &quot;&quot;}.rds&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
+    library(pecotmr)
+    # Load regional association data
+    fdat = load_regional_univariate_data(genotype = ${_input[0]:anr},
+                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1::2]])}),
+                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[2::2]])}),
+                                          region = &quot;${_meta_info[0]}&quot;,
+                                          conditions = c(&#39;${_meta_info[2]}&#39;),
+                                          maf_cutoff = ${maf},
+                                          mac_cutoff = ${mac},
+                                          imiss_cutoff = ${imiss},
+                                          keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;})
    
-    <span class="c1"># Univeriate analysis suite</span>
-    <span class="n">fitted</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">r</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">))</span> <span class="p">{</span>
-      <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span> <span class="o">=</span> <span class="n">susie_wrapper</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="err">$</span><span class="p">{</span><span class="n">init_L</span><span class="p">},</span> <span class="err">$</span><span class="p">{</span><span class="n">max_L</span><span class="p">},</span> <span class="err">$</span><span class="p">{</span><span class="n">coverage</span><span class="p">})</span>
-      <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span> <span class="o">=</span> <span class="n">susie_post_processor</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_sd</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_sd</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> 
-                                       <span class="n">fdat</span><span class="err">$</span><span class="n">maf</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">secondary_coverage</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">secondary_coverage</span><span class="p">},</span> <span class="n">signal_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">pip_cutoff</span><span class="p">},</span> 
-                                       <span class="n">other_quantities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dropped_samples</span> <span class="o">=</span> <span class="n">fdat</span><span class="err">$</span><span class="n">dropped_sample</span><span class="p">[[</span><span class="n">r</span><span class="p">]]))</span>
-      <span class="k">if</span> <span class="p">(</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">twas_weights</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">}</span> <span class="p">)</span> <span class="p">{</span>
-          <span class="c1"># Compute TWAS weights, here for SuSiE using precomputed model so we don&#39;t have to run it again</span>
-          <span class="n">methods</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">susie_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">susie_fit</span> <span class="o">=</span> <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]),</span>
-                          <span class="n">enet_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span>
-                          <span class="n">lasso_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span>
-                          <span class="n">mrash_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">init_prior_sd</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
-                         <span class="p">)</span>
-          <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">twas_weights</span> <span class="o">=</span> <span class="n">twas_weights</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">methods</span><span class="p">)</span>
-          <span class="k">if</span> <span class="p">(</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">twas_cv</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">}</span> <span class="p">)</span> <span class="p">{</span>
-              <span class="c1"># Reset previously used SuSiE model from complete data in order to rerun SuSiE each fold</span>
-              <span class="n">methods</span><span class="err">$</span><span class="n">susie_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-              <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">twas_cv_result</span> <span class="o">=</span> <span class="n">twas_cv</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fold</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">methods</span><span class="p">)</span>
-          <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="n">names</span><span class="p">(</span><span class="n">fitted</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">)</span>
-    <span class="n">saveRDS</span><span class="p">(</span><span class="n">fitted</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;xz&#39;</span><span class="p">)</span>
+    # Univeriate analysis suite
+    fitted = list()
+    for (r in 1:length(fdat$residual_Y_scaled)) {
+      fitted[[r]] = susie_wrapper(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], ${init_L}, ${max_L}, ${coverage})
+      fitted[[r]] = susie_post_processor(fitted[[r]], fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], fdat$residual_X_sd[[r]], fdat$residual_Y_sd[[r]], 
+                                       fdat$maf[[r]], secondary_coverage = ${secondary_coverage}, signal_cutoff = ${pip_cutoff}, 
+                                       other_quantities = list(dropped_samples = fdat$dropped_sample[[r]]))
+      if ( ${&quot;TRUE&quot; if twas_weights else &quot;FALSE&quot;} ) {
+          # Compute TWAS weights, here for SuSiE using precomputed model so we don&#39;t have to run it again
+          methods = list(susie_weights = list(susie_fit = fitted[[r]]),
+                          enet_weights = list(),
+                          lasso_weights = list(),
+                          mrash_weights = list(init_prior_sd = TRUE)
+                         )
+          fitted[[r]]$twas_weights = twas_weights(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], methods = methods)
+          if ( ${&quot;TRUE&quot; if twas_cv else &quot;FALSE&quot;} ) {
+              # Reset previously used SuSiE model from complete data in order to rerun SuSiE each fold
+              methods$susie_weights = list()
+              fitted[[r]]$twas_cv_result = twas_cv(fdat$residual_X_scaled[[r]], fdat$residual_Y_scaled[[r]], fold = 5, methods = methods)
+          }
+      }
+    }
+    names(fitted) &lt;- names(fdat$residual_Y_scaled)
+    saveRDS(fitted, ${_output:ar}, compress=&#39;xz&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="multivariate-analysis-mvsusie-and-mr-mash">
-<h2>Multivariate analysis: mvSuSiE and mr.mash<a class="headerlink" href="#multivariate-analysis-mvsusie-and-mr-mash" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="mvsusie">
-<h3>mvSuSiE<a class="headerlink" href="#mvsusie" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="multivariate-analysis-mvsusie-and-mr-mash">
+<h2>Multivariate analysis: mvSuSiE and mr.mash<a class="headerlink" href="#multivariate-analysis-mvsusie-and-mr-mash" title="Permalink to this heading">#</a></h2>
+<section id="mvsusie">
+<h3>mvSuSiE<a class="headerlink" href="#mvsusie" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mvsusie_1</span><span class="p">]</span>
-<span class="c1"># Prior model file generated from mashr. </span>
-<span class="c1"># Default will be used if it does not exist.</span>
-<span class="kn">parameter:</span> <span class="n">mixture_prior</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
-<span class="kn">parameter:</span> <span class="n">max_L</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="c1"># remove a variant if it has more than imiss missing individual level data</span>
-<span class="kn">parameter:</span> <span class="n">imiss</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">maf</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="c1"># MAC cutoff, on top of MAF cutoff</span>
-<span class="c1"># Here I set default to mac = 10 rather than using an MAF cutoff</span>
-<span class="c1"># I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants</span>
-<span class="c1"># MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)</span>
-<span class="kn">parameter:</span> <span class="n">mac</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="c1"># Remove indels if indel = False</span>
-<span class="kn">parameter:</span> <span class="n">indel</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;regional_data&quot;</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[mvsusie_1]
+# Prior model file generated from mashr. 
+# Default will be used if it does not exist.
+parameter: mixture_prior = path()
+parameter: max_L = 20
+# remove a variant if it has more than imiss missing individual level data
+parameter: imiss = 0.1
+# MAF cutoff
+parameter: maf = 0.0
+# MAC cutoff, on top of MAF cutoff
+# Here I set default to mac = 10 rather than using an MAF cutoff
+# I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants
+# MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)
+parameter: mac = 10
+# Remove indels if indel = False
+parameter: indel = True
+depends: sos_variable(&quot;regional_data&quot;)
 
-<span class="n">meta_info</span> <span class="o">=</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;meta_info&#39;</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">group_by_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;meta_info&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">step_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.susie_fitted.rds&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+meta_info = regional_data[&#39;meta_info&#39;]
+input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
+output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[0]}.susie_fitted.rds&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
    
-    <span class="n">get_prior_indices</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1"># make sure the prior col/rows match the colnames of the Y matrix</span>
-      <span class="n">y_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
-      <span class="n">u_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
-      <span class="k">if</span> <span class="p">(</span><span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">y_names</span><span class="p">)</span> <span class="o">||</span> <span class="ow">is</span><span class="o">.</span><span class="n">null</span><span class="p">(</span><span class="n">u_names</span><span class="p">))</span> <span class="p">{</span>
-          <span class="k">return</span><span class="p">(</span><span class="n">NULL</span><span class="p">)</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">identical</span><span class="p">(</span><span class="n">y_names</span><span class="p">,</span> <span class="n">u_names</span><span class="p">))</span> <span class="p">{</span>
-          <span class="k">return</span><span class="p">(</span><span class="n">NULL</span><span class="p">)</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="k">return</span><span class="p">(</span><span class="n">match</span><span class="p">(</span><span class="n">y_names</span><span class="p">,</span> <span class="n">u_names</span><span class="p">))</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
+    get_prior_indices &lt;- function(Y, U) {
+      # make sure the prior col/rows match the colnames of the Y matrix
+      y_names = colnames(Y)
+      u_names = colnames(U)
+      if (is.null(y_names) || is.null(u_names)) {
+          return(NULL)
+      } else if (identical(y_names, u_names)) {
+          return(NULL)
+      } else {
+          return(match(y_names, u_names))
+      }
+    }
 
-    <span class="c1"># Load regional association data</span>
-    <span class="n">fdat</span> <span class="o">=</span> <span class="n">load_regional_multivariate_data</span><span class="p">(</span><span class="n">genotype</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">anr</span><span class="p">},</span>
-                                          <span class="n">phenotype</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">covariate</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">region</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">_meta_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">_meta_info</span><span class="p">[</span><span class="mi">3</span><span class="p">])},</span>
-                                          <span class="n">maf_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">maf</span><span class="p">},</span>
-                                          <span class="n">mac_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">mac</span><span class="p">},</span>
-                                          <span class="n">imiss_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">imiss</span><span class="p">},</span>
-                                          <span class="n">keep_indel</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">indel</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">})</span>
+    # Load regional association data
+    fdat = load_regional_multivariate_data(genotype = ${_input[0]:anr},
+                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1::2]])}),
+                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[2::2]])}),
+                                          region = ${&#39;&quot;%s:%s-%s&quot;&#39; % (_meta_info[1], _meta_info[2], _meta_info[3])},
+                                          maf_cutoff = ${maf},
+                                          mac_cutoff = ${mac},
+                                          imiss_cutoff = ${imiss},
+                                          keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;})
 
-    <span class="c1"># univariate summary statistics</span>
-    <span class="n">non_missing</span> <span class="o">=</span> <span class="n">lapply</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">),</span> <span class="n">function</span><span class="p">(</span><span class="n">r</span><span class="p">))</span> <span class="n">which</span><span class="p">(</span><span class="err">!</span><span class="ow">is</span><span class="o">.</span><span class="n">na</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[,</span><span class="n">r</span><span class="p">]))</span>
-    <span class="n">univariate_res</span> <span class="o">=</span> <span class="n">lapply</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">),</span> <span class="n">function</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="n">susieR</span><span class="p">:::</span><span class="n">univariate_regression</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">non_missing</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="p">],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[</span><span class="n">non_missing</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">r</span><span class="p">]))</span>
-    <span class="n">sumstat</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bhat</span><span class="o">=</span><span class="n">do</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">cbind</span><span class="p">,</span> <span class="n">lapply</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">),</span> <span class="n">function</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="n">univariate_res</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">betahat</span><span class="p">)),</span>
-                   <span class="n">sbhat</span><span class="o">=</span><span class="n">do</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">cbind</span><span class="p">,</span> <span class="n">lapply</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">ncol</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">),</span> <span class="n">function</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="n">univariate_res</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">sebetahat</span><span class="p">)))</span>
+    # univariate summary statistics
+    non_missing = lapply(1:ncol(fdat$residual_Y_scaled), function(r)) which(!is.na(fdat$residual_Y_scaled[,r]))
+    univariate_res = lapply(1:ncol(fdat$residual_Y_scaled), function(r) susieR:::univariate_regression(X[non_missing[[r]], ], fdat$residual_Y_scaled[non_missing[[r]], r]))
+    sumstat = list(bhat=do.call(cbind, lapply(1:ncol(fdat$residual_Y_scaled), function(r) univariate_res[[r]]$betahat)),
+                   sbhat=do.call(cbind, lapply(1:ncol(fdat$residual_Y_scaled), function(r) univariate_res[[r]]$sebetahat)))
   
-    <span class="c1"># Multivariate fine-mapping</span>
-    <span class="c1"># FIXME: handle it when prior does not exist</span>
-    <span class="n">prior</span> <span class="o">=</span> <span class="n">readRDS</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">mixture_prior</span><span class="p">:</span><span class="n">r</span><span class="p">})</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">paste</span><span class="p">(</span><span class="s2">&quot;Number of components in the mixture prior:&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">(</span><span class="n">prior</span><span class="err">$</span><span class="n">U</span><span class="p">)))</span>
-    <span class="n">prior</span> <span class="o">=</span> <span class="n">mvsusieR</span><span class="p">::</span><span class="n">create_mash_prior</span><span class="p">(</span><span class="n">mixture_prior</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">prior</span><span class="err">$</span><span class="n">w</span><span class="p">,</span> <span class="n">matrices</span><span class="o">=</span><span class="n">prior</span><span class="err">$</span><span class="n">U</span><span class="p">),</span> <span class="n">include_indices</span> <span class="o">=</span> <span class="n">get_prior_indices</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">,</span> <span class="n">prior</span><span class="err">$</span><span class="n">U</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">max_mixture_len</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>   
-    <span class="n">resid_Y</span> <span class="o">=</span> <span class="n">compute_cov_flash</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">)</span>
-    <span class="n">st</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">fitted</span> <span class="o">=</span> <span class="n">mvsusieR</span><span class="p">::</span><span class="n">mvsusie</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">X</span><span class="p">,</span> 
-                               <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">,</span> 
-                               <span class="n">L</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">max_L</span><span class="p">},</span> 
-                               <span class="n">prior_variance</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span> 
-                               <span class="n">residual_variance</span><span class="o">=</span><span class="n">resid_Y</span><span class="p">,</span> 
-                               <span class="n">precompute_covariances</span><span class="o">=</span><span class="n">F</span><span class="p">,</span> 
-                               <span class="n">compute_objective</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> 
-                               <span class="n">estimate_residual_variance</span><span class="o">=</span><span class="n">F</span><span class="p">,</span> 
-                               <span class="n">estimate_prior_variance</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> 
-                               <span class="n">estimate_prior_method</span><span class="o">=</span><span class="s1">&#39;EM&#39;</span><span class="p">,</span>
-                               <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> 
-                               <span class="n">n_thread</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">numThreads</span><span class="p">},</span> 
-                               <span class="n">approximate</span><span class="o">=</span><span class="n">F</span><span class="p">)</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">analysis_time</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">st</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">cs_corr</span> <span class="o">=</span> <span class="n">susieR</span><span class="p">::</span><span class="n">get_cs_correlation</span><span class="p">(</span><span class="n">fitted</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">fdat</span><span class="err">$</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">cs_snps</span> <span class="o">=</span> <span class="n">names</span><span class="p">(</span><span class="n">fitted</span><span class="err">$</span><span class="n">X_column_scale_factors</span><span class="p">[</span><span class="n">unlist</span><span class="p">(</span><span class="n">fitted</span><span class="err">$</span><span class="n">sets</span><span class="err">$</span><span class="n">cs</span><span class="p">)])</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">variable_name</span> <span class="o">=</span> <span class="n">names</span><span class="p">(</span><span class="n">fitted</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">analysis_script</span> <span class="o">=</span> <span class="n">load_script</span><span class="p">()</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">dropped_samples</span> <span class="o">=</span> <span class="n">fdat</span><span class="err">$</span><span class="n">dropped_sample</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">sample_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">)</span>
-    <span class="n">fitted</span><span class="err">$</span><span class="n">residual_y</span> <span class="o">=</span> <span class="n">resid_Y</span>
-    <span class="n">saveRDS</span><span class="p">(</span><span class="n">fitted</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">})</span>
+    # Multivariate fine-mapping
+    # FIXME: handle it when prior does not exist
+    prior = readRDS(${mixture_prior:r})
+    print(paste(&quot;Number of components in the mixture prior:&quot;, length(prior$U)))
+    prior = mvsusieR::create_mash_prior(mixture_prior=list(weights=prior$w, matrices=prior$U), include_indices = get_prior_indices(fdat$residual_Y_scaled, prior$U[[1]]), max_mixture_len=-1)   
+    resid_Y = compute_cov_flash(fdat$residual_Y_scaled)
+    st = proc.time()
+    fitted = mvsusieR::mvsusie(fdat$X, 
+                               fdat$residual_Y_scaled, 
+                               L=${max_L}, 
+                               prior_variance=prior, 
+                               residual_variance=resid_Y, 
+                               precompute_covariances=F, 
+                               compute_objective=T, 
+                               estimate_residual_variance=F, 
+                               estimate_prior_variance=T, 
+                               estimate_prior_method=&#39;EM&#39;,
+                               max_iter = 200, 
+                               n_thread=${numThreads}, 
+                               approximate=F)
+    fitted$analysis_time = proc.time() - st
+    fitted$cs_corr = susieR::get_cs_correlation(fitted, X=fdat$X)
+    fitted$cs_snps = names(fitted$X_column_scale_factors[unlist(fitted$sets$cs)])
+    fitted$variable_name = names(fitted$pip)
+    fitted$analysis_script = load_script()
+    fitted$dropped_samples = fdat$dropped_sample
+    fitted$sample_names = colnames(fdat$residual_Y_scaled)
+    fitted$residual_y = resid_Y
+    saveRDS(fitted, ${_output:ar})
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="mr-mash">
-<h3>mr.mash<a class="headerlink" href="#mr-mash" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="mr-mash">
+<h3>mr.mash<a class="headerlink" href="#mr-mash" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mrmash_1</span><span class="p">]</span>
-<span class="c1"># Prior model file generated from mashr. </span>
-<span class="c1"># Default will be used if it does not exist.</span>
-<span class="kn">parameter:</span> <span class="n">mixture_prior</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
-<span class="c1"># remove a variant if it has more than imiss missing individual level data</span>
-<span class="kn">parameter:</span> <span class="n">imiss</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">maf</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="c1"># MAC cutoff, on top of MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">mac</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="c1"># Remove indels if indel = False</span>
-<span class="kn">parameter:</span> <span class="n">indel</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="c1"># Path to prior grid data file: an RDS file with scaling factors</span>
-<span class="kn">parameter:</span> <span class="n">prior_grid</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># Path to prior weights data file: an RDS file with prior weights</span>
-<span class="kn">parameter:</span> <span class="n">prior_weights</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># Path to summary statistics directory</span>
-<span class="kn">parameter:</span> <span class="n">sumstats_file</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="c1"># Path to sample partition for cross validation</span>
-<span class="kn">parameter:</span> <span class="n">sample_partition</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-<span class="kn">parameter:</span> <span class="n">fold</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="kn">parameter:</span> <span class="n">var_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="kn">parameter:</span> <span class="n">n_nonmiss_Y</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="kn">parameter:</span> <span class="n">canonical_mats</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="kn">parameter:</span> <span class="n">standardize</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">parameter:</span> <span class="n">update_w0</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">parameter:</span> <span class="n">w0_threshold</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="kn">parameter:</span> <span class="n">update_V</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">parameter:</span> <span class="n">update_V_method</span> <span class="o">=</span> <span class="s2">&quot;full&quot;</span>
-<span class="kn">parameter:</span> <span class="n">B_init_method</span> <span class="o">=</span> <span class="s2">&quot;enet&quot;</span>
-<span class="kn">parameter:</span> <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">5000</span>
-<span class="kn">parameter:</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-2</span>
-<span class="kn">parameter:</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="kn">parameter:</span> <span class="n">save_model</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="kn">parameter:</span> <span class="n">glmnet_pred</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="kn">parameter:</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">999</span>
-<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;regional_data&quot;</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[mrmash_1]
+# Prior model file generated from mashr. 
+# Default will be used if it does not exist.
+parameter: mixture_prior = path()
+# remove a variant if it has more than imiss missing individual level data
+parameter: imiss = 0.1
+# MAF cutoff
+parameter: maf = 0.05
+# MAC cutoff, on top of MAF cutoff
+parameter: mac = 0
+# Remove indels if indel = False
+parameter: indel = True
+# Path to prior grid data file: an RDS file with scaling factors
+parameter: prior_grid = path(&#39;.&#39;)
+# Path to prior weights data file: an RDS file with prior weights
+parameter: prior_weights = path(&#39;.&#39;)
+# Path to summary statistics directory
+parameter: sumstats_file = path(&#39;.&#39;)
+# Path to sample partition for cross validation
+parameter: sample_partition = path(&#39;.&#39;)
+parameter: fold = 1
+parameter: var_cutoff = 0.05
+parameter: n_nonmiss_Y = 100
+parameter: canonical_mats = False
+parameter: standardize = True
+parameter: update_w0 = True
+parameter: w0_threshold = 0.0
+parameter: update_V = True
+parameter: update_V_method = &quot;full&quot;
+parameter: B_init_method = &quot;enet&quot;
+parameter: max_iter = 5000
+parameter: tol = 1e-2
+parameter: verbose = False
+parameter: save_model = False
+parameter: glmnet_pred = False
+parameter: seed = 999
+depends: sos_variable(&quot;regional_data&quot;)
 
-<span class="n">meta_info</span> <span class="o">=</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;meta_info&#39;</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">group_by_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;meta_info&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">step_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">_fold_</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.mrmash.rds&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
-    <span class="n">library</span><span class="p">(</span><span class="n">pecotmr</span><span class="p">)</span>
-    <span class="c1"># Load regional association data</span>
-    <span class="n">fdat</span> <span class="o">=</span> <span class="n">load_regional_multivariate_data</span><span class="p">(</span><span class="n">genotype</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">anr</span><span class="p">},</span>
-                                          <span class="n">phenotype</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">covariate</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">region</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_meta_info[0]}</span><span class="s2">&quot;</span><span class="p">,</span>
-                                          <span class="n">conditions</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;$</span><span class="si">{_meta_info[2]}</span><span class="s1">&#39;</span><span class="p">),</span>
-                                          <span class="n">maf_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">maf</span><span class="p">},</span>
-                                          <span class="n">mac_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">mac</span><span class="p">},</span>
-                                          <span class="n">xvar_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">var_cutoff</span><span class="p">},</span>
-                                          <span class="n">imiss_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">imiss</span><span class="p">},</span>
-                                          <span class="n">matrix_y_min_complete</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">n_nonmiss_Y</span><span class="p">},</span>
-                                          <span class="n">keep_indel</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">indel</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">})</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">mrmash_wrapper</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">X</span><span class="p">,</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">,</span> <span class="c1"># here, X and Y are both matrices. X does not have missing data, Y may have it. Y is residualized (covariates removed) X is not.</span>
-                            <span class="err">$</span><span class="p">{</span><span class="n">sumstats_file</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> 
-                            <span class="err">$</span><span class="p">{</span><span class="n">prior_matrices</span><span class="p">:</span><span class="n">ar</span><span class="p">}),</span>
-                            <span class="err">$</span><span class="p">{</span><span class="n">prior_weights</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span>
-                            <span class="err">$</span><span class="p">{</span><span class="n">prior_grid</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span>
-                            <span class="err">$</span><span class="p">{</span><span class="n">sample_partition</span><span class="p">:</span><span class="n">r</span><span class="p">},</span> <span class="c1"># if available, will perform CV; otherwise will not perform CV</span>
-                            <span class="n">fold</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">fold</span><span class="p">},</span>
-                            <span class="n">nthreads</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">nthreads</span><span class="p">},</span>
-                            <span class="n">canonical_mats</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">canonical_mats</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">},</span>
-                            <span class="n">standardize</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">standardize</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">},</span>
-                            <span class="n">update_w0</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">update_w0</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">},</span>
-                            <span class="n">w0_threshold</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">w0_threshold</span><span class="p">},</span>
-                            <span class="n">update_V</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">update_V</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">},</span>
-                            <span class="n">update_V_method</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{update_V_method}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="n">B_init_method</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{B_init_method}</span><span class="s2">&quot;</span><span class="p">,</span>
-                            <span class="n">max_iter</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">max_iter</span><span class="p">},</span>
-                            <span class="n">tol</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">tol</span><span class="p">},</span>
-                            <span class="n">verbose</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">},</span>
-                            <span class="n">save_model</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">save_model</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">},</span>
-                            <span class="n">glmnet_pred</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">glmnet_pred</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">}</span>
-                          <span class="p">)</span>
-    <span class="n">st</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">res</span><span class="err">$</span><span class="n">analysis_time</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">st</span>
-    <span class="n">res</span><span class="err">$</span><span class="n">analysis_script</span> <span class="o">=</span> <span class="n">load_script</span><span class="p">()</span>
-    <span class="n">res</span><span class="err">$</span><span class="n">dropped_samples</span> <span class="o">=</span> <span class="n">fdat</span><span class="err">$</span><span class="n">dropped_sample</span>
-    <span class="n">res</span><span class="err">$</span><span class="n">sample_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">)</span>
-    <span class="n">saveRDS</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;xz&#39;</span><span class="p">)</span>
+meta_info = regional_data[&#39;meta_info&#39;]
+input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
+output: f&#39;{cwd:a}/{step_name[:-2]}_fold_{fold}/{name}.{_meta_info[0]}.mrmash.rds&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
+    library(pecotmr)
+    # Load regional association data
+    fdat = load_regional_multivariate_data(genotype = ${_input[0]:anr},
+                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1::2]])}),
+                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[2::2]])}),
+                                          region = &quot;${_meta_info[0]}&quot;,
+                                          conditions = c(&#39;${_meta_info[2]}&#39;),
+                                          maf_cutoff = ${maf},
+                                          mac_cutoff = ${mac},
+                                          xvar_cutoff = ${var_cutoff},
+                                          imiss_cutoff = ${imiss},
+                                          matrix_y_min_complete = ${n_nonmiss_Y},
+                                          keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;})
+    res = mrmash_wrapper(fdat$X, fdat$residual_Y_scaled, # here, X and Y are both matrices. X does not have missing data, Y may have it. Y is residualized (covariates removed) X is not.
+                            ${sumstats_file:ar}, 
+                            ${prior_matrices:ar}),
+                            ${prior_weights:ar},
+                            ${prior_grid:ar},
+                            ${sample_partition:r}, # if available, will perform CV; otherwise will not perform CV
+                            fold = ${fold},
+                            nthreads = ${nthreads},
+                            canonical_mats = ${&quot;T&quot; if canonical_mats else &quot;F&quot;},
+                            standardize = ${&quot;T&quot; if standardize else &quot;F&quot;},
+                            update_w0 = ${&quot;T&quot; if update_w0 else &quot;F&quot;},
+                            w0_threshold = ${w0_threshold},
+                            update_V = ${&quot;T&quot; if update_V else &quot;F&quot;},
+                            update_V_method = &quot;${update_V_method}&quot;,
+                            B_init_method = &quot;${B_init_method}&quot;,
+                            max_iter = ${max_iter},
+                            tol = ${tol},
+                            verbose = ${&quot;T&quot; if verbose else &quot;F&quot;},
+                            save_model = ${&quot;T&quot; if save_model else &quot;F&quot;},
+                            glmnet_pred = ${&quot;T&quot; if glmnet_pred else &quot;F&quot;}
+                          )
+    st = proc.time()
+    res$analysis_time = proc.time() - st
+    res$analysis_script = load_script()
+    res$dropped_samples = fdat$dropped_sample
+    res$sample_names = colnames(fdat$residual_Y_scaled)
+    saveRDS(res, ${_output:ar}, compress=&#39;xz&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="functional-regression-fsusie-for-trait">
-<h2>Functional regression fSuSiE for trait<a class="headerlink" href="#functional-regression-fsusie-for-trait" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="functional-regression-fsusie-for-trait">
+<h2>Functional regression fSuSiE for trait<a class="headerlink" href="#functional-regression-fsusie-for-trait" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">fsusie_1</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">max_L</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="c1"># remove a variant if it has more than imiss missing individual level data</span>
-<span class="kn">parameter:</span> <span class="n">imiss</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">maf</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="c1"># MAC cutoff, on top of MAF cutoff</span>
-<span class="c1"># Here I set default to mac = 10 rather than using an MAF cutoff</span>
-<span class="c1"># I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants</span>
-<span class="c1"># MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)</span>
-<span class="kn">parameter:</span> <span class="n">mac</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="c1"># prior can be either of [&quot;mixture_normal&quot;, &quot;mixture_normal_per_scale&quot;]</span>
-<span class="kn">parameter:</span> <span class="n">prior</span>  <span class="o">=</span> <span class="s2">&quot;mixture_normal_per_scale&quot;</span>
-<span class="kn">parameter:</span> <span class="n">max_SNP_EM</span> <span class="o">=</span> <span class="mi">1000</span>
-<span class="c1"># Remove indels if indel = False</span>
-<span class="kn">parameter:</span> <span class="n">indel</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;regional_data&quot;</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[fsusie_1]
+parameter: max_L = 30
+# remove a variant if it has more than imiss missing individual level data
+parameter: imiss = 0.1
+# MAF cutoff
+parameter: maf = 0.0
+# MAC cutoff, on top of MAF cutoff
+# Here I set default to mac = 10 rather than using an MAF cutoff
+# I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants
+# MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)
+parameter: mac = 10
+# prior can be either of [&quot;mixture_normal&quot;, &quot;mixture_normal_per_scale&quot;]
+parameter: prior  = &quot;mixture_normal_per_scale&quot;
+parameter: max_SNP_EM = 1000
+# Remove indels if indel = False
+parameter: indel = True
+depends: sos_variable(&quot;regional_data&quot;)
 
-<span class="k">def</span> <span class="nf">group_by_region</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">lst</span><span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">[:</span><span class="n">i</span><span class="p">]):</span><span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">[:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">))]</span>
+def group_by_region(lst, data):
+    vector = [len(x) for x in data]
+    return [lst[sum(vector[:i]):sum(vector[:i+1])] for i in range(len(vector))]
 
-<span class="n">meta_info</span> <span class="o">=</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;meta_info&#39;</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">group_by_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;meta_info&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">step_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.fsusie_</span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s1">.rds&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
-    <span class="c1"># Load regional association data</span>
-    <span class="n">fdat</span> <span class="o">=</span> <span class="n">load_regional_association_data</span><span class="p">(</span><span class="n">genotype</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">anr</span><span class="p">},</span>
-                                          <span class="n">phenotype</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">covariate</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">region</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">_meta_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">_meta_info</span><span class="p">[</span><span class="mi">3</span><span class="p">])},</span>
-                                          <span class="n">maf_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">maf</span><span class="p">},</span>
-                                          <span class="n">mac_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">mac</span><span class="p">},</span>
-                                          <span class="n">imiss_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">imiss</span><span class="p">},</span>
-                                          <span class="n">y_as_matrix</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span>
-                                          <span class="n">keep_indel</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s2">&quot;TRUE&quot;</span> <span class="k">if</span> <span class="n">indel</span> <span class="k">else</span> <span class="s2">&quot;FALSE&quot;</span><span class="p">})</span>
-    <span class="c1"># Fine-mapping with fSuSiE</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;susiF.alpha&quot;</span><span class="p">)</span>
-    <span class="n">fitted</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">r</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">))</span> <span class="p">{</span>
-        <span class="n">st</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>  
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span> <span class="o">&lt;-</span> <span class="n">susiF</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span>
-                             <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span>
-                             <span class="n">pos</span><span class="o">=</span><span class="n">fdat</span><span class="err">$</span><span class="n">phenotype_coordiates</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="c1">#FIXME: this needs to be edited and added dto load_regional_association_data</span>
-                             <span class="n">L</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">max_L</span><span class="p">},</span>
-                             <span class="n">prior</span><span class="o">=</span><span class="s2">&quot;$</span><span class="si">{prior}</span><span class="s2">&quot;</span><span class="p">,</span>
-                             <span class="n">max_SNP_EM</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">max_SNP_EM</span><span class="p">})</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">analysis_time</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">st</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">cs_corr</span> <span class="o">=</span> <span class="n">get_cs_correlation</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">X</span><span class="o">=</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]])</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">cs_snps</span> <span class="o">=</span> <span class="n">names</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">X_column_scale_factors</span><span class="p">[</span><span class="n">unlist</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">sets</span><span class="err">$</span><span class="n">cs</span><span class="p">)])</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">variable_name</span> <span class="o">=</span> <span class="n">names</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">pip</span><span class="p">)</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">coef</span> <span class="o">=</span> <span class="n">coef</span><span class="o">.</span><span class="n">susie</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]])</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">analysis_script</span> <span class="o">=</span> <span class="n">load_script</span><span class="p">()</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">analysis_name</span> <span class="o">=</span> <span class="n">fdat</span><span class="err">$</span><span class="n">traits</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">dropped_samples</span> <span class="o">=</span> <span class="n">fdat</span><span class="err">$</span><span class="n">dropped_sample</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span>
-        <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">sample_names</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">[[</span><span class="n">r</span><span class="p">]])</span>
-    <span class="p">}</span>
-    <span class="n">saveRDS</span><span class="p">(</span><span class="n">fitted</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;xz&#39;</span><span class="p">)</span>
+meta_info = regional_data[&#39;meta_info&#39;]
+input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
+output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[0]}.fsusie_{prior}.rds&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
+    # Load regional association data
+    fdat = load_regional_association_data(genotype = ${_input[0]:anr},
+                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1::2]])}),
+                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[2::2]])}),
+                                          region = ${&#39;&quot;%s:%s-%s&quot;&#39; % (_meta_info[1], _meta_info[2], _meta_info[3])},
+                                          maf_cutoff = ${maf},
+                                          mac_cutoff = ${mac},
+                                          imiss_cutoff = ${imiss},
+                                          y_as_matrix = FALSE,
+                                          keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;})
+    # Fine-mapping with fSuSiE
+    library(&quot;susiF.alpha&quot;)
+    fitted = list()
+    for (r in 1:length(fdat$residual_Y_scaled)) {
+        st = proc.time()  
+        fitted[[r]] &lt;- susiF(fdat$residual_X_scaled[[r]],
+                             fdat$residual_Y_scaled[[r]],
+                             pos=fdat$phenotype_coordiates[[r]], #FIXME: this needs to be edited and added dto load_regional_association_data
+                             L=${max_L},
+                             prior=&quot;${prior}&quot;,
+                             max_SNP_EM=${max_SNP_EM})
+        fitted[[r]]$analysis_time = proc.time() - st
+        fitted[[r]]$cs_corr = get_cs_correlation(fitted[[r]], X=fdat$residual_X_scaled[[r]])
+        fitted[[r]]$cs_snps = names(fitted[[r]]$X_column_scale_factors[unlist(fitted[[r]]$sets$cs)])
+        fitted[[r]]$variable_name = names(fitted[[r]]$pip)
+        fitted[[r]]$coef = coef.susie(fitted[[r]])
+        fitted[[r]]$analysis_script = load_script()
+        fitted[[r]]$analysis_name = fdat$traits[[r]]
+        fitted[[r]]$dropped_samples = fdat$dropped_sample[[r]]
+        fitted[[r]]$sample_names = colnames(fdat$residual_Y_scaled[[r]])
+    }
+    saveRDS(fitted, ${_output:ar}, compress=&#39;xz&#39;)
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="functional-regression-fsusie-with-other-modality">
-<h2>Functional regression fSuSiE with other modality<a class="headerlink" href="#functional-regression-fsusie-with-other-modality" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="functional-regression-fsusie-with-other-modality">
+<h2>Functional regression fSuSiE with other modality<a class="headerlink" href="#functional-regression-fsusie-with-other-modality" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mvfsusie_1</span><span class="p">]</span>
-<span class="kn">parameter:</span> <span class="n">max_L</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="c1"># remove a variant if it has more than imiss missing individual level data</span>
-<span class="kn">parameter:</span> <span class="n">imiss</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="c1"># MAF cutoff</span>
-<span class="kn">parameter:</span> <span class="n">maf</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="c1"># MAC cutoff, on top of MAF cutoff</span>
-<span class="c1"># Here I set default to mac = 10 rather than using an MAF cutoff</span>
-<span class="c1"># I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants</span>
-<span class="c1"># MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)</span>
-<span class="kn">parameter:</span> <span class="n">mac</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="c1"># prior can be either of [&quot;mixture_normal&quot;, &quot;mixture_normal_per_scale&quot;]</span>
-<span class="kn">parameter:</span> <span class="n">prior</span>  <span class="o">=</span> <span class="s2">&quot;mixture_normal_per_scale&quot;</span>
-<span class="kn">parameter:</span> <span class="n">max_SNP_EM</span> <span class="o">=</span> <span class="mi">1000</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[mvfsusie_1]
+parameter: max_L = 30
+# remove a variant if it has more than imiss missing individual level data
+parameter: imiss = 0.1
+# MAF cutoff
+parameter: maf = 0.0
+# MAC cutoff, on top of MAF cutoff
+# Here I set default to mac = 10 rather than using an MAF cutoff
+# I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants
+# MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)
+parameter: mac = 10
+# prior can be either of [&quot;mixture_normal&quot;, &quot;mixture_normal_per_scale&quot;]
+parameter: prior  = &quot;mixture_normal_per_scale&quot;
+parameter: max_SNP_EM = 1000
 
-<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;regional_data&quot;</span><span class="p">)</span>
+depends: sos_variable(&quot;regional_data&quot;)
 
-<span class="k">def</span> <span class="nf">group_by_region</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-    <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">lst</span><span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">[:</span><span class="n">i</span><span class="p">]):</span><span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">[:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">))]</span>
+def group_by_region(lst, data):
+    vector = [len(x) for x in data]
+    return [lst[sum(vector[:i]):sum(vector[:i+1])] for i in range(len(vector))]
 
-<span class="n">meta_info</span> <span class="o">=</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;meta_info&#39;</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">group_by_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;meta_info&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s1">a</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">step_name</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">.mvfsusie_</span><span class="si">{</span><span class="n">prior</span><span class="si">}</span><span class="s1">.rds&#39;</span>
-<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
-<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
-    <span class="c1"># Load regional association data</span>
-    <span class="n">fdat</span> <span class="o">=</span> <span class="n">load_regional_association_data</span><span class="p">(</span><span class="n">genotype</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">anr</span><span class="p">},</span>
-                                          <span class="n">phenotype</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">covariate</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">_input</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">]])}),</span>
-                                          <span class="n">region</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">_meta_info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">_meta_info</span><span class="p">[</span><span class="mi">3</span><span class="p">])},</span>
-                                          <span class="n">maf_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">maf</span><span class="p">},</span>
-                                          <span class="n">mac_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">mac</span><span class="p">},</span>
-                                          <span class="n">imiss_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">imiss</span><span class="p">},</span>
-                                          <span class="n">y_as_matrix</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">)</span>
-    <span class="c1"># Fine-mapping with mvfSuSiE</span>
-    <span class="n">library</span><span class="p">(</span><span class="s2">&quot;mvf.susie.alpha&quot;</span><span class="p">)</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scaled</span><span class="p">,</span> <span class="o">~</span><span class="n">left_join</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">X</span><span class="p">[,</span><span class="mi">1</span><span class="p">]</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="o">%&gt;%</span><span class="n">rownames_to_column</span><span class="p">(</span><span class="s2">&quot;rowname&quot;</span><span class="p">),</span> <span class="o">.</span><span class="n">x</span><span class="o">%&gt;%</span><span class="n">t</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="o">%&gt;%</span><span class="n">rownames_to_column</span><span class="p">(</span><span class="s2">&quot;rowname&quot;</span><span class="p">)</span> <span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="s2">&quot;rowname&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">%&gt;%</span><span class="n">column_to_rownames</span><span class="p">(</span><span class="s2">&quot;rowname&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="k">as</span><span class="o">.</span><span class="n">matrix</span> <span class="p">)</span>
-    <span class="n">fitted</span> <span class="o">&lt;-</span> <span class="n">multfsusie</span><span class="p">(</span><span class="n">Y_f</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Y</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span><span class="n">Y</span><span class="p">[[</span><span class="mi">3</span><span class="p">]]),</span> 
-                         <span class="n">Y_u</span> <span class="o">=</span> <span class="n">Reduce</span><span class="p">(</span><span class="n">cbind</span><span class="p">,</span> <span class="n">Y</span><span class="p">[[</span><span class="mi">2</span><span class="p">]]),</span>
-                         <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos1</span> <span class="o">=</span><span class="n">fdat</span><span class="err">$</span><span class="n">phenotype_coordiates</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">pos2</span> <span class="o">=</span> <span class="n">fdat</span><span class="err">$</span><span class="n">phenotype_coordiates</span><span class="p">[[</span><span class="mi">3</span><span class="p">]]),</span>
-                         <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
-                         <span class="n">L</span><span class="o">=</span><span class="err">$</span><span class="p">{</span><span class="n">max_L</span><span class="p">},</span>
-                         <span class="n">data</span><span class="o">.</span><span class="n">format</span><span class="o">=</span><span class="s2">&quot;list_df&quot;</span><span class="p">)</span>
-    <span class="n">saveRDS</span><span class="p">(</span><span class="n">fitted</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">})</span>
+meta_info = regional_data[&#39;meta_info&#39;]
+input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
+output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[0]}.mvfsusie_{prior}.rds&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
+    # Load regional association data
+    fdat = load_regional_association_data(genotype = ${_input[0]:anr},
+                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1::2]])}),
+                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[2::2]])}),
+                                          region = ${&#39;&quot;%s:%s-%s&quot;&#39; % (_meta_info[1], _meta_info[2], _meta_info[3])},
+                                          maf_cutoff = ${maf},
+                                          mac_cutoff = ${mac},
+                                          imiss_cutoff = ${imiss},
+                                          y_as_matrix = FALSE)
+    # Fine-mapping with mvfSuSiE
+    library(&quot;mvf.susie.alpha&quot;)
+    Y = map(fdat$residual_Y_scaled, ~left_join(fdat$X[,1]%&gt;%as.data.frame%&gt;%rownames_to_column(&quot;rowname&quot;), .x%&gt;%t%&gt;%as.data.frame%&gt;%rownames_to_column(&quot;rowname&quot;) , by = &quot;rowname&quot;)%&gt;%select(-2)%&gt;%column_to_rownames(&quot;rowname&quot;)%&gt;%as.matrix )
+    fitted &lt;- multfsusie(Y_f = list(Y[[1]],Y[[3]]), 
+                         Y_u = Reduce(cbind, Y[[2]]),
+                         pos = list(pos1 =fdat$phenotype_coordiates[[1]], pos2 = fdat$phenotype_coordiates[[3]]),
+                         X=X,
+                         L=${max_L},
+                         data.format=&quot;list_df&quot;)
+    saveRDS(fitted, ${_output:ar})
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">*</span><span class="n">_2</span><span class="p">]</span>
-<span class="kn">input:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-<span class="kn">output:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">cwd</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="kp">name</span><span class="si">}</span><span class="s1">.cis_workhorse_output.txt&#39;</span>
-<span class="kn">python:</span> <span class="n">expand</span><span class="o">=</span> <span class="s2">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">n</span><span class="si">}</span><span class="s1">.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;output&quot;</span> <span class="p">:</span> <span class="p">[</span><span class="err">$</span><span class="p">[</span><span class="n">_input</span><span class="p">:</span><span class="n">ar</span><span class="p">,]]})</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[*_2]
+input: group_by = &quot;all&quot;
+output: f&#39;{cwd}/{name}.cis_workhorse_output.txt&#39;
+python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint = entrypoint
+    import pandas as pd
+    pd.DataFrame({&quot;output&quot; : [$[_input:ar,]]}).to_csv(&quot;$[_output]&quot;,index = False ,header = False, sep = &quot;\t&quot;)
 </pre></div>
 </div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1433,7 +1201,7 @@
             mode: "sos"
         },
         kernelOptions: {
-            kernelName: "sos",
+            name: "sos",
             path: "./code/cis_analysis"
         },
         predefinedOutput: true
@@ -1441,46 +1209,119 @@
     </script>
     <script>kernelName = 'sos'</script>
 
-              </div>
+                </article>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="cis_advanced_overview.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Overview of advanced cis-QTL analysis</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="cis_advanced_overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Overview of advanced cis-QTL analysis</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="SuSiE.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="SuSiE.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">SuSiE fine-mapping workflow</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-        
-        </div>
-    </div>
-    <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium<br/>
-        
-            &copy; Copyright 2021+, FunGen xQTL Analysis Working Group.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-genotype-list">Example genotype list</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-phenotype-list">Example phenotype list</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#susie-with-twas-weights">SuSiE with TWAS weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie">fSuSiE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-analysis-susie-and-twas">Univariate analysis: SuSiE and TWAS</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-analysis-mvsusie-and-mr-mash">Multivariate analysis: mvSuSiE and mr.mash</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mvsusie">mvSuSiE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mr-mash">mr.mash</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-regression-fsusie-for-trait">Functional regression fSuSiE for trait</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-regression-fsusie-with-other-modality">Functional regression fSuSiE with other modality</a></li>
+</ul>
+  </nav></div>
 
-      </div>
-    </div>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

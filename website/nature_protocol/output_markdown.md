@@ -89,6 +89,126 @@ We use two different tools to quantify the many types of splicing events which a
 
 Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. 
 #### Data Pre-processing (Step 2)
+##### A.  Genotype data preprocessing
+
+
+The goal of this module is to perform QC on VCF files, including 
+
+
+
+1. Handling the formatting of multi-allelic sites. 
+
+2. Genotype and variant level filtering based on genotype calling qualities. 
+
+3. Known/novel variants annotation.
+
+4. Summary statistics before and after QC, in particular the ts/tv ratio, to assess the effectiveness of QC.
+
+
+
+1 and 2 will change the genotype data. 3 and 4 above are for explorative analysis on the overall quality assessment of genotype data in the VCF files. We annotate known and novel variants because ts/tv are expected to be different between known and novel variants, and is important QC metric to assess the effectiveness of our QC.
+
+
+
+### Multi-allelic sites
+
+
+
+Mult-allelic sites can be problematic in many ways for downstreams analysis, even of they are handled in terms of formatting after QC. We provide an optional workflow module to keep only bi-allelic sites from data, although by default we will include these sites in the VCF file we generate.
+
+This notebook includes workflow for
+
+
+
+- Compute kinship matrix in sample and estimate related individuals
+
+- Genotype and sample QC: by MAF, missing data and HWE
+
+- LD pruning for follow up PCA analysis on genotype, as needed
+
+
+
+A potential limitation is that the workflow requires all samples and chromosomes to be merged as one single file, in order to perform both sample and variant level QC. However, in our experience using this pipeline with 200K exomes with 15 million variants, this pipeline works on the single merged PLINK file.
+
+Steps to generate a PCA include 
+
+
+
+- removing related individuals
+
+- pruning variants in linkage disequilibrium (LD)
+
+- perform PCA analysis on genotype of unrelated individuals
+
+- excluding outlier samples in the PCA space for individuals of homogeneous self-reported ancestry. These outliers may suggest poor genotyping quality or distant relatedness.
+
+
+
+### Limitations
+
+
+
+1. Some of the PCs may capture LD structure rather than population structure (decrease in power to detect associations in these regions of high LD)
+
+2. When projecting a new study dataset to the PCA space computed from a reference dataset: projected PCs are shrunk toward 0 in the new dataset
+
+3. PC scores may capture outliers that are due to family structure, population structure or other reasons; it might be beneficial to detect and remove these individuals to maximize the population structure captured by PCA (in the case of removing a few outliers) or to restrict analyses to genetically homogeneous samples
+
+For each chromosome, we compute a GRM using data excluding this chromosome. Computation is implemented using `GCTA` software package.
+
+The module streamlines conversion between PLINK and VCF formats, specifically:
+
+
+
+1. Conversion between VCF and PLINK formats
+
+2. Split data (by specified input, by chromosomes, by genes)
+
+3. Merge data (by specified input, by chromosomes)
+##### B.  Phenotype data preprocessing
+
+
+This pipeline is based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py).
+
+
+
+### Alternative implementation
+
+
+
+Previously we use `biomaRt` package in R instead of code from `pyqtl`. The core function calls are:
+
+
+
+```r
+
+    ensembl = useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", version = "$[ensembl_version]")
+
+    ensembl_df <- getBM(attributes=c("ensembl_gene_id","chromosome_name", "start_position", "end_position"),mart=ensembl)
+
+```
+
+
+
+We require ENSEMBL version to be specified explicitly in this pipeline. As of 2021 for the Brain xQTL project, we use ENSEMBL version 103.
+##### C.  Covariate Data Preprocessing
+
+
+This workflow implements 3 procedures for hidden factor analysis from omcis data:
+
+
+
+1. The [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. 
+
+2. Factor analysis using Bi-Cross validation, Owen, Art & Wang, Jingshu. (2015). Bi-Cross-Validation for Factor Analysis. Statistical Science. 31. 10.1214/15-STS539. with software package `APEX` (Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin, bioRxiv 2020.12.18.423490; doi: https://doi.org/10.1101/2020.12.18.423490)
+
+3. PCA with automatic determination of the number of factors to use. This is mainly inspired by a [recent benchmark from Jessica Li's group](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02761-4).
+
+
+
+
+
+Overall, we will pick PCA based approach for the xQTL project, although additional considerations should be taken for single-cell eQTL analysis as investigated in [this paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02873-5).
 
 ### Expertise needed to implement the protocol
 
@@ -310,6 +430,525 @@ Timing ~20min
 
 
 ### 2. Data Pre-processing
+#### A.  Genotype data preprocessing
+
+
+```
+sos run VCF_QC.ipynb rename_chrs \
+    --genoFile reference_data/00-All.vcf.gz \
+    --cwd reference_data --container bioinfo.sif
+```
+
+
+
+```
+sos run VCF_QC.ipynb dbsnp_annotate \
+    --genoFile reference_data/00-All.add_chr.vcf.gz \
+    --cwd reference_data --container bioinfo.sif
+```
+
+
+
+```
+sos run VCF_QC.ipynb qc    \
+    --genoFile data/MWE/MWE_genotype.vcf     \
+    --dbsnp-variants data/reference_data/00-All.add_chr.variants.gz  \
+    --reference-genome data/reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta   \
+    --cwd MWE/output/genotype_1 --container bioinfo.sif -J 1 -c csg.yml -q csg
+```
+
+
+
+```
+sos run VCF_QC.ipynb qc    \
+    --genoFile data/mwe/mwe_genotype_list    \
+    --dbsnp-variants data/reference_data/00-All.add_chr.variants.gz  \
+    --reference-genome data/reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta   \
+    --cwd MWE/output/genotype_4 --container bioinfo.sif --add-chr
+```
+
+
+
+```
+grep Ts/Tv MWE_genotype.leftnorm.known_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
+```
+
+
+
+```
+grep Ts/Tv MWE_genotype.leftnorm.filtered.*_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
+```
+
+
+
+```
+grep Ts/Tv MWE_genotype.leftnorm.novel_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
+grep Ts/Tv MWE_genotype.leftnorm.filtered.novel_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
+```
+
+
+##### Perform QC on both rare and common variants
+
+```
+sos run xqtl-pipeline/pipeline/GWAS_QC.ipynb qc_no_prune \
+   --cwd Genotype \
+   --genoFile Genotype/ROSMAP_NIA_WGS.leftnorm.bcftools_qc.bed \
+   --geno-filter 0.1 \
+   --mind-filter 0.1 \
+   --hwe-filter 1e-08   \
+   --mac-filter 0 \
+   --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+   -J 1 -q csg -c csg.yml --mem 150G
+```
+
+
+##### Sample match with genotype
+Timing <1 min
+
+```
+sos run pipeline/GWAS_QC.ipynb genotype_phenotype_sample_overlap \
+        --cwd output/sample_meta \
+        --genoFile input/protocol_example.genotype.chr21_22.fam  \
+        --phenoFile input/protocol_example.protein.csv \
+        --container containers/bioinfo.sif \
+        --mem 5G
+```
+
+
+##### Kinship QC
+
+Timing <2 min
+
+```
+sos run pipeline/GWAS_QC.ipynb king \
+    --cwd output/kinship \
+    --genoFile input/protocol_example.genotype.chr21_22.bed \
+    --name pQTL \
+    --keep-samples output/sample_meta/protocol_example.protein.sample_genotypes.txt \
+    --container containers/bioinfo.sif \
+    --no-maximize-unrelated \
+    --mem 40G
+```
+
+
+##### Prepare unrelated individuals data for PCA
+
+Timing <1 min
+
+```
+sos run pipeline/GWAS_QC.ipynb qc \
+   --cwd output/cache \
+   --genoFile output/kinship/protocol_example.genotype.chr21_22.pQTL.unrelated.bed \
+   --mac-filter 5 \
+   --container containers/bioinfo.sif \
+   --mem 16G
+```
+
+
+Timing <1 min
+
+```
+sos run pipeline/GWAS_QC.ipynb qc \
+   --cwd output/cache \
+   --genoFile input/protocol_example.genotype.chr21_22.bed \
+   --keep-samples output/sample_meta/protocol_example.protein.sample_genotypes.txt \
+   --name pQTL \
+   --mac-filter 5 \
+   --container containers/bioinfo.sif \
+   --mem 40G
+```
+
+
+
+```
+sos run GWAS_QC.ipynb qc_no_prune \
+    --cwd output/genotype \
+    --genoFile output/genotype/chr1_chr6.20220110.related.bed \
+    --keep-variants output/genotype/chr1_chr6.20220110.unrelated.for_pca.filtered.prune.in \
+    --maf-filter 0 --geno-filter 0 --mind-filter 0.1 \
+    --name for_pca \
+    --container container/bioinfo.sif
+```
+
+
+##### Estimate kinship in the sample
+
+
+```
+sos run GWAS_QC.ipynb king \
+    --cwd output \
+    --genoFile data/rename_chr22.bed \
+    --kinship 0.13 \
+    --name 20220110 \
+    --container container/bioinfo.sif
+```
+
+
+##### Sample selection and QC the genotype data for PCA
+
+
+```
+sos run GWAS_QC.ipynb qc \
+    --cwd output \
+    --genoFile output/rename_chr22.20220110.unrelated.bed \
+    --maf-filter 0.01 \
+    --name for_pca \
+    --container container/bioinfo.sif
+```
+
+
+##### PCA analysis for unrelated samples
+Timing <2 min
+
+```
+sos run pipeline/PCA.ipynb flashpca \
+   --cwd output/genotype_pca \
+   --genoFile output/cache/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.bed \
+   --container containers/flashpcaR.sif \
+   --mem 16G
+```
+
+
+
+```
+%preview ~/tmp/25-Jan-2022/output/pca/MWE_pheno.pca.scree.png
+```
+
+
+##### Projection of related individuals
+
+
+```
+```
+sos run PCA.ipynb project_samples \
+  --cwd output/pca \
+  --genoFile output/rename_chr22.20220110.related.for_pca.filtered.extracted.bed \
+  --phenoFile data/MWE_pheno.txt \
+  --pca-model output/pca/MWE_pheno.pca.rds \
+  --label-col RACE \
+  --pop-col RACE \
+  --maha-k 2 \
+  --container container/flashpcaR.sif
+```
+```
+
+
+
+```
+%preview ~/tmp/25-Jan-2022/output/pca/MWE_pheno.pca.projected.pc.png
+```
+
+
+##### Finalize genotype QC by PCA for homogenous population
+
+
+```
+sos run GWAS_QC.ipynb qc_no_prune \
+    --cwd output \
+    --genoFile output/rename_chr22.20220110.unrelated.bed \
+    --remove-samples output/pca/MWE_pheno.pca.projected.outliers \
+    --name no_outlier \
+    --container container/bioinfo.sif
+```
+
+
+
+```
+sos run GWAS_QC.ipynb qc_no_prune \
+    --cwd output \
+    --genoFile output/rename_chr22.20220110.related.bed \
+    --remove-samples output/pca/MWE_pheno.pca.projected.outliers \
+    --keep-variants output/rename_chr22.20220110.unrelated.no_outlier.filtered.bim \
+    --maf-filter 0 --geno-filter 0 --mind-filter 0.1 --hwe-filter 0 \
+    --name no_outlier \
+    --container container/bioinfo.sif
+```
+
+
+
+```
+sos run genotype_formatting.ipynb merge_plink \
+    --genoFile output/rename_chr22.20220110.unrelated.no_outlier.filtered.bed \
+               output/rename_chr22.20220110.related.no_outlier.filtered.extracted.bed \
+    --cwd output/genotype_final \
+    --name chr22_20220110_qced \
+    --container container/bioinfo.sif
+```
+
+
+##### Split data by population
+
+
+```
+pheno = read.table("data/MWE_pheno.txt", header = TRUE, stringsAsFactors=F)
+for (i in 1:3){
+ race = subset(pheno, RACE == i)
+ race_id = cbind(race[,2],race[, 2])
+ write.table(race_id, paste0("output/ID.", "race", i), quote = FALSE, sep = '\t', col.names = FALSE, row.names = FALSE)
+}
+```
+
+
+##### For each population, do variant level and sample level QC on unrelated individuals, in preparation for PCA analysis
+
+
+```
+for i in race1 race3; do
+    sos run GWAS_QC.ipynb qc \
+        --cwd output \
+        --genoFile output/rename_chr22.20220110.unrelated.bed \
+        --keep-samples output/ID.$i \
+        --name for_pca_$i \
+        --container container/bioinfo.sif
+```
+
+
+##### For each population, extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level, if applicable
+
+
+```
+for i in race1 race3; do
+    sos run GWAS_QC.ipynb qc_no_prune \
+        --cwd output \
+        --genoFile output/rename_chr22.20220110.related.bed \
+        --keep-variants output/rename_chr22.20220110.unrelated.for_pca_$i.filtered.prune.in \
+        --keep-samples output/ID.$i \
+        --maf-filter 0 --geno-filter 0 --mind-filter 0.1 --hwe-filter 0 \
+        --name for_pca_$i \
+        --container container/bioinfo.sif -s force
+```
+
+
+##### For each population, run PCA analysis for unrelated samples
+
+
+```
+for i in race1 race3; do
+    sos run PCA.ipynb flashpca \
+        --name $i \
+        --cwd output/pca \
+        --genoFile output/rename_chr22.20220110.unrelated.for_pca_$i.filtered.prune.bed \
+        --phenoFile data/MWE_pheno.txt \
+        --label-col RACE \
+        --pop-col RACE \
+        --maha-k 2 \
+        --k 5 \
+        --container container/flashpcaR.sif
+```
+
+
+##### For each population, run projection of related individuals if applicable
+
+
+```
+for i in race3; do
+    sos run PCA.ipynb project_samples \
+      --name $i \
+      --cwd output/pca \
+      --genoFile output/rename_chr22.20220110.related.for_pca_$i.filtered.extracted.bed \
+      --phenoFile data/MWE_pheno.txt \
+      --pca-model output/pca/MWE_pheno.$i.pca.rds \
+      --label-col RACE \
+      --pop-col RACE \
+      --maha-k 2 \
+      --k 5 \
+      --container container/flashpcaR.sif
+```
+
+
+
+```
+%preview ~/tmp/19-Jan-2022/output/pca/MWE_pheno.race3.pca.projected.pc.png 
+```
+
+
+##### For each population do their own QC to finalize 
+
+
+```
+sos run GRM.ipynb grm \
+    --cwd output \
+    --genotype-list data/genotype/mwe_genotype.list \
+    --container container/bioinfo.sif
+```
+
+
+##### Merge separated bed files into one
+
+
+```
+sos run pipeline/genotype_formatting.ipynb vcf_to_plink
+    --genoFile `ls vcf_qc/*.leftnorm.bcftools_qc.vcf.gz` \
+    --cwd Genotype/ \
+    --keep_samples ./ROSMAP_sample_list.txt
+    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+    -J 22 -q csg -c csg.yml --mem 120G
+```
+
+
+
+```
+sos run xqtl-pipeline/pipeline/genotype_formatting.ipynb merge_plink \
+    --genoFile `ls *.leftnorm.bcftools_qc.bed` \
+    --name ROSMAP_NIA_WGS.leftnorm.bcftools_qc  \
+    --cwd Genotype/ \
+    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+    -J 5 -q csg -c csg.yml --mem 300G
+```
+
+
+##### Genotype data partition by chromosome
+
+Timing <1 min
+
+```
+sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
+    --genoFile input/protocol_example.genotype.chr21_22.bed \
+    --cwd output \
+    --chrom `cut -f 1 input/protocol_example.genotype.chr21_22.bim | uniq | sed "s/chr//g"` \
+    --container containers/bioinfo.sif 
+```
+
+
+#### B.  Phenotype data preprocessing
+
+
+```
+sos run gene_annotation.ipynb annotate_coord_gene \
+    --cwd output \
+    --phenoFile data/MWE.pheno_log2cpm.tsv.gz \
+    --annotation-gtf reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.gene.ERCC.gtf \
+    --sample-participant-lookup data/sampleSheetAfterQC.txt \
+    --container container/rna_quantification.sif --phenotype-id-type gene_name
+```
+
+
+Timing <1 min
+
+```
+sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
+    --cwd output/phenotype \
+    --phenoFile input/protocol_example.protein.csv \
+    --annotation-gtf reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
+    --phenotype-id-type gene_name \
+    --sample-participant-lookup output/sample_meta/protocol_example.protein.sample_overlap.txt \
+    --container containers/rna_quantification.sif --sep "," 
+```
+
+
+##### Partition by chromosome
+
+
+```
+sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
+    --cwd output/phenotype_by_chrom \
+    --phenoFile output/phenotype/protocol_example.protein.bed.gz \
+    --chrom `for i in {21..22}; do echo chr$i; done` \
+    --container containers/bioinfo.sif
+```
+
+
+
+```
+sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
+    --cwd output  \
+    --phenoFile MWE.log2cpm.mol_phe.bed.gz \
+    --region-list ROSMAP_PCC.methylation.M.renamed.region_list \
+    --container containers/rna_quantification.sif
+```
+
+
+
+```
+sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
+    --cwd mQTL_perchrom  \
+    --phenoFile ROSMAP_arrayMethylation_covariates.sesame.methyl.beta.sample_matched.bed_BMIQ.bed.filter_na.bed.softImputed.bed.gz \
+    --region-list ROSMAP_PCC.methylation.M.renamed.region_list \
+    --container containers/rna_quantification.sif
+```
+
+
+
+```
+sos run phenotype_imputation.ipynb flash \
+    --phenoFile ./proteomics/rosmap/test1.bed.gz \
+    --cwd ./proteomics/rosmap/ \
+    --mem 40G \
+    --walltime 100h
+```
+
+
+#### C.  Covariate Data Preprocessing
+
+
+```
+sos run pipeline/PEER_factor.ipynb PEER \
+   --cwd output \
+   --phenoFile ALL.log2cpm.bed.chr12.mol_phe.bed.gz  \
+   --container containers/PEER.sif  \
+   --N 3
+```
+
+
+
+```
+tree ./output
+```
+
+
+
+```
+%preview ./output/MWE.Cov_PEER.PEER_diagnosis.pdf -s png
+```
+
+
+
+```
+cat ./output/MWE.Cov_PEER.PEER.cov.stdout
+```
+
+
+##### Compute residule on merged covariates and perform hidden factor analysis
+
+Timing <1 min
+
+```
+sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
+   --cwd output/covariate \
+   --phenoFile output/phenotype/protocol_example.protein.bed.gz  \
+   --covFile output/covariate/protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.gz \
+   --mean-impute-missing \
+   --container containers/PCAtools.sif
+```
+
+
+##### APEX
+
+
+```
+sos run pipeline/BiCV_factor.ipynb BiCV \
+   --cwd output \
+   --phenoFile ALL.log2cpm.bed.chr12.mol_phe.bed.gz  \
+   --container containers/apex.sif  \
+   --N 3
+```
+
+
+##### Merge Covariates and Genotype PCA
+
+Timing <1 min
+
+```
+sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
+    --cwd output/covariate \
+    --pcaFile output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.rds \
+    --covFile  input/protocol_example.samples.tsv \
+    --tol_cov 0.4  \
+    --k `awk '$3 < 0.8' output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.scree.txt | tail -1 | cut -f 1 ` \
+    --container containers/bioinfo.sif
+```
+
+
 
 ## Timing
 
@@ -320,6 +959,9 @@ Timing ~20min
 |------|-----|----|
 |Molecular Phenotypes| RNA-seq expression| <3.5 hours|
 | | Alternative splicing from RNA-seq data| <2 hours|
+|Data Pre-processing| Genotype data preprocessing| < X minutes|
+| | Phenotype data preprocessing| < X minutes|
+| | Covariate Data Preprocessing| < X minutes|
 
 ## Troubleshooting
 
@@ -337,6 +979,16 @@ The final output contained QCed and normalized expression data in a bed.gz file.
 #### B.  Alternative splicing from RNA-seq data
 
 The final output contains the QCed and normalized splicing data from leafcutter and psichonics.
+#### A.  Genotype data preprocessing
+
+#### B.  Phenotype data preprocessing
+
+# Phenotype data preprocessing
+
+#### C.  Covariate Data Preprocessing
+
+# Covariate Data Preprocessing
+
 
 ## Figures
 

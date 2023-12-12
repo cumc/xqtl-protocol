@@ -37,7 +37,11 @@
 
 
 
-#### Molecular Phenotypes (Step 1)
+#### Reference data (Step 1)
+##### A.  Reference Data
+
+Please refer to the protocol website for more information on this miniprotocol.
+#### Molecular Phenotypes (Step 2)
 ##### A.  RNA-seq expression
 
 
@@ -88,7 +92,7 @@ We use two different tools to quantify the many types of splicing events which a
 
 
 Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. 
-#### Data Pre-processing (Step 2)
+#### Data Pre-processing (Step 3)
 ##### A.  Genotype data preprocessing
 
 
@@ -237,7 +241,13 @@ Overall, we will pick PCA based approach for the xQTL project, although addition
 
 
 
-### 1. Molecular Phenotypes
+> CRITICAL  
+  To improve readability, the code outlined here highlights the notebook to run for each step and not the necessary parameters in some cases. Please refer to the protocol website for information on what parameters to include.
+### 1. Reference data
+#### A.  Reference Data
+
+Please refer to the protocol website for more information on this miniprotocol.
+### 2. Molecular Phenotypes
 #### A.  RNA-seq expression
 
 ##### i. Perform data quality summary via `fastqc`
@@ -275,34 +285,17 @@ Timing ~10 min
 Timing <2 hours
 
 ```
-#no STAR wasp filter:
 !sos run RNA_calling.ipynb STAR_align \
-    --cwd ../../output_test/star_output \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    -s build -c ../csg.yml  -q neurology 
+
 ```
 
 
 
 ```
-#include STAR wasp filter:
 !sos run RNA_calling.ipynb STAR_align \
-    --cwd ../../output_test/star_output_wasp \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    --varVCFfile ../../reference_data/ZOD14598_AD_GRM_WGS_2021-04-29_all.recalibrated_variants.leftnorm.filtered.AF.WASP.vcf \
-    -s build  -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -311,16 +304,8 @@ Timing <30 min
 
 ```
 !sos run RNA_calling.ipynb rnaseqc_call \
-    --cwd ../../output_test/star_output \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    --bam_list ../../output_test/star_output/PCC_sample_list_subset_bam_list \
-    -s build  -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -330,17 +315,8 @@ Timing <X hours
 
 ```
 !sos run RNA_calling.ipynb rsem_call \
-    --cwd ../../output_test/star_output \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    --bam_list ../../output_test/star_output/PCC_sample_list_subset_bam_list \
-    --RSEM-index ../../reference_data/RSEM_Index \
-    -s build  -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -349,12 +325,8 @@ Timing <15min
 
 ```
 !sos run bulk_expression_QC.ipynb qc \
-    --cwd ../../output_test/rnaseqc_qc \
-    --tpm-gct ../../output_test/star_output/PCC_sample_list_subset.rnaseqc.gene_tpm.gct.gz \
-    --counts-gct ../../output_test/star_output/PCC_sample_list_subset.rnaseqc.gene_readsCount.gct.gz \
-    --DSFilterPercent 0.1 \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    -s force -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -363,17 +335,8 @@ Timing <10min
 
 ```
 !sos run bulk_expression_normalization.ipynb normalize \
-    --cwd ../../output_test/normalize \
-    --tpm-gct ../../output_test/rnaseqc_qc/PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.tpm.gct.gz \
-    --counts-gct ../../output_test/rnaseqc_qc/PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.geneCount.gct.gz \
-    --annotation-gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
-    --sample-participant-lookup ../../PCC_sample_subset_map_test \
-    --count-threshold 1 \
-    --tpm_threshold 0.1 \
-    --sample_frac_threshold 0.2 \
-    --normalization_method tmm  \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    -s force -c ../csg.yml -q neurology
+
 ```
 
 
@@ -385,11 +348,8 @@ Timing <30min
 
 ```
 !sos run splicing_calling.ipynb leafcutter \
-    --cwd ../../output_test/leafcutter \
-    --samples ../../PCC_sample_list_subset_leafcutter \
-    --data-dir ../../output_test/star_output_wasp \
     --container oras://ghcr.io/cumc/leafcutter_apptainer:latest \
-    -c ../csg.yml -q neurology
+
 ```
 
 
@@ -397,12 +357,8 @@ Timing ~30min
 
 ```
 !sos run splicing_calling.ipynb psichomics \
-    --cwd ../../output_test/psichomics/ \
-    --samples ../../PCC_sample_list_subset_leafcutter \
-    --data-dir ../../output_test/star_output_wasp \
-    --splicing_annotation ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.SUPPA_annotation.rds \
     --container oras://ghcr.io/cumc/psichomics_apptainer:latest \
-    -c ../csg.yml -q neurology
+
 ```
 
 
@@ -411,10 +367,8 @@ Timing  ~30min
 
 ```
 !sos run splicing_normalization.ipynb leafcutter_norm \
-    --cwd ../../output_test/leafcutter/normalize \
-    --ratios ../../output_test/leafcutter/PCC_sample_list_subset_leafcutter_intron_usage_perind.counts.gz \
     --container oras://ghcr.io/cumc/leafcutter_apptainer:latest \
-    -s force -c ../csg.yml -q neurology
+
 ```
 
 
@@ -422,20 +376,17 @@ Timing ~20min
 
 ```
 !sos run splicing_normalization.ipynb psichomics_norm \
-    --cwd ../../output_test/psichomics/normalize \
-    --ratios ../../output_test/psichomics/psi_raw_data.tsv \
     --container oras://ghcr.io/cumc/psichomics_apptainer:latest \
-    -c ../csg.yml -q neurology
+
 ```
 
 
-### 2. Data Pre-processing
+### 3. Data Pre-processing
 #### A.  Genotype data preprocessing
 
 
 ```
 sos run VCF_QC.ipynb rename_chrs \
-    --genoFile reference_data/00-All.vcf.gz \
     --cwd reference_data --container bioinfo.sif
 ```
 
@@ -443,7 +394,6 @@ sos run VCF_QC.ipynb rename_chrs \
 
 ```
 sos run VCF_QC.ipynb dbsnp_annotate \
-    --genoFile reference_data/00-All.add_chr.vcf.gz \
     --cwd reference_data --container bioinfo.sif
 ```
 
@@ -451,9 +401,6 @@ sos run VCF_QC.ipynb dbsnp_annotate \
 
 ```
 sos run VCF_QC.ipynb qc    \
-    --genoFile data/MWE/MWE_genotype.vcf     \
-    --dbsnp-variants data/reference_data/00-All.add_chr.variants.gz  \
-    --reference-genome data/reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta   \
     --cwd MWE/output/genotype_1 --container bioinfo.sif -J 1 -c csg.yml -q csg
 ```
 
@@ -461,29 +408,25 @@ sos run VCF_QC.ipynb qc    \
 
 ```
 sos run VCF_QC.ipynb qc    \
-    --genoFile data/mwe/mwe_genotype_list    \
-    --dbsnp-variants data/reference_data/00-All.add_chr.variants.gz  \
-    --reference-genome data/reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta   \
     --cwd MWE/output/genotype_4 --container bioinfo.sif --add-chr
 ```
 
 
 
 ```
-grep Ts/Tv MWE_genotype.leftnorm.known_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
-```
 
-
-
-```
-grep Ts/Tv MWE_genotype.leftnorm.filtered.*_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
 ```
 
 
 
 ```
-grep Ts/Tv MWE_genotype.leftnorm.novel_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
-grep Ts/Tv MWE_genotype.leftnorm.filtered.novel_variant.snipsift_tstv | rev | cut -d',' -f1 | rev
+
+```
+
+
+
+```
+
 ```
 
 
@@ -491,14 +434,8 @@ grep Ts/Tv MWE_genotype.leftnorm.filtered.novel_variant.snipsift_tstv | rev | cu
 
 ```
 sos run xqtl-pipeline/pipeline/GWAS_QC.ipynb qc_no_prune \
-   --cwd Genotype \
-   --genoFile Genotype/ROSMAP_NIA_WGS.leftnorm.bcftools_qc.bed \
-   --geno-filter 0.1 \
-   --mind-filter 0.1 \
-   --hwe-filter 1e-08   \
-   --mac-filter 0 \
    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-   -J 1 -q csg -c csg.yml --mem 150G
+
 ```
 
 
@@ -507,11 +444,8 @@ Timing <1 min
 
 ```
 sos run pipeline/GWAS_QC.ipynb genotype_phenotype_sample_overlap \
-        --cwd output/sample_meta \
-        --genoFile input/protocol_example.genotype.chr21_22.fam  \
-        --phenoFile input/protocol_example.protein.csv \
         --container containers/bioinfo.sif \
-        --mem 5G
+
 ```
 
 
@@ -521,13 +455,8 @@ Timing <2 min
 
 ```
 sos run pipeline/GWAS_QC.ipynb king \
-    --cwd output/kinship \
-    --genoFile input/protocol_example.genotype.chr21_22.bed \
-    --name pQTL \
-    --keep-samples output/sample_meta/protocol_example.protein.sample_genotypes.txt \
     --container containers/bioinfo.sif \
-    --no-maximize-unrelated \
-    --mem 40G
+
 ```
 
 
@@ -537,11 +466,8 @@ Timing <1 min
 
 ```
 sos run pipeline/GWAS_QC.ipynb qc \
-   --cwd output/cache \
-   --genoFile output/kinship/protocol_example.genotype.chr21_22.pQTL.unrelated.bed \
-   --mac-filter 5 \
    --container containers/bioinfo.sif \
-   --mem 16G
+
 ```
 
 
@@ -549,24 +475,14 @@ Timing <1 min
 
 ```
 sos run pipeline/GWAS_QC.ipynb qc \
-   --cwd output/cache \
-   --genoFile input/protocol_example.genotype.chr21_22.bed \
-   --keep-samples output/sample_meta/protocol_example.protein.sample_genotypes.txt \
-   --name pQTL \
-   --mac-filter 5 \
    --container containers/bioinfo.sif \
-   --mem 40G
+
 ```
 
 
 
 ```
 sos run GWAS_QC.ipynb qc_no_prune \
-    --cwd output/genotype \
-    --genoFile output/genotype/chr1_chr6.20220110.related.bed \
-    --keep-variants output/genotype/chr1_chr6.20220110.unrelated.for_pca.filtered.prune.in \
-    --maf-filter 0 --geno-filter 0 --mind-filter 0.1 \
-    --name for_pca \
     --container container/bioinfo.sif
 ```
 
@@ -576,10 +492,6 @@ sos run GWAS_QC.ipynb qc_no_prune \
 
 ```
 sos run GWAS_QC.ipynb king \
-    --cwd output \
-    --genoFile data/rename_chr22.bed \
-    --kinship 0.13 \
-    --name 20220110 \
     --container container/bioinfo.sif
 ```
 
@@ -589,10 +501,6 @@ sos run GWAS_QC.ipynb king \
 
 ```
 sos run GWAS_QC.ipynb qc \
-    --cwd output \
-    --genoFile output/rename_chr22.20220110.unrelated.bed \
-    --maf-filter 0.01 \
-    --name for_pca \
     --container container/bioinfo.sif
 ```
 
@@ -602,16 +510,14 @@ Timing <2 min
 
 ```
 sos run pipeline/PCA.ipynb flashpca \
-   --cwd output/genotype_pca \
-   --genoFile output/cache/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.bed \
    --container containers/flashpcaR.sif \
-   --mem 16G
-```
-
-
 
 ```
-%preview ~/tmp/25-Jan-2022/output/pca/MWE_pheno.pca.scree.png
+
+
+
+```
+
 ```
 
 
@@ -619,23 +525,15 @@ sos run pipeline/PCA.ipynb flashpca \
 
 
 ```
-```
 sos run PCA.ipynb project_samples \
-  --cwd output/pca \
-  --genoFile output/rename_chr22.20220110.related.for_pca.filtered.extracted.bed \
-  --phenoFile data/MWE_pheno.txt \
-  --pca-model output/pca/MWE_pheno.pca.rds \
-  --label-col RACE \
-  --pop-col RACE \
-  --maha-k 2 \
   --container container/flashpcaR.sif
-```
+
 ```
 
 
 
 ```
-%preview ~/tmp/25-Jan-2022/output/pca/MWE_pheno.pca.projected.pc.png
+
 ```
 
 
@@ -644,10 +542,6 @@ sos run PCA.ipynb project_samples \
 
 ```
 sos run GWAS_QC.ipynb qc_no_prune \
-    --cwd output \
-    --genoFile output/rename_chr22.20220110.unrelated.bed \
-    --remove-samples output/pca/MWE_pheno.pca.projected.outliers \
-    --name no_outlier \
     --container container/bioinfo.sif
 ```
 
@@ -655,12 +549,6 @@ sos run GWAS_QC.ipynb qc_no_prune \
 
 ```
 sos run GWAS_QC.ipynb qc_no_prune \
-    --cwd output \
-    --genoFile output/rename_chr22.20220110.related.bed \
-    --remove-samples output/pca/MWE_pheno.pca.projected.outliers \
-    --keep-variants output/rename_chr22.20220110.unrelated.no_outlier.filtered.bim \
-    --maf-filter 0 --geno-filter 0 --mind-filter 0.1 --hwe-filter 0 \
-    --name no_outlier \
     --container container/bioinfo.sif
 ```
 
@@ -668,10 +556,6 @@ sos run GWAS_QC.ipynb qc_no_prune \
 
 ```
 sos run genotype_formatting.ipynb merge_plink \
-    --genoFile output/rename_chr22.20220110.unrelated.no_outlier.filtered.bed \
-               output/rename_chr22.20220110.related.no_outlier.filtered.extracted.bed \
-    --cwd output/genotype_final \
-    --name chr22_20220110_qced \
     --container container/bioinfo.sif
 ```
 
@@ -680,12 +564,7 @@ sos run genotype_formatting.ipynb merge_plink \
 
 
 ```
-pheno = read.table("data/MWE_pheno.txt", header = TRUE, stringsAsFactors=F)
-for (i in 1:3){
- race = subset(pheno, RACE == i)
- race_id = cbind(race[,2],race[, 2])
- write.table(race_id, paste0("output/ID.", "race", i), quote = FALSE, sep = '\t', col.names = FALSE, row.names = FALSE)
-}
+
 ```
 
 
@@ -693,12 +572,7 @@ for (i in 1:3){
 
 
 ```
-for i in race1 race3; do
     sos run GWAS_QC.ipynb qc \
-        --cwd output \
-        --genoFile output/rename_chr22.20220110.unrelated.bed \
-        --keep-samples output/ID.$i \
-        --name for_pca_$i \
         --container container/bioinfo.sif
 ```
 
@@ -707,14 +581,7 @@ for i in race1 race3; do
 
 
 ```
-for i in race1 race3; do
     sos run GWAS_QC.ipynb qc_no_prune \
-        --cwd output \
-        --genoFile output/rename_chr22.20220110.related.bed \
-        --keep-variants output/rename_chr22.20220110.unrelated.for_pca_$i.filtered.prune.in \
-        --keep-samples output/ID.$i \
-        --maf-filter 0 --geno-filter 0 --mind-filter 0.1 --hwe-filter 0 \
-        --name for_pca_$i \
         --container container/bioinfo.sif -s force
 ```
 
@@ -723,16 +590,7 @@ for i in race1 race3; do
 
 
 ```
-for i in race1 race3; do
     sos run PCA.ipynb flashpca \
-        --name $i \
-        --cwd output/pca \
-        --genoFile output/rename_chr22.20220110.unrelated.for_pca_$i.filtered.prune.bed \
-        --phenoFile data/MWE_pheno.txt \
-        --label-col RACE \
-        --pop-col RACE \
-        --maha-k 2 \
-        --k 5 \
         --container container/flashpcaR.sif
 ```
 
@@ -741,24 +599,14 @@ for i in race1 race3; do
 
 
 ```
-for i in race3; do
     sos run PCA.ipynb project_samples \
-      --name $i \
-      --cwd output/pca \
-      --genoFile output/rename_chr22.20220110.related.for_pca_$i.filtered.extracted.bed \
-      --phenoFile data/MWE_pheno.txt \
-      --pca-model output/pca/MWE_pheno.$i.pca.rds \
-      --label-col RACE \
-      --pop-col RACE \
-      --maha-k 2 \
-      --k 5 \
       --container container/flashpcaR.sif
 ```
 
 
 
 ```
-%preview ~/tmp/19-Jan-2022/output/pca/MWE_pheno.race3.pca.projected.pc.png 
+
 ```
 
 
@@ -767,8 +615,6 @@ for i in race3; do
 
 ```
 sos run GRM.ipynb grm \
-    --cwd output \
-    --genotype-list data/genotype/mwe_genotype.list \
     --container container/bioinfo.sif
 ```
 
@@ -778,22 +624,16 @@ sos run GRM.ipynb grm \
 
 ```
 sos run pipeline/genotype_formatting.ipynb vcf_to_plink
-    --genoFile `ls vcf_qc/*.leftnorm.bcftools_qc.vcf.gz` \
-    --cwd Genotype/ \
-    --keep_samples ./ROSMAP_sample_list.txt
     --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-    -J 22 -q csg -c csg.yml --mem 120G
+
 ```
 
 
 
 ```
 sos run xqtl-pipeline/pipeline/genotype_formatting.ipynb merge_plink \
-    --genoFile `ls *.leftnorm.bcftools_qc.bed` \
-    --name ROSMAP_NIA_WGS.leftnorm.bcftools_qc  \
-    --cwd Genotype/ \
     --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-    -J 5 -q csg -c csg.yml --mem 300G
+
 ```
 
 
@@ -803,9 +643,6 @@ Timing <1 min
 
 ```
 sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
-    --genoFile input/protocol_example.genotype.chr21_22.bed \
-    --cwd output \
-    --chrom `cut -f 1 input/protocol_example.genotype.chr21_22.bim | uniq | sed "s/chr//g"` \
     --container containers/bioinfo.sif 
 ```
 
@@ -815,10 +652,6 @@ sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
 
 ```
 sos run gene_annotation.ipynb annotate_coord_gene \
-    --cwd output \
-    --phenoFile data/MWE.pheno_log2cpm.tsv.gz \
-    --annotation-gtf reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.gene.ERCC.gtf \
-    --sample-participant-lookup data/sampleSheetAfterQC.txt \
     --container container/rna_quantification.sif --phenotype-id-type gene_name
 ```
 
@@ -827,11 +660,6 @@ Timing <1 min
 
 ```
 sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
-    --cwd output/phenotype \
-    --phenoFile input/protocol_example.protein.csv \
-    --annotation-gtf reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
-    --phenotype-id-type gene_name \
-    --sample-participant-lookup output/sample_meta/protocol_example.protein.sample_overlap.txt \
     --container containers/rna_quantification.sif --sep "," 
 ```
 
@@ -841,9 +669,6 @@ sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
 
 ```
 sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
-    --cwd output/phenotype_by_chrom \
-    --phenoFile output/phenotype/protocol_example.protein.bed.gz \
-    --chrom `for i in {21..22}; do echo chr$i; done` \
     --container containers/bioinfo.sif
 ```
 
@@ -851,9 +676,6 @@ sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
 
 ```
 sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
-    --cwd output  \
-    --phenoFile MWE.log2cpm.mol_phe.bed.gz \
-    --region-list ROSMAP_PCC.methylation.M.renamed.region_list \
     --container containers/rna_quantification.sif
 ```
 
@@ -861,9 +683,6 @@ sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
 
 ```
 sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
-    --cwd mQTL_perchrom  \
-    --phenoFile ROSMAP_arrayMethylation_covariates.sesame.methyl.beta.sample_matched.bed_BMIQ.bed.filter_na.bed.softImputed.bed.gz \
-    --region-list ROSMAP_PCC.methylation.M.renamed.region_list \
     --container containers/rna_quantification.sif
 ```
 
@@ -871,10 +690,7 @@ sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
 
 ```
 sos run phenotype_imputation.ipynb flash \
-    --phenoFile ./proteomics/rosmap/test1.bed.gz \
-    --cwd ./proteomics/rosmap/ \
-    --mem 40G \
-    --walltime 100h
+
 ```
 
 
@@ -883,28 +699,26 @@ sos run phenotype_imputation.ipynb flash \
 
 ```
 sos run pipeline/PEER_factor.ipynb PEER \
-   --cwd output \
-   --phenoFile ALL.log2cpm.bed.chr12.mol_phe.bed.gz  \
    --container containers/PEER.sif  \
-   --N 3
-```
 
-
-
-```
-tree ./output
 ```
 
 
 
 ```
-%preview ./output/MWE.Cov_PEER.PEER_diagnosis.pdf -s png
+
+```
+
+
+
+```
+
 ```
 
 
 
 ```
-cat ./output/MWE.Cov_PEER.PEER.cov.stdout
+
 ```
 
 
@@ -914,10 +728,6 @@ Timing <1 min
 
 ```
 sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
-   --cwd output/covariate \
-   --phenoFile output/phenotype/protocol_example.protein.bed.gz  \
-   --covFile output/covariate/protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.gz \
-   --mean-impute-missing \
    --container containers/PCAtools.sif
 ```
 
@@ -927,10 +737,8 @@ sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
 
 ```
 sos run pipeline/BiCV_factor.ipynb BiCV \
-   --cwd output \
-   --phenoFile ALL.log2cpm.bed.chr12.mol_phe.bed.gz  \
    --container containers/apex.sif  \
-   --N 3
+
 ```
 
 
@@ -940,11 +748,6 @@ Timing <1 min
 
 ```
 sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
-    --cwd output/covariate \
-    --pcaFile output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.rds \
-    --covFile  input/protocol_example.samples.tsv \
-    --tol_cov 0.4  \
-    --k `awk '$3 < 0.8' output/genotype_pca/protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.scree.txt | tail -1 | cut -f 1 ` \
     --container containers/bioinfo.sif
 ```
 
@@ -955,8 +758,9 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 
 
 
-| Step | Substep | Time|
+| Step(Major Section) | Substep(Miniprotocol) | Time|
 |------|-----|----|
+|Reference data| Reference Data| ~4 hours|
 |Molecular Phenotypes| RNA-seq expression| <3.5 hours|
 | | Alternative splicing from RNA-seq data| <2 hours|
 |Data Pre-processing| Genotype data preprocessing| < X minutes|
@@ -972,6 +776,10 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 
 
 
+
+#### A.  Reference Data
+
+Our pipeline uses the following reference data for RNA-seq expression quantification:
 
 #### A.  RNA-seq expression
 

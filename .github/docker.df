@@ -1,4 +1,5 @@
 FROM mambaorg/micromamba
+USER root
 COPY *.yml /environments/
 RUN for yml in $(ls /environments/*.yml); do \
     env_name=$(grep "name: " < ${yml} | cut -d ' ' --fields 2); \
@@ -9,4 +10,8 @@ RUN for yml in $(ls /environments/*.yml); do \
         fi; \
     done
 RUN micromamba clean --all --yes
+RUN echo '#!/bin/bash' > /bin/sh
+RUN echo '[ -z ${CONDA_SHLVL} ] && source /usr/local/bin/_activate_current_env.sh' >> /bin/sh
+RUN echo '/bin/bash "$@"' >> /bin/sh
+RUN chmod +x /bin/sh
 ENV MAMBA_ACTIVATE_DOCKERFILE=1

@@ -37,7 +37,11 @@
 
 
 
-#### Molecular Phenotypes (Step 1)
+#### Reference data (Step 1)
+##### A.  Reference Data
+
+Please refer to the protocol website for more information on this miniprotocol.
+#### Molecular Phenotypes (Step 2)
 ##### A.  RNA-seq expression
 
 
@@ -88,7 +92,127 @@ We use two different tools to quantify the many types of splicing events which a
 
 
 Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. 
-#### Data Pre-processing (Step 2)
+#### Data Pre-processing (Step 3)
+##### A.  Genotype data preprocessing
+
+
+The goal of this module is to perform QC on VCF files, including 
+
+
+
+1. Handling the formatting of multi-allelic sites. 
+
+2. Genotype and variant level filtering based on genotype calling qualities. 
+
+3. Known/novel variants annotation.
+
+4. Summary statistics before and after QC, in particular the ts/tv ratio, to assess the effectiveness of QC.
+
+
+
+1 and 2 will change the genotype data. 3 and 4 above are for explorative analysis on the overall quality assessment of genotype data in the VCF files. We annotate known and novel variants because ts/tv are expected to be different between known and novel variants, and is important QC metric to assess the effectiveness of our QC.
+
+
+
+### Multi-allelic sites
+
+
+
+Mult-allelic sites can be problematic in many ways for downstreams analysis, even of they are handled in terms of formatting after QC. We provide an optional workflow module to keep only bi-allelic sites from data, although by default we will include these sites in the VCF file we generate.
+
+This notebook includes workflow for
+
+
+
+- Compute kinship matrix in sample and estimate related individuals
+
+- Genotype and sample QC: by MAF, missing data and HWE
+
+- LD pruning for follow up PCA analysis on genotype, as needed
+
+
+
+A potential limitation is that the workflow requires all samples and chromosomes to be merged as one single file, in order to perform both sample and variant level QC. However, in our experience using this pipeline with 200K exomes with 15 million variants, this pipeline works on the single merged PLINK file.
+
+Steps to generate a PCA include 
+
+
+
+- removing related individuals
+
+- pruning variants in linkage disequilibrium (LD)
+
+- perform PCA analysis on genotype of unrelated individuals
+
+- excluding outlier samples in the PCA space for individuals of homogeneous self-reported ancestry. These outliers may suggest poor genotyping quality or distant relatedness.
+
+
+
+### Limitations
+
+
+
+1. Some of the PCs may capture LD structure rather than population structure (decrease in power to detect associations in these regions of high LD)
+
+2. When projecting a new study dataset to the PCA space computed from a reference dataset: projected PCs are shrunk toward 0 in the new dataset
+
+3. PC scores may capture outliers that are due to family structure, population structure or other reasons; it might be beneficial to detect and remove these individuals to maximize the population structure captured by PCA (in the case of removing a few outliers) or to restrict analyses to genetically homogeneous samples
+
+For each chromosome, we compute a GRM using data excluding this chromosome. Computation is implemented using `GCTA` software package.
+
+The module streamlines conversion between PLINK and VCF formats, specifically:
+
+
+
+1. Conversion between VCF and PLINK formats
+
+2. Split data (by specified input, by chromosomes, by genes)
+
+3. Merge data (by specified input, by chromosomes)
+##### B.  Phenotype data preprocessing
+
+
+This pipeline is based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py).
+
+
+
+### Alternative implementation
+
+
+
+Previously we use `biomaRt` package in R instead of code from `pyqtl`. The core function calls are:
+
+
+
+```r
+
+    ensembl = useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", version = "$[ensembl_version]")
+
+    ensembl_df <- getBM(attributes=c("ensembl_gene_id","chromosome_name", "start_position", "end_position"),mart=ensembl)
+
+```
+
+
+
+We require ENSEMBL version to be specified explicitly in this pipeline. As of 2021 for the Brain xQTL project, we use ENSEMBL version 103.
+##### C.  Covariate Data Preprocessing
+
+
+This workflow implements 3 procedures for hidden factor analysis from omcis data:
+
+
+
+1. The [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. 
+
+2. Factor analysis using Bi-Cross validation, Owen, Art & Wang, Jingshu. (2015). Bi-Cross-Validation for Factor Analysis. Statistical Science. 31. 10.1214/15-STS539. with software package `APEX` (Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin, bioRxiv 2020.12.18.423490; doi: https://doi.org/10.1101/2020.12.18.423490)
+
+3. PCA with automatic determination of the number of factors to use. This is mainly inspired by a [recent benchmark from Jessica Li's group](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02761-4).
+
+
+
+
+
+Overall, we will pick PCA based approach for the xQTL project, although additional considerations should be taken for single-cell eQTL analysis as investigated in [this paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02873-5).
 
 ### Expertise needed to implement the protocol
 
@@ -117,7 +241,13 @@ Quality control and normalization are performed on output from the leafcutter an
 
 
 
-### 1. Molecular Phenotypes
+> CRITICAL  
+  To improve readability, the code outlined here highlights the notebook to run for each step and not the necessary parameters in some cases. Please refer to the protocol website for information on what parameters to include.
+### 1. Reference data
+#### A.  Reference Data
+
+Please refer to the protocol website for more information on this miniprotocol.
+### 2. Molecular Phenotypes
 #### A.  RNA-seq expression
 
 ##### i. Perform data quality summary via `fastqc`
@@ -155,34 +285,17 @@ Timing ~10 min
 Timing <2 hours
 
 ```
-#no STAR wasp filter:
 !sos run RNA_calling.ipynb STAR_align \
-    --cwd ../../output_test/star_output \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    -s build -c ../csg.yml  -q neurology 
+
 ```
 
 
 
 ```
-#include STAR wasp filter:
 !sos run RNA_calling.ipynb STAR_align \
-    --cwd ../../output_test/star_output_wasp \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    --varVCFfile ../../reference_data/ZOD14598_AD_GRM_WGS_2021-04-29_all.recalibrated_variants.leftnorm.filtered.AF.WASP.vcf \
-    -s build  -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -191,16 +304,8 @@ Timing <30 min
 
 ```
 !sos run RNA_calling.ipynb rnaseqc_call \
-    --cwd ../../output_test/star_output \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    --bam_list ../../output_test/star_output/PCC_sample_list_subset_bam_list \
-    -s build  -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -210,17 +315,8 @@ Timing <X hours
 
 ```
 !sos run RNA_calling.ipynb rsem_call \
-    --cwd ../../output_test/star_output \
-    --samples ../../PCC_sample_list_subset \
-    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --STAR-index ../../reference_data/STAR_Index/ \
-    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
-    --bam_list ../../output_test/star_output/PCC_sample_list_subset_bam_list \
-    --RSEM-index ../../reference_data/RSEM_Index \
-    -s build  -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -229,12 +325,8 @@ Timing <15min
 
 ```
 !sos run bulk_expression_QC.ipynb qc \
-    --cwd ../../output_test/rnaseqc_qc \
-    --tpm-gct ../../output_test/star_output/PCC_sample_list_subset.rnaseqc.gene_tpm.gct.gz \
-    --counts-gct ../../output_test/star_output/PCC_sample_list_subset.rnaseqc.gene_readsCount.gct.gz \
-    --DSFilterPercent 0.1 \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    -s force -c ../csg.yml  -q neurology 
+
 ```
 
 
@@ -243,17 +335,8 @@ Timing <10min
 
 ```
 !sos run bulk_expression_normalization.ipynb normalize \
-    --cwd ../../output_test/normalize \
-    --tpm-gct ../../output_test/rnaseqc_qc/PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.tpm.gct.gz \
-    --counts-gct ../../output_test/rnaseqc_qc/PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.geneCount.gct.gz \
-    --annotation-gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
-    --sample-participant-lookup ../../PCC_sample_subset_map_test \
-    --count-threshold 1 \
-    --tpm_threshold 0.1 \
-    --sample_frac_threshold 0.2 \
-    --normalization_method tmm  \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
-    -s force -c ../csg.yml -q neurology
+
 ```
 
 
@@ -265,11 +348,8 @@ Timing <30min
 
 ```
 !sos run splicing_calling.ipynb leafcutter \
-    --cwd ../../output_test/leafcutter \
-    --samples ../../PCC_sample_list_subset_leafcutter \
-    --data-dir ../../output_test/star_output_wasp \
     --container oras://ghcr.io/cumc/leafcutter_apptainer:latest \
-    -c ../csg.yml -q neurology
+
 ```
 
 
@@ -277,12 +357,8 @@ Timing ~30min
 
 ```
 !sos run splicing_calling.ipynb psichomics \
-    --cwd ../../output_test/psichomics/ \
-    --samples ../../PCC_sample_list_subset_leafcutter \
-    --data-dir ../../output_test/star_output_wasp \
-    --splicing_annotation ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.SUPPA_annotation.rds \
     --container oras://ghcr.io/cumc/psichomics_apptainer:latest \
-    -c ../csg.yml -q neurology
+
 ```
 
 
@@ -291,10 +367,8 @@ Timing  ~30min
 
 ```
 !sos run splicing_normalization.ipynb leafcutter_norm \
-    --cwd ../../output_test/leafcutter/normalize \
-    --ratios ../../output_test/leafcutter/PCC_sample_list_subset_leafcutter_intron_usage_perind.counts.gz \
     --container oras://ghcr.io/cumc/leafcutter_apptainer:latest \
-    -s force -c ../csg.yml -q neurology
+
 ```
 
 
@@ -302,24 +376,396 @@ Timing ~20min
 
 ```
 !sos run splicing_normalization.ipynb psichomics_norm \
-    --cwd ../../output_test/psichomics/normalize \
-    --ratios ../../output_test/psichomics/psi_raw_data.tsv \
     --container oras://ghcr.io/cumc/psichomics_apptainer:latest \
-    -c ../csg.yml -q neurology
+
 ```
 
 
-### 2. Data Pre-processing
+### 3. Data Pre-processing
+#### A.  Genotype data preprocessing
+
+
+```
+sos run VCF_QC.ipynb rename_chrs \
+    --cwd reference_data --container bioinfo.sif
+```
+
+
+
+```
+sos run VCF_QC.ipynb dbsnp_annotate \
+    --cwd reference_data --container bioinfo.sif
+```
+
+
+
+```
+sos run VCF_QC.ipynb qc    \
+    --cwd MWE/output/genotype_1 --container bioinfo.sif -J 1 -c csg.yml -q csg
+```
+
+
+
+```
+sos run VCF_QC.ipynb qc    \
+    --cwd MWE/output/genotype_4 --container bioinfo.sif --add-chr
+```
+
+
+
+```
+
+```
+
+
+
+```
+
+```
+
+
+
+```
+
+```
+
+
+##### Perform QC on both rare and common variants
+
+```
+sos run xqtl-pipeline/pipeline/GWAS_QC.ipynb qc_no_prune \
+   --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+
+```
+
+
+##### Sample match with genotype
+Timing <1 min
+
+```
+sos run pipeline/GWAS_QC.ipynb genotype_phenotype_sample_overlap \
+        --container containers/bioinfo.sif \
+
+```
+
+
+##### Kinship QC
+
+Timing <2 min
+
+```
+sos run pipeline/GWAS_QC.ipynb king \
+    --container containers/bioinfo.sif \
+
+```
+
+
+##### Prepare unrelated individuals data for PCA
+
+Timing <1 min
+
+```
+sos run pipeline/GWAS_QC.ipynb qc \
+   --container containers/bioinfo.sif \
+
+```
+
+
+Timing <1 min
+
+```
+sos run pipeline/GWAS_QC.ipynb qc \
+   --container containers/bioinfo.sif \
+
+```
+
+
+
+```
+sos run GWAS_QC.ipynb qc_no_prune \
+    --container container/bioinfo.sif
+```
+
+
+##### Estimate kinship in the sample
+
+
+```
+sos run GWAS_QC.ipynb king \
+    --container container/bioinfo.sif
+```
+
+
+##### Sample selection and QC the genotype data for PCA
+
+
+```
+sos run GWAS_QC.ipynb qc \
+    --container container/bioinfo.sif
+```
+
+
+##### PCA analysis for unrelated samples
+Timing <2 min
+
+```
+sos run pipeline/PCA.ipynb flashpca \
+   --container containers/flashpcaR.sif \
+
+```
+
+
+
+```
+
+```
+
+
+##### Projection of related individuals
+
+
+```
+sos run PCA.ipynb project_samples \
+  --container container/flashpcaR.sif
+
+```
+
+
+
+```
+
+```
+
+
+##### Finalize genotype QC by PCA for homogenous population
+
+
+```
+sos run GWAS_QC.ipynb qc_no_prune \
+    --container container/bioinfo.sif
+```
+
+
+
+```
+sos run GWAS_QC.ipynb qc_no_prune \
+    --container container/bioinfo.sif
+```
+
+
+
+```
+sos run genotype_formatting.ipynb merge_plink \
+    --container container/bioinfo.sif
+```
+
+
+##### Split data by population
+
+
+```
+
+```
+
+
+##### For each population, do variant level and sample level QC on unrelated individuals, in preparation for PCA analysis
+
+
+```
+    sos run GWAS_QC.ipynb qc \
+        --container container/bioinfo.sif
+```
+
+
+##### For each population, extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level, if applicable
+
+
+```
+    sos run GWAS_QC.ipynb qc_no_prune \
+        --container container/bioinfo.sif -s force
+```
+
+
+##### For each population, run PCA analysis for unrelated samples
+
+
+```
+    sos run PCA.ipynb flashpca \
+        --container container/flashpcaR.sif
+```
+
+
+##### For each population, run projection of related individuals if applicable
+
+
+```
+    sos run PCA.ipynb project_samples \
+      --container container/flashpcaR.sif
+```
+
+
+
+```
+
+```
+
+
+##### For each population do their own QC to finalize 
+
+
+```
+sos run GRM.ipynb grm \
+    --container container/bioinfo.sif
+```
+
+
+##### Merge separated bed files into one
+
+
+```
+sos run pipeline/genotype_formatting.ipynb vcf_to_plink
+    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+
+```
+
+
+
+```
+sos run xqtl-pipeline/pipeline/genotype_formatting.ipynb merge_plink \
+    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+
+```
+
+
+##### Genotype data partition by chromosome
+
+Timing <1 min
+
+```
+sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
+    --container containers/bioinfo.sif 
+```
+
+
+#### B.  Phenotype data preprocessing
+
+
+```
+sos run gene_annotation.ipynb annotate_coord_gene \
+    --container container/rna_quantification.sif --phenotype-id-type gene_name
+```
+
+
+Timing <1 min
+
+```
+sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
+    --container containers/rna_quantification.sif --sep "," 
+```
+
+
+##### Partition by chromosome
+
+
+```
+sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
+    --container containers/bioinfo.sif
+```
+
+
+
+```
+sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
+    --container containers/rna_quantification.sif
+```
+
+
+
+```
+sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
+    --container containers/rna_quantification.sif
+```
+
+
+
+```
+sos run phenotype_imputation.ipynb flash \
+
+```
+
+
+#### C.  Covariate Data Preprocessing
+
+
+```
+sos run pipeline/PEER_factor.ipynb PEER \
+   --container containers/PEER.sif  \
+
+```
+
+
+
+```
+
+```
+
+
+
+```
+
+```
+
+
+
+```
+
+```
+
+
+##### Compute residule on merged covariates and perform hidden factor analysis
+
+Timing <1 min
+
+```
+sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
+   --container containers/PCAtools.sif
+```
+
+
+##### APEX
+
+
+```
+sos run pipeline/BiCV_factor.ipynb BiCV \
+   --container containers/apex.sif  \
+
+```
+
+
+##### Merge Covariates and Genotype PCA
+
+Timing <1 min
+
+```
+sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
+    --container containers/bioinfo.sif
+```
+
+
 
 ## Timing
 
 
 
 
-| Step | Substep | Time|
+| Step(Major Section) | Substep(Miniprotocol) | Time|
 |------|-----|----|
+|Reference data| Reference Data| ~4 hours|
 |Molecular Phenotypes| RNA-seq expression| <3.5 hours|
 | | Alternative splicing from RNA-seq data| <2 hours|
+|Data Pre-processing| Genotype data preprocessing| < X minutes|
+| | Phenotype data preprocessing| < X minutes|
+| | Covariate Data Preprocessing| < X minutes|
 
 ## Troubleshooting
 
@@ -331,12 +777,26 @@ Timing ~20min
 
 
 
+#### A.  Reference Data
+
+Our pipeline uses the following reference data for RNA-seq expression quantification:
+
 #### A.  RNA-seq expression
 
 The final output contained QCed and normalized expression data in a bed.gz file. This file is ready for use in TensorQTL.
 #### B.  Alternative splicing from RNA-seq data
 
 The final output contains the QCed and normalized splicing data from leafcutter and psichonics.
+#### A.  Genotype data preprocessing
+
+#### B.  Phenotype data preprocessing
+
+# Phenotype data preprocessing
+
+#### C.  Covariate Data Preprocessing
+
+# Covariate Data Preprocessing
+
 
 ## Figures
 

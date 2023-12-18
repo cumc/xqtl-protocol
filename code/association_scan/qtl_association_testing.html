@@ -778,13 +778,14 @@
 <h3>i. Cis TensorQTL Command<a class="headerlink" href="#i-cis-tensorqtl-command" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run pipeline/TensorQTL.ipynb cis <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run xqtl-pipeline/pipeline/TensorQTL.ipynb cis <span class="se">\</span>
     --genotype-file output/protocol_example.genotype.chr21_22.genotype_by_chrom_files.txt <span class="se">\</span>
-    --phenotype-file  output/phenotype_by_chrom/protocol_example.protein.bed.phenotype_by_chrom_files.txt <span class="se">\</span>
+    --phenotype-file output/phenotype_by_chrom/protocol_example.protein.bed.phenotype_by_chrom_files.txt <span class="se">\</span>
     --covariate-file output/covariate/protocol_example.protein.protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.Marchenko_PC.gz <span class="se">\</span>
-    --customized_cis_windows input/protocol_example.protein.enhanced_cis_chr21_chr22.bed <span class="se">\</span>
+    --customized-cis-windows xqtl_association/protocol_example.protein.enhanced_cis_chr21_chr22.bed <span class="se">\</span>
     --cwd output/cis_association/ <span class="se">\</span>
-    --container containers/TensorQTL.sif --MAC <span class="m">5</span>
+    --MAC <span class="m">5</span> --numThreads <span class="m">2</span> -J <span class="m">22</span> <span class="se">\</span>
+    --container oras://ghcr.io/cumc/tensorqtl_apptainer:latest
 </pre></div>
 </div>
 </div>
@@ -795,7 +796,7 @@
 <p>Some protein is not in the customized cis windows list. There we will need to remove them from the analysis by create a region_list. Noted that the region list need to be a actual file. So <code class="docutils literal notranslate"><span class="pre">&lt;()</span></code> file is not acceptable.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>zcat output/protocol_example.protein.bed.gz <span class="p">|</span> cut -f <span class="m">1</span>,2,3,4 <span class="p">|</span> grep -v -e ENSG00000163554 <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>zcat output/phenotype/protocol_example.protein.bed.gz <span class="p">|</span> cut -f <span class="m">1</span>,2,3,4 <span class="p">|</span> grep -v -e ENSG00000163554 <span class="se">\</span>
     -e ENSG00000171564 -e ENSG00000171560 -e ENSG00000171557 &gt; output/protocol_example.protein.region_list
 </pre></div>
 </div>
@@ -806,12 +807,13 @@
 <div class="cell_input docutils container">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans <span class="se">\</span>
     --genotype-file output/protocol_example.genotype.chr21_22.genotype_by_chrom_files.txt <span class="se">\</span>
-    --phenotype-file  output/phenotype_by_chrom/protocol_example.protein.bed.phenotype_by_chrom_files.txt <span class="se">\</span>
+    --phenotype-file output/phenotype_by_chrom/protocol_example.protein.bed.phenotype_by_chrom_files.txt <span class="se">\</span>
     --region-list output/phenotype/protocol_example.protein.region_list <span class="se">\</span>
     --covariate-file output/protocol_example.protein.protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.unrelated.plink_qc.prune.pca.Marchenko_PC.gz <span class="se">\</span>
-    --customized-cis-windows input/protocol_example.protein.enhanced_cis_chr21_chr22.bed <span class="se">\</span>
-    --cwd output/association/trans/ <span class="se">\</span>
-    --container containers/TensorQTL.sif --MAC <span class="m">5</span> --numThreads <span class="m">8</span> -J <span class="m">1</span> -q csg --mem 240G -c /mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml 
+    --customized-cis-windows xqtl_association/protocol_example.protein.enhanced_cis_chr21_chr22.bed <span class="se">\</span>
+    --cwd output/trans_association/ <span class="se">\</span>
+    --MAC <span class="m">5</span> --numThreads <span class="m">2</span> -J <span class="m">22</span> <span class="se">\</span>
+    --container oras://ghcr.io/cumc/tensorqtl_apptainer:latest
 </pre></div>
 </div>
 </div>

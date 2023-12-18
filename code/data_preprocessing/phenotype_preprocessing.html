@@ -677,8 +677,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ii-mean-imputation">
-     ii. Mean Imputation
+    <a class="reference internal nav-link" href="#ii-missing-value-imputation">
+     ii. Missing Value Imputation
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -726,22 +726,24 @@
 <div class="section" id="i-phenotype-annotation">
 <h3>i. Phenotype Annotation<a class="headerlink" href="#i-phenotype-annotation" title="Permalink to this headline">¶</a></h3>
 <p>This step serves as annote cooresponding <code class="docutils literal notranslate"><span class="pre">chr</span></code>, <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, and <code class="docutils literal notranslate"><span class="pre">gene_id</span></code> to genes in the original phenotype matrix.</p>
+<p><strong>FIXME: somewhere we need to explain where the reference data should be obtained</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotate_coord_protein</span> \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">gene_annotation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">annotate_coord_protein</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span> \
-    <span class="o">--</span><span class="n">phenoFile</span> <span class="nb">input</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">csv</span> \
-    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">csv</span> \
+    <span class="o">--</span><span class="n">annotation</span><span class="o">-</span><span class="n">gtf</span> <span class="o">../</span><span class="n">reference_data</span><span class="o">/</span><span class="n">Homo_sapiens</span><span class="o">.</span><span class="n">GRCh38</span><span class="o">.</span><span class="mf">103.</span><span class="n">chr</span><span class="o">.</span><span class="n">reformatted</span><span class="o">.</span><span class="n">collapse_only</span><span class="o">.</span><span class="n">gene</span><span class="o">.</span><span class="n">ERCC</span><span class="o">.</span><span class="n">gtf</span> \
     <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="nb">id</span><span class="o">-</span><span class="nb">type</span> <span class="n">gene_name</span> \
     <span class="o">--</span><span class="n">sample</span><span class="o">-</span><span class="n">participant</span><span class="o">-</span><span class="n">lookup</span> <span class="n">output</span><span class="o">/</span><span class="n">sample_meta</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">sample_overlap</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">rna_quantification</span><span class="o">.</span><span class="n">sif</span> <span class="o">--</span><span class="n">sep</span> <span class="s2">&quot;,&quot;</span> 
+    <span class="o">--</span><span class="n">sep</span> <span class="s2">&quot;,&quot;</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">rna_quantification_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="ii-mean-imputation">
-<h3>ii. Mean Imputation<a class="headerlink" href="#ii-mean-imputation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ii-missing-value-imputation">
+<h3>ii. Missing Value Imputation<a class="headerlink" href="#ii-missing-value-imputation" title="Permalink to this headline">¶</a></h3>
 <p>FIXME: mention that for eQTL it is fine to skip this.</p>
 <p>FIXME: For this step we are still working out the best approach. This will be updated with the proper imputation command once we finalize on the simulation results (currently very much likely, using <code class="docutils literal notranslate"><span class="pre">flashier</span></code>).</p>
 </div>
@@ -749,11 +751,11 @@
 <h3>iii. Partition by Chromosome<a class="headerlink" href="#iii-partition-by-chromosome" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">phenotype_by_chrom</span> \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">phenotype_by_chrom</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_chrom</span> \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">chrom</span> <span class="err">`</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">{</span><span class="mf">21.</span><span class="o">.</span><span class="mi">22</span><span class="p">};</span> <span class="n">do</span> <span class="n">echo</span> <span class="nb">chr</span><span class="err">$</span><span class="n">i</span><span class="p">;</span> <span class="n">done</span><span class="err">`</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">bioinfo_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
 </div>

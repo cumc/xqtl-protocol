@@ -93,126 +93,19 @@ We use two different tools to quantify the many types of splicing events which a
 
 Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. 
 #### Data Pre-processing (Step 3)
-##### A.  Genotype data preprocessing
+##### A.  Phenotype data preprocessing
 
 
-The goal of this module is to perform QC on VCF files, including 
+Our gene coordinate annotation pipeline is based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py).
 
 
 
-1. Handling the formatting of multi-allelic sites. 
+##### B.  Covariate Data Preprocessing
 
-2. Genotype and variant level filtering based on genotype calling qualities. 
 
-3. Known/novel variants annotation.
+We provide three different procedures for hidden factor analysis from omics data in our pipeline. The first is the [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. The second is factor anallysis using Bi-Cross validation with the APEX software package [[cf. Owen et al., Statistical Science, 2016](https://doi.org/10.1214/15-STS539)] [[cf. Quick et al., bioRxiv, 2020](https://doi.org/10.1101/2020.12.18.423490)]. The third, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li's group [[cf. Zhou et al., Genome Biology, 2022](https://doi.org/10.1186/s13059-022-02761-4)]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [[cf. Xue et al., Genome Biology, 2023](https://doi.org/10.1186/s13059-023-02873-5)].
 
-4. Summary statistics before and after QC, in particular the ts/tv ratio, to assess the effectiveness of QC.
-
-
-
-1 and 2 will change the genotype data. 3 and 4 above are for explorative analysis on the overall quality assessment of genotype data in the VCF files. We annotate known and novel variants because ts/tv are expected to be different between known and novel variants, and is important QC metric to assess the effectiveness of our QC.
-
-
-
-### Multi-allelic sites
-
-
-
-Mult-allelic sites can be problematic in many ways for downstreams analysis, even of they are handled in terms of formatting after QC. We provide an optional workflow module to keep only bi-allelic sites from data, although by default we will include these sites in the VCF file we generate.
-
-This notebook includes workflow for
-
-
-
-- Compute kinship matrix in sample and estimate related individuals
-
-- Genotype and sample QC: by MAF, missing data and HWE
-
-- LD pruning for follow up PCA analysis on genotype, as needed
-
-
-
-A potential limitation is that the workflow requires all samples and chromosomes to be merged as one single file, in order to perform both sample and variant level QC. However, in our experience using this pipeline with 200K exomes with 15 million variants, this pipeline works on the single merged PLINK file.
-
-Steps to generate a PCA include 
-
-
-
-- removing related individuals
-
-- pruning variants in linkage disequilibrium (LD)
-
-- perform PCA analysis on genotype of unrelated individuals
-
-- excluding outlier samples in the PCA space for individuals of homogeneous self-reported ancestry. These outliers may suggest poor genotyping quality or distant relatedness.
-
-
-
-### Limitations
-
-
-
-1. Some of the PCs may capture LD structure rather than population structure (decrease in power to detect associations in these regions of high LD)
-
-2. When projecting a new study dataset to the PCA space computed from a reference dataset: projected PCs are shrunk toward 0 in the new dataset
-
-3. PC scores may capture outliers that are due to family structure, population structure or other reasons; it might be beneficial to detect and remove these individuals to maximize the population structure captured by PCA (in the case of removing a few outliers) or to restrict analyses to genetically homogeneous samples
-
-For each chromosome, we compute a GRM using data excluding this chromosome. Computation is implemented using `GCTA` software package.
-
-The module streamlines conversion between PLINK and VCF formats, specifically:
-
-
-
-1. Conversion between VCF and PLINK formats
-
-2. Split data (by specified input, by chromosomes, by genes)
-
-3. Merge data (by specified input, by chromosomes)
-##### B.  Phenotype data preprocessing
-
-
-This pipeline is based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py).
-
-
-
-### Alternative implementation
-
-
-
-Previously we use `biomaRt` package in R instead of code from `pyqtl`. The core function calls are:
-
-
-
-```r
-
-    ensembl = useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", version = "$[ensembl_version]")
-
-    ensembl_df <- getBM(attributes=c("ensembl_gene_id","chromosome_name", "start_position", "end_position"),mart=ensembl)
-
-```
-
-
-
-We require ENSEMBL version to be specified explicitly in this pipeline. As of 2021 for the Brain xQTL project, we use ENSEMBL version 103.
-##### C.  Covariate Data Preprocessing
-
-
-This workflow implements 3 procedures for hidden factor analysis from omcis data:
-
-
-
-1. The [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. 
-
-2. Factor analysis using Bi-Cross validation, Owen, Art & Wang, Jingshu. (2015). Bi-Cross-Validation for Factor Analysis. Statistical Science. 31. 10.1214/15-STS539. with software package `APEX` (Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin, bioRxiv 2020.12.18.423490; doi: https://doi.org/10.1101/2020.12.18.423490)
-
-3. PCA with automatic determination of the number of factors to use. This is mainly inspired by a [recent benchmark from Jessica Li's group](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02761-4).
-
-
-
-
-
-Overall, we will pick PCA based approach for the xQTL project, although additional considerations should be taken for single-cell eQTL analysis as investigated in [this paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02873-5).
+Our covariate preprocessing steps merge genotypic principal components and fixed covariate files into one file for downstream QTL analysis. 
 
 ### Expertise needed to implement the protocol
 
@@ -382,273 +275,10 @@ Timing ~20min
 
 
 ### 3. Data Pre-processing
-#### A.  Genotype data preprocessing
+#### A.  Phenotype data preprocessing
 
-
-```
-sos run VCF_QC.ipynb rename_chrs \
-    --cwd reference_data --container bioinfo.sif
-```
-
-
-
-```
-sos run VCF_QC.ipynb dbsnp_annotate \
-    --cwd reference_data --container bioinfo.sif
-```
-
-
-
-```
-sos run VCF_QC.ipynb qc    \
-    --cwd MWE/output/genotype_1 --container bioinfo.sif -J 1 -c csg.yml -q csg
-```
-
-
-
-```
-sos run VCF_QC.ipynb qc    \
-    --cwd MWE/output/genotype_4 --container bioinfo.sif --add-chr
-```
-
-
-
-```
-
-```
-
-
-
-```
-
-```
-
-
-
-```
-
-```
-
-
-##### Perform QC on both rare and common variants
-
-```
-sos run xqtl-pipeline/pipeline/GWAS_QC.ipynb qc_no_prune \
-   --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-
-```
-
-
-##### Sample match with genotype
+##### a. Annotate Coordinates for Gene Expression 
 Timing <1 min
-
-```
-sos run pipeline/GWAS_QC.ipynb genotype_phenotype_sample_overlap \
-        --container containers/bioinfo.sif \
-
-```
-
-
-##### Kinship QC
-
-Timing <2 min
-
-```
-sos run pipeline/GWAS_QC.ipynb king \
-    --container containers/bioinfo.sif \
-
-```
-
-
-##### Prepare unrelated individuals data for PCA
-
-Timing <1 min
-
-```
-sos run pipeline/GWAS_QC.ipynb qc \
-   --container containers/bioinfo.sif \
-
-```
-
-
-Timing <1 min
-
-```
-sos run pipeline/GWAS_QC.ipynb qc \
-   --container containers/bioinfo.sif \
-
-```
-
-
-
-```
-sos run GWAS_QC.ipynb qc_no_prune \
-    --container container/bioinfo.sif
-```
-
-
-##### Estimate kinship in the sample
-
-
-```
-sos run GWAS_QC.ipynb king \
-    --container container/bioinfo.sif
-```
-
-
-##### Sample selection and QC the genotype data for PCA
-
-
-```
-sos run GWAS_QC.ipynb qc \
-    --container container/bioinfo.sif
-```
-
-
-##### PCA analysis for unrelated samples
-Timing <2 min
-
-```
-sos run pipeline/PCA.ipynb flashpca \
-   --container containers/flashpcaR.sif \
-
-```
-
-
-
-```
-
-```
-
-
-##### Projection of related individuals
-
-
-```
-sos run PCA.ipynb project_samples \
-  --container container/flashpcaR.sif
-
-```
-
-
-
-```
-
-```
-
-
-##### Finalize genotype QC by PCA for homogenous population
-
-
-```
-sos run GWAS_QC.ipynb qc_no_prune \
-    --container container/bioinfo.sif
-```
-
-
-
-```
-sos run GWAS_QC.ipynb qc_no_prune \
-    --container container/bioinfo.sif
-```
-
-
-
-```
-sos run genotype_formatting.ipynb merge_plink \
-    --container container/bioinfo.sif
-```
-
-
-##### Split data by population
-
-
-```
-
-```
-
-
-##### For each population, do variant level and sample level QC on unrelated individuals, in preparation for PCA analysis
-
-
-```
-    sos run GWAS_QC.ipynb qc \
-        --container container/bioinfo.sif
-```
-
-
-##### For each population, extract previously selected variants from related individuals in preparation for PCA, only applying missingness filter at sample level, if applicable
-
-
-```
-    sos run GWAS_QC.ipynb qc_no_prune \
-        --container container/bioinfo.sif -s force
-```
-
-
-##### For each population, run PCA analysis for unrelated samples
-
-
-```
-    sos run PCA.ipynb flashpca \
-        --container container/flashpcaR.sif
-```
-
-
-##### For each population, run projection of related individuals if applicable
-
-
-```
-    sos run PCA.ipynb project_samples \
-      --container container/flashpcaR.sif
-```
-
-
-
-```
-
-```
-
-
-##### For each population do their own QC to finalize 
-
-
-```
-sos run GRM.ipynb grm \
-    --container container/bioinfo.sif
-```
-
-
-##### Merge separated bed files into one
-
-
-```
-sos run pipeline/genotype_formatting.ipynb vcf_to_plink
-    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-
-```
-
-
-
-```
-sos run xqtl-pipeline/pipeline/genotype_formatting.ipynb merge_plink \
-    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
-
-```
-
-
-##### Genotype data partition by chromosome
-
-Timing <1 min
-
-```
-sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
-    --container containers/bioinfo.sif 
-```
-
-
-#### B.  Phenotype data preprocessing
-
 
 ```
 sos run gene_annotation.ipynb annotate_coord_gene \
@@ -656,7 +286,8 @@ sos run gene_annotation.ipynb annotate_coord_gene \
 ```
 
 
-Timing <1 min
+##### b. Annotate Coordinates for Proteins
+Timing X min
 
 ```
 sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
@@ -664,8 +295,8 @@ sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
 ```
 
 
-##### Partition by chromosome
-
+##### a. Partition by chromosome
+Timing X min
 
 ```
 sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
@@ -673,20 +304,8 @@ sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
 ```
 
 
-
-```
-sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
-    --container containers/rna_quantification.sif
-```
-
-
-
-```
-sos run pipeline/phenotype_formatting.ipynb partition_by_chrom \
-    --container containers/rna_quantification.sif
-```
-
-
+##### a. Phenotype Imputation
+Timing X min
 
 ```
 sos run phenotype_imputation.ipynb flash \
@@ -694,8 +313,10 @@ sos run phenotype_imputation.ipynb flash \
 ```
 
 
-#### C.  Covariate Data Preprocessing
+#### B.  Covariate Data Preprocessing
 
+##### a. PEER Method
+Timing X min
 
 ```
 sos run pipeline/PEER_factor.ipynb PEER \
@@ -722,7 +343,7 @@ sos run pipeline/PEER_factor.ipynb PEER \
 ```
 
 
-##### Compute residule on merged covariates and perform hidden factor analysis
+##### b. Marchenko Principal Components
 
 Timing <1 min
 
@@ -732,8 +353,9 @@ sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
 ```
 
 
-##### APEX
+##### c. BiCV Factor Analysis with APEX
 
+Timing X min
 
 ```
 sos run pipeline/BiCV_factor.ipynb BiCV \
@@ -742,7 +364,7 @@ sos run pipeline/BiCV_factor.ipynb BiCV \
 ```
 
 
-##### Merge Covariates and Genotype PCA
+##### i. Merge Covariates and Genotype PCs
 
 Timing <1 min
 
@@ -763,9 +385,10 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 |Reference data| Reference Data| ~4 hours|
 |Molecular Phenotypes| RNA-seq expression| <3.5 hours|
 | | Alternative splicing from RNA-seq data| <2 hours|
-|Data Pre-processing| Genotype data preprocessing| < X minutes|
-| | Phenotype data preprocessing| < X minutes|
-| | Covariate Data Preprocessing| < X minutes|
+|Data Pre-processing| Phenotype data preprocessing| < X minutes
+|
+| | Covariate Data Preprocessing| < X minutes
+|
 
 ## Troubleshooting
 
@@ -787,13 +410,9 @@ The final output contained QCed and normalized expression data in a bed.gz file.
 #### B.  Alternative splicing from RNA-seq data
 
 The final output contains the QCed and normalized splicing data from leafcutter and psichonics.
-#### A.  Genotype data preprocessing
+#### A.  Phenotype data preprocessing
 
-#### B.  Phenotype data preprocessing
-
-# Phenotype data preprocessing
-
-#### C.  Covariate Data Preprocessing
+#### B.  Covariate Data Preprocessing
 
 # Covariate Data Preprocessing
 
@@ -835,6 +454,10 @@ The final output contains the QCed and normalized splicing data from leafcutter 
 4. Park et al. 2018. https://doi.org/10.1016/j.ajhg.2017.11.002 
 5. Li et al. 2018. https://doi.org/10.1038/s41588-017-0004-9 
 6. Agostinho et al. 2019. https://doi.org/10.1093/nar/gky888 
+7. Owen et al. 2016. https://doi.org/10.1214/15-STS539 
+8. Quick et al. 2020. https://doi.org/10.1101/2020.12.18.423490 
+9. Zhou et al. 2022. https://doi.org/10.1186/s13059-022-02761-4 
+10. Xue et al. 2023. https://doi.org/10.1186/s13059-023-02873-5 
 
 ## Keywords
 

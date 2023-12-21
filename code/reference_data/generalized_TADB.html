@@ -1204,19 +1204,19 @@ In the later code we will denote them as <strong>specific TAD</strong> because t
 <img src="sole_case.png" width=800 height=800 />
 <p>We can see from the ideal case, at the boundary of generalized TAD, there are regions not covered by all two specific TADs, which means not all information belongs to a TAD, so it can belong to TAB (boundary regions).
 That’s how we define a <strong>Generalized TAB</strong>, not only the intervals, but also include the ambigous regions. They are shown as the <strong>yellow</strong> triangles in the diagram.</p>
-<p><img alt="" src="code/reference_data/TADB_diagram.png" /></p>
+<p><img alt="" src="../../_images/TADB_diagram.png" /></p>
 <p>Then to get TADBs, we will include the generalized TAD and adjacent TABs. In the diagram for generalized TAD2, the TADB will be (generalized) TAB1 + TAD2 + TAB2.</p>
 <p>Solely formed generalized TAD have no ambiguous regions, so their boundaries will also be boundaries of generalized TAB.
 Here we give a example.</p>
 <p>We search for the last TADs right boundary and extend there, then search for the next TADs left boundary and extend there.
 Note: if two generalized TAD overlap, we will serach for the boundary of non-overlapping one.</p>
 <p>It’s not hard to find that under this definition, TAD2 and TAD3 share the same TADB.</p>
-<p><img alt="" src="code/reference_data/TADB_solely.png" /></p>
+<p><img alt="" src="../../_images/TADB_solely.png" /></p>
 <p>So now our strategy is to work out a list of left boundaries and right boundaries. For a generalized TAD formed by two or more specific TADs, the left boundary will be the start of the second specific TAD forming this generalized TAD.
 For a generalized TAD formed solely by one, then the left boundary is just the start of this generlized TAD.</p>
 <p>It’s similar for the right boundaries, the only difference we use the last but one specific TADs end as the right boundary. Here are the diagrams.</p>
 <p>Left boundary will be labled as red vertical lines, right will be labeld as blue verticle lines. The definition also fits for more complicated cases.</p>
-<p><img alt="" src="code/reference_data/left_right.png" /></p>
+<p><img alt="" src="../../_images/left_right.png" /></p>
 <p>After having these boundaries our strategy to get TADB will be to search from start of generalized TAD, extend left side to last right boundary (including the start of chromosome, 0). Search from end of generalized TAD, extend right side to the next left boundary (including the end of each chromosomes).</p>
 </div>
 <div class="section" id="tadb-coding">
@@ -1475,7 +1475,7 @@ For a generalized TAD formed solely by one, then the left boundary is just the s
 However, after merging, some of the TADBs will be totally covered by other TADBS. An example is shown here.</p>
 <p>Genralized TAD0 and 4 not drawn. But for generalized TAD1, TADB fromed by it will be totally a subset of TADB 2, which is the extension of generalized TAD2.
 (Blue: right boundary, red: left_boundary)</p>
-<p><img alt="" src="code/reference_data/overlap.png" /></p>
+<p><img alt="" src="../../_images/overlap.png" /></p>
 <p>Here we will use two steps to exclude those TADBs that are fully covered by other single TADBs (including the case that two TADBs are identical)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

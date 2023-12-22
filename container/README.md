@@ -17,11 +17,12 @@ To update an existing container with new packages or new versions of packages or
 1. If you have not already done so, create a fork of this repository to your own GitHub account and clone it locally: `git clone git@github.com:YOUR_USERNAME/xqtl-pipeline`.  
 2. Add the original repo as an additional remote: `git remote add upstream git@github.com:cumc/xqtl-pipeline.git`
 3. Fetch the upstream remote: `git fetch upstream`
-3. Checkout a new branch from the upstream main branch: `git checkout -b my_container_update upstream/main`.
-4. Edit container.csv to make the changes you want to the environments using your preferred spreadsheet editor (Excel, Google Sheets, Numbers, LibreOffice, etc.).  Please refer to the documentation in the next section for details on what to add to the table.
-4. Commit the changes you have made: `git commit -m "update my_container"`.
-6. Push the branch to the upstream: `git push -f origin my_container_update`.
-7. Once the checks all pass with no errors, ask @gaow or @danielnachun to merge the pull request.
+4. Checkout a new branch from the upstream main branch: `git checkout -b my_container_update upstream/main`.
+5. Edit container.csv to make the changes you want to the environments using your preferred spreadsheet editor (Excel, Google Sheets, Numbers, LibreOffice, etc.).  Please refer to the documentation in the next section for details on what to add to the table.
+6. Commit the changes you have made: `git commit -am "update my_container"`.
+7. Push the branch to the upstream: `git push -f origin my_container_update`.
+8. Initialize a pull request (PR). This will trigger CI checks which you will find on the PR page. Once the checks all pass with no errors, ask @gaow or @danielnachun to merge the PR.
+9. After your branch is merged, you can track the status of the container image update on the `Checks` tab on your PR page. This is triggered after merging the PR to update the container.
 
 ## Updating this README
 Do not update the [main README file](https://github.com/cumc/xqtl-pipeline/tree/main/container/README.md) as it is generated automatically.  Instead, open a pull request as described in the previous section and update the [file in the readme subfolder](https://github.com/cumc/xqtl-pipeline/tree/main/container/readme/README.md).  A GitHub Actions workflow will automatically add a commit to update the main README file.

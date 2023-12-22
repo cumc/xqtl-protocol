@@ -308,8 +308,8 @@ sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
 Timing X min
 
 ```
-sos run phenotype_imputation.ipynb flash \
-
+sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb flash \
+    --container oras://ghcr.io/cumc/omics_imputation_apptainer:latest
 ```
 
 

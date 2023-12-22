@@ -665,6 +665,30 @@
   <a class="reference internal nav-link" href="#input">
    Input
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#default-parameters-number-of-factors">
+     Default Parameters: Number of Factors
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#peer">
+       PEER
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#bicv-factor-analysis-with-apex">
+       BiCV factor analysis with APEX
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pca-with-marchenko-s-approach">
+       PCA with Marchenko’s approach
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#output">
@@ -684,48 +708,31 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#default-parameters-number-of-factors">
-   Default Parameters: Number of Factors
+  <a class="reference internal nav-link" href="#minimal-working-example-steps">
+   Minimal Working Example Steps
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#peer">
-     PEER
+    <a class="reference internal nav-link" href="#a-peer-method">
+     a. PEER Method
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#apex">
-     APEX
+    <a class="reference internal nav-link" href="#b-marchenko-principal-components">
+     b. Marchenko Principal Components
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pca">
-     PCA
+    <a class="reference internal nav-link" href="#c-bicv-factor-analysis-with-apex">
+     c. BiCV Factor Analysis with APEX
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#minimal-working-example">
-   Minimal Working Example
+  <a class="reference internal nav-link" href="#troubleshooting">
+   Troubleshooting
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     PEER
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#compute-residule-on-merged-covariates-and-perform-hidden-factor-analysis">
-     Compute residule on merged covariates and perform hidden factor analysis
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     APEX
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#command-interface">
@@ -733,18 +740,30 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#implementation">
-   Implementation
+  <a class="reference internal nav-link" href="#setup-and-global-parameters">
+   Setup and global parameters
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#reference">
-     Reference
+    <a class="reference internal nav-link" href="#marchenko-principal-components">
+     Marchenko Principal Components
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#bicv-factor-analysis-with-apex">
-     BiCV factor analysis with APEX
+    <a class="reference internal nav-link" href="#peer-method">
+     PEER Method
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#reference">
+       Reference
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     BiCV Factor Analysis with APEX
     </a>
    </li>
   </ul>
@@ -764,13 +783,7 @@
 <h1>Hidden Factor Analysis<a class="headerlink" href="#hidden-factor-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>This workflow implements 3 procedures for hidden factor analysis from omcis data:</p>
-<ol class="simple">
-<li><p>The <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">Probabilistic Estimation of Expression Residuals (PEER) method</a>, a method also used for GTEx eQTL data analysis.</p></li>
-<li><p>Factor analysis using Bi-Cross validation, Owen, Art &amp; Wang, Jingshu. (2015). Bi-Cross-Validation for Factor Analysis. Statistical Science. 31. 10.1214/15-STS539. with software package <code class="docutils literal notranslate"><span class="pre">APEX</span></code> (Corbin Quick, Li Guan, Zilin Li, Xihao Li, Rounak Dey, Yaowu Liu, Laura Scott, Xihong Lin, bioRxiv 2020.12.18.423490; doi: <a class="reference external" href="https://doi.org/10.1101/2020.12.18.423490">https://doi.org/10.1101/2020.12.18.423490</a>)</p></li>
-<li><p>PCA with automatic determination of the number of factors to use. This is mainly inspired by a <a class="reference external" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02761-4">recent benchmark from Jessica Li’s group</a>.</p></li>
-</ol>
-<p>Overall, we will pick PCA based approach for the xQTL project, although additional considerations should be taken for single-cell eQTL analysis as investigated in <a class="reference external" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-02873-5">this paper</a>.</p>
+<p>We provide three different procedures for hidden factor analysis from omics data in our pipeline. The first is the <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">Probabilistic Estimation of Expression Residuals (PEER) method</a>, a method also used for GTEx eQTL data analysis. The second is factor anallysis using Bi-Cross validation with the APEX software package [<a class="reference external" href="https://doi.org/10.1214/15-STS539">cf. Owen et al., Statistical Science, 2016</a>] [<a class="reference external" href="https://doi.org/10.1101/2020.12.18.423490">cf. Quick et al., bioRxiv, 2020</a>]. The third, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li’s group [<a class="reference external" href="https://doi.org/10.1186/s13059-022-02761-4">cf. Zhou et al., Genome Biology, 2022</a>]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [<a class="reference external" href="https://doi.org/10.1186/s13059-023-02873-5">cf. Xue et al., Genome Biology, 2023</a>].</p>
 </div>
 <div class="section" id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
@@ -798,6 +811,25 @@
 <ol class="simple">
 <li><p>For <code class="docutils literal notranslate"><span class="pre">APEX</span></code> we need an indexed VCF file to get the command to work, although this file is not used.</p></li>
 </ol>
+<div class="section" id="default-parameters-number-of-factors">
+<h3>Default Parameters: Number of Factors<a class="headerlink" href="#default-parameters-number-of-factors" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="peer">
+<h4>PEER<a class="headerlink" href="#peer" title="Permalink to this headline">¶</a></h4>
+<p>By default the pipeline applies recommendations from <a class="reference external" href="https://gtexportal.org/home/documentationPage">GTEx</a>:</p>
+<blockquote>
+<div><p>A set of covariates identified using the Probabilistic Estimation of Expression Residuals (PEER) method (Stegle et al., PLoS Comp. Biol., 2010 ), calculated for the normalized expression matrices (described below). For eQTL analyses, the number of PEER factors was determined as function of sample size (N): 15 factors for N&lt;150, 30 factors for 150≤ N&lt;250, 45 factors for 250≤ N&lt;350, and 60 factors for N≥350, as a result of optimizing for the number of eGenes discovered. For sQTL analyses, 15 PEER factors were computed for each tissue.</p>
+</div></blockquote>
+<p>Although one can specify fixed number of factors using <code class="docutils literal notranslate"><span class="pre">--N</span></code> option in this pipeline.</p>
+</div>
+<div class="section" id="bicv-factor-analysis-with-apex">
+<h4>BiCV factor analysis with APEX<a class="headerlink" href="#bicv-factor-analysis-with-apex" title="Permalink to this headline">¶</a></h4>
+<p>We will do the same as PEER</p>
+</div>
+<div class="section" id="pca-with-marchenko-s-approach">
+<h4>PCA with Marchenko’s approach<a class="headerlink" href="#pca-with-marchenko-s-approach" title="Permalink to this headline">¶</a></h4>
+<p>We will use Marchenko’s approach to determine the number of PC to use. FIXME: citation.</p>
+</div>
+</div>
 </div>
 <div class="section" id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
@@ -811,38 +843,20 @@
 <h3>Secondary Outputs<a class="headerlink" href="#secondary-outputs" title="Permalink to this headline">¶</a></h3>
 <p>PEER:</p>
 <ul class="simple">
-<li><p>Diagnosis polts for check of convergence</p></li>
+<li><p>Diagnosis plots for check of convergence</p></li>
 <li><p>peer precision /residuals /weights</p></li>
 </ul>
 </div>
 </div>
-<div class="section" id="default-parameters-number-of-factors">
-<h2>Default Parameters: Number of Factors<a class="headerlink" href="#default-parameters-number-of-factors" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="peer">
-<h3>PEER<a class="headerlink" href="#peer" title="Permalink to this headline">¶</a></h3>
-<p>By default the pipeline applies recommendations from <a class="reference external" href="https://gtexportal.org/home/documentationPage">GTEx</a>:</p>
-<blockquote>
-<div><p>A set of covariates identified using the Probabilistic Estimation of Expression Residuals (PEER) method (Stegle et al., PLoS Comp. Biol., 2010 ), calculated for the normalized expression matrices (described below). For eQTL analyses, the number of PEER factors was determined as function of sample size (N): 15 factors for N&lt;150, 30 factors for 150≤ N&lt;250, 45 factors for 250≤ N&lt;350, and 60 factors for N≥350, as a result of optimizing for the number of eGenes discovered. For sQTL analyses, 15 PEER factors were computed for each tissue.</p>
-</div></blockquote>
-<p>Although one can specify fixed number of factors using <code class="docutils literal notranslate"><span class="pre">--N</span></code> option in this pipeline.</p>
-</div>
-<div class="section" id="apex">
-<h3>APEX<a class="headerlink" href="#apex" title="Permalink to this headline">¶</a></h3>
-<p>We will do the same as PEER</p>
-</div>
-<div class="section" id="pca">
-<h3>PCA<a class="headerlink" href="#pca" title="Permalink to this headline">¶</a></h3>
-<p>We will use Marchenko’s approach to determine the number of PC to use. FIXME: citation.</p>
-</div>
-</div>
-<div class="section" id="minimal-working-example">
-<h2>Minimal Working Example<a class="headerlink" href="#minimal-working-example" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="minimal-working-example-steps">
+<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Permalink to this headline">¶</a></h2>
 <p>An MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1yjTwoO0DYGi-J9ouMsh9fHKfDmsXJ_4I?usp=sharing">google drive</a>.
 The singularity image (sif) for running this MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1mLOS3AVQM8yTaWtCbO8Q3xla98Nr5bZQ">google drive</a></p>
 <p>FIXME: need updated links</p>
-<div class="section" id="id1">
-<h3>PEER<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="a-peer-method">
+<h3>a. PEER Method<a class="headerlink" href="#a-peer-method" title="Permalink to this headline">¶</a></h3>
 <p>Because the MWE only contains 10 genes but 400+ samples. The computed N will be far greater than the number of genes. Therefore in the MWE the N is fixed to be 3.</p>
+<p>Timing: X min</p>
 <p>FIXME: need updated examples</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -883,7 +897,7 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div class="sos_hint">> ./peer_output/example_data.bed_diagnosis_plot.jpeg (22.2 KiB):</div></div><img alt="../../../_images/covariate_hidden_factor_15_1.jpg" src="../../../_images/covariate_hidden_factor_15_1.jpg" />
+<div class="output text_html"><div class="sos_hint">> ./peer_output/example_data.bed_diagnosis_plot.jpeg (22.2 KiB):</div></div><img alt="../../../_images/covariate_hidden_factor_19_1.jpg" src="../../../_images/covariate_hidden_factor_19_1.jpg" />
 <div class="output text_html"><div class="sos_hint">> ./peer_output/example_data.bed_diagnosis_plot.jpeg:</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bash: ./peer_output/example_data.bed_diagnosis_plot.jpeg: Permission denied
 </pre></div>
 </div>
@@ -914,8 +928,8 @@ Exporting results ... Done.
 </div>
 </div>
 </div>
-<div class="section" id="compute-residule-on-merged-covariates-and-perform-hidden-factor-analysis">
-<h3>Compute residule on merged covariates and perform hidden factor analysis<a class="headerlink" href="#compute-residule-on-merged-covariates-and-perform-hidden-factor-analysis" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="b-marchenko-principal-components">
+<h3>b. Marchenko Principal Components<a class="headerlink" href="#b-marchenko-principal-components" title="Permalink to this headline">¶</a></h3>
 <p>This step will compute residual on merged covariates (<code class="docutils literal notranslate"><span class="pre">Marchenko_PC_1</span></code>) and perform hidden factor analysis  (<code class="docutils literal notranslate"><span class="pre">Marchenko_PC_2</span></code>)</p>
 <p>Timing: &lt;1 min</p>
 <div class="cell docutils container">
@@ -940,8 +954,10 @@ Exporting results ... Done.
 </pre></div>
 </div>
 </div>
-<div class="section" id="id2">
-<h3>APEX<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c-bicv-factor-analysis-with-apex">
+<h3>c. BiCV Factor Analysis with APEX<a class="headerlink" href="#c-bicv-factor-analysis-with-apex" title="Permalink to this headline">¶</a></h3>
+<p>Timing: X min</p>
+<p>FIXME</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">BiCV_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">BiCV</span> \
@@ -955,11 +971,32 @@ Exporting results ... Done.
 </div>
 </div>
 </div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Substep</p></th>
+<th class="head"><p>Problem</p></th>
+<th class="head"><p>Possible Reason</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="command-interface">
 <h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">covariate_hidden_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="err">!</span><span class="n">sos</span> <span class="n">run</span> <span class="n">covariate_hidden_factor</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
 </div>
@@ -996,11 +1033,13 @@ Global Workflow Options:
                         Number of threads
   --container &#39;&#39;
                         Software container option
-  --entrypoint {(&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + container.split(&#39;/&#39;)[-1][:-4]) if container.endswith(&#39;.sif&#39;) else f&#39;&#39;}
+  --entrypoint  (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
 
 
 Sections
   *_1:
+    Workflow Options:
+      --[no-]mean-impute-missing (default to False)
   Marchenko_PC_2:
   PEER_2:
     Workflow Options:
@@ -1036,8 +1075,8 @@ Sections
 </div>
 </div>
 </div>
-<div class="section" id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="setup-and-global-parameters">
+<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -1139,6 +1178,8 @@ Sections
 </div>
 </div>
 </div>
+<div class="section" id="marchenko-principal-components">
+<h3>Marchenko Principal Components<a class="headerlink" href="#marchenko-principal-components" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Marchenko_PC_2</span><span class="p">]</span>
@@ -1190,6 +1231,9 @@ Sections
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="peer-method">
+<h3>PEER Method<a class="headerlink" href="#peer-method" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PEER_2</span><span class="p">]</span>
@@ -1380,15 +1424,16 @@ Sections
 </div>
 </div>
 <div class="section" id="reference">
-<h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<h4>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><p>PEER codes are adapted from <a class="reference external" href="https://github.com/RTIInternational/biocloud_docker_tools/blob/master/peer/v1.3/run_peer.R">here</a></p></li>
+<li><p>PEER code is adapted from <a class="reference external" href="https://github.com/RTIInternational/biocloud_docker_tools/blob/master/peer/v1.3/run_peer.R">here</a></p></li>
 <li><p>GTEx recommandation of PEER factors is <a class="reference external" href="https://gtexportal.org/home/documentationPage">here</a></p></li>
 <li><p>Examples by PEER is at <a class="reference external" href="https://github.com/PMBio/peer/wiki/Tutorial">github</a></p></li>
 </ul>
 </div>
-<div class="section" id="bicv-factor-analysis-with-apex">
-<h3>BiCV factor analysis with APEX<a class="headerlink" href="#bicv-factor-analysis-with-apex" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id1">
+<h3>BiCV Factor Analysis with APEX<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>Notice that the command options are different from those on the APEX website documentation. The commands on the documentation page does not work (last updated September 2021). The commands below were constructed and tested by our team based on our understanding of the program, without input from APEX authors.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

@@ -711,13 +711,14 @@
 <h2>Miniprotocol Timing<a class="headerlink" href="#miniprotocol-timing" title="Permalink to this headline">¶</a></h2>
 <p>This represents the total duration for all miniprotocol phases. While module-specific timings are provided separately on their respective pages, they are also included in this overall estimate.</p>
 <p>Timing &lt; X minutes</p>
+<p>FIXME</p>
 </div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This workflow is an application of the phenotype related workflows from the xQTL project pipeline.</p>
 <ol class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gene_annotation.ipynb</span></code> (step i): Adds genomic coordinate annotation to gene-level molecular phenotype files and converts them to <code class="docutils literal notranslate"><span class="pre">.bed</span></code> format</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">phenotype_imputation.ipynb</span></code> (step ii): [FIXME: to be updated]</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">phenotype_imputation.ipynb</span></code> (step ii): Impute missing entries of molecular phenotype data</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">phenotype_formatting.ipynb</span></code> (step iii): Splits each phenotype file by chromosome</p></li>
 </ol>
 </div>
@@ -744,8 +745,18 @@
 </div>
 <div class="section" id="ii-missing-value-imputation">
 <h3>ii. Missing Value Imputation<a class="headerlink" href="#ii-missing-value-imputation" title="Permalink to this headline">¶</a></h3>
-<p>FIXME: mention that for eQTL it is fine to skip this.</p>
-<p>FIXME: For this step we are still working out the best approach. This will be updated with the proper imputation command once we finalize on the simulation results (currently very much likely, using <code class="docutils literal notranslate"><span class="pre">flashier</span></code>).</p>
+<p>This step serves as impute the missing entries for molecular phenotype data. This step is optional for eQTL analysis. But for other QTL analysis, this step is necessary. The missing entries are imputed by <code class="docutils literal notranslate"><span class="pre">flashier</span></code>, a Empirical Bayes Matrix Factorization model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_imputation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flash</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span> \
+    <span class="o">--</span><span class="n">prior</span> <span class="n">ebnm_point_normal</span> <span class="o">--</span><span class="n">varType</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">omics_imputation_apptainer</span><span class="p">:</span><span class="n">latest</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="iii-partition-by-chromosome">
 <h3>iii. Partition by Chromosome<a class="headerlink" href="#iii-partition-by-chromosome" title="Permalink to this headline">¶</a></h3>

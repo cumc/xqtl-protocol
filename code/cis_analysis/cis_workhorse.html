@@ -459,13 +459,13 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../pecotmr_integration/pecotmr_preprocessing.html">
+    <a class="reference internal" href="../pecotmr_integration/SuSiE_enloc.html">
      xQTL and GWAS region alignment
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../pecotmr_integration/twas_mr.html">
-     xQTL and GWAS integration: TWAS and MR
+     GWAS integration: TWAS and MR
     </a>
    </li>
    <li class="toctree-l2">
@@ -1072,6 +1072,7 @@
     <span class="c1"># Univeriate analysis suite</span>
     <span class="n">fitted</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">r</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">st</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
       <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span> <span class="o">=</span> <span class="n">susie_wrapper</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_X</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="err">$</span><span class="p">{</span><span class="n">init_L</span><span class="p">},</span> <span class="err">$</span><span class="p">{</span><span class="n">max_L</span><span class="p">},</span> <span class="err">$</span><span class="p">{</span><span class="n">coverage</span><span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
       <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span> <span class="o">=</span> <span class="n">susie_post_processor</span><span class="p">(</span><span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_X</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_X_scalar</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y_scalar</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> 
                                        <span class="n">fdat</span><span class="err">$</span><span class="n">maf</span><span class="p">[[</span><span class="n">r</span><span class="p">]],</span> <span class="n">secondary_coverage</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">coverage</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])}),</span> <span class="n">signal_cutoff</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">pip_cutoff</span><span class="p">},</span> 
@@ -1091,6 +1092,7 @@
           <span class="p">}</span>
       <span class="p">}</span>
     <span class="p">}</span>
+    <span class="n">fitted</span><span class="p">[[</span><span class="n">r</span><span class="p">]]</span><span class="err">$</span><span class="n">total_time_elapsed</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">st</span>
     <span class="n">names</span><span class="p">(</span><span class="n">fitted</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">names</span><span class="p">(</span><span class="n">fdat</span><span class="err">$</span><span class="n">residual_Y</span><span class="p">)</span>
     <span class="n">saveRDS</span><span class="p">(</span><span class="n">fitted</span><span class="p">,</span> <span class="err">$</span><span class="p">{</span><span class="n">_output</span><span class="p">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;xz&#39;</span><span class="p">)</span>
 </pre></div>

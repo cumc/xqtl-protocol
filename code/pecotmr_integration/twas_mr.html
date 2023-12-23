@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>xQTL and GWAS integration: TWAS and MR &#8212; FunGen-xQTL Consortium</title>
+    <title>GWAS integration: TWAS and MR &#8212; FunGen-xQTL Consortium</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -42,6 +42,8 @@
     <script src="../../_static/copybutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -52,7 +54,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="TWAS and COLOC integration" href="intact.html" />
-    <link rel="prev" title="xQTL and GWAS region alignment" href="pecotmr_preprocessing.html" />
+    <link rel="prev" title="xQTL and GWAS region alignment" href="SuSiE_enloc.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -459,13 +461,13 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="pecotmr_preprocessing.html">
+    <a class="reference internal" href="SuSiE_enloc.html">
      xQTL and GWAS region alignment
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     xQTL and GWAS integration: TWAS and MR
+     GWAS integration: TWAS and MR
     </a>
    </li>
    <li class="toctree-l2">
@@ -657,72 +659,94 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#introduction">
+   Introduction
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mendelian-randomization-using-fine-mapping-iv">
+   Mendelian Randomization using Fine-Mapping IV
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#overview">
    Overview
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input">
-     Input
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ouput">
-     Ouput
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#twas">
-   TWAS
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Input
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#output">
-     Output
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mr">
-   MR
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     Input
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id3">
-     Output
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example">
-     Example
+    <a class="reference internal nav-link" href="#ptwas-analysis-from-susie-objects">
+     PTWAS Analysis from SuSiE Objects
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#mic-pseudo-bulk-dataset">
-       Mic pseudo bulk dataset
+      <a class="reference internal nav-link" href="#step-1-ptwas-twas-z-format">
+       Step 1: PTWAS (twas_z_format)
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#mic-twas-results">
-       Mic TWAS results
+      <a class="reference internal nav-link" href="#step-2-mr-twas-candidate-genes">
+       Step 2: MR (twas_candidate_genes)
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-requirements-for-twas">
+     Input Requirements for TWAS
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-specifications-for-twas">
+     Output Specifications for TWAS
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#step-1-twas">
+       Step 1: TWAS
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#mic-mr-results">
-       Mic MR results
+      <a class="reference internal nav-link" href="#step-2-mr">
+       Step 2: MR
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#output-file-format-for-twas">
+       Output File Format for TWAS
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#causal-effect-estimation-and-validation">
+     Causal Effect Estimation and Validation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#estimation-process">
+       Estimation Process
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#validation-process">
+       Validation Process
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#file-formats">
+     File Formats
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#input-file-format">
+       Input File Format
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#output-file-format">
+       Output File Format
       </a>
      </li>
     </ul>
@@ -740,64 +764,135 @@
         
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="xqtl-and-gwas-integration-twas-and-mr">
-<h1>xQTL and GWAS integration: TWAS and MR<a class="headerlink" href="#xqtl-and-gwas-integration-twas-and-mr" title="Permalink to this headline">¶</a></h1>
-<p>This module contains the software implementations to perform transcriptome-wide association analysis (TWAS). These methods are designed to perform rigorous causal inference connecting genes to complex traits.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="gwas-integration-twas-and-mr">
+<h1>GWAS integration: TWAS and MR<a class="headerlink" href="#gwas-integration-twas-and-mr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This module provides software implementations for transcriptome-wide association analysis (TWAS), aimed at facilitating rigorous causal inference connecting genes to complex traits.</p>
+</div>
+<div class="section" id="mendelian-randomization-using-fine-mapping-iv">
+<h2>Mendelian Randomization using Fine-Mapping IV<a class="headerlink" href="#mendelian-randomization-using-fine-mapping-iv" title="Permalink to this headline">¶</a></h2>
+<p>This component focuses on Mendelian Randomization using fine-mapping instrumental variables (IV). The procedures implemented in the R script encompass PTWAS estimation and model validation, with the unit of analysis being a single gene-trait pair.</p>
+</div>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The goal of this module is to perform PTWAS analysis from SuSiE objects, including:</p>
 <ul class="simple">
-<li><p><strong>Step 1: PTWAS (twas_z_format)</strong></p></li>
+<li><p><strong>Purpose</strong>: Organize eQTL fine-mapping results, eQTL summary statistics, and GWAS summary statistics into a format for ptwas_est processing.</p></li>
+<li><p><strong>Execution</strong>: Run ptwas_est using R scripts for causal effect estimation and validation.</p></li>
 </ul>
+<div class="section" id="ptwas-analysis-from-susie-objects">
+<h3>PTWAS Analysis from SuSiE Objects<a class="headerlink" href="#ptwas-analysis-from-susie-objects" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="step-1-ptwas-twas-z-format">
+<h4>Step 1: PTWAS (twas_z_format)<a class="headerlink" href="#step-1-ptwas-twas-z-format" title="Permalink to this headline">¶</a></h4>
 <ol class="simple">
-<li><p>load GWAS z-score</p></li>
-<li><p>load the corresponding LD matrices within the TAD region of each gene</p></li>
-<li><p>use allele_qc() function to QC the LD matrix with summary stats</p></li>
-<li><p>extract susie, lasso, enet and mr_ash weights</p></li>
-<li><p>use twas_z() to compute TWAS results from multipile weights</p></li>
-</ol>
-<ul class="simple">
-<li><p><strong>Step 2: MR (twas_candidate_genes)</strong></p></li>
-</ul>
-<ol class="simple">
-<li><p>use some p-value cutoff to loosely pick TWAS regions of interest then if the region passes the cutoff, save the QC-ed GWAS data in the format compatabile to <a class="reference external" href="https://github.com/cumc/pecotmr/blob/main/R/mr.R">mr.R</a></p></li>
-</ol>
-<div class="section" id="input">
-<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Step 1: TWAS</strong></p></li>
-</ul>
-<ol class="simple">
-<li><p>QTL susie table：</p></li>
-<li><p>GWAS sumstats results (tsv format)</p></li>
-<li><p>LD reference</p></li>
-<li><p>TAD region</p></li>
-</ol>
-<ul class="simple">
-<li><p><strong>Step 2: MR</strong></p></li>
-</ul>
-<ol class="simple">
-<li><p>output of Step 1</p></li>
+<li><p>Load GWAS z-score.</p></li>
+<li><p>Load LD matrices within the TAD region of each gene.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">allele_qc()</span></code> function to QC the LD matrix with summary stats.</p></li>
+<li><p>Extract weights: susie, lasso, enet, and mr_ash.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> to compute TWAS results from multiple weights.</p></li>
 </ol>
 </div>
-<div class="section" id="ouput">
-<h3>Ouput<a class="headerlink" href="#ouput" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><strong>Step 1: TWAS</strong></p></li>
-</ul>
+<div class="section" id="step-2-mr-twas-candidate-genes">
+<h4>Step 2: MR (twas_candidate_genes)<a class="headerlink" href="#step-2-mr-twas-candidate-genes" title="Permalink to this headline">¶</a></h4>
 <ol class="simple">
-<li><p>TWAS results from multiple weights</p></li>
-<li><p>GWAS summary statistics after QC</p></li>
-<li><p>the input format of twas_z() function</p></li>
+<li><p>Apply a p-value cutoff to identify TWAS regions of interest.</p></li>
+<li><p>Save QC-ed GWAS data in a format compatible with <a class="reference external" href="https://github.com/cumc/pecotmr/blob/main/R/mr.R">mr.R</a>.</p></li>
 </ol>
+</div>
+</div>
+<div class="section" id="input-requirements-for-twas">
+<h3>Input Requirements for TWAS<a class="headerlink" href="#input-requirements-for-twas" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><strong>Step 2: MR</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">susie_path</span></code>: List of file paths for susie results.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GWAS_path</span></code>: GWAS summary statistics path (for loading the GWAS sumstats dataframe).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LD_path</span></code>: LD block matrix path (list of file paths of LD block).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TAD_path</span></code>: TAD region path (dataframe of TAD region for each gene, used to subset the LD matrix).</p></li>
 </ul>
+</div>
+<div class="section" id="output-specifications-for-twas">
+<h3>Output Specifications for TWAS<a class="headerlink" href="#output-specifications-for-twas" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="step-1-twas">
+<h4>Step 1: TWAS<a class="headerlink" href="#step-1-twas" title="Permalink to this headline">¶</a></h4>
 <ol class="simple">
-<li><p>the candidate genes of TWAS</p></li>
-<li><p>the input format of <a class="reference external" href="https://github.com/cumc/pecotmr/blob/main/R/mr.R">mr.R</a></p></li>
-<li><p>the MR results</p></li>
+<li><p>TWAS results from multiple weights.</p></li>
+<li><p>GWAS summary statistics after QC.</p></li>
+<li><p>Input format for the <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> function.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">twas_z_format</span></code>: Dataframe for input format of the <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_weights_pq</span></code>: Dataframe of output from <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> function. TWAS_z is applied to weights of four methods (susie, lasso, enet, and mr_ash) to calculate p-values and corresponding q-values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AD_allele_flip</span></code>: AD GWAS sumstats after QC.</p></li>
+</ul>
+</li>
 </ol>
+</div>
+<div class="section" id="step-2-mr">
+<h4>Step 2: MR<a class="headerlink" href="#step-2-mr" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Candidate genes from TWAS.</p></li>
+<li><p>Input format for <a class="reference external" href="https://github.com/cumc/pecotmr/blob/main/R/mr.R">mr.R</a>.</p></li>
+<li><p>MR results.</p></li>
+</ol>
+</div>
+<div class="section" id="output-file-format-for-twas">
+<h4>Output File Format for TWAS<a class="headerlink" href="#output-file-format-for-twas" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Each row corresponds to a single SNP inferred as a member of a signal cluster, with columns including:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">snp</span></code>: SNP name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">beta_eQTL</span></code>: eQTL effect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">se_eQTL</span></code>: Standard error of estimated eQTL effect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">beta_GWAS</span></code>: GWAS effect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">se_GWAS</span></code>: Standard error of GWAS effect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cluster</span></code>: Signal cluster ID (credible sets index).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span></code>: SNP posterior inclusion probability (PIP).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_id</span></code>: Gene name.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="causal-effect-estimation-and-validation">
+<h3>Causal Effect Estimation and Validation<a class="headerlink" href="#causal-effect-estimation-and-validation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="estimation-process">
+<h4>Estimation Process<a class="headerlink" href="#estimation-process" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Select strong eQTLs by thresholding on signal-level PIPs (cpip = 0.5).</p></li>
+<li><p>Aggregate individual eQTL estimates using a fixed-effect meta-analysis procedure.</p></li>
+</ul>
+</div>
+<div class="section" id="validation-process">
+<h4>Validation Process<a class="headerlink" href="#validation-process" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Identify and exclude cases with severe violations of the exclusion restriction (ER) assumption.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="file-formats">
+<h3>File Formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="input-file-format">
+<h4>Input File Format<a class="headerlink" href="#input-file-format" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Output from the first step of the analysis.</p></li>
+</ul>
+</div>
+<div class="section" id="output-file-format">
+<h4>Output File Format<a class="headerlink" href="#output-file-format" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Contents</strong>: The file format includes the following columns for each gene:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">gene_id</span></code>: Gene name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_cluster</span></code>: Number of credible sets of the gene.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_instruments</span></code>: Number of instruments included in the gene.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spip</span></code>: Sum of PIP for credible sets of each gene.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grp_beta</span></code>: Signal-level estimates, combining SNP-level estimates from member SNPs weighted by their PIPs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grp_se</span></code>: Standard error of signal-level estimates.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta</span></code>: Gene-level estimate of the causal effect, aggregating signal-level estimates using a fixed-effect meta-analysis model.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">se_meta</span></code>: Standard error of the gene-level estimate of the causal effect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Q</span></code>: Cochran’s Q statistic.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I2</span></code>: <span class="math notranslate nohighlight">\(I^2\)</span> statistics</p></li>
+</ul>
+</li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">global</span><span class="p">]</span>
@@ -815,26 +910,6 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="twas">
-<h2>TWAS<a class="headerlink" href="#twas" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Input<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>susie_path: A list of file paths for susie results</p></li>
-<li><p>GWAS_path: gwas summary statistics path (to load the gwas sumstats dataframe)</p></li>
-<li><p>LD_path: LD block matrix path (a list of file paths of LD block)</p></li>
-<li><p>TAD_path: TAD region path (a dataframe  of TAD region of each gene, this one is applied to subset the LD matrix for each gene)</p></li>
-</ul>
-</div>
-<div class="section" id="output">
-<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>twas_z_format: a dataframe of input format for the twas_z() function</p></li>
-<li><p>gene_weights_pq: a dataframe of output of twas_z() function, we apply twas_z function to the  weights of four methods (susie, lasso, enet and mr_ash) to calculate the pvalue, after obtaining the pvalue, we also calculate the corresponding qvalue</p></li>
-<li><p>AD_allele_flip: AD gwas sumstats after QC</p></li>
-</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">twas_z_format_1</span><span class="p">]</span>
@@ -890,24 +965,6 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="mr">
-<h2>MR<a class="headerlink" href="#mr" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id2">
-<h3>Input<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>weights_path: A list of file paths of the PTWAS output</p></li>
-<li><p>pval_threshold: pvalue threshold for selecting the candidate genes, it is default to be 0.05</p></li>
-<li><p>cpip_cutoff: cpip cutoff threshold for MR method</p></li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h3>Output<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>twas_cand_genes.rds: the candidate significant genes obtained using the multiple weights</p></li>
-<li><p>mr_output.rds: the MR results using the candidate genes (cand_genes.rds)</p></li>
-</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">twas_candidate_gene</span><span class="p">]</span>
@@ -987,348 +1044,6 @@
 </div>
 </div>
 </div>
-<div class="section" id="example">
-<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="mic-pseudo-bulk-dataset">
-<h4>Mic pseudo bulk dataset<a class="headerlink" href="#mic-pseudo-bulk-dataset" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>fine mapping only on the 612 genes</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">cis_analysis</span><span class="o">/</span><span class="n">cis_workhorse.ipynb</span> <span class="n">susie</span> \
-     <span class="o">--</span><span class="n">name</span> <span class="n">Mic_pseudo_bulk</span> \
-     <span class="o">--</span><span class="n">genoFile</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">FunGen_xQTL</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">Genotype</span><span class="o">/</span><span class="n">geno_by_region</span><span class="o">/</span><span class="n">TADB_enhanced_cis_genotype_by_region</span><span class="o">/</span><span class="n">ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.genotype_by_region_files.txt</span>  \
-     <span class="o">--</span><span class="n">phenoFile</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">wanggroup</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">pseudo_bulk_eqtl</span><span class="o">/</span><span class="n">Mic</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">phenotype_data</span><span class="o">/</span><span class="n">Mic.log2cpm.region_list.txt</span> \
-     <span class="o">--</span><span class="n">covFile</span>  <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">wanggroup</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">pseudo_bulk_eqtl</span><span class="o">/</span><span class="n">Mic</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">data_preprocessing</span><span class="o">/</span><span class="n">covariate_data</span><span class="o">/</span><span class="n">Mic.log2cpm.Mic.rosmap_cov.ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.snuc_pseudo_bulk.related.plink_qc.extracted.pca.projected.Marchenko_PC.gz</span> \
-     <span class="o">--</span><span class="n">phenotype_names</span> <span class="n">AD</span> \
-     <span class="o">--</span><span class="n">maf</span> <span class="m">0.01</span> \
-     <span class="o">--</span><span class="n">pip_cutoff</span> <span class="m">0.1</span> \
-     <span class="o">--</span><span class="n">coverage</span> <span class="m">0.95</span> \
-     <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="n">list</span>   <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic_AD_phenotype_select.txt</span> \
-     <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">indel</span> \
-     <span class="o">--</span><span class="n">cwd</span> <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic_pseudo_bulk_SuSiE_results</span> \
-     <span class="o">--</span><span class="n">mem</span> <span class="m">200</span><span class="n">G</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">ptwas.ipynb</span> <span class="n">twas_z_format</span> \
-        <span class="o">--</span><span class="n">susie_path</span>  <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic_pseudo_bulk_SuSiE_results</span><span class="o">/</span><span class="n">Mic_pseudo_bulk.cis_workhorse_output.txt</span> \
-        <span class="o">--</span><span class="n">TAD_path</span> <span class="o">~/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">resource</span><span class="o">/</span><span class="n">TADB_enhanced_cis.bed</span> \
-        <span class="o">--</span><span class="n">GWAS_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">xqtl_workflow_testing</span><span class="o">/</span><span class="n">ADGWAS</span><span class="o">/</span><span class="n">data_intergration</span><span class="o">/</span><span class="n">ADGWAS2022</span> \
-        <span class="o">--</span><span class="n">LD_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">LD</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="m">1300</span>_<span class="n">hg38_EUR_LD_blocks_LD</span><span class="o">/</span><span class="n">ROSMAP_NIA_WGS.leftnorm.filtered.filtered.ld.list</span> \
-        <span class="o">--</span><span class="n">cwd</span> <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic</span> \
-        <span class="o">--</span><span class="n">mem</span> <span class="m">40</span><span class="n">G</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">ptwas.ipynb</span> <span class="n">twas_candidate_gene</span> \
-        <span class="o">--</span><span class="n">susie_path</span>  <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic_pseudo_bulk_SuSiE_results</span><span class="o">/</span><span class="n">Mic_pseudo_bulk.cis_workhorse_output.txt</span> \
-        <span class="o">--</span><span class="n">weights_path</span> <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic</span><span class="o">/</span><span class="n">twas_z_format</span><span class="o">/</span><span class="n">twas_z_files.txt</span> \
-        <span class="o">--</span><span class="n">cpip_cutoff</span> <span class="m">0.5</span> \
-        <span class="o">--</span><span class="n">cwd</span> <span class="o">~/</span><span class="n">MR_KMT_analysis</span><span class="o">/</span><span class="n">PTWAS</span><span class="o">/</span><span class="n">Mic</span> \
-        <span class="o">--</span><span class="n">mem</span> <span class="m">80</span><span class="n">G</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
-<span class="n">Mic_genes</span> <span class="o">=</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&quot;~/MR_KMT_analysis/PTWAS/Mic/twas_candidate_gene.rds&quot;</span><span class="p">)</span>
-<span class="nf">dim</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="p">)</span>
-<span class="nf">head</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">arrange</span><span class="p">(</span><span class="n">susie_pval_adj</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Attaching package: ‘dplyr’
-
-
-The following objects are masked from ‘package:data.table’:
-
-    between, first, last
-
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
-</pre></div>
-</div>
-<div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>337</li><li>19</li></ol>
-</div><div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 6 × 19</caption>
-<thead>
-	<tr><th></th><th scope=col>gene_name</th><th scope=col>chr</th><th scope=col>susie_pval</th><th scope=col>susie_z</th><th scope=col>lasso_pval</th><th scope=col>lasso_z</th><th scope=col>enet_pval</th><th scope=col>enet_z</th><th scope=col>mr_ash_pval</th><th scope=col>mr_ash_z</th><th scope=col>susie_qval</th><th scope=col>lasso_qval</th><th scope=col>enet_qval</th><th scope=col>mr_ash_qval</th><th scope=col>susie_pval_adj</th><th scope=col>lasso_pval_adj</th><th scope=col>enet_pval_adj</th><th scope=col>mr_ash_pval_adj</th><th scope=col>gene_id</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>1</th><td>ENSG00000136717</td><td>2 </td><td>5.538175e-80</td><td> 18.938078</td><td>1.201514e-19</td><td>  9.068966</td><td>2.431026e-19</td><td>  8.991850</td><td>8.077433e-88</td><td> 19.865604</td><td>1.107635e-79</td><td>1.602019e-19</td><td>2.431026e-19</td><td>3.230973e-87</td><td>1.866365e-77</td><td>3.688649e-17</td><td>7.536179e-17</td><td>2.722095e-85</td><td>BIN1  </td></tr>
-	<tr><th scope=row>2</th><td>ENSG00000073921</td><td>11</td><td>2.887120e-37</td><td>-12.755982</td><td>2.217436e-38</td><td>-12.954442</td><td>5.241860e-38</td><td>-12.888252</td><td>1.746735e-36</td><td>-12.614948</td><td>3.849494e-37</td><td>8.869746e-38</td><td>1.048372e-37</td><td>1.746735e-36</td><td>9.729596e-35</td><td>6.807530e-36</td><td>1.624977e-35</td><td>5.886497e-34</td><td>PICALM</td></tr>
-	<tr><th scope=row>3</th><td>ENSG00000130203</td><td>19</td><td>1.020363e-18</td><td>  8.832856</td><td>1.308259e-15</td><td>  7.993815</td><td>3.405317e-15</td><td>  7.875078</td><td>1.871431e-15</td><td>  7.949581</td><td>4.081452e-18</td><td>2.495242e-15</td><td>3.405317e-15</td><td>2.495242e-15</td><td>3.438623e-16</td><td>4.016356e-13</td><td>1.055648e-12</td><td>6.306724e-13</td><td>APOE  </td></tr>
-	<tr><th scope=row>4</th><td>ENSG00000087589</td><td>20</td><td>1.173876e-15</td><td> -8.007160</td><td>1.000017e-04</td><td> -3.890588</td><td>3.961193e-03</td><td> -2.881236</td><td>2.222454e-15</td><td> -7.928256</td><td>4.444907e-15</td><td>1.333356e-04</td><td>3.961193e-03</td><td>4.444907e-15</td><td>3.955963e-13</td><td>3.070051e-02</td><td>1.000000e+00</td><td>7.489669e-13</td><td>CASS4 </td></tr>
-	<tr><th scope=row>5</th><td>ENSG00000120899</td><td>8 </td><td>2.414907e-14</td><td>  7.626352</td><td>2.427304e-12</td><td>  7.007433</td><td>5.437822e-12</td><td>  6.893651</td><td>2.785009e-14</td><td>  7.607939</td><td>5.570019e-14</td><td>3.236406e-12</td><td>5.437822e-12</td><td>5.570019e-14</td><td>8.138237e-12</td><td>7.451825e-10</td><td>1.685725e-09</td><td>9.385482e-12</td><td>PTK2B </td></tr>
-	<tr><th scope=row>6</th><td>ENSG00000130208</td><td>19</td><td>1.862955e-13</td><td>  7.358280</td><td>4.141127e-03</td><td>  2.867206</td><td>1.910014e-03</td><td>  3.103879</td><td>2.157805e-12</td><td>  7.023886</td><td>7.451820e-13</td><td>4.141127e-03</td><td>2.546685e-03</td><td>4.315610e-12</td><td>6.278158e-11</td><td>1.000000e+00</td><td>5.921042e-01</td><td>7.271803e-10</td><td>APOC1 </td></tr>
-</tbody>
-</table>
-</div></div>
-</div>
-<p>After fine mapping, there are only 337 genes have significant results. Thus, we only list the pvalue and qvalue of 337 genes.</p>
-</div>
-<div class="section" id="mic-twas-results">
-<h4>Mic TWAS results<a class="headerlink" href="#mic-twas-results" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>There are eleven candidate significant genes obtained by four methods: <strong>BIN1</strong>, <strong>RASGEF1C</strong>, <strong>JAZF1</strong>, <strong>PTK2B</strong>, <strong>TP53INP1</strong>, <strong>USP6NL</strong>, <strong>BLNK</strong>, <strong>MS4A4A</strong>, <strong>PICALM</strong>, <strong>RIN3</strong>, <strong>APOE</strong></p></li>
-<li><p>union of genes: 43 genes</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">length</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">susie_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">)</span>
-<span class="nf">length</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">lasso_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">)</span>
-<span class="nf">length</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">enet_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">)</span>
-<span class="nf">length</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">mr_ash_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">)</span>
-<span class="n">susie</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">susie_adj</span><span class="o">$</span><span class="n">gene_id</span>
-<span class="n">lasso</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">lasso_adj</span><span class="o">$</span><span class="n">gene_id</span>
-<span class="n">enet</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">enet_adj</span><span class="o">$</span><span class="n">gene_id</span>
-<span class="n">mr_ash</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">mr_ash_adj</span><span class="o">$</span><span class="n">gene_id</span>
-<span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">susie</span><span class="p">,</span><span class="n">lasso</span><span class="p">),</span><span class="n">enet</span><span class="p">),</span><span class="n">mr_ash</span><span class="p">)</span>
-<span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">susie</span><span class="p">,</span><span class="n">lasso</span><span class="p">,</span><span class="n">enet</span><span class="p">,</span><span class="n">mr_ash</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html">40</div><div class="output text_html">14</div><div class="output text_html">13</div><div class="output text_html">34</div><div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>'BIN1'</li><li>'RASGEF1C'</li><li>'JAZF1'</li><li>'PTK2B'</li><li>'TP53INP1'</li><li>'USP6NL'</li><li>'BLNK'</li><li>'MS4A4A'</li><li>'PICALM'</li><li>'RIN3'</li><li>'APOE'</li></ol>
-</div><div class="output text_html">43</div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">VennDiagram</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">ggvenn</span><span class="p">)</span>
-<span class="n">D</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&#39;SuSiE&#39;</span> <span class="o">=</span> <span class="n">susie</span><span class="p">,</span><span class="s">&#39;Lasso&#39;</span> <span class="o">=</span> <span class="n">lasso</span><span class="p">,</span> <span class="s">&#39;Enet&#39;</span> <span class="o">=</span>  <span class="n">enet</span><span class="p">,</span> <span class="s">&#39;MR.ASH&#39;</span> <span class="o">=</span> <span class="n">mr_ash</span><span class="p">)</span>
-<span class="nf">ggvenn</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;SuSiE&quot;</span><span class="p">,</span><span class="s">&quot;Lasso&quot;</span><span class="p">,</span><span class="s">&quot;Enet&quot;</span><span class="p">,</span><span class="s">&quot;MR.ASH&quot;</span><span class="p">),</span><span class="n">show_percentage</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="n">fill_color</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;orange&quot;</span><span class="p">,</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="s">&quot;green&quot;</span><span class="p">))</span>
-<span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span> <span class="o">=</span> <span class="m">16</span><span class="p">,</span> <span class="n">repr.plot.height</span> <span class="o">=</span> <span class="m">8</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/twas_mr_19_0.png" src="../../_images/twas_mr_19_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">ggnewscale</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">ggrepel</span><span class="p">)</span>
-<span class="n">min_pval</span> <span class="o">=</span> <span class="nf">apply</span><span class="p">(</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;susie_pval&quot;</span><span class="p">,</span><span class="s">&quot;lasso_pval&quot;</span><span class="p">,</span><span class="s">&quot;enet_pval&quot;</span><span class="p">,</span><span class="s">&quot;mr_ash_pval&quot;</span><span class="p">)],</span><span class="m">1</span><span class="p">,</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">na.rm</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span>
-<span class="n">data_all_gene</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">chr</span><span class="p">,</span><span class="n">gene_id</span><span class="p">,</span><span class="n">susie_pval</span><span class="p">,</span><span class="n">lasso_pval</span><span class="p">,</span><span class="n">enet_pval</span><span class="p">,</span><span class="n">mr_ash_pval</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">mutate</span><span class="p">(</span><span class="n">min_pval</span> <span class="o">=</span> <span class="n">min_pval</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">mutate</span><span class="p">(</span><span class="n">chr</span><span class="o">=</span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">chr</span><span class="p">))</span>
-<span class="n">gene_pos</span> <span class="o">=</span> <span class="nf">fread</span><span class="p">(</span><span class="s">&quot;~/MR_KMT_analysis/PTWAS/Mic_AD_phenotype_select.txt&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">mutate</span><span class="p">(</span><span class="n">chr</span> <span class="o">=</span> <span class="nf">as.numeric</span><span class="p">(</span><span class="nf">str_sub</span><span class="p">(</span><span class="n">`#chr`</span><span class="p">,</span><span class="m">4</span><span class="p">)))</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">`#chr`</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">setNames</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;start_bp&quot;</span><span class="p">,</span><span class="s">&quot;end_bp&quot;</span><span class="p">,</span><span class="s">&quot;gene_name&quot;</span><span class="p">,</span><span class="s">&quot;chr&quot;</span><span class="p">))</span>
-<span class="n">gene_pos_pval</span> <span class="o">=</span> <span class="nf">merge</span><span class="p">(</span><span class="n">data_all_gene</span><span class="p">,</span><span class="n">gene_pos</span><span class="p">,</span><span class="n">by</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;gene_name&quot;</span><span class="p">,</span><span class="s">&quot;chr&quot;</span><span class="p">))</span>
-<span class="n">susie_select</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">susie_pval</span><span class="o">&lt;</span><span class="p">(</span><span class="m">2.5</span><span class="o">*</span><span class="m">10</span><span class="o">^</span><span class="p">(</span><span class="m">-6</span><span class="p">)</span><span class="o">/</span><span class="m">4</span><span class="p">)]</span>
-<span class="n">lasso_select</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">lasso_pval</span><span class="o">&lt;</span><span class="p">(</span><span class="m">2.5</span><span class="o">*</span><span class="m">10</span><span class="o">^</span><span class="p">(</span><span class="m">-6</span><span class="p">)</span><span class="o">/</span><span class="m">4</span><span class="p">)]</span>
-<span class="n">enet_select</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">enet_pval</span><span class="o">&lt;</span><span class="p">(</span><span class="m">2.5</span><span class="o">*</span><span class="m">10</span><span class="o">^</span><span class="p">(</span><span class="m">-6</span><span class="p">)</span><span class="o">/</span><span class="m">4</span><span class="p">)]</span>
-<span class="n">ash_select</span> <span class="o">=</span> <span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">mr_ash_pval</span><span class="o">&lt;</span><span class="p">(</span><span class="m">2.5</span><span class="o">*</span><span class="m">10</span><span class="o">^</span><span class="p">(</span><span class="m">-6</span><span class="p">)</span><span class="o">/</span><span class="m">4</span><span class="p">)]</span>
-<span class="n">gene_annotate</span> <span class="o">=</span> <span class="nf">unique</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">lasso_select</span><span class="p">,</span><span class="n">enet_select</span><span class="p">,</span><span class="n">ash_select</span><span class="p">))</span>
-<span class="c1">#### more than 2 methods have intersection</span>
-<span class="n">d1</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">lasso_select</span><span class="p">)</span>
-<span class="n">d2</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">enet_select</span><span class="p">)</span>
-<span class="n">d3</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">ash_select</span><span class="p">)</span>
-<span class="n">d4</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">lasso_select</span><span class="p">,</span><span class="n">enet_select</span><span class="p">)</span>
-<span class="n">d5</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">lasso_select</span><span class="p">,</span><span class="n">ash_select</span><span class="p">)</span>
-<span class="n">d6</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="n">enet_select</span><span class="p">,</span><span class="n">ash_select</span><span class="p">)</span>
-<span class="n">d7</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">lasso_select</span><span class="p">),</span><span class="n">ash_select</span><span class="p">)</span>
-<span class="n">d8</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">enet_select</span><span class="p">),</span><span class="n">ash_select</span><span class="p">)</span>
-<span class="n">d9</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">lasso_select</span><span class="p">),</span><span class="n">enet_select</span><span class="p">)</span>
-<span class="n">d10</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">ash_select</span><span class="p">,</span><span class="n">lasso_select</span><span class="p">),</span><span class="n">enet_select</span><span class="p">)</span>
-<span class="n">d11</span> <span class="o">=</span> <span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">susie_select</span><span class="p">,</span><span class="n">lasso_select</span><span class="p">),</span><span class="n">enet_select</span><span class="p">),</span><span class="n">ash_select</span><span class="p">)</span>
-<span class="n">two_more</span> <span class="o">=</span> <span class="nf">unique</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span><span class="n">d2</span><span class="p">,</span><span class="n">d3</span><span class="p">,</span><span class="n">d4</span><span class="p">,</span><span class="n">d5</span><span class="p">,</span><span class="n">d6</span><span class="p">,</span><span class="n">d7</span><span class="p">,</span><span class="n">d8</span><span class="p">,</span><span class="n">d9</span><span class="p">,</span><span class="n">d10</span><span class="p">,</span><span class="n">d11</span><span class="p">))</span>
-<span class="n">don</span> <span class="o">&lt;-</span> <span class="n">gene_pos_pval</span> <span class="o">%&gt;%</span> 
-  <span class="c1">#Compute chromosome size</span>
-  <span class="nf">group_by</span><span class="p">(</span><span class="n">chr</span><span class="p">)</span> <span class="o">%&gt;%</span> 
-  <span class="nf">summarise</span><span class="p">(</span><span class="n">chr_len</span><span class="o">=</span><span class="nf">max</span><span class="p">((</span><span class="n">start_bp</span><span class="o">+</span><span class="n">end_bp</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="p">))</span> <span class="o">%&gt;%</span>  
-  
-  <span class="c1"># Calculate cumulative position of each chromosome</span>
-   <span class="nf">mutate</span><span class="p">(</span><span class="n">tot</span><span class="o">=</span><span class="nf">cumsum</span><span class="p">(</span><span class="n">chr_len</span><span class="p">)</span><span class="o">-</span><span class="n">chr_len</span><span class="p">)</span> <span class="o">%&gt;%</span>
-   <span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">chr_len</span><span class="p">)</span> <span class="o">%&gt;%</span>
-  <span class="c1"># </span>
-  <span class="c1"># # Add this info to the initial dataset</span>
-   <span class="nf">left_join</span><span class="p">(</span><span class="n">gene_pos_pval</span><span class="p">,</span> <span class="n">.</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="o">=</span><span class="s">&quot;chr&quot;</span><span class="p">))</span> <span class="o">%&gt;%</span>
-  <span class="c1"># </span>
-  <span class="c1"># # Add a cumulative position of each SNP</span>
-   <span class="nf">arrange</span><span class="p">(</span><span class="n">chr</span><span class="p">,</span> <span class="p">(</span><span class="n">start_bp</span><span class="o">+</span><span class="n">end_bp</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="p">)</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">BPcum</span><span class="o">=</span><span class="p">(</span><span class="n">start_bp</span><span class="o">+</span><span class="n">end_bp</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="o">+</span><span class="n">tot</span><span class="p">)</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">susie_highlight</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">susie_select</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">))</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">lasso_highlight</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">lasso_select</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">))</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">enet_highlight</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">enet_select</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">))</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">ash_highlight</span><span class="o">=</span><span class="nf">ifelse</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">ash_select</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">))</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">two_highlight</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">two_more</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">))</span> <span class="o">%&gt;%</span>
-   <span class="nf">mutate</span><span class="p">(</span> <span class="n">gene_annotate</span> <span class="o">=</span> <span class="nf">ifelse</span><span class="p">(</span><span class="n">gene_id</span> <span class="o">%in%</span> <span class="n">gene_annotate</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">))</span>  
-  
-<span class="n">axisdf</span> <span class="o">=</span> <span class="n">don</span> <span class="o">%&gt;%</span> <span class="nf">group_by</span><span class="p">(</span><span class="n">chr</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">summarize</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span> <span class="nf">max</span><span class="p">(</span><span class="n">BPcum</span><span class="p">)</span> <span class="o">+</span> <span class="nf">min</span><span class="p">(</span><span class="n">BPcum</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="m">2</span> <span class="p">)</span>
-<span class="c1"># ######TWAS-GKF</span>
-<span class="nf">ggplot</span><span class="p">(</span><span class="n">don</span><span class="p">,</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">BPcum</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="nf">log10</span><span class="p">(</span><span class="n">min_pval</span><span class="p">)))</span> <span class="o">+</span>
-  
-  <span class="c1"># Show all points</span>
-  <span class="nf">geom_point</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="nf">as.factor</span><span class="p">(</span><span class="n">chr</span><span class="p">),</span><span class="n">show.legend</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="m">0.8</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">)</span> <span class="o">+</span>
-  <span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;#b6b6b6&quot;</span><span class="p">,</span><span class="s">&quot;#9f9f9f&quot;</span><span class="p">),</span> <span class="m">22</span><span class="p">),</span><span class="n">guide</span><span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span><span class="o">+</span>
-  <span class="c1"># custom X axis:</span>
-  <span class="nf">scale_x_continuous</span><span class="p">(</span> <span class="n">label</span> <span class="o">=</span> <span class="n">axisdf</span><span class="o">$</span><span class="n">chr</span><span class="p">,</span> <span class="n">breaks</span><span class="o">=</span> <span class="n">axisdf</span><span class="o">$</span><span class="n">center</span> <span class="p">)</span> <span class="o">+</span>
-  <span class="nf">scale_y_continuous</span><span class="p">(</span><span class="n">expand</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span> <span class="o">+</span>  <span class="c1"># remove space between plot area and x axis</span>
-  <span class="nf">ylim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">90</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">new_scale_color</span><span class="p">()</span><span class="o">+</span>
-  <span class="nf">geom_point</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">don</span><span class="p">,</span><span class="n">susie_highlight</span><span class="o">==</span><span class="s">&quot;yes&quot;</span><span class="p">),</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">geom_point</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">don</span><span class="p">,</span><span class="n">lasso_highlight</span><span class="o">==</span><span class="s">&quot;yes&quot;</span><span class="p">),</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">geom_point</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">don</span><span class="p">,</span><span class="n">enet_highlight</span><span class="o">==</span><span class="s">&quot;yes&quot;</span><span class="p">),</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">geom_point</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">don</span><span class="p">,</span><span class="n">ash_highlight</span><span class="o">==</span><span class="s">&quot;yes&quot;</span><span class="p">),</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">geom_point</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">don</span><span class="p">,</span><span class="n">two_highlight</span><span class="o">==</span><span class="s">&quot;yes&quot;</span><span class="p">),</span><span class="nf">aes</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">geom_label_repel</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="nf">subset</span><span class="p">(</span><span class="n">don</span><span class="p">,</span><span class="n">gene_annotate</span><span class="o">==</span><span class="s">&quot;yes&quot;</span><span class="p">),</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="n">gene_id</span><span class="p">),</span><span class="n">size</span><span class="o">=</span><span class="m">5</span><span class="p">,</span><span class="n">max.overlaps</span> <span class="o">=</span> <span class="kc">Inf</span><span class="p">,</span><span class="n">color</span> <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="m">0.75</span><span class="p">)</span><span class="o">+</span>
-  <span class="c1">#geom_label_repel(data = subset(don,S_annotate==&quot;yes&quot;),aes(label = gene_name),size=12,max.overlaps = Inf,box.padding = 2.5,color = &quot;red&quot;,alpha=0.75)+</span>
-  <span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;orange&quot;</span><span class="p">,</span><span class="s">&quot;green&quot;</span><span class="p">,</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="s">&quot;black&quot;</span><span class="p">),</span><span class="n">breaks</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;orange&quot;</span><span class="p">,</span><span class="s">&quot;green&quot;</span><span class="p">,</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="s">&quot;black&quot;</span><span class="p">),</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Methods&quot;</span><span class="p">,</span><span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;SuSiE&quot;</span><span class="p">,</span><span class="s">&quot;Lasso&quot;</span><span class="p">,</span><span class="s">&quot;Enet&quot;</span><span class="p">,</span><span class="s">&quot;MR.ASH&quot;</span><span class="p">,</span><span class="s">&quot;&gt;=2 methods&quot;</span><span class="p">))</span> <span class="o">+</span>
-  <span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;Chromosome&quot;</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">ylab</span><span class="p">(</span><span class="s">&quot;-log10(pval)&quot;</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">geom_hline</span><span class="p">(</span><span class="n">yintercept</span> <span class="o">=</span> <span class="o">-</span><span class="nf">log10</span><span class="p">(</span><span class="m">2.5</span><span class="o">*</span><span class="m">10</span><span class="o">^</span><span class="p">(</span><span class="m">-6</span><span class="p">)</span><span class="o">/</span><span class="m">4</span><span class="p">),</span> <span class="n">linetype</span> <span class="o">=</span> <span class="s">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span><span class="o">+</span>
-  <span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span>
-  <span class="nf">theme</span><span class="p">(</span> 
-    <span class="c1">#legend.position=&quot;none&quot;,</span>
-    <span class="n">plot.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="m">45</span><span class="p">),</span>
-    <span class="n">legend.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">face</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">size</span> <span class="o">=</span> <span class="m">45</span><span class="p">),</span>
-    <span class="n">legend.text</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="m">30</span><span class="p">),</span>
-    <span class="n">axis.text</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="m">20</span><span class="p">),</span>
-    <span class="n">axis.title</span> <span class="o">=</span> <span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="m">45</span><span class="p">),</span>
-    <span class="n">legend.position</span> <span class="o">=</span> <span class="s">&quot;top&quot;</span><span class="p">,</span>
-    <span class="n">panel.border</span> <span class="o">=</span> <span class="nf">element_blank</span><span class="p">(),</span>
-    <span class="n">panel.grid.major.x</span> <span class="o">=</span> <span class="nf">element_blank</span><span class="p">(),</span>
-    <span class="n">panel.grid.minor.x</span> <span class="o">=</span> <span class="nf">element_blank</span><span class="p">()</span>
-  <span class="p">)</span>
-<span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span> <span class="o">=</span> <span class="m">25</span><span class="p">,</span> <span class="n">repr.plot.height</span> <span class="o">=</span> <span class="m">8</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message:
-“There was 1 warning in `mutate()`.
-<span class=" -Color -Color-Cyan">ℹ</span> In argument: `chr = as.numeric(str_sub(`#chr`, 4))`.
-Caused by warning:
-<span class=" -Color -Color-Yellow">!</span> NAs introduced by coercion”
-Warning message in geom_point(aes(color = as.factor(chr), show.legend = FALSE), :
-“Ignoring unknown aesthetics: <span class=" -Color -Color-Green">show.legend</span>”
-Scale for <span class=" -Color -Color-Green">y</span> is already present.
-Adding another scale for <span class=" -Color -Color-Green">y</span>, which will replace the existing scale.
-Warning message:
-“The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in
-ggplot2 3.3.4.
-<span class=" -Color -Color-Cyan">ℹ</span> Please use &quot;none&quot; instead.”
-</pre></div>
-</div>
-<img alt="../../_images/twas_mr_20_1.png" src="../../_images/twas_mr_20_1.png" />
-</div>
-</div>
-</div>
-<div class="section" id="mic-mr-results">
-<h4>Mic MR results<a class="headerlink" href="#mic-mr-results" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>intersection: there are eleven causal genes obtained by four methods, <strong>BIN1</strong>, <strong>RASGEF1C</strong>, <strong>JAZF1</strong>, <strong>PTK2B</strong>, <strong>TP53INP1</strong>, <strong>USP6NL</strong>, <strong>BLNK</strong>, <strong>MS4A4A</strong>, <strong>PICALM</strong>, <strong>RIN3</strong>, <strong>APOE</strong></p></li>
-<li><p>union of four methods (25 genes): <strong>BIN1</strong>, <strong>INPP5D</strong>, <strong>RHOH</strong>, <strong>RASGEF1C</strong>, <strong>CD2AP</strong>, <strong>JAZF1</strong>, <strong>EPDR1</strong>, <strong>ZYX</strong>, <strong>PTK2B</strong>, <strong>TP53INP1</strong>, <strong>USP6NL</strong>, <strong>CCDC6</strong>, <strong>BLNK</strong>, <strong>PLEKHA1</strong>, <strong>MS4A6A</strong>, <strong>MS4A4A</strong>, <strong>PICALM</strong>, <strong>RIN3</strong>, <strong>LACTB</strong>, <strong>RABEP1</strong>, <strong>APOE</strong>, <strong>APOC1</strong>, <strong>CASS4</strong>, <strong>NCK2</strong>, <strong>HLA-C</strong></p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Mic_mr</span> <span class="o">=</span> <span class="nf">readRDS</span><span class="p">(</span><span class="s">&quot;~/MR_KMT_analysis/PTWAS/Mic/mr_output.rds&quot;</span><span class="p">)</span>
-<span class="n">susie_mr</span> <span class="o">=</span> <span class="n">Mic_mr</span><span class="o">$</span><span class="n">susie_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_mr</span><span class="o">$</span><span class="n">susie_adj</span><span class="o">$</span><span class="n">meta_qval</span><span class="o">&lt;=</span><span class="m">0.05</span><span class="p">]</span>
-<span class="n">lasso_mr</span> <span class="o">=</span> <span class="n">Mic_mr</span><span class="o">$</span><span class="n">lasso_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_mr</span><span class="o">$</span><span class="n">lasso_adj</span><span class="o">$</span><span class="n">meta_qval</span><span class="o">&lt;=</span><span class="m">0.05</span><span class="p">]</span>
-<span class="n">enet_mr</span> <span class="o">=</span> <span class="n">Mic_mr</span><span class="o">$</span><span class="n">enet_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_mr</span><span class="o">$</span><span class="n">enet_adj</span><span class="o">$</span><span class="n">meta_qval</span><span class="o">&lt;=</span><span class="m">0.05</span><span class="p">]</span>
-<span class="n">ash_mr</span> <span class="o">=</span> <span class="n">Mic_mr</span><span class="o">$</span><span class="n">mr_ash_adj</span><span class="o">$</span><span class="n">gene_id</span><span class="p">[</span><span class="n">Mic_mr</span><span class="o">$</span><span class="n">mr_ash_adj</span><span class="o">$</span><span class="n">meta_qval</span><span class="o">&lt;=</span><span class="m">0.05</span><span class="p">]</span>
-<span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">susie_mr</span><span class="p">,</span><span class="n">lasso_mr</span><span class="p">),</span><span class="n">enet_mr</span><span class="p">),</span><span class="n">ash_mr</span><span class="p">)</span>
-<span class="n">Mic_mr_merge</span> <span class="o">=</span> <span class="nf">unique</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">susie_mr</span><span class="p">,</span><span class="n">lasso_mr</span><span class="p">,</span><span class="n">enet_mr</span><span class="p">,</span><span class="n">ash_mr</span><span class="p">))</span>
-<span class="n">Mic_mr_merge</span>
-<span class="n">Mic_mr</span><span class="o">$</span><span class="n">susie_adj</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>'BIN1'</li><li>'RASGEF1C'</li><li>'JAZF1'</li><li>'PTK2B'</li><li>'TP53INP1'</li><li>'USP6NL'</li><li>'BLNK'</li><li>'MS4A4A'</li><li>'PICALM'</li><li>'RIN3'</li><li>'APOE'</li></ol>
-</div><div class="output text_html"><style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>'BIN1'</li><li>'INPP5D'</li><li>'RHOH'</li><li>'RASGEF1C'</li><li>'CD2AP'</li><li>'JAZF1'</li><li>'EPDR1'</li><li>'ZYX'</li><li>'PTK2B'</li><li>'TP53INP1'</li><li>'USP6NL'</li><li>'CCDC6'</li><li>'BLNK'</li><li>'PLEKHA1'</li><li>'MS4A6A'</li><li>'MS4A4A'</li><li>'PICALM'</li><li>'RIN3'</li><li>'LACTB'</li><li>'RABEP1'</li><li>'APOE'</li><li>'APOC1'</li><li>'CASS4'</li><li>'NCK2'</li><li>'HLA-C'</li></ol>
-</div><div class="output text_html"><table class="dataframe">
-<caption>A tibble: 25 × 12</caption>
-<thead>
-	<tr><th scope=col>X_ID</th><th scope=col>num_CS</th><th scope=col>num_IV</th><th scope=col>cpip</th><th scope=col>gene_id</th><th scope=col>meta_eff</th><th scope=col>se_meta_eff</th><th scope=col>meta_pval</th><th scope=col>meta_qval</th><th scope=col>Q</th><th scope=col>Q_pval</th><th scope=col>I2</th></tr>
-	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><td>ENSG00000136717</td><td>1</td><td> 1</td><td>0.996</td><td>BIN1    </td><td> 0.018</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000168918</td><td>1</td><td> 2</td><td>0.596</td><td>INPP5D  </td><td> 0.009</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000168421</td><td>1</td><td> 1</td><td>0.994</td><td>RHOH    </td><td>-0.008</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000146090</td><td>4</td><td>28</td><td>0.899</td><td>RASGEF1C</td><td>-0.004</td><td>0.001</td><td>0.000</td><td>0.000</td><td>16.936</td><td>0.001</td><td>0.823</td></tr>
-	<tr><td>ENSG00000198087</td><td>1</td><td>53</td><td>0.878</td><td>CD2AP   </td><td> 0.009</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000153814</td><td>2</td><td> 7</td><td>0.801</td><td>JAZF1   </td><td>-0.002</td><td>0.000</td><td>0.000</td><td>0.000</td><td> 0.009</td><td>0.924</td><td>0.000</td></tr>
-	<tr><td>ENSG00000086289</td><td>1</td><td>27</td><td>0.879</td><td>EPDR1   </td><td>-0.007</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000159840</td><td>2</td><td> 6</td><td>0.956</td><td>ZYX     </td><td>-0.008</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 8.833</td><td>0.003</td><td>0.887</td></tr>
-	<tr><td>ENSG00000120899</td><td>1</td><td> 5</td><td>0.999</td><td>PTK2B   </td><td> 0.005</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000164938</td><td>1</td><td>20</td><td>0.806</td><td>TP53INP1</td><td>-0.005</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000148429</td><td>1</td><td> 1</td><td>0.980</td><td>USP6NL  </td><td> 0.004</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000108091</td><td>1</td><td>15</td><td>0.883</td><td>CCDC6   </td><td>-0.005</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000095585</td><td>1</td><td>22</td><td>0.716</td><td>BLNK    </td><td> 0.013</td><td>0.003</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000107679</td><td>1</td><td>23</td><td>0.876</td><td>PLEKHA1 </td><td> 0.006</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>0.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000110077</td><td>1</td><td>14</td><td>0.768</td><td>MS4A6A  </td><td> 0.007</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000110079</td><td>1</td><td>94</td><td>0.817</td><td>MS4A4A  </td><td> 0.006</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000073921</td><td>2</td><td> 9</td><td>0.900</td><td>PICALM  </td><td>-0.008</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.137</td><td>0.711</td><td>0.000</td></tr>
-	<tr><td>ENSG00000100599</td><td>4</td><td> 9</td><td>0.962</td><td>RIN3    </td><td>-0.002</td><td>0.001</td><td>0.000</td><td>0.000</td><td>34.460</td><td>0.000</td><td>0.913</td></tr>
-	<tr><td>ENSG00000103642</td><td>1</td><td>10</td><td>0.605</td><td>LACTB   </td><td> 0.005</td><td>0.001</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000029725</td><td>1</td><td> 9</td><td>0.793</td><td>RABEP1  </td><td> 0.009</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000130203</td><td>1</td><td>37</td><td>0.792</td><td>APOE    </td><td> 0.010</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000130208</td><td>1</td><td> 8</td><td>0.679</td><td>APOC1   </td><td> 0.008</td><td>0.002</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000087589</td><td>1</td><td> 3</td><td>0.585</td><td>CASS4   </td><td>-0.015</td><td>0.003</td><td>0.000</td><td>0.000</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000071051</td><td>1</td><td> 1</td><td>0.991</td><td>NCK2    </td><td>-0.034</td><td>0.010</td><td>0.001</td><td>0.001</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-	<tr><td>ENSG00000204525</td><td>1</td><td> 7</td><td>0.766</td><td>HLA-C   </td><td> 0.019</td><td>0.006</td><td>0.001</td><td>0.001</td><td> 0.000</td><td>1.000</td><td>0.000</td></tr>
-</tbody>
-</table>
-</div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">VennDiagram</span><span class="p">)</span>
-<span class="nf">library</span><span class="p">(</span><span class="n">ggvenn</span><span class="p">)</span>
-<span class="n">D</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&#39;SuSiE_MR&#39;</span> <span class="o">=</span> <span class="n">susie_mr</span><span class="p">,</span><span class="s">&#39;Lasso_MR&#39;</span> <span class="o">=</span> <span class="n">lasso_mr</span><span class="p">,</span> <span class="s">&#39;Enet_MR&#39;</span> <span class="o">=</span>  <span class="n">enet_mr</span><span class="p">,</span> <span class="s">&#39;MR.ASH_MR&#39;</span> <span class="o">=</span> <span class="n">ash_mr</span><span class="p">)</span>
-<span class="nf">ggvenn</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;SuSiE_MR&quot;</span><span class="p">,</span><span class="s">&quot;Lasso_MR&quot;</span><span class="p">,</span><span class="s">&quot;Enet_MR&quot;</span><span class="p">,</span><span class="s">&quot;MR.ASH_MR&quot;</span><span class="p">),</span><span class="n">show_percentage</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="n">fill_color</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;orange&quot;</span><span class="p">,</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="s">&quot;green&quot;</span><span class="p">))</span>
-<span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span> <span class="o">=</span> <span class="m">16</span><span class="p">,</span> <span class="n">repr.plot.height</span> <span class="o">=</span> <span class="m">8</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/twas_mr_23_0.png" src="../../_images/twas_mr_23_0.png" />
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -1358,7 +1073,7 @@ ggplot2 3.3.4.
         
             <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="pecotmr_preprocessing.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="SuSiE_enloc.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>

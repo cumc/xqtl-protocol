@@ -1,4 +1,5 @@
 FROM mambaorg/micromamba
+USER root
 COPY *.yml /environments/
 RUN for yml in $(ls /environments/*.yml); do \
     env_name=$(grep "name: " < ${yml} | cut -d ' ' --fields 2); \

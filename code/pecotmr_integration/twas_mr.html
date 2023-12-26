@@ -662,96 +662,46 @@
   <a class="reference internal nav-link" href="#introduction">
    Introduction
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mendelian-randomization-using-fine-mapping-iv">
-   Mendelian Randomization using Fine-Mapping IV
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#overview">
-   Overview
-  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ptwas-analysis-from-susie-objects">
-     PTWAS Analysis from SuSiE Objects
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#step-1-ptwas-twas-z-format">
-       Step 1: PTWAS (twas_z_format)
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#step-2-mr-twas-candidate-genes">
-       Step 2: MR (twas_candidate_genes)
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#input-requirements-for-twas">
-     Input Requirements for TWAS
+    <a class="reference internal nav-link" href="#step-1-twas">
+     Step 1: TWAS
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#output-specifications-for-twas">
-     Output Specifications for TWAS
+    <a class="reference internal nav-link" href="#step-2-mr-for-candidate-genes">
+     Step 2: MR for candidate genes
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#step-1-twas">
-       Step 1: TWAS
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#step-2-mr">
-       Step 2: MR
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#output-file-format-for-twas">
-       Output File Format for TWAS
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#causal-effect-estimation-and-validation">
-     Causal Effect Estimation and Validation
+    <a class="reference internal nav-link" href="#input">
+     Input
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#estimation-process">
-       Estimation Process
+      <a class="reference internal nav-link" href="#gwas-data-input-interface-similar-to-susie-rss">
+       GWAS Data Input Interface (Similar to
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         susie_rss
+        </span>
+       </code>
+       )
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#validation-process">
-       Validation Process
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#file-formats">
-     File Formats
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#input-file-format">
-       Input File Format
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#output-file-format">
-       Output File Format
+      <a class="reference internal nav-link" href="#output-of-fine-mapping-twas-pipeline">
+       Output of Fine-Mapping &amp; TWAS Pipeline
       </a>
      </li>
     </ul>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output">
+   Output
+  </a>
  </li>
 </ul>
 
@@ -768,73 +718,105 @@
 <h1>GWAS integration: TWAS and MR<a class="headerlink" href="#gwas-integration-twas-and-mr" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>This module provides software implementations for transcriptome-wide association analysis (TWAS), aimed at facilitating rigorous causal inference connecting genes to complex traits.</p>
-</div>
-<div class="section" id="mendelian-randomization-using-fine-mapping-iv">
-<h2>Mendelian Randomization using Fine-Mapping IV<a class="headerlink" href="#mendelian-randomization-using-fine-mapping-iv" title="Permalink to this headline">¶</a></h2>
-<p>This component focuses on Mendelian Randomization using fine-mapping instrumental variables (IV). The procedures implemented in the R script encompass PTWAS estimation and model validation, with the unit of analysis being a single gene-trait pair.</p>
-</div>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p><strong>Purpose</strong>: Organize eQTL fine-mapping results, eQTL summary statistics, and GWAS summary statistics into a format for ptwas_est processing.</p></li>
-<li><p><strong>Execution</strong>: Run ptwas_est using R scripts for causal effect estimation and validation.</p></li>
-</ul>
-<div class="section" id="ptwas-analysis-from-susie-objects">
-<h3>PTWAS Analysis from SuSiE Objects<a class="headerlink" href="#ptwas-analysis-from-susie-objects" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="step-1-ptwas-twas-z-format">
-<h4>Step 1: PTWAS (twas_z_format)<a class="headerlink" href="#step-1-ptwas-twas-z-format" title="Permalink to this headline">¶</a></h4>
-<ol class="simple">
-<li><p>Load GWAS z-score.</p></li>
-<li><p>Load LD matrices within the TAD region of each gene.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">allele_qc()</span></code> function to QC the LD matrix with summary stats.</p></li>
-<li><p>Extract weights: susie, lasso, enet, and mr_ash.</p></li>
-<li><p>Use <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> to compute TWAS results from multiple weights.</p></li>
-</ol>
-</div>
-<div class="section" id="step-2-mr-twas-candidate-genes">
-<h4>Step 2: MR (twas_candidate_genes)<a class="headerlink" href="#step-2-mr-twas-candidate-genes" title="Permalink to this headline">¶</a></h4>
-<ol class="simple">
-<li><p>Apply a p-value cutoff to identify TWAS regions of interest.</p></li>
-<li><p>Save QC-ed GWAS data in a format compatible with <a class="reference external" href="https://github.com/cumc/pecotmr/blob/main/R/mr.R">mr.R</a>.</p></li>
-</ol>
-</div>
-</div>
-<div class="section" id="input-requirements-for-twas">
-<h3>Input Requirements for TWAS<a class="headerlink" href="#input-requirements-for-twas" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">susie_path</span></code>: List of file paths for susie results.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">GWAS_path</span></code>: GWAS summary statistics path (for loading the GWAS sumstats dataframe).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LD_path</span></code>: LD block matrix path (list of file paths of LD block).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TAD_path</span></code>: TAD region path (dataframe of TAD region for each gene, used to subset the LD matrix).</p></li>
-</ul>
-</div>
-<div class="section" id="output-specifications-for-twas">
-<h3>Output Specifications for TWAS<a class="headerlink" href="#output-specifications-for-twas" title="Permalink to this headline">¶</a></h3>
+<p>This module provides software implementations for transcriptome-wide association analysis (TWAS), and Mendelian Randomization using fine-mapping instrumental variables (IV). The procedures implements the MR procedure described in Zhang et al 2020 for “causal” effects estimation and model validation, with the unit of analysis being a single gene-trait pair.</p>
+<p>This procedure is based on the SuSiE-TWAS workflow — it assumes that xQTL fine-mapping has been performed (to be used for both TWAS and MR) and moleuclar traits prediction weights pre-computed (to be used for TWAS). Cross validation for TWAS weights is optional but highly recommended.</p>
+<p>GWAS data required are GWAS summary statistics and LD matrix for the region of interest.</p>
 <div class="section" id="step-1-twas">
-<h4>Step 1: TWAS<a class="headerlink" href="#step-1-twas" title="Permalink to this headline">¶</a></h4>
+<h3>Step 1: TWAS<a class="headerlink" href="#step-1-twas" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li><p>TWAS results from multiple weights.</p></li>
-<li><p>GWAS summary statistics after QC.</p></li>
-<li><p>Input format for the <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> function.</p>
+<li><p>Extract GWAS z-score for region of interest and corresponding LD matrix.</p></li>
+<li><p>(Optional) perform allele matching QC for the LD matrix with summary stats.</p></li>
+<li><p>Process weights: for LASSO, Elastic Net and mr.ash we have to take the weights as is for QTL variants overlapping with GWAS variants. For SuSiE weights it can be adjusted to exactly match GWAS variants.</p></li>
+<li><p>Perofrm TWAS test for multiple sets of weights.</p></li>
+<li><p>For each gene, filter TWAS results by keeping the best model selected by CV. Drop the genes that don’t show good evidence of TWAS prediction weights.</p></li>
+</ol>
+</div>
+<div class="section" id="step-2-mr-for-candidate-genes">
+<h3>Step 2: MR for candidate genes<a class="headerlink" href="#step-2-mr-for-candidate-genes" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Limit MR only to those showing some evidence of TWAS significance AND have strong instrumental variable (fine-mapping PIP or CS).</p></li>
+<li><p>Use fine-mapped xQTL with GWAS data to perform MR.</p></li>
+<li><p>For multiple IV, aggregate individual IV estimates using a fixed-effect meta-analysis procedure.</p></li>
+<li><p>Identify and exclude results with severe violations of the exclusion restriction (ER) assumption.</p></li>
+</ol>
+</div>
+<div class="section" id="input">
+<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="gwas-data-input-interface-similar-to-susie-rss">
+<h4>GWAS Data Input Interface (Similar to <code class="docutils literal notranslate"><span class="pre">susie_rss</span></code>)<a class="headerlink" href="#gwas-data-input-interface-similar-to-susie-rss" title="Permalink to this headline">¶</a></h4>
+<p><strong>GWAS Summary Statistics Files</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">twas_z_format</span></code>: Dataframe for input format of the <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> function.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gene_weights_pq</span></code>: Dataframe of output from <code class="docutils literal notranslate"><span class="pre">twas_z()</span></code> function. TWAS_z is applied to weights of four methods (susie, lasso, enet, and mr_ash) to calculate p-values and corresponding q-values.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">AD_allele_flip</span></code>: AD GWAS sumstats after QC.</p></li>
+<li><p><strong>Input</strong>: Vector of files for one or more GWAS studies.</p></li>
+<li><p><strong>Format</strong>:</p>
+<ul>
+<li><p>Tab-delimited files.</p></li>
+<li><p>First 4 columns: <code class="docutils literal notranslate"><span class="pre">chr</span></code>, <code class="docutils literal notranslate"><span class="pre">pos</span></code>, <code class="docutils literal notranslate"><span class="pre">a0</span></code>, <code class="docutils literal notranslate"><span class="pre">a1</span></code></p></li>
+<li><p>Additional columns can be loaded using column mapping file see below</p></li>
 </ul>
 </li>
-</ol>
+<li><p><strong>Column Mapping files (optional)</strong>:</p>
+<ul>
+<li><p>Optional YAML file for custom column mapping.</p></li>
+<li><p>Required columns: <code class="docutils literal notranslate"><span class="pre">chr</span></code>, <code class="docutils literal notranslate"><span class="pre">pos</span></code>, <code class="docutils literal notranslate"><span class="pre">a0</span></code>, <code class="docutils literal notranslate"><span class="pre">a1</span></code>, either <code class="docutils literal notranslate"><span class="pre">z</span></code> or (<code class="docutils literal notranslate"><span class="pre">betahat</span></code> and <code class="docutils literal notranslate"><span class="pre">sebetahat</span></code>).</p></li>
+<li><p>Optional columns: <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">var_y</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>GWAS Summary Statistics Meta-File</strong>: this is optional and helpful when there are lots of GWAS data to process via the same command</p>
+<ul class="simple">
+<li><p><strong>Columns</strong>: <code class="docutils literal notranslate"><span class="pre">study_id</span></code>, chromosome number, path to summary statistics file, optional path to column mapping file.</p></li>
+<li><p><strong>Note</strong>: Chromosome number <code class="docutils literal notranslate"><span class="pre">0</span></code> indicates a genome-wide file.</p></li>
+</ul>
+<p>eg: <code class="docutils literal notranslate"><span class="pre">gwas_meta.tsv</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_id</span>    <span class="n">chrom</span>    <span class="n">file_path</span>                 <span class="n">column_mapping_file</span>
+<span class="n">study1</span>      <span class="mi">1</span>        <span class="n">gwas1</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span>         <span class="n">column_mapping</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">study1</span>      <span class="mi">2</span>        <span class="n">gwas2</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span>         <span class="n">column_mapping</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">study2</span>      <span class="mi">0</span>        <span class="n">gwas3</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span>         <span class="n">column_mapping</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
 </div>
-<div class="section" id="step-2-mr">
-<h4>Step 2: MR<a class="headerlink" href="#step-2-mr" title="Permalink to this headline">¶</a></h4>
-<ol class="simple">
-<li><p>Candidate genes from TWAS.</p></li>
-<li><p>Input format for <a class="reference external" href="https://github.com/cumc/pecotmr/blob/main/R/mr.R">mr.R</a>.</p></li>
-<li><p>MR results.</p></li>
-</ol>
+<p><strong>LD Reference Metadata File</strong></p>
+<ul class="simple">
+<li><p><strong>Format</strong>: Single TSV file.</p></li>
+<li><p><strong>Contents</strong>:</p>
+<ul>
+<li><p>Columns: <code class="docutils literal notranslate"><span class="pre">chr</span></code>, <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, path to the LD matrix, genomic build.</p></li>
+<li><p>LD matrix path format: comma-separated, first entry is the LD matrix, second is the bim file.</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong>: Refer to our LD reference preparation document for detailed information (Tosin pending update).</p></li>
+</ul>
 </div>
-<div class="section" id="output-file-format-for-twas">
-<h4>Output File Format for TWAS<a class="headerlink" href="#output-file-format-for-twas" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="output-of-fine-mapping-twas-pipeline">
+<h4>Output of Fine-Mapping &amp; TWAS Pipeline<a class="headerlink" href="#output-of-fine-mapping-twas-pipeline" title="Permalink to this headline">¶</a></h4>
+<p><strong>xQTL Weight Database files</strong></p>
+<ul class="simple">
+<li><p>path to various weight DB files, comma delimited.</p></li>
+</ul>
+<p><strong>xQTL Weight Database Metadata File</strong>: this is optional and helpful when TWAS is done genome-wide for many regions via the same command</p>
+<ul class="simple">
+<li><p><strong>Types</strong>: Gene-based or TAD-based.</p></li>
+<li><p><strong>Structure</strong>:</p>
+<ul>
+<li><p>RDS format.</p></li>
+<li><p>Organized hierarchically: region → condition → weight matrix.</p></li>
+<li><p>Each column represents a different method.</p></li>
+</ul>
+</li>
+<li><p><strong>Format</strong>: <code class="docutils literal notranslate"><span class="pre">chrom</span></code>, <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, <code class="docutils literal notranslate"><span class="pre">region_id</span></code>, <code class="docutils literal notranslate"><span class="pre">condition</span></code> (e.g., tissue type, QTL), path to various weight DB files, comma delimited.</p></li>
+</ul>
+<p>eg: <code class="docutils literal notranslate"><span class="pre">xqtl_meta.tsv</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chrom</span>    <span class="n">start</span>    <span class="n">end</span>    <span class="n">region_id</span>    <span class="n">condition</span>    <span class="n">file_path</span>
+<span class="mi">1</span>        <span class="mi">1000</span>     <span class="mi">5000</span>   <span class="n">region1</span>      <span class="n">cohor1</span><span class="p">:</span><span class="n">tissue1</span><span class="p">:</span><span class="n">eQTL</span>      <span class="n">weight1</span><span class="o">.</span><span class="n">rds</span><span class="p">,</span> <span class="n">weight2</span><span class="o">.</span><span class="n">rds</span>
+<span class="mi">2</span>        <span class="mi">2000</span>     <span class="mi">6000</span>   <span class="n">region2</span>      <span class="n">cohor1</span><span class="p">:</span><span class="n">tissue1</span><span class="p">:</span><span class="n">eQTL</span>      <span class="n">weight3</span><span class="o">.</span><span class="n">rds</span>
+<span class="mi">3</span>        <span class="mi">3000</span>     <span class="mi">7000</span>   <span class="n">region3</span>      <span class="n">cohor1</span><span class="p">:</span><span class="n">tissue1</span><span class="p">:</span><span class="n">eQTL</span>      <span class="n">weight4</span><span class="o">.</span><span class="n">rds</span><span class="p">,</span> <span class="n">weight5</span><span class="o">.</span><span class="n">rds</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>TWAS FIXME this is incorrect for now.</p>
 <ul class="simple">
 <li><p>Each row corresponds to a single SNP inferred as a member of a signal cluster, with columns including:</p>
 <ul>
@@ -849,36 +831,9 @@
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="causal-effect-estimation-and-validation">
-<h3>Causal Effect Estimation and Validation<a class="headerlink" href="#causal-effect-estimation-and-validation" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="estimation-process">
-<h4>Estimation Process<a class="headerlink" href="#estimation-process" title="Permalink to this headline">¶</a></h4>
+<p>MR</p>
 <ul class="simple">
-<li><p>Select strong eQTLs by thresholding on signal-level PIPs (cpip = 0.5).</p></li>
-<li><p>Aggregate individual eQTL estimates using a fixed-effect meta-analysis procedure.</p></li>
-</ul>
-</div>
-<div class="section" id="validation-process">
-<h4>Validation Process<a class="headerlink" href="#validation-process" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>Identify and exclude cases with severe violations of the exclusion restriction (ER) assumption.</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="file-formats">
-<h3>File Formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="input-file-format">
-<h4>Input File Format<a class="headerlink" href="#input-file-format" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p>Output from the first step of the analysis.</p></li>
-</ul>
-</div>
-<div class="section" id="output-file-format">
-<h4>Output File Format<a class="headerlink" href="#output-file-format" title="Permalink to this headline">¶</a></h4>
-<ul class="simple">
-<li><p><strong>Contents</strong>: The file format includes the following columns for each gene:</p>
+<li><p>The output includes the following columns for each gene:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">gene_id</span></code>: Gene name.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">num_cluster</span></code>: Number of credible sets of the gene.</p></li>
@@ -895,153 +850,180 @@
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">global</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
 <span class="c1"># Workdir</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">susie_path</span> <span class="o">=</span> <span class="n">paths</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="nf">path</span><span class="p">(</span><span class="s">&quot;output&quot;</span><span class="p">)</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">container</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-<span class="n">import</span> <span class="n">re</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">entrypoint</span><span class="o">=</span> <span class="p">(</span><span class="s">&#39;micromamba run -a &quot;&quot; -n&#39;</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="nf">re.sub</span><span class="p">(</span><span class="n">r</span><span class="s">&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="nf">container.split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="m">-1</span><span class="p">]))</span> <span class="n">if</span> <span class="n">container</span> <span class="n">else</span> <span class="s">&quot;&quot;</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="m">100</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">walltime</span> <span class="o">=</span> <span class="s">&quot;1h&quot;</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">mem</span> <span class="o">=</span> <span class="s">&quot;16G&quot;</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="m">20</span>
+<span class="kn">parameter:</span> <span class="n">gwas_meta_file</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">parameter:</span> <span class="n">xqtl_meta_file</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">parameter:</span> <span class="n">entrypoint</span><span class="o">=</span> <span class="p">(</span><span class="s1">&#39;micromamba run -a &quot;&quot; -n&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">container</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> <span class="k">if</span> <span class="n">container</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="kn">parameter:</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="s2">&quot;1h&quot;</span>
+<span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;16G&quot;</span>
+<span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">group_by_region</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">partition</span><span class="p">):</span>
+    <span class="c1"># from itertools import accumulate</span>
+    <span class="c1"># partition = [len(x) for x in partition]</span>
+    <span class="c1"># Compute the cumulative sums once</span>
+    <span class="c1"># cumsum_vector = list(accumulate(partition))</span>
+    <span class="c1"># Use slicing based on the cumulative sums</span>
+    <span class="c1"># return [lst[(cumsum_vector[i-1] if i &gt; 0 else 0):cumsum_vector[i]] for i in range(len(partition))]</span>
+    <span class="k">return</span> <span class="n">partition</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">twas_z_format_1</span><span class="p">]</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">get_analysis_regions</span><span class="p">:</span> <span class="kp">shared</span> <span class="o">=</span> <span class="s2">&quot;regional_data&quot;</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
-<span class="n">import</span> <span class="n">pandas</span> <span class="n">as</span> <span class="n">pd</span>
-<span class="n">s_path</span> <span class="o">=</span> <span class="nf">pd.read_csv</span><span class="p">(</span><span class="n">susie_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">None</span><span class="p">)</span>
-<span class="c1"># split_path = s_path[0].str.split(&quot;.&quot;, expand=True)</span>
-<span class="c1"># ID = pd.DataFrame({&#39;ID&#39;: split_path[1]})</span>
-<span class="c1"># path = pd.DataFrame({&#39;path&#39;: s_path[0]})</span>
-<span class="c1"># input_df = pd.concat([ID, path], axis=1)</span>
-<span class="n">input_df</span> <span class="o">=</span> <span class="nf">s_path.values.tolist</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">file_exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">relative_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if a file exists at the given path or relative to a specified path.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">relative_path</span><span class="p">:</span>
+        <span class="c1"># Constructing the relative path</span>
+        <span class="n">relative_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">relative_path</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">relative_file_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">relative_file_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">False</span>
 
-<span class="n">parameter</span><span class="o">:</span> <span class="n">GWAS_path</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">LD_path</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">TAD_path</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1">#input: susie_path</span>
-<span class="n">input</span><span class="o">:</span> <span class="p">[</span><span class="n">x</span> <span class="n">for</span> <span class="n">x</span> <span class="n">in</span> <span class="n">input_df</span><span class="p">],</span> <span class="n">group_by</span> <span class="o">=</span> <span class="m">1</span>
-<span class="n">output</span><span class="o">:</span> <span class="n">f</span><span class="s">&#39;{cwd}/{step_name[:-2]}/{_input:bnn}.twas_z.rds&#39;</span>
-<span class="n">task</span><span class="o">:</span> <span class="n">trunk_workers</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="n">walltime</span> <span class="o">=</span> <span class="n">walltime</span><span class="p">,</span> <span class="n">mem</span> <span class="o">=</span> <span class="n">mem</span><span class="p">,</span> <span class="n">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="n">tags</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{step_name}_{_output:bn}&#39;</span>
-<span class="n">R</span><span class="o">:</span> <span class="n">expand</span><span class="o">=</span> <span class="s">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{_output:nn}.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{_output:nn}.stdout&#39;</span>
+<span class="k">def</span> <span class="nf">check_required_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">required_columns</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if the required columns are present in the dataframe.&quot;&quot;&quot;</span>
+    <span class="n">missing_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">required_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">missing_columns</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Missing required columns: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="nf">options</span><span class="p">(</span><span class="n">bedtools.path</span> <span class="o">=</span> <span class="s">&quot;/home/aw3600/bedtools2/bin/&quot;</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">pecotmr</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">extract_regional_data</span><span class="p">(</span><span class="n">gwas_meta_file</span><span class="p">,</span> <span class="n">xqtl_meta_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts data from GWAS and xQTL metadata files. Checks if files exist at specified paths,</span>
+<span class="sd">    or relative to the metadata file&#39;s directory if not found initially. Also checks for required columns in the input files.</span>
 
-    <span class="n">susie_path</span> <span class="o">=</span> <span class="nf">str_split</span><span class="p">(</span><span class="o">$</span><span class="p">{</span>_<span class="n">input</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span><span class="s">&quot;\\.&quot;</span><span class="p">,</span><span class="n">simplify</span><span class="o">=</span><span class="bp">T</span><span class="p">)[,</span><span class="m">2</span><span class="p">]</span><span class="o">%&gt;%</span><span class="nf">cbind</span><span class="p">(</span><span class="n">.</span><span class="p">,</span><span class="o">$</span><span class="p">{</span>_<span class="n">input</span><span class="o">:</span><span class="n">ar</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">data.frame</span><span class="p">()</span><span class="o">%&gt;%</span><span class="nf">setNames</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">,</span><span class="s">&quot;path&quot;</span><span class="p">))</span>
-    <span class="n">TAD_region</span> <span class="o">=</span> <span class="nf">fread</span><span class="p">(</span><span class="o">$</span><span class="p">{</span><span class="n">TAD_path</span><span class="o">:</span><span class="n">ar</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">rename</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="o">=</span><span class="s">&quot;gene_id&quot;</span><span class="p">)</span>
-    <span class="n">gene_name</span> <span class="o">=</span> <span class="n">susie_path</span><span class="o">$</span><span class="n">ID</span>
-    <span class="n">region</span> <span class="o">=</span> <span class="n">TAD_region</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">ID</span><span class="o">==</span><span class="n">gene_name</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">rename</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="o">=</span><span class="s">&quot;#chr&quot;</span><span class="p">)</span>
-    <span class="n">chr</span> <span class="o">=</span> <span class="nf">str_sub</span><span class="p">(</span><span class="n">region</span><span class="o">$</span><span class="n">chr</span><span class="p">,</span><span class="m">4</span><span class="p">)</span>
-    <span class="n">AD_dataset</span> <span class="o">=</span> <span class="nf">fread</span><span class="p">(</span><span class="nf">paste0</span><span class="p">(</span><span class="o">$</span><span class="p">{</span><span class="n">GWAS_path</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span><span class="s">&quot;/ADGWAS_Bellenguez_2022.&quot;</span><span class="p">,</span><span class="n">chr</span><span class="p">,</span><span class="s">&quot;/ADGWAS2022.chr&quot;</span><span class="p">,</span><span class="n">chr</span><span class="p">,</span><span class="s">&quot;.sumstat.tsv&quot;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span>
-    <span class="n">GWAS_data</span> <span class="o">=</span> <span class="n">AD_dataset</span><span class="o">%&gt;%</span><span class="nf">mutate</span><span class="p">(</span><span class="n">chr</span> <span class="o">=</span> <span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="n">chromosome</span><span class="p">))</span><span class="o">%&gt;%</span><span class="nf">mutate</span><span class="p">(</span><span class="n">pos</span> <span class="o">=</span> <span class="nf">as.character</span><span class="p">(</span><span class="n">position</span><span class="p">))</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">chromosome</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">rename</span><span class="p">(</span><span class="s">&quot;A1&quot;</span><span class="o">=</span><span class="s">&quot;ref&quot;</span><span class="p">,</span><span class="s">&quot;A2&quot;</span><span class="o">=</span><span class="s">&quot;alt&quot;</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">mutate</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">beta</span><span class="o">/</span><span class="n">se</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">position</span><span class="p">)</span>
-    <span class="n">LD_list</span> <span class="o">=</span> <span class="nf">read.table</span><span class="p">(</span><span class="o">$</span><span class="p">{</span><span class="n">LD_path</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span><span class="n">header</span><span class="o">=</span><span class="bp">F</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">)</span>
-    <span class="n">LD_block_path</span> <span class="o">=</span> <span class="nf">str_split</span><span class="p">(</span><span class="n">LD_list</span><span class="o">$</span><span class="n">V1</span><span class="p">,</span><span class="s">&quot;_&quot;</span><span class="p">,</span><span class="n">simplify</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">cbind</span><span class="p">(</span><span class="n">.</span><span class="p">,</span><span class="n">LD_list</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">rename</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">,</span><span class="s">&quot;start&quot;</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="p">,</span><span class="s">&quot;end&quot;</span><span class="o">=</span><span class="s">&quot;3&quot;</span><span class="p">,</span><span class="s">&quot;variants&quot;</span><span class="o">=</span><span class="s">&quot;V1&quot;</span><span class="p">,</span><span class="s">&quot;path&quot;</span> <span class="o">=</span> <span class="s">&quot;V2&quot;</span><span class="p">)</span>
-    <span class="n">twas_z</span> <span class="o">=</span> <span class="nf">twas_scan</span><span class="p">(</span><span class="n">susie_path</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">GWAS_data</span><span class="p">,</span> <span class="n">LD_block_path</span><span class="p">)</span>
-    <span class="nf">saveRDS</span><span class="p">(</span><span class="n">twas_z</span><span class="p">,</span> <span class="o">$</span><span class="p">{</span>_<span class="n">output</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s">&#39;xz&#39;</span><span class="p">)</span>
+<span class="sd">    Args:</span>
+<span class="sd">    - gwas_meta_file (str): File path to the GWAS metadata file.</span>
+<span class="sd">    - xqtl_meta_file (str): File path to the xQTL weight metadata file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - Tuple of two dictionaries:</span>
+<span class="sd">        - GWAS Dictionary: Maps study IDs to a list containing chromosome number, </span>
+<span class="sd">          GWAS file path, and optional column mapping file path.</span>
+<span class="sd">        - xQTL Dictionary: Nested dictionary with region IDs as keys. Each key maps to a </span>
+<span class="sd">          dictionary containing &#39;meta_info&#39; (list of chromosome, start, end, condition)</span>
+<span class="sd">          and &#39;files&#39; (list of file paths).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    - FileNotFoundError: If any specified file path does not exist, even when considered</span>
+<span class="sd">      relative to the metadata file&#39;s directory.</span>
+<span class="sd">    - ValueError: If required columns are missing in the input files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+    <span class="c1"># Required columns for each file type</span>
+    <span class="n">required_gwas_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">,</span> <span class="s1">&#39;chrom&#39;</span><span class="p">,</span> <span class="s1">&#39;file_path&#39;</span><span class="p">]</span>
+    <span class="n">required_xqtl_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;region_id&#39;</span><span class="p">,</span> <span class="s1">&#39;chrom&#39;</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;condition&#39;</span><span class="p">,</span> <span class="s1">&#39;file_path&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Base directory of the metadata files</span>
+    <span class="n">gwas_base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">gwas_meta_file</span><span class="p">)</span>
+    <span class="n">xqtl_base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">xqtl_meta_file</span><span class="p">)</span>
+    
+    <span class="c1"># Reading the GWAS metadata file</span>
+    <span class="n">gwas_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">gwas_meta_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">check_required_columns</span><span class="p">(</span><span class="n">gwas_df</span><span class="p">,</span> <span class="n">required_gwas_columns</span><span class="p">)</span>
+    <span class="n">gwas_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gwas_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;file_path&#39;</span><span class="p">]</span>
+        <span class="n">mapping_file</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;column_mapping_file&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Check if the file and optional mapping file exist</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">gwas_base_dir</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">mapping_file</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">mapping_file</span><span class="p">,</span> <span class="n">gwas_base_dir</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2"> not found for </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Adjust paths if necessary</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span> <span class="k">if</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gwas_base_dir</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mapping_file</span><span class="p">:</span>
+            <span class="n">mapping_file</span> <span class="o">=</span> <span class="n">mapping_file</span> <span class="k">if</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">mapping_file</span><span class="p">)</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gwas_base_dir</span><span class="p">,</span> <span class="n">mapping_file</span><span class="p">)</span>
+        
+       <span class="c1"># Create or update the entry for the study_id</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gwas_dict</span><span class="p">:</span>
+            <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Expand chrom 0 to chrom 1-22 or use the specified chrom</span>
+        <span class="n">chrom_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="n">chrom_range</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]]:</span>
+                <span class="n">existing_entry</span> <span class="o">=</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duplicate chromosome specification for study_id </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, chrom </span><span class="si">{</span><span class="n">chrom</span><span class="si">}</span><span class="s2">. &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;Conflicting entries: </span><span class="si">{</span><span class="n">existing_entry</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="p">[</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mapping_file</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mapping_file</span><span class="p">]</span>
+
+    <span class="c1"># Reading the xQTL weight metadata file</span>
+    <span class="n">xqtl_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">xqtl_meta_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">check_required_columns</span><span class="p">(</span><span class="n">xqtl_df</span><span class="p">,</span> <span class="n">required_xqtl_columns</span><span class="p">)</span>
+    <span class="n">xqtl_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">xqtl_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">file_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">fp</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;file_path&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>  <span class="c1"># Splitting and stripping file paths</span>
+
+        <span class="c1"># Check if each file path exists</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file_paths</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">xqtl_base_dir</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File </span><span class="si">{</span><span class="n">fp</span><span class="si">}</span><span class="s2"> not found in </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;region_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">file_paths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp</span> <span class="k">if</span> <span class="n">file_exists</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xqtl_base_dir</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+
+        <span class="n">xqtl_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;region_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;meta_info&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;region_id&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;condition&#39;</span><span class="p">]],</span>
+                                       <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="n">file_paths</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">gwas_dict</span><span class="p">,</span> <span class="n">xqtl_dict</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">gwas_dict</span><span class="p">,</span> <span class="n">xqtl_dict</span> <span class="o">=</span> <span class="n">extract_regional_data</span><span class="p">(</span><span class="n">gwas_meta_file</span><span class="p">,</span> <span class="n">xqtl_meta_file</span><span class="p">)</span>
+<span class="n">regional_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="s2">&quot;GWAS&quot;</span><span class="p">,</span> <span class="n">gwas_dict</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;xQTL&quot;</span><span class="p">,</span> <span class="n">xqtl_dict</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">regional_data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">twas_z_format_2</span><span class="p">]</span>
-<span class="c1"># Path to the input molecular phenotype data.</span>
-<span class="n">input</span><span class="o">:</span> <span class="n">group_by</span> <span class="o">=</span> <span class="s">&quot;all&quot;</span>
-<span class="n">output</span><span class="o">:</span> <span class="n">f</span><span class="s">&#39;{cwd}/{step_name[:-2]}/twas_z_files.txt&#39;</span>
-<span class="n">python</span><span class="o">:</span> <span class="n">expand</span><span class="o">=</span> <span class="s">&quot;$[ ]&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{_output:n}.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{_output:n}.stdout&#39;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
-<span class="n">import</span> <span class="n">pandas</span> <span class="n">as</span> <span class="n">pd</span>
-<span class="nf">pd.DataFrame</span><span class="p">({</span><span class="s">&quot;output&quot;</span> <span class="o">:</span> <span class="p">[</span><span class="o">$</span><span class="p">[</span>_<span class="n">input</span><span class="o">:</span><span class="n">ar</span><span class="p">,]]})</span><span class="nf">.to_csv</span><span class="p">(</span><span class="s">&quot;$[_output]&quot;</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="n">False</span> <span class="p">,</span><span class="n">header</span> <span class="o">=</span> <span class="n">False</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;\t&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">twas_candidate_gene</span><span class="p">]</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">weights_path</span> <span class="o">=</span> <span class="n">path</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">pval_threshold</span> <span class="o">=</span> <span class="m">0.05</span>
-<span class="n">parameter</span><span class="o">:</span> <span class="n">cpip_cutoff</span> <span class="o">=</span> <span class="m">0.5</span>
-<span class="n">input</span><span class="o">:</span> <span class="n">weights_path</span>
-<span class="n">output</span><span class="o">:</span> <span class="n">cand_genes</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{cwd:a}/{step_name}.rds&#39;</span><span class="p">,</span>
-        <span class="n">mr_output</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{cwd:a}/mr_output.rds&#39;</span>
-<span class="n">task</span><span class="o">:</span> <span class="n">trunk_workers</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="n">walltime</span> <span class="o">=</span> <span class="n">walltime</span><span class="p">,</span> <span class="n">mem</span> <span class="o">=</span> <span class="n">mem</span><span class="p">,</span> <span class="n">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="n">tags</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{step_name}_{_output:bn}&#39;</span>
-<span class="n">R</span><span class="o">:</span> <span class="n">expand</span><span class="o">=</span> <span class="s">&quot;${ }&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{_output[0]:n}.stderr&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{_output[0]:n}.stdout&#39;</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">qvalue</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">doMC</span><span class="p">)</span>
-    <span class="nf">library</span><span class="p">(</span><span class="n">pecotmr</span><span class="p">)</span>
-
-    <span class="c1">####</span>
-    <span class="n">susie_list</span> <span class="o">=</span> <span class="nf">fread</span><span class="p">(</span><span class="o">$</span><span class="p">{</span><span class="n">susie_path</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span><span class="n">header</span><span class="o">=</span><span class="bp">F</span><span class="p">)</span>
-    <span class="n">susie_path</span> <span class="o">=</span> <span class="nf">str_split</span><span class="p">(</span><span class="n">susie_list</span><span class="o">$</span><span class="n">V1</span><span class="p">,</span><span class="s">&quot;\\.&quot;</span><span class="p">,</span><span class="n">simplify</span><span class="o">=</span><span class="bp">T</span><span class="p">)[,</span><span class="m">2</span><span class="p">]</span><span class="o">%&gt;%</span><span class="nf">cbind</span><span class="p">(</span><span class="n">.</span><span class="p">,</span><span class="n">susie_list</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">setNames</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">,</span><span class="s">&quot;path&quot;</span><span class="p">))</span>
-
-    <span class="c1">#detectCores()</span>
-    <span class="nf">registerDoMC</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
-    <span class="n">weights_file</span> <span class="o">=</span> <span class="nf">fread</span><span class="p">(</span><span class="o">$</span><span class="p">{</span>_<span class="n">input</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span><span class="n">header</span><span class="o">=</span><span class="bp">F</span><span class="p">)</span>
-    <span class="n">weights_file_path</span> <span class="o">=</span> <span class="nf">str_split</span><span class="p">(</span><span class="n">weights_file</span><span class="o">$</span><span class="n">V1</span><span class="p">,</span><span class="s">&quot;\\.&quot;</span><span class="p">,</span><span class="n">simplify</span><span class="o">=</span><span class="bp">T</span><span class="p">)[,</span><span class="m">2</span><span class="p">]</span><span class="o">%&gt;%</span><span class="nf">cbind</span><span class="p">(</span><span class="n">.</span><span class="p">,</span><span class="n">weights_file</span><span class="p">)</span><span class="o">%&gt;%</span><span class="nf">setNames</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;ID&quot;</span><span class="p">,</span><span class="s">&quot;path&quot;</span><span class="p">))</span>
-    <span class="c1">#ptm = proc.time()</span>
-    <span class="n">gene_pq</span> <span class="o">=</span> <span class="nf">foreach</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="nf">dim</span><span class="p">(</span><span class="n">weights_file</span><span class="p">)[</span><span class="m">1</span><span class="p">],</span> <span class="n">.combine</span><span class="o">=</span><span class="n">rbind</span><span class="p">)</span> <span class="o">%dopar%</span> <span class="p">{</span>
-       <span class="n">weights_pq</span> <span class="o">=</span> <span class="nf">readRDS</span><span class="p">(</span><span class="n">weights_file_path</span><span class="o">$</span><span class="n">path</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">$</span><span class="n">gene_weights_pq</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">twas_scan_1</span><span class="p">]</span>
+<span class="kn">depends:</span> <span class="n">sos_variable</span><span class="p">(</span><span class="s2">&quot;regional_data&quot;</span><span class="p">)</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;xQTL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">meta_info</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;meta_info&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;xQTL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+<span class="n">xqtl_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">regional_data</span><span class="p">[</span><span class="s1">&#39;xQTL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+<span class="kn">input:</span> <span class="n">xqtl_files</span><span class="p">,</span> <span class="n">group_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">group_by_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xqtl_files</span><span class="p">),</span> <span class="n">group_with</span> <span class="o">=</span> <span class="s2">&quot;meta_info&quot;</span>
+<span class="c1">#output: f&#39;{cwd:a}/{step_name[:-2]}/{condition.replace(&quot;:&quot;, &quot;_&quot;)}.{_meta_info[3]}.twas.rds&#39;</span>
+<span class="kn">task:</span> <span class="kp">trunk_workers</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="kp">trunk_size</span> <span class="o">=</span> <span class="n">job_size</span><span class="p">,</span> <span class="kp">walltime</span> <span class="o">=</span> <span class="kp">walltime</span><span class="p">,</span> <span class="kp">mem</span> <span class="o">=</span> <span class="kp">mem</span><span class="p">,</span> <span class="kp">cores</span> <span class="o">=</span> <span class="n">numThreads</span><span class="p">,</span> <span class="kp">tags</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s1">bn</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="kn">R:</span> <span class="n">expand</span> <span class="o">=</span> <span class="s1">&#39;${ }&#39;</span><span class="p">,</span> <span class="n">stdout</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stdout&quot;</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_output</span><span class="si">:</span><span class="s2">n</span><span class="si">}</span><span class="s2">.stderr&quot;</span><span class="p">,</span> <span class="n">container</span> <span class="o">=</span> <span class="n">container</span><span class="p">,</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">entrypoint</span>
+    <span class="c1"># we have potentially multiple weight db RDS files for each region of interest</span>
+    <span class="n">weight_db</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">_input</span><span class="p">:</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">chrom</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> 
+    <span class="n">end</span> <span class="o">=</span> <span class="err">$</span><span class="p">{</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{_meta_info[3]}</span><span class="s2">&quot;</span>
+    <span class="n">xqtl_conditions</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">paths</span><span class="p">(</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">4</span><span class="p">:]):</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">gwas_studies</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">paths</span><span class="p">(</span><span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;GWAS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span><span class="n">r</span><span class="p">,})</span>
+    <span class="c1"># load gwas data file for this particular chrom</span>
+    <span class="n">gwas_files</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="err">$</span><span class="p">{</span><span class="n">paths</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="n">_meta_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">regional_data</span><span class="p">[</span><span class="s2">&quot;GWAS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()]):</span><span class="n">r</span><span class="p">,})</span>
+    <span class="n">library</span><span class="p">(</span><span class="n">pecotmr</span><span class="p">)</span>
+    <span class="c1"># Step 0: Load GWAS data for the region of interest, for each study</span>
+    <span class="n">gwas_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">s</span> <span class="ow">in</span> <span class="n">length</span><span class="p">(</span><span class="n">gwas_studies</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">gwas_data</span><span class="p">[[</span><span class="n">gwas_studies</span><span class="p">[</span><span class="n">s</span><span class="p">]]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+      <span class="c1"># FIXME: Anqi please fix this</span>
+      <span class="n">gwas_data</span><span class="p">[[</span><span class="n">gwas_studies</span><span class="p">[</span><span class="n">s</span><span class="p">]]][</span><span class="s2">&quot;sumstats&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabix_region</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">gwas_files</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
+      <span class="n">gwas_data</span><span class="p">[[</span><span class="n">gwas_studies</span><span class="p">[</span><span class="n">s</span><span class="p">]]][</span><span class="s2">&quot;LD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_LD_matrix</span><span class="p">(</span> <span class="o">...</span> <span class="p">)</span>
     <span class="p">}</span>
-    <span class="c1">#proc.time() - ptm</span>
-    <span class="n">padj</span> <span class="o">=</span> <span class="nf">apply</span><span class="p">(</span><span class="n">gene_pq</span><span class="p">[,</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;susie_pval&quot;</span><span class="p">,</span><span class="s">&quot;lasso_pval&quot;</span><span class="p">,</span><span class="s">&quot;enet_pval&quot;</span><span class="p">,</span><span class="s">&quot;mr_ash_pval&quot;</span><span class="p">)],</span><span class="m">2</span><span class="p">,</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nf">p.adjust</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s">&quot;bonferroni&quot;</span><span class="p">,))</span><span class="o">%&gt;%</span><span class="nf">data.frame</span><span class="p">()</span>
-    <span class="n">gene_pq_adj</span> <span class="o">=</span> <span class="n">gene_pq</span><span class="o">%&gt;%</span><span class="nf">cbind</span><span class="p">(</span><span class="n">.</span><span class="p">,</span><span class="n">padj</span><span class="p">)</span>
-    <span class="nf">names</span><span class="p">(</span><span class="n">gene_pq_adj</span><span class="p">)[</span><span class="m">15</span><span class="o">:</span><span class="m">18</span><span class="p">]</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;susie_pval_adj&quot;</span><span class="p">,</span><span class="s">&quot;lasso_pval_adj&quot;</span><span class="p">,</span><span class="s">&quot;enet_pval_adj&quot;</span><span class="p">,</span><span class="s">&quot;mr_ash_pval_adj&quot;</span><span class="p">)</span>
-    <span class="n">gene.ref</span> <span class="o">=</span> <span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;/mnt/vast/hpc/csg/molecular_phenotype_calling/reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.region_list&quot;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="bp">F</span><span class="p">)</span>
-    <span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">gene_id</span> <span class="o">=</span> <span class="n">gene.ref</span><span class="p">[</span><span class="nf">match</span><span class="p">(</span><span class="n">gene_pq_adj</span><span class="o">$</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene.ref</span><span class="o">$</span><span class="n">V4</span><span class="p">),</span><span class="s">&quot;V5&quot;</span><span class="p">]</span>
-
-    <span class="n">cand_genes</span> <span class="o">=</span> <span class="kc">NULL</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span> <span class="o">=</span> <span class="n">gene_pq_adj</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">susie</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">susie_pval</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">lasso</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">lasso_pval</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">enet</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">enet_pval</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">mr_ash</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">mr_ash_pval</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">susie_adj</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">susie_pval_adj</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">lasso_adj</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">lasso_pval_adj</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">enet_adj</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">enet_pval_adj</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">mr_ash_adj</span><span class="o">=</span> <span class="n">cand_genes</span><span class="o">$</span><span class="n">gene_pq_adj</span><span class="o">%&gt;%</span><span class="nf">filter</span><span class="p">(</span><span class="n">mr_ash_pval_adj</span><span class="o">&lt;$</span><span class="p">{</span><span class="n">pval_threshold</span><span class="p">})</span><span class="o">%&gt;%</span><span class="nf">select</span><span class="p">(</span><span class="n">gene_name</span><span class="p">,</span><span class="n">gene_id</span><span class="p">)</span>
-
-    <span class="c1"># cand_genes$susie_format_input = twas_mr_format_input(cand_genes$susie$gene_name,${susie_path:ar},weights_file_path)</span>
-    <span class="c1"># cand_genes$lasso_format_input = twas_mr_format_input(cand_genes$lasso$gene_name,${susie_path:ar},weights_file_path)</span>
-    <span class="c1"># cand_genes$enet_format_input = twas_mr_format_input(cand_genes$enet$gene_name,${susie_path:ar},weights_file_path)</span>
-    <span class="c1"># cand_genes$mr_ash_format_input = twas_mr_format_input(cand_genes$mr_ash$gene_name,${susie_path:ar},weights_file_path)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">susie_adj_format_input</span> <span class="o">=</span> <span class="nf">twas_mr_format_input</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">susie_adj</span><span class="p">,</span><span class="n">susie_path</span><span class="p">,</span><span class="n">weights_file_path</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">lasso_adj_format_input</span> <span class="o">=</span> <span class="nf">twas_mr_format_input</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">lasso_adj</span><span class="p">,</span><span class="n">susie_path</span><span class="p">,</span><span class="n">weights_file_path</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">enet_adj_format_input</span> <span class="o">=</span> <span class="nf">twas_mr_format_input</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">enet_adj</span><span class="p">,</span><span class="n">susie_path</span><span class="p">,</span><span class="n">weights_file_path</span><span class="p">)</span>
-    <span class="n">cand_genes</span><span class="o">$</span><span class="n">mr_ash_adj_format_input</span> <span class="o">=</span> <span class="nf">twas_mr_format_input</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">mr_ash_adj</span><span class="p">,</span><span class="n">susie_path</span><span class="p">,</span><span class="n">weights_file_path</span><span class="p">)</span>
-
-    <span class="nf">saveRDS</span><span class="p">(</span><span class="n">cand_genes</span><span class="p">,</span> <span class="o">$</span><span class="p">{</span>_<span class="n">output</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s">&#39;xz&#39;</span><span class="p">)</span>
-
-    <span class="n">mr_output</span> <span class="o">=</span> <span class="kc">NULL</span>
-    <span class="c1"># mr_output$susie = fine_mr(cand_genes$susie_format_input,${cpip_cutoff})</span>
-    <span class="c1"># mr_output$lasso = fine_mr(cand_genes$lasso_format_input,${cpip_cutoff})</span>
-    <span class="c1"># mr_output$enet = fine_mr(cand_genes$enet_format_input,${cpip_cutoff})</span>
-    <span class="c1"># mr_output$mr_ash = fine_mr(cand_genes$mr_ash_format_input,${cpip_cutoff})</span>
-    <span class="nf">if</span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">susie_adj_format_input</span><span class="p">))</span>
-    <span class="p">{</span><span class="n">mr_output</span><span class="o">$</span><span class="n">susie_adj</span> <span class="o">=</span> <span class="nf">fine_mr</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">susie_adj_format_input</span><span class="p">,</span><span class="o">$</span><span class="p">{</span><span class="n">cpip_cutoff</span><span class="p">})}</span>
-    <span class="nf">if</span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">lasso_adj_format_input</span><span class="p">))</span>
-    <span class="p">{</span><span class="n">mr_output</span><span class="o">$</span><span class="n">lasso_adj</span> <span class="o">=</span> <span class="nf">fine_mr</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">lasso_adj_format_input</span><span class="p">,</span><span class="o">$</span><span class="p">{</span><span class="n">cpip_cutoff</span><span class="p">})}</span>
-    <span class="nf">if</span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">enet_adj_format_input</span><span class="p">))</span>
-    <span class="p">{</span><span class="n">mr_output</span><span class="o">$</span><span class="n">enet_adj</span> <span class="o">=</span> <span class="nf">fine_mr</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">enet_adj_format_input</span><span class="p">,</span><span class="o">$</span><span class="p">{</span><span class="n">cpip_cutoff</span><span class="p">})}</span>
-    <span class="nf">if</span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">mr_ash_adj_format_input</span><span class="p">))</span>
-    <span class="p">{</span><span class="n">mr_output</span><span class="o">$</span><span class="n">mr_ash_adj</span> <span class="o">=</span> <span class="nf">fine_mr</span><span class="p">(</span><span class="n">cand_genes</span><span class="o">$</span><span class="n">mr_ash_adj_format_input</span><span class="p">,</span><span class="o">$</span><span class="p">{</span><span class="n">cpip_cutoff</span><span class="p">})}</span>
-
-    <span class="nf">saveRDS</span><span class="p">(</span><span class="n">mr_output</span><span class="p">,</span> <span class="o">$</span><span class="p">{</span>_<span class="n">output</span><span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">:</span><span class="n">ar</span><span class="p">},</span> <span class="n">compress</span><span class="o">=</span><span class="s">&#39;xz&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">condition</span> <span class="ow">in</span> <span class="n">xqtl_conditions</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1"># For each region of interest for a particular xQTL (condtion), we can perform TWAS for all the input studies, with all of the weights available</span>
+        <span class="c1"># Step 1: load the weight matrix: a matrix of weights for the specified condition and region; each column is weight for a method. The row names should be variant names.</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">load_twas_weights</span><span class="p">(</span><span class="n">weight_db_files</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">variable_name_obj</span> <span class="o">=</span> <span class="s2">&quot;variant_name&quot;</span><span class="p">,</span> <span class="n">twas_weights_table</span> <span class="o">=</span> <span class="s2">&quot;twas_weights&quot;</span><span class="p">)</span>
+        <span class="c1"># Step 2: for each study we perform TWAS: </span>
+        <span class="c1"># take overlap between weights and the gwas_data summstats for each study. If there are some variants in sumstats but not in weights then simply make weight zero</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="o">...</span>
+        <span class="c1"># Step 2-1: NOT YET IMPLEMEMENTED (FIXME) adjust susie_weights if possible --- if susie_fit exist in weight_db. This should replace the origional SuSiE_weight computed above</span>
+        <span class="c1"># Step 3: perform TWAS on the weights and sumstats</span>
+    <span class="p">}</span>
 </pre></div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -1057,16 +1039,16 @@
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "r"
+            mode: "sos"
         },
         kernelOptions: {
-            kernelName: "ir",
+            kernelName: "sos",
             path: "./code/pecotmr_integration"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'ir'</script>
+    <script>kernelName = 'sos'</script>
 
               </div>
               

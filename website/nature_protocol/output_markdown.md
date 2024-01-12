@@ -106,6 +106,8 @@ Our gene coordinate annotation pipeline is based on [`pyqtl`, as demonstrated he
 We provide three different procedures for hidden factor analysis from omics data in our pipeline. The first is the [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. The second is factor anallysis using Bi-Cross validation with the APEX software package [[cf. Owen et al., Statistical Science, 2016](https://doi.org/10.1214/15-STS539)] [[cf. Quick et al., bioRxiv, 2020](https://doi.org/10.1101/2020.12.18.423490)]. The third, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li's group [[cf. Zhou et al., Genome Biology, 2022](https://doi.org/10.1186/s13059-022-02761-4)]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [[cf. Xue et al., Genome Biology, 2023](https://doi.org/10.1186/s13059-023-02873-5)].
 
 Our covariate preprocessing steps merge genotypic principal components and fixed covariate files into one file for downstream QTL analysis. 
+#### Advanced cis-QTL Analysis (Step 4)
+##### A.  SuSiE fine-mapping workflow
 
 ### Expertise needed to implement the protocol
 
@@ -374,6 +376,8 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 ```
 
 
+### 4. Advanced cis-QTL Analysis
+#### A.  SuSiE fine-mapping workflow
 
 ## Timing
 
@@ -389,6 +393,7 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 |
 | | Covariate Data Preprocessing| < X minutes
 |
+|Advanced cis-QTL Analysis| SuSiE fine-mapping workflow| <X hours|
 
 ## Troubleshooting
 
@@ -416,6 +421,7 @@ The final output contains the QCed and normalized splicing data from leafcutter 
 
 # Covariate Data Preprocessing
 
+#### A.  SuSiE fine-mapping workflow
 
 ## Figures
 

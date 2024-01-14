@@ -96,17 +96,25 @@ Quality control and normalization are performed on output from the leafcutter an
 ##### A.  Phenotype data preprocessing
 
 
-Our gene coordinate annotation pipeline is based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py).
+We use a gene coordinate annotation pipeline based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py). This adds genomic coordinate annotations to gene-level molecular phenotype files generated in `gct` format and converts them to `bed` format for downstreams analysis.
 
 
+A collection of methods for the imputation of missing omics data values are included in our pipelinle. Imputation is optional of eQTL analysis, but necessary for other QTLs. We use `flashier`, a Empirical Bayes Matrix Factorization model, to impute missing values. Other imputation methods include missForest, XGBoost, k-nearest neighbors, soft impute, mean imputation, and last observed data.
+
+We include a collection of workflows to format molecular phenotype data. These include workflows to separate phenotypes by chromosome, by user-provided regions, a workflow to subset bam files and a workflow to extract samples from phenotype files.
 
 ##### B.  Covariate Data Preprocessing
 
 
-We provide three different procedures for hidden factor analysis from omics data in our pipeline. The first is the [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. The second is factor anallysis using Bi-Cross validation with the APEX software package [[cf. Owen et al., Statistical Science, 2016](https://doi.org/10.1214/15-STS539)] [[cf. Quick et al., bioRxiv, 2020](https://doi.org/10.1101/2020.12.18.423490)]. The third, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li's group [[cf. Zhou et al., Genome Biology, 2022](https://doi.org/10.1186/s13059-022-02761-4)]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [[cf. Xue et al., Genome Biology, 2023](https://doi.org/10.1186/s13059-023-02873-5)].
-
 Our covariate preprocessing steps merge genotypic principal components and fixed covariate files into one file for downstream QTL analysis. 
-#### Advanced cis-QTL Analysis (Step 4)
+
+We provide three different procedures for hidden factor analysis from omics data in our pipeline. The first is the [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. The second is factor anallysis using Bi-Cross validation with the APEX software package [[cf. Owen et al., Statistical Science, 2016](https://doi.org/10.1214/15-STS539)] [[cf. Quick et al., bioRxiv, 2020](https://doi.org/10.1101/2020.12.18.423490)]. The third, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li's group [[cf. Zhou et al., Genome Biology, 2022](https://doi.org/10.1186/s13059-022-02761-4)]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [[cf. Xue et al., Genome Biology, 2023](https://doi.org/10.1186/s13059-023-02873-5)].
+#### QTL Association Testing (Step 4)
+##### A.  QTL Association Analysis
+
+
+We perform QTL association testing using TensorQTL [[cf. Taylor-Weiner et al (2019)](https://doi.org/10.1186/s13059-019-1836-7)].
+#### Advanced cis-QTL Analysis (Step 5)
 ##### A.  SuSiE fine-mapping workflow
 
 ### Expertise needed to implement the protocol
@@ -279,7 +287,7 @@ Timing ~20min
 ### 3. Data Pre-processing
 #### A.  Phenotype data preprocessing
 
-##### a. Annotate Coordinates for Gene Expression 
+##### i. Cooridnate Annotation
 Timing <1 min
 
 ```
@@ -288,7 +296,6 @@ sos run gene_annotation.ipynb annotate_coord_gene \
 ```
 
 
-##### b. Annotate Coordinates for Proteins
 Timing X min
 
 ```
@@ -297,16 +304,7 @@ sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
 ```
 
 
-##### a. Partition by chromosome
-Timing X min
-
-```
-sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
-    --container containers/bioinfo.sif
-```
-
-
-##### a. Phenotype Imputation
+##### ii. Phenotype Imputation
 Timing X min
 
 ```
@@ -315,9 +313,28 @@ sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb flash \
 ```
 
 
+##### iii. Partition by chromosome
+Timing X min
+
+```
+sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
+    --container containers/bioinfo.sif
+```
+
+
 #### B.  Covariate Data Preprocessing
 
-##### a. PEER Method
+##### i. Merge Covariates and Genotype PCs
+
+Timing <1 min
+
+```
+sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
+    --container containers/bioinfo.sif
+```
+
+
+##### ii. Generate Hidden Factors
 Timing X min
 
 ```
@@ -345,8 +362,6 @@ sos run pipeline/PEER_factor.ipynb PEER \
 ```
 
 
-##### b. Marchenko Principal Components
-
 Timing <1 min
 
 ```
@@ -354,8 +369,6 @@ sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
    --container containers/PCAtools.sif
 ```
 
-
-##### c. BiCV Factor Analysis with APEX
 
 Timing X min
 
@@ -366,17 +379,40 @@ sos run pipeline/BiCV_factor.ipynb BiCV \
 ```
 
 
-##### i. Merge Covariates and Genotype PCs
+### 4. QTL Association Testing
+#### A.  QTL Association Analysis
 
-Timing <1 min
+##### i. Cis TensorQTL Command 
 
 ```
-sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
-    --container containers/bioinfo.sif
+sos run pipeline/TensorQTL.ipynb cis \
+    --container containers/TensorQTL.sif --MAC 5
 ```
 
 
-### 4. Advanced cis-QTL Analysis
+##### ii. Trans TensorQTL Command 
+
+
+```
+
+```
+
+
+
+```
+sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
+    --container containers/TensorQTL.sif --MAC 5 --numThreads 8 -J 1 -q csg --mem 240G -c /mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml 
+```
+
+
+
+```
+sos run pipeline/APEX.ipynb cis \
+    --container containers/apex.sif
+```
+
+
+### 5. Advanced cis-QTL Analysis
 #### A.  SuSiE fine-mapping workflow
 
 ## Timing
@@ -393,6 +429,7 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 |
 | | Covariate Data Preprocessing| < X minutes
 |
+|QTL Association Testing| QTL Association Analysis| < X minutes|
 |Advanced cis-QTL Analysis| SuSiE fine-mapping workflow| <X hours|
 
 ## Troubleshooting
@@ -405,23 +442,25 @@ sos run pipeline/covariate_formatting.ipynb merge_genotype_pc \
 
 
 
-#### A.  Reference Data
+####  Reference Data
 
-Our pipeline uses the following reference data for RNA-seq expression quantification:
-
-#### A.  RNA-seq expression
+Please refer to the protocol website for more information on these results.
+####  RNA-seq expression
 
 The final output contained QCed and normalized expression data in a bed.gz file. This file is ready for use in TensorQTL.
-#### B.  Alternative splicing from RNA-seq data
+####  Alternative splicing from RNA-seq data
 
-The final output contains the QCed and normalized splicing data from leafcutter and psichonics.
-#### A.  Phenotype data preprocessing
+The final output contains the QCed and normalized splicing data from leafcutter and psichomics.
+####  Phenotype data preprocessing
 
-#### B.  Covariate Data Preprocessing
+Phenotype preprocessing should result in a phenotype file formatted and ready for use in TensorQTL.
+####  Covariate Data Preprocessing
 
-# Covariate Data Preprocessing
+Processed covariate data includes a file with covariates and hidden factors for use in TensorQTL.
+####  QTL Association Analysis
 
-#### A.  SuSiE fine-mapping workflow
+TensorQTL will produce empirical and standardized cis/trans results.
+####  SuSiE fine-mapping workflow
 
 ## Figures
 
@@ -464,6 +503,7 @@ The final output contains the QCed and normalized splicing data from leafcutter 
 8. Quick et al. 2020. https://doi.org/10.1101/2020.12.18.423490 
 9. Zhou et al. 2022. https://doi.org/10.1186/s13059-022-02761-4 
 10. Xue et al. 2023. https://doi.org/10.1186/s13059-023-02873-5 
+11. Taylor-Weiner et al. 2019. https://doi.org/10.1186/s13059-019-1836-7 
 
 ## Keywords
 

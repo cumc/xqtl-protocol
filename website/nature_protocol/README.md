@@ -13,6 +13,8 @@
  * covariate_preprocessing.ipynb - timing
  * covariate_hidden_factor.ipynb - Marchenko PC citation and may need updated links to examples
  * phenotype_preprocessing.ipynb - timing and parts relating to phenotype_imputation.ipynb
- * phenotype_formatting.ipynb - updates needed to pipeline. also needs timing and information on the other commands
+ * phenotype_formatting.ipynb - updates needed to pipeline. Error relating to bgzip. Running within notebook may not work for this. 
  * phenotype_imputation.ipynb - update notebook once container is ready
  * gene_annotation.ipynb - timing and list out other commands in the steps
+ * tabix missing from the PEER container (causes issue in covariate_hidden_factor.ipynb)
+ * phenotype_imputation.ipynb - test run gives error. Error realting to bgzip. Running within notebook may not work for this.

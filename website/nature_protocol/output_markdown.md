@@ -108,7 +108,7 @@ We include a collection of workflows to format molecular phenotype data. These i
 
 Our covariate preprocessing steps merge genotypic principal components and fixed covariate files into one file for downstream QTL analysis. 
 
-We provide three different procedures for hidden factor analysis from omics data in our pipeline. The first is the [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. The second is factor anallysis using Bi-Cross validation with the APEX software package [[cf. Owen et al., Statistical Science, 2016](https://doi.org/10.1214/15-STS539)] [[cf. Quick et al., bioRxiv, 2020](https://doi.org/10.1101/2020.12.18.423490)]. The third, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li's group [[cf. Zhou et al., Genome Biology, 2022](https://doi.org/10.1186/s13059-022-02761-4)]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [[cf. Xue et al., Genome Biology, 2023](https://doi.org/10.1186/s13059-023-02873-5)].
+We provide two different procedures for hidden factor analysis from omics data in our pipeline. The first is the [Probabilistic Estimation of Expression Residuals (PEER) method](https://github.com/PMBio/peer/wiki/Tutorial), a method also used for GTEx eQTL data analysis. The second, and the one use for our main analyses, is a PCA based approach with automatic determination of the number of factors to use. This is mainly inspired by a recent benchmark from Jessica Li's group [[cf. Zhou et al., Genome Biology, 2022](https://doi.org/10.1186/s13059-022-02761-4)]. Please note that additional considerations should be taken for single-cell eQTL analysis as investigated by [[cf. Xue et al., Genome Biology, 2023](https://doi.org/10.1186/s13059-023-02873-5)].
 #### QTL Association Testing (Step 4)
 ##### A.  QTL Association Analysis
 
@@ -370,15 +370,6 @@ sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
 ```
 
 
-Timing X min
-
-```
-sos run pipeline/BiCV_factor.ipynb BiCV \
-   --container containers/apex.sif  \
-
-```
-
-
 ### 4. QTL Association Testing
 #### A.  QTL Association Analysis
 
@@ -402,13 +393,6 @@ sos run pipeline/TensorQTL.ipynb cis \
 ```
 sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
     --container containers/TensorQTL.sif --MAC 5 --numThreads 8 -J 1 -q csg --mem 240G -c /mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml 
-```
-
-
-
-```
-sos run pipeline/APEX.ipynb cis \
-    --container containers/apex.sif
 ```
 
 
@@ -499,11 +483,9 @@ TensorQTL will produce empirical and standardized cis/trans results.
 4. Park et al. 2018. https://doi.org/10.1016/j.ajhg.2017.11.002 
 5. Li et al. 2018. https://doi.org/10.1038/s41588-017-0004-9 
 6. Agostinho et al. 2019. https://doi.org/10.1093/nar/gky888 
-7. Owen et al. 2016. https://doi.org/10.1214/15-STS539 
-8. Quick et al. 2020. https://doi.org/10.1101/2020.12.18.423490 
-9. Zhou et al. 2022. https://doi.org/10.1186/s13059-022-02761-4 
-10. Xue et al. 2023. https://doi.org/10.1186/s13059-023-02873-5 
-11. Taylor-Weiner et al. 2019. https://doi.org/10.1186/s13059-019-1836-7 
+7. Zhou et al. 2022. https://doi.org/10.1186/s13059-022-02761-4 
+8. Xue et al. 2023. https://doi.org/10.1186/s13059-023-02873-5 
+9. Taylor-Weiner et al. 2019. https://doi.org/10.1186/s13059-019-1836-7 
 
 ## Keywords
 

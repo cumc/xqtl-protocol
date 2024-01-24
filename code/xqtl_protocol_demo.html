@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -493,7 +494,10 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-environment-use-singularity-containers">Software environment: use Singularity containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-environment-use-singularity-containers">Software environment: use Singularity containers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyses-on-high-performance-computing-clusters">Analyses on High Performance Computing clusters</a></li>
 </ul>
             </nav>
@@ -576,6 +580,20 @@ document.write(`
 <section id="software-environment-use-singularity-containers">
 <h2>Software environment: use Singularity containers<a class="headerlink" href="#software-environment-use-singularity-containers" title="Permalink to this heading">#</a></h2>
 <p>Analysis documented on this website are best performed using containers we provide either through <code class="docutils literal notranslate"><span class="pre">singularity</span></code> (recommended) or <code class="docutils literal notranslate"><span class="pre">docker</span></code>, via the <code class="docutils literal notranslate"><span class="pre">--container</span></code> option pointing to a container image file. For example, <code class="docutils literal notranslate"><span class="pre">--container</span> <span class="pre">oras://ghcr.io/cumc/tensorqtl_apptainer:latest</span></code> uses a singularity image to perform analysis for QTL association mapping via software <code class="docutils literal notranslate"><span class="pre">TensorQTL</span></code>. If you drop the <code class="docutils literal notranslate"><span class="pre">--container</span></code> option then you will rely on software installed on your computer to perform the analysis.</p>
+<section id="troubleshooting">
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h3>
+<p>If you run into errors relating to R libraries while including the <code class="docutils literal notranslate"><span class="pre">--container</span></code> option then you may need to unload your R packages locally before running the sos commands. For example, this error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">dyn</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">DLLpath</span> <span class="o">=</span> <span class="n">DLLPath</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+<span class="n">unable</span> <span class="n">to</span> <span class="n">load</span> <span class="n">shared</span> <span class="nb">object</span> <span class="s1">&#39;$PATH/R/x86_64-pc-linux-gnu-library/4.2/stringi/libs/stringi.so&#39;</span><span class="p">:</span>
+<span class="n">libicui18n</span><span class="o">.</span><span class="n">so</span><span class="mf">.63</span><span class="p">:</span> <span class="n">cannot</span> <span class="nb">open</span> <span class="n">shared</span> <span class="nb">object</span> <span class="n">file</span><span class="p">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>
+</pre></div>
+</div>
+<p>May be fixed by running this before the sos commands are run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">R_LIBS</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="n">export</span> <span class="n">R_LIBS_USER</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="analyses-on-high-performance-computing-clusters">
 <h2>Analyses on High Performance Computing clusters<a class="headerlink" href="#analyses-on-high-performance-computing-clusters" title="Permalink to this heading">#</a></h2>
@@ -655,7 +673,10 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-environment-use-singularity-containers">Software environment: use Singularity containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-environment-use-singularity-containers">Software environment: use Singularity containers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyses-on-high-performance-computing-clusters">Analyses on High Performance Computing clusters</a></li>
 </ul>
   </nav></div>

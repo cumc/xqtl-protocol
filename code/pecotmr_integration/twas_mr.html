@@ -185,6 +185,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -223,13 +224,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -784,7 +785,7 @@ document.write(`
         <span class="n">chrom_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">]]</span>
         <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="n">chrom_range</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]]:</span>
-                <span class="n">existing_entry</span> <span class="o">=</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span>
+         <span class="n">e</span>       <span class="n">existing_entry</span> <span class="o">=</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duplicate chromosome specification for study_id </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, chrom </span><span class="si">{</span><span class="n">chrom</span><span class="si">}</span><span class="s2">. &quot;</span>
                                  <span class="sa">f</span><span class="s2">&quot;Conflicting entries: </span><span class="si">{</span><span class="n">existing_entry</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="p">[</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">mapping_file</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mapping_file</span><span class="p">]</span>
@@ -827,20 +828,34 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     gwas_files = c(${paths([v[_meta_info[0]] for k, v in regional_data[&quot;GWAS&quot;].items()]):r,})
     library(pecotmr)
     # Step 0: Load GWAS data for the region of interest, for each study
+    # Generate the region of interest
+    region_of_interest = data.frame(chrom = chrom, start = start, end = end)
+    # Generate the LD_meta_file data frame as the input of load_LD_matrix function
+    LD_metadata = genomic_file_paths(paste0(ld_meta_data,&quot;/&quot;,chrom,sep=&quot;&quot;))
     gwas_data = list()
     for (s in length(gwas_studies)) {
       gwas_data[[gwas_studies[s]]] = list()
-      # FIXME: Anqi please fix this
-      gwas_data[[gwas_studies[s]]][&quot;sumstats&quot;] = tabix_region(chrom, start, end, gwas_files[s])
-      gwas_data[[gwas_studies[s]]][&quot;LD&quot;] = load_LD_matrix( ... )
+      gwas_sumstats = fread(gwas_files[s])%&gt;% 
+                 rename(&quot;pos&quot; = &quot;position&quot;, &quot;chrom&quot; = &quot;chromosome&quot;, &quot;A1&quot; = &quot;ref&quot;,&quot;A2&quot; = &quot;alt&quot;)%&gt;%
+                 mutate(z=beta/se)
+      # Load LD list containing LD matrix and corresponding variants
+      gwas_LD_list = load_LD_matrix(LD_metadata, region_of_interest, gwas_sumstats)
+      # Allele flip
+      gwas_allele_flip= allele_qc(gwas_sumstats, gwas_LD_list$combined_LD_variants, match.min.prop=0.2, remove_dups=FALSE, flip=TRUE, remove=TRUE)
+      # Load LD matrix and sumstats
+      gwas_data[[gwas_studies[s]]][&quot;LD&quot;] = gwas_LD_list$combined_LD_matrix
+      gwas_data[[gwas_studies[s]]][&quot;sumstats&quot;] = gwas_allele_flip %&gt;% mutate(variant_allele_flip = paste(chrom,pos,A1.sumstats,A2.sumstats,sep=&quot;:&quot;))      
     }
     for (condition in xqtl_conditions) {
         # For each region of interest for a particular xQTL (condtion), we can perform TWAS for all the input studies, with all of the weights available
         # Step 1: load the weight matrix: a matrix of weights for the specified condition and region; each column is weight for a method. The row names should be variant names.
-        weights = load_twas_weights(weight_db_files, condition, region, variable_name_obj = &quot;variant_name&quot;, twas_weights_table = &quot;twas_weights&quot;)
+        weights[[xqtl_conditions[condition]]] = list()
+        # For each condition, we extract the weights of multiple weight df RDS file
+        for (weight_db_file in length(weight_db)){
+        weights_matrix = load_twas_weights(weight_db[weight_db_file], condition, variable_name_obj=&quot;variant_names&quot;, twas_weights_table = &quot;twas_weights&quot;)
+        adjusted_susie_weights = adjust_susie_weights(weight_db[weight_db_file], weights_matrix, keep_variants = gwas_data[[gwas_studies[s]]][&quot;sumstats&quot;]$variant_allele_flip)
         # Step 2: for each study we perform TWAS: 
         # take overlap between weights and the gwas_data summstats for each study. If there are some variants in sumstats but not in weights then simply make weight zero
-        weights = ...
         # Step 2-1: NOT YET IMPLEMEMENTED (FIXME) adjust susie_weights if possible --- if susie_fit exist in weight_db. This should replace the origional SuSiE_weight computed above
         # Step 3: perform TWAS on the weights and sumstats
     }

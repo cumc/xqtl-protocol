@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -484,7 +485,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-mapping-using-individual-level-data">Fine-mapping using individual level data</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miniprotocol-timing">Miniprotocol Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-fine-mapping-using-individual-level-data">i. Fine-mapping using individual level data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#susie-results-post-processing">SuSiE results post processing</a></li>
 </ul>
 </li>
@@ -493,6 +497,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upsetr-plot">UpSetR plot</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anticipated-results">Anticipated Results</a></li>
 </ul>
             </nav>
         </div>
@@ -506,21 +511,34 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="susie-fine-mapping-workflow">
 <h1>SuSiE fine-mapping workflow<a class="headerlink" href="#susie-fine-mapping-workflow" title="Permalink to this heading">#</a></h1>
-<section id="fine-mapping-using-individual-level-data">
-<h2>Fine-mapping using individual level data<a class="headerlink" href="#fine-mapping-using-individual-level-data" title="Permalink to this heading">#</a></h2>
+<section id="miniprotocol-timing">
+<h2>Miniprotocol Timing<a class="headerlink" href="#miniprotocol-timing" title="Permalink to this heading">#</a></h2>
+<p>Timing &lt;X hours</p>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>[SuSiE description]. The modules are as follows:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">module_name.ipynb</span></code> (steps ___): [desc]</p></li>
+</ol>
+</section>
+<section id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this heading">#</a></h2>
+<section id="i-fine-mapping-using-individual-level-data">
+<h3>i. Fine-mapping using individual level data<a class="headerlink" href="#i-fine-mapping-using-individual-level-data" title="Permalink to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">TADB_enhanced_cis.bed</span></code> is a list of TADB extended region for each gene, in formatting of gene_id, chr, start, end. The complete version of the file has been uploaded to <a class="reference external" href="https://github.com/cumc/fungen-xqtl-analysis/blob/main/resource/TADB_enhanced_cis.bed">GitHub</a>. Here we use a trimmed version that only contains information for the data we are analyzing in the MWE, ie, the <code class="docutils literal notranslate"><span class="pre">protocol_example.protein.enhanced_cis_chr21_chr22.bed</span></code> to define both the cis-windows and the list of genes to analyze.</p>
 <p><strong>This analysis will analyze 29 genes which can take a while. A powerful enough computer node should be used for the analysis</strong>. You can replace <code class="docutils literal notranslate"><span class="pre">--region-list</span></code> with <code class="docutils literal notranslate"><span class="pre">--region-name</span></code> to focus on a few genes of interest, see details in the <code class="docutils literal notranslate"><span class="pre">cis_workhorse.ipynb</span></code> document with examples how to use <code class="docutils literal notranslate"><span class="pre">--region-name</span></code> instead for illustration purpose.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span>  \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span>  \
     <span class="o">--</span><span class="kp">name</span> <span class="n">protocol_example_protein</span>  \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span>   \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="nb">input</span><span class="o">/</span><span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span>   \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
                 <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">covFile</span> <span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
               <span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span>  \
-    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">cis</span><span class="o">-</span><span class="n">windows</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">cis</span><span class="o">-</span><span class="n">windows</span> <span class="nb">input</span><span class="o">/</span><span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="nb">input</span><span class="o">/</span><span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">names</span> <span class="n">trait_A</span> <span class="n">trait_B</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">pecotmr_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
@@ -528,6 +546,7 @@ document.write(`
 </div>
 </div>
 <p><strong>Please skip everything below because they need to be updated with the new workflow interface</strong></p>
+</section>
 <section id="susie-results-post-processing">
 <h3>SuSiE results post processing<a class="headerlink" href="#susie-results-post-processing" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
@@ -610,6 +629,9 @@ document.write(`
 </div>
 </section>
 </section>
+<section id="anticipated-results">
+<h2>Anticipated Results<a class="headerlink" href="#anticipated-results" title="Permalink to this heading">#</a></h2>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -675,7 +697,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-mapping-using-individual-level-data">Fine-mapping using individual level data</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miniprotocol-timing">Miniprotocol Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-fine-mapping-using-individual-level-data">i. Fine-mapping using individual level data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#susie-results-post-processing">SuSiE results post processing</a></li>
 </ul>
 </li>
@@ -684,6 +709,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upsetr-plot">UpSetR plot</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anticipated-results">Anticipated Results</a></li>
 </ul>
   </nav></div>
 

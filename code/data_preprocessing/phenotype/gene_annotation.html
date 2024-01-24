@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'code/data_preprocessing/phenotype/gene_annotation';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Phenotype Data Formatting" href="phenotype_formatting.html" />
+    <link rel="next" title="Phenotype Data Imputation" href="phenotype_imputation.html" />
     <link rel="prev" title="Phenotype data preprocessing" href="../phenotype_preprocessing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../phenotype_preprocessing.html">Phenotype data preprocessing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -491,8 +492,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-annotate-coordinates-for-gene-expression">a. Annotate Coordinates for Gene Expression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-annotate-coordinates-for-proteins">b. Annotate Coordinates for Proteins</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-cooridnate-annotation">i. Cooridnate Annotation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-gene-expression">a. Gene Expression</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-proteins">b. Proteins</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
@@ -516,10 +520,9 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gene-coordinate-annotation">
 <h1>Gene Coordinate Annotation<a class="headerlink" href="#gene-coordinate-annotation" title="Permalink to this heading">#</a></h1>
-<p>This workflow adds genomic coordinate annotation to gene-level molecular phenotype files generated in <code class="docutils literal notranslate"><span class="pre">gct</span></code> format and convert them to <code class="docutils literal notranslate"><span class="pre">bed</span></code> format for downstreams analysis.</p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>Our gene coordinate annotation pipeline is based on <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py"><code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>, as demonstrated here</a>.</p>
+<p>We use a gene coordinate annotation pipeline based on <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py"><code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>, as demonstrated here</a>. This adds genomic coordinate annotations to gene-level molecular phenotype files generated in <code class="docutils literal notranslate"><span class="pre">gct</span></code> format and converts them to <code class="docutils literal notranslate"><span class="pre">bed</span></code> format for downstreams analysis.</p>
 <section id="alternative-implementation">
 <h3>Alternative implementation<a class="headerlink" href="#alternative-implementation" title="Permalink to this heading">#</a></h3>
 <p>Previously we use <code class="docutils literal notranslate"><span class="pre">biomaRt</span></code> package in R instead of code from <code class="docutils literal notranslate"><span class="pre">pyqtl</span></code>. The core function calls are:</p>
@@ -554,9 +557,11 @@ document.write(`
 </section>
 <section id="minimal-working-example-steps">
 <h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Permalink to this heading">#</a></h2>
-<p>The MWE is uploaded to the <a class="reference external" href="https://www.synapse.org/#!Synapse:syn36416559/files/">Synapse</a></p>
-<section id="a-annotate-coordinates-for-gene-expression">
-<h3>a. Annotate Coordinates for Gene Expression<a class="headerlink" href="#a-annotate-coordinates-for-gene-expression" title="Permalink to this heading">#</a></h3>
+<p>The MWE is uploaded to <a class="reference external" href="https://www.synapse.org/#!Synapse:syn36416559/files/">Synapse</a></p>
+<section id="i-cooridnate-annotation">
+<h3>i. Cooridnate Annotation<a class="headerlink" href="#i-cooridnate-annotation" title="Permalink to this heading">#</a></h3>
+<section id="a-gene-expression">
+<h4>a. Gene Expression<a class="headerlink" href="#a-gene-expression" title="Permalink to this heading">#</a></h4>
 <p>Timing: &lt;1 min</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -571,8 +576,8 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="b-annotate-coordinates-for-proteins">
-<h3>b. Annotate Coordinates for Proteins<a class="headerlink" href="#b-annotate-coordinates-for-proteins" title="Permalink to this heading">#</a></h3>
+<section id="b-proteins">
+<h4>b. Proteins<a class="headerlink" href="#b-proteins" title="Permalink to this heading">#</a></h4>
 <p>Timing: X min</p>
 <p>FIXME</p>
 <div class="cell docutils container">
@@ -594,6 +599,7 @@ document.write(`
 <span class="n">INFO</span><span class="p">:</span> <span class="n">Workflow</span> <span class="n">annotate_coord_protein</span> <span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">w6cbd7c86b9715fdd</span><span class="p">)</span> <span class="ow">is</span> <span class="n">executed</span> <span class="n">successfully</span> <span class="k">with</span> <span class="mi">1</span> <span class="n">completed</span> <span class="n">step</span><span class="o">.</span>
 </pre></div>
 </div>
+</section>
 </section>
 </section>
 <section id="troubleshooting">
@@ -1568,11 +1574,11 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdou
       </div>
     </a>
     <a class="right-next"
-       href="phenotype_formatting.html"
+       href="phenotype_imputation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Phenotype Data Formatting</p>
+        <p class="prev-next-title">Phenotype Data Imputation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1598,8 +1604,11 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdou
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-annotate-coordinates-for-gene-expression">a. Annotate Coordinates for Gene Expression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-annotate-coordinates-for-proteins">b. Annotate Coordinates for Proteins</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-cooridnate-annotation">i. Cooridnate Annotation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-gene-expression">a. Gene Expression</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-proteins">b. Proteins</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>

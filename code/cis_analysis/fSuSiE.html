@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -484,17 +485,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-regional-level-genotype-and-phenotype-data">Generate regional level genotype and phenotype data</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genotype-data-partition-by-region">Genotype data partition by region</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-fsusie">Run fSuSiE</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie-results-post-processing">fSuSiE results post processing</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#haqtl">haQTL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mqtl">mQTL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-susie">Plotting susie</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-phenotype-data-per-tadb-list">Generate phenotype data per TADB list</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie-analysis">fSuSie Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#archived-plotting">Archived: Plotting</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pip-land-scape-plot">PIP land scape plot</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upsetr-plot">UpSetR plot</a></li>
 </ul>
@@ -514,218 +507,100 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="fsusie-workflows">
 <h1>fSuSiE workflows<a class="headerlink" href="#fsusie-workflows" title="Permalink to this heading">#</a></h1>
-<section id="generate-regional-level-genotype-and-phenotype-data">
-<h2>Generate regional level genotype and phenotype data<a class="headerlink" href="#generate-regional-level-genotype-and-phenotype-data" title="Permalink to this heading">#</a></h2>
-<section id="genotype-data-partition-by-region">
-<h3>Genotype data partition by region<a class="headerlink" href="#genotype-data-partition-by-region" title="Permalink to this heading">#</a></h3>
-<p>This step is necessary for finemapping using SuSiE.
-<code class="docutils literal notranslate"><span class="pre">TADB_enhanced_cis.bed</span></code> is a list of TADB extended region for each gene, in formatting of gene_id, chr, start, end. The complete version of the file has been uploaded t
-o <a class="reference external" href="https://github.com/cumc/fungen-xqtl-analysis/blob/main/resource/TADB_enhanced_cis.bed">GitHub</a>. Here we use a trimmed version that only contains information for the data we are analyzing in the MWE, ie, the <code class="docutils literal notranslate"><span class="pre">protocol_example.protein.enhanced_cis_chr21_chr22.bed</span></code></p>
+<section id="generate-phenotype-data-per-tadb-list">
+<h2>Generate phenotype data per TADB list<a class="headerlink" href="#generate-phenotype-data-per-tadb-list" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">genotype_formatting</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">genotype_by_region</span> \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="n">protocol_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">protocol_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">bioinfo</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/phenotype_formatting.ipynb<span class="w"> </span>phenotype_annotate_by_tad<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--TAD_list<span class="w"> </span>extended_TADB.bed<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--phenoFile<span class="w"> </span>output/phenotype_by_region/protocol_example.methylation.bed.extended_TADB.bed.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--phenotype_per_tad<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>oras://ghcr.io/cumc/pecotmr_apptainer:latest
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>head<span class="w"> </span>/hpc/users/sunh14/snmulti_QTL/test/extended_TADB.bed
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">genotype_by_region_1</span>: 
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=1) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=4) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=3) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=5) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=0) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=2) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=6) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=7) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=8) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=9) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=10) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=14) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=13) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=11) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=15) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=12) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=16) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=17) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=18) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=19) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=20) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=22) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=21) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=23) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=24) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=25) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=26) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> (index=27) is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">genotype_by_region_1</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/protocol_example.protein.enhanced_cis_chr21_chr22_genotype_by_region/protocol_example.genotype.chr21_22.ENSG00000154654_O15394.bed /home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/protocol_example.protein.enhanced_cis_chr21_chr22_genotype_by_region/protocol_example.genotype.chr21_22.ENSG00000142192_P05067.bed... (28 items in 28 groups)</span>
-INFO: Running <span class=" -Color -Color-Green">genotype_by_region_2</span>: 
-INFO: <span class=" -Color -Color-Green">genotype_by_region_2</span> is <span class=" -Color -Color-Green">completed</span> (pending nested workflow).
-INFO: Running <span class=" -Color -Color-Green">write_data_list</span>: 
-INFO: <span class=" -Color -Color-Green">write_data_list</span> is <span class=" -Color -Color-Green">completed</span>.
-INFO: <span class=" -Color -Color-Green">write_data_list</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/protocol_example.protein.enhanced_cis_chr21_chr22_genotype_by_region/protocol_example.genotype.chr21_22.genotype_by_region_files.txt</span>
-INFO: <span class=" -Color -Color-Green">genotype_by_region_2</span> output:   <span class=" -Color -Color-Green">/home/gw/GIT/github/fungen-xqtl-analysis/analysis/Wang_Columbia/ROSMAP/MWE/output/protocol_example.protein.enhanced_cis_chr21_chr22_genotype_by_region/protocol_example.genotype.chr21_22.genotype_by_region_files.txt</span>
-INFO: Workflow genotype_by_region (ID=wd7e4633eb2ea8f09) is executed successfully with 3 completed steps and 30 completed substeps.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#chr	start	end	index
+chr1	0	7520074	TADB_1
+chr1	5101787	8985505	TADB_2
+chr1	5785453	10985501	TADB_3
+chr1	8501092	11630758	TADB_4
+chr1	9474949	13144207	TADB_5
+chr1	11063302	14322598	TADB_6
+chr1	11746199	16526534	TADB_7
+chr1	14490832	17972964	TADB_8
+chr1	15467436	20329300	TADB_9
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="run-fsusie">
-<h2>Run fSuSiE<a class="headerlink" href="#run-fsusie" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">uni_fsusie</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">eqtl</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">dlpfc_tad_region_list_plink_files</span><span class="o">/</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">plink_files_list</span><span class="o">.</span><span class="n">txt</span>  \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">f_susie_tad_haQTL_pos_check_pure_2</span><span class="o">/</span> <span class="o">--</span><span class="kp">name</span> <span class="n">haQTL</span> \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="n">dlpfc_tad_list</span> \
-    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">phenotype_list</span> \
-    <span class="o">--</span><span class="n">covFile</span> <span class="n">covar_list</span> <span class="o">--</span><span class="n">prior</span> <span class="n">mixture_normal_per_scale</span>  <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> 
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>head<span class="w"> </span>output/phenotype_by_region/protocol_example.methylation.bed.extended_TADB.bed.16_pheno_per_region.region_list
+<span class="c1">#chr    start   end     ID      path</span>
+chr22<span class="w">   </span><span class="m">17150169</span><span class="w">        </span><span class="m">21377251</span><span class="w">        </span>TADB_1315<span class="w">       </span>protocol_example.methylation.bed.gz
+chr22<span class="w">   </span><span class="m">18714502</span><span class="w">        </span><span class="m">22700015</span><span class="w">        </span>TADB_1316<span class="w">       </span>protocol_example.methylation.bed.gz
+chr22<span class="w">   </span><span class="m">19689928</span><span class="w">        </span><span class="m">25774720</span><span class="w">        </span>TADB_1317<span class="w">       </span>protocol_example.methylation.bed.gz
+chr22<span class="w">   </span><span class="m">22856702</span><span class="w">        </span><span class="m">27630669</span><span class="w">        </span>TADB_1318<span class="w">       </span>protocol_example.methylation.bed.gz
 </pre></div>
 </div>
 </div>
 </div>
-<section id="fsusie-results-post-processing">
-<h3>fSuSiE results post processing<a class="headerlink" href="#fsusie-results-post-processing" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="fsusie-analysis">
+<h2>fSuSie Analysis<a class="headerlink" href="#fsusie-analysis" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_haQTL_pos_check_pure_2 --rds_path `ls output/f_susie_tad_haQTL_pos_check_pure_2/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif 
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_haQTL_pos_check_pure_3 --rds_path `ls output/f_susie_tad_haQTL_pos_check_pure_3/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif
-
-
-sos run pipeline/SuSiE_post_processing.ha fsusie_to_tsv \
-    --cwd output/f_susie_tad_meQTL_pos_check_pure/ --rds_path `ls output/f_susie_tad_meQTL_pos_check_pure/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/pQTL/ --rds_path `ls /mnt/vast/hpc/csg/molecular_phenotype_calling/pqtl_finemapping/output/susie_per_ID_tad/cache/*rds` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif
-
-
-nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv     --cwd output/f_susie_tad_haQTL_pos_limited_2/result --rds_path `ls output/f_susie_tad_haQT
-L_pos_limited_2/cache/*rds`     --region-list ../eqtl/dlpfc_tad_list     --container containers/stephenslab.sif &amp;
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_haQTL_pos_resume/ --rds_path `ls output/f_susie_tad_haQTL_pos_resume/cache/*rds` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_meQTL_pos_resume/ --rds_path `ls output/f_susie_tad_meQTL_pos_resume/cache/*rds` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif
-
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_haQTL_pos_resume/result --rds_path `ls output/f_susie_tad_haQTL_pos_resume/cache/*rds` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif &amp;
-
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/test --rds_path `ls output/f_susie_tad_haQTL_pos_check_pure_2/cache/*rds | head -1 ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container /home/hs3163/test_sif/stephenslab.sif
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/cis_workhorse.ipynb<span class="w"> </span>fsusie<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span>protocol_example_methylation<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--genoFile<span class="w"> </span>xqtl_association/protocol_example.genotype.chr21_22.plink_qc.genotype_by_chrom_files.txt<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--phenoFile<span class="w"> </span>output/phenotype_by_region/protocol_example.methylation.bed.extended_TADB.bed.16_pheno_per_region.region_list<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>output/phenotype_by_region/protocol_example.methylation.bed.extended_TADB.bed.16_pheno_per_region.region_list<span class="w">  </span><span class="se">\</span>
+<span class="w">    </span>--covFile<span class="w"> </span>output/covariate/protocol_example.methylation.protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.Marchenko_PC.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">              </span>output/covariate/protocol_example.methylation.protocol_example.samples.protocol_example.genotype.chr21_22.pQTL.plink_qc.prune.pca.Marchenko_PC.gz<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>oras://ghcr.io/cumc/pecotmr_apptainer:latest
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-</section>
-<section id="haqtl">
-<h2>haQTL<a class="headerlink" href="#haqtl" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_haQTL_pos_check_pure_2/result --rds_path `ls output/f_susie_tad_haQTL_pos_check_pure_2/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif  &amp;
-
-
-sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_haQTL_resume/result --rds_path `ls output/f_susie_tad_haQTL_resume/cache/*rds` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif &amp;
-
-
-nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv   \
-    --cwd output/f_susie_tad_haQTL_pos_limited_2/result \
-    --rds_path `ls output/f_susie_tad_haQTL_pos_limited_2/cache/*rds`   \
-    --region-list ../eqtl/dlpfc_tad_list     --container containers/stephenslab.sif &amp;
-
-
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="mqtl">
-<h2>mQTL<a class="headerlink" href="#mqtl" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_meQTL_pos_2/result --rds_path `ls output/f_susie_tad_meQTL_pos_2/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif  &amp;
-
-nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_meQTL_pos_resume/result --rds_path `ls output/f_susie_tad_meQTL_pos_resume/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif  &amp;
-
-nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
-    --cwd output/f_susie_tad_meQTL_pos_limited_2/result --rds_path `ls output/f_susie_tad_meQTL_pos_limited_2/cache/*rds ` \
-    --region-list ../eqtl/dlpfc_tad_list \
-    --container containers/stephenslab.sif  &amp;
-
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="plotting-susie">
-<h2>Plotting susie<a class="headerlink" href="#plotting-susie" title="Permalink to this heading">#</a></h2>
+<section id="archived-plotting">
+<h2>Archived: Plotting<a class="headerlink" href="#archived-plotting" title="Permalink to this heading">#</a></h2>
 <section id="pip-land-scape-plot">
 <h3>PIP land scape plot<a class="headerlink" href="#pip-land-scape-plot" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_pip_landscape_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">test</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">plot_recipe_668</span> <span class="o">--</span><span class="n">annot_tibble</span> <span class="o">~/</span><span class="n">Annotatr_builtin_annotation_tibble</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>  <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_pip_landscape_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/test/<span class="w"> </span>--plot_list<span class="w"> </span>plot_recipe_668<span class="w"> </span>--annot_tibble<span class="w"> </span>~/Annotatr_builtin_annotation_tibble.tsv<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w">  </span><span class="p">&amp;</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_pip_landscape_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">test</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">plot_recipe_ADGWAS_uni</span> <span class="o">--</span><span class="n">annot_tibble</span> <span class="o">~/</span><span class="n">Annotatr_builtin_annotation_tibble</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>  <span class="o">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_pip_landscape_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/test/<span class="w"> </span>--plot_list<span class="w"> </span>plot_recipe_ADGWAS_uni<span class="w"> </span>--annot_tibble<span class="w"> </span>~/Annotatr_builtin_annotation_tibble.tsv<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w">  </span><span class="p">&amp;</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_pip_landscape_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="mi">1182</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">plot_recipe_1182</span> <span class="o">--</span><span class="n">annot_tibble</span> <span class="o">~/</span><span class="n">Annotatr_builtin_annotation_tibble</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>  <span class="o">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_pip_landscape_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/1182/<span class="w"> </span>--plot_list<span class="w"> </span>plot_recipe_1182<span class="w"> </span>--annot_tibble<span class="w"> </span>~/Annotatr_builtin_annotation_tibble.tsv<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w">  </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_pip_landscape_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">test_3</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">plot_recipe</span> <span class="o">--</span><span class="n">annot_tibble</span> <span class="o">~/</span><span class="n">Annotatr_builtin_annotation_tibble</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>  <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_pip_landscape_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/test_3/<span class="w"> </span>--plot_list<span class="w"> </span>plot_recipe<span class="w"> </span>--annot_tibble<span class="w"> </span>~/Annotatr_builtin_annotation_tibble.tsv<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w">  </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_pip_landscape_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="mi">5</span><span class="n">g</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">recipe_5gene</span> <span class="o">--</span><span class="n">annot_tibble</span> <span class="o">~/</span><span class="n">Annotatr_builtin_annotation_tibble</span><span class="o">.</span><span class="n">tsv</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>  <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_pip_landscape_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/5g/<span class="w"> </span>--plot_list<span class="w"> </span>recipe_5gene<span class="w"> </span>--annot_tibble<span class="w"> </span>~/Annotatr_builtin_annotation_tibble.tsv<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w">  </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
@@ -735,29 +610,29 @@ nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
 <h3>UpSetR plot<a class="headerlink" href="#upsetr-plot" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">updated_mQTL</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">updated_16</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe_16</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/updated_mQTL/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/updated_16/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe_16<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_cs_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">updated_mQTL</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe_1</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">trait_to_select</span> <span class="mi">3</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_cs_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">updated_16</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe_16</span>  <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">trait_to_select</span> <span class="mi">3</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_cs_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/updated_mQTL/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe_1<span class="w"> </span>-s<span class="w"> </span>force<span class="w"> </span>--trait_to_select<span class="w"> </span><span class="m">3</span><span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_cs_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/updated_16/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe_16<span class="w">  </span>-s<span class="w"> </span>force<span class="w"> </span>--trait_to_select<span class="w"> </span><span class="m">3</span><span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_cs_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rerun</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe_16_rerun</span>  <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">trait_to_select</span> <span class="mi">3</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_cs_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe_16_rerun<span class="w">  </span>-s<span class="w"> </span>force<span class="w"> </span>--trait_to_select<span class="w"> </span><span class="m">3</span><span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_cs_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rerun</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe_16_rerun</span>  <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">trait_to_select</span> <span class="mi">2</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_cs_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe_16_rerun<span class="w">  </span>-s<span class="w"> </span>force<span class="w"> </span>--trait_to_select<span class="w"> </span><span class="m">2</span><span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_upsetR_cs_plot</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">rerun</span><span class="o">/</span> <span class="o">--</span><span class="n">plot_list</span> <span class="n">UpsetR_recipe_16_rerun</span>  <span class="o">-</span><span class="n">s</span> <span class="n">force</span> <span class="o">--</span><span class="n">trait_to_select</span> <span class="mi">1</span> <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">&amp;</span>
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>susie_upsetR_cs_plot<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/<span class="w"> </span>--plot_list<span class="w"> </span>UpsetR_recipe_16_rerun<span class="w">  </span>-s<span class="w"> </span>force<span class="w"> </span>--trait_to_select<span class="w"> </span><span class="m">1</span><span class="w"> </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
@@ -768,26 +643,26 @@ nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_to_tsv \
 <h2>FSuSiE estimated effect plot<a class="headerlink" href="#fsusie-estimated-effect-plot" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie_extract_effect</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">all_haQTL_effect</span><span class="o">/</span> <span class="o">--</span><span class="n">rds_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">QTL_fine_mapping</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">definitive_haQTL</span><span class="o">//*.</span><span class="n">rds</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_extract_effect<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/all_haQTL_effect/<span class="w"> </span>--rds_path<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/QTL_fine_mapping/output/definitive_haQTL//*.rds<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif
 
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie_extract_effect</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">all_meQTL_effect</span><span class="o">/</span> <span class="o">--</span><span class="n">rds_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">QTL_fine_mapping</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">definitive_mQTL</span><span class="o">/*</span><span class="n">rds</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">-</span><span class="n">s</span> <span class="n">build</span> 
+sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_extract_effect<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/all_meQTL_effect/<span class="w"> </span>--rds_path<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/QTL_fine_mapping/output/definitive_mQTL/*rds<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span>-s<span class="w"> </span>build<span class="w"> </span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_extract_effect \
-    --cwd output/rerun/all_haQTL_effect/ --rds_path `ls output/rerun/cache/*haqtl*rds | grep -v -f empty_rds ` \
-    --container containers/stephenslab.sif -s build  &amp;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nohup<span class="w"> </span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_extract_effect<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/all_haQTL_effect/<span class="w"> </span>--rds_path<span class="w"> </span><span class="sb">`</span>ls<span class="w"> </span>output/rerun/cache/*haqtl*rds<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>-f<span class="w"> </span>empty_rds<span class="w"> </span><span class="sb">`</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span>-s<span class="w"> </span>build<span class="w">  </span><span class="p">&amp;</span>
 
-nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_extract_effect \
-    --cwd output/rerun/all_meQTL_effect/ --rds_path `ls output/rerun/cache/*mqtl*rds | grep -v -f empty_rds ` \
-    --container containers/stephenslab.sif -s build &amp;
+nohup<span class="w"> </span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_extract_effect<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/all_meQTL_effect/<span class="w"> </span>--rds_path<span class="w"> </span><span class="sb">`</span>ls<span class="w"> </span>output/rerun/cache/*mqtl*rds<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>-f<span class="w"> </span>empty_rds<span class="w"> </span><span class="sb">`</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span>-s<span class="w"> </span>build<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
@@ -797,41 +672,41 @@ nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_extract_effect \
 <h2>FSuSiE credible band<a class="headerlink" href="#fsusie-credible-band" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie_affected_region</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">definitive_haQTL</span><span class="o">/</span><span class="n">affected_region</span> <span class="o">--</span><span class="n">rds_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">QTL_fine_mapping</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">definitive_haQTL</span><span class="o">/*.</span><span class="n">rds</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_affected_region<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/definitive_haQTL/affected_region<span class="w"> </span>--rds_path<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/QTL_fine_mapping/output/definitive_haQTL/*.rds<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie_affected_region</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">definitive_mQTL</span><span class="o">/</span><span class="n">affected_region</span> <span class="o">--</span><span class="n">rds_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">QTL_fine_mapping</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">definitive_mQTL</span><span class="o">/*.</span><span class="n">rds</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_affected_region<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/definitive_mQTL/affected_region<span class="w"> </span>--rds_path<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/QTL_fine_mapping/output/definitive_mQTL/*.rds<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_post_processing</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie_affected_region</span>    \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">definitive_mQTL</span><span class="o">/</span><span class="n">affected_region</span> \
-    <span class="o">--</span><span class="n">rds_path</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">molecular_phenotype_calling</span><span class="o">/</span><span class="n">QTL_fine_mapping</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">definitive_mQTL</span><span class="o">/*.</span><span class="n">rds</span>    \
-    <span class="o">--</span><span class="n">container</span> <span class="n">containers</span><span class="o">/</span><span class="n">stephenslab</span><span class="o">.</span><span class="n">sif</span> <span class="o">-</span><span class="n">J</span> <span class="mi">300</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg2</span> <span class="o">-</span><span class="n">c</span> <span class="n">csg2</span><span class="o">.</span><span class="n">yml</span>  <span class="o">&amp;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nohup<span class="w"> </span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_affected_region<span class="w">    </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/definitive_mQTL/affected_region<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--rds_path<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/QTL_fine_mapping/output/definitive_mQTL/*.rds<span class="w">    </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span>-J<span class="w"> </span><span class="m">300</span><span class="w"> </span>-q<span class="w"> </span>csg2<span class="w"> </span>-c<span class="w"> </span>csg2.yml<span class="w">  </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_affected_region \
-    --cwd output/rerun/affected_region/mQTL --rds_path `ls output/rerun/cache/*mqtl*rds | grep -v -f empty_rds ` \
-    --container containers/stephenslab.sif &amp;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nohup<span class="w"> </span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_affected_region<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/affected_region/mQTL<span class="w"> </span>--rds_path<span class="w"> </span><span class="sb">`</span>ls<span class="w"> </span>output/rerun/cache/*mqtl*rds<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>-f<span class="w"> </span>empty_rds<span class="w"> </span><span class="sb">`</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 
-nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_affected_region \
-    --cwd output/rerun/affected_region/haQTL --rds_path `ls output/rerun/cache/*haqtl*rds | grep -v -f empty_rds ` \
-    --container containers/stephenslab.sif &amp;
+nohup<span class="w"> </span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/SuSiE_post_processing.ipynb<span class="w"> </span>fsusie_affected_region<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--cwd<span class="w"> </span>output/rerun/affected_region/haQTL<span class="w"> </span>--rds_path<span class="w"> </span><span class="sb">`</span>ls<span class="w"> </span>output/rerun/cache/*haqtl*rds<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span>-f<span class="w"> </span>empty_rds<span class="w"> </span><span class="sb">`</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--container<span class="w"> </span>containers/stephenslab.sif<span class="w"> </span><span class="p">&amp;</span>
 </pre></div>
 </div>
 </div>
@@ -848,16 +723,16 @@ nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_affected_region \
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "sos"
+            mode: "bash"
         },
         kernelOptions: {
-            name: "sos",
+            name: "bash",
             path: "./code/cis_analysis"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'sos'</script>
+    <script>kernelName = 'bash'</script>
 
                 </article>
               
@@ -902,17 +777,9 @@ nohup sos run pipeline/SuSiE_post_processing.ipynb fsusie_affected_region \
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-regional-level-genotype-and-phenotype-data">Generate regional level genotype and phenotype data</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genotype-data-partition-by-region">Genotype data partition by region</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-fsusie">Run fSuSiE</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie-results-post-processing">fSuSiE results post processing</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#haqtl">haQTL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mqtl">mQTL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-susie">Plotting susie</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-phenotype-data-per-tadb-list">Generate phenotype data per TADB list</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie-analysis">fSuSie Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#archived-plotting">Archived: Plotting</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pip-land-scape-plot">PIP land scape plot</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upsetr-plot">UpSetR plot</a></li>
 </ul>

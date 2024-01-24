@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Independent list of variants using LD clumping &#8212; FunGen-xQTL Consortium</title>
+    <title>Generating LD Reference Panel &#8212; FunGen-xQTL Consortium</title>
   
   
   
@@ -62,13 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'code/reference_data/ld_prune_reference';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/reference_data/ld_reference_generation';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Generating LD Reference Panel" href="ld_reference_generation.html" />
-    <link rel="prev" title="Generation of Topologically Associated Domains and their Boundaries" href="generalized_TADB.html" />
+    <link rel="next" title="RNA-seq expression" href="../molecular_phenotypes/bulk_expression.html" />
+    <link rel="prev" title="Independent list of variants using LD clumping" href="ld_prune_reference.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -184,8 +182,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="reference_data.html">Reference Data</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Independent list of variants using LD clumping</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ld_reference_generation.html">Generating LD Reference Panel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -346,7 +344,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/reference_data/ld_prune_reference.ipynb" target="_blank"
+      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/reference_data/ld_reference_generation.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -363,7 +361,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/reference_data/ld_prune_reference.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/reference_data/ld_reference_generation.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -393,7 +391,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/code/reference_data/ld_prune_reference.ipynb" target="_blank"
+      <li><a href="../../_sources/code/reference_data/ld_reference_generation.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -477,7 +475,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Independent list of variants using LD clumping</h1>
+    <h1>Generating LD Reference Panel</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -490,11 +488,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-extract-genotypes-per-ld-block">i. Extract genotypes per LD block</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-ld-pruning-within-each-ld-block">ii. LD pruning within each LD block</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
 </ul>
             </nav>
         </div>
@@ -506,149 +501,212 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="independent-list-of-variants-using-ld-clumping">
-<h1>Independent list of variants using LD clumping<a class="headerlink" href="#independent-list-of-variants-using-ld-clumping" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="generating-ld-reference-panel">
+<h1>Generating LD Reference Panel<a class="headerlink" href="#generating-ld-reference-panel" title="Permalink to this heading">#</a></h1>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>This notebook creates a list of randomly selected variants that are in weak LD with each other, for given reference data-set. This is useful for the downstreams <code class="docutils literal notranslate"><span class="pre">mashr</span></code> analysis where a list of independent variants are used.</p>
+<p>Our LD reference panel is generated from ADSP GCAD non-Hispanic white samples. Missing variants are mean imputed before correlations are calculated between variants. The cyvcf2 package is used to calculate dosage while applying a minor allele frequency threshold of 0.05%, a minor allele count threshold of 5, and a missingness threshold of 5%.</p>
 </section>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Reference genotype, in this case, our ROSMAP European ancestry genotype of ~1,000 individuals, <code class="docutils literal notranslate"><span class="pre">ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.bed</span></code></p></li>
-<li><p>A list of approximately independent LD blocks, which is optional but when it is included, we can parallel the LD clumping to all LD blocks which will speed up the process. This list is available from:  <a class="github reference external" href="https://github.com/gaow/LDblocks_GRCh38/blob/master/data/deCODE_EUR_LD_blocks.bed">gaow/LDblocks_GRCh38</a> (a forked repo created from work described at <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2022.03.04.483057v2">https://www.biorxiv.org/content/10.1101/2022.03.04.483057v2</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.vcf.bgz</span></code> and <code class="docutils literal notranslate"><span class="pre">.vcf.bgz.tbi</span></code> files. Each file is specific to a chromosome and variant range (ex: <code class="docutils literal notranslate"><span class="pre">gcad.qc.r4.wgs.36361.GATK.2022.08.15.biallelic.genotypes.chr9:10030-36899727.NHWextracted.MAF01.vcf.bgz</span></code>).</p></li>
 </ul>
 </section>
 <section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>A list of independent variants in <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cor.xz</span></code> files containing LD pearson product-moment correlation coefficients.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cor.xz.bim</span></code> file containing the list of variants in each <code class="docutils literal notranslate"><span class="pre">cor.xz</span></code> file.</p></li>
 </ul>
 </section>
 <section id="minimal-working-example-steps">
 <h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Permalink to this heading">#</a></h2>
-<section id="i-extract-genotypes-per-ld-block">
-<h3>i. Extract genotypes per LD block<a class="headerlink" href="#i-extract-genotypes-per-ld-block" title="Permalink to this heading">#</a></h3>
-<p>Using the <code class="docutils literal notranslate"><span class="pre">genotype_formatting.ipynb</span></code> pipeline,</p>
-<p><strong>FIXME: this is using the original bed file for blocks, which is a lot cleaner. Please test this</strong></p>
+<p>We start off by loading all of the requisite libraries</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>pipeline/genotype_formatting.ipynb<span class="w"> </span>genotype_by_region<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--region-list<span class="w"> </span>data/references/deCODE_EUR_LD_blocks.bed<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--genoFile<span class="w"> </span>data/genotype/ROSMAP_NIA_WGS.leftnorm.bcftools_qc.plink_qc.bed<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--cwd<span class="w"> </span>output/geno_by_LDblock<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--container<span class="w"> </span>/mnt/vast/hpc/csg/containers_xqtl/bioinfo.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--mem<span class="w"> </span>200G<span class="w"> </span>-s<span class="w"> </span>build
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cyvcf2</span> <span class="kn">import</span> <span class="n">VCF</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">nan</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">xz</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>There are multiple VCFs per chromosome, so we group them into a Python dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># vcf_files for each chromosome</span>
+<span class="n">vcf_files</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">chrm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">22</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/xqtl/R4_QC_NHWonly_rm_monomorphic/&quot;</span>
+    <span class="n">file_start</span> <span class="o">=</span> <span class="s2">&quot;gcad.qc.r4.wgs.36361.GATK.2022.08.15.biallelic.genotypes.&quot;</span>
+    <span class="n">vcf_files</span><span class="p">[</span><span class="s2">&quot;chr</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">chrm</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="k">if</span> 
+                                 <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.bgz&quot;</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">file_start</span> <span class="o">+</span> <span class="s2">&quot;chr&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chrm</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="ow">or</span>
+                                                           <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">file_start</span> <span class="o">+</span> <span class="s2">&quot;chr&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chrm</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">))]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>When calculating the correlations between different variants we do mean imputation of the missing variants</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># replaces NaN values in matrix with means of their rows</span>
+<span class="k">def</span> <span class="nf">fill_missing_with_row_means</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># Calculate means of rows ignoring NaNs</span>
+    <span class="n">row_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Find indices where NaN values are</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="c1"># Replace NaNs with the mean of the respective row</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">row_means</span><span class="p">,</span> <span class="n">inds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Dosages are then calculated using the cyvcf2 package. We use a minor allele frequency threshold of 0.05%, minor allele count threshold of 5, and a missingness threshold of 5% to filter variants</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gets dosages (which pass filter criteria) from VCF file object</span>
+<span class="k">def</span> <span class="nf">get_dosages</span><span class="p">(</span><span class="n">vcf_obj</span><span class="p">,</span> <span class="n">maf_min</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span> <span class="n">mac_min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">msng_min</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">vcf_obj</span><span class="p">:</span>
+        <span class="c1"># do not include multi-allelic variants</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">ALT</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">dosage</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[[</span><span class="n">nan</span> <span class="k">if</span> <span class="n">x1</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">x1</span> <span class="k">for</span> <span class="n">x1</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x0</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">genotypes</span><span class="p">]]</span>
+        <span class="c1"># ignore if no variation exists</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">dosage</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="c1"># returns allele counts for the reference (first val) and alternative</span>
+        <span class="c1"># (second val) alleles</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">([</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dosage</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">dosage</span><span class="p">)]</span>
+        <span class="n">nan_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">dosage</span><span class="p">))</span>
+        <span class="n">num_samp_non_na</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dosage</span><span class="p">)</span> <span class="o">-</span> <span class="n">nan_count</span>
+        <span class="n">mac</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+        <span class="n">maf</span> <span class="o">=</span> <span class="n">mac</span> <span class="o">/</span> <span class="n">num_samp_non_na</span>
+        <span class="n">msng_rate</span> <span class="o">=</span> <span class="n">nan_count</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_samp_non_na</span> <span class="o">+</span> <span class="n">nan_count</span><span class="p">)</span>
+        <span class="c1"># remove variants which don&#39;t match our criteria</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">maf</span> <span class="o">&lt;</span> <span class="n">maf_min</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">mac</span> <span class="o">&lt;</span> <span class="n">mac_min</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">msng_rate</span> <span class="o">&gt;</span> <span class="n">msng_min</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dosage</span><span class="p">)</span>
+        <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">CHROM</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">POS</span><span class="p">),</span> <span class="n">var</span><span class="o">.</span><span class="n">REF</span><span class="p">,</span> <span class="n">var</span><span class="o">.</span><span class="n">ALT</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">fill_missing_with_row_means</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)),</span> <span class="n">var_names</span>
+    <span class="c1"># return empty (but 2D) array for empty values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[]]),</span> <span class="n">var_names</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then create a function to get the dosages from a specific range (which is useful for the LD blocks)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># returns output of dosages on a per LD block basis</span>
+<span class="k">def</span> <span class="nf">get_dosages_range</span><span class="p">(</span><span class="n">vcf_obj</span><span class="p">,</span> <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+    <span class="n">vcf_qry_str</span> <span class="o">=</span> <span class="n">chrm</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_dosages</span><span class="p">(</span><span class="n">vcf_obj</span><span class="p">(</span><span class="n">vcf_qry_str</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">xss</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">xs</span> <span class="ow">in</span> <span class="n">xss</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We then load the LD block locations into memory</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head<span class="w"> </span>/restricted/projectnb/casa/oaolayin/ROSMAP_NIA_geno/EUR_LD_blocks.bed<span class="w"> </span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">genotype_by_region_1</span>: 
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>chr1 	 16103 	 2888443
+chr1 	 2888443 	 4320284
+chr1 	 4320284 	 5853833
+chr1 	 5853833 	 7110219
+chr1 	 7110219 	 9473386
+chr1 	 9473386 	 11328222
+chr1 	 11328222 	 12710318
+chr1 	 12710318 	 15244493
+chr1 	 15244493 	 17351816
+chr1 	 17351816 	 20110062
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ld_block_file</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/casa/oaolayin/ROSMAP_NIA_geno/EUR_LD_blocks.bed&quot;</span>
+<span class="n">ld_blocks</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ld_block_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">elems</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">elems</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">elems</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">ld_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elems</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now calculate the correlation matrices for each of the blocks</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">ld_blocks</span><span class="p">:</span>
+    <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">block</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/xqtl/R4_cor_out/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.cor.xz&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chrm</span><span class="p">,</span> <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="c1"># aggregate dosages from different files</span>
+    <span class="n">dosages</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_dosages_range</span><span class="p">(</span><span class="n">VCF</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span>
+               <span class="ow">in</span> <span class="n">vcf_files</span><span class="p">[</span><span class="n">chrm</span><span class="p">]]</span>
+    <span class="c1"># get the variants</span>
+    <span class="n">variants</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dosages</span><span class="p">])</span>
+    <span class="n">dosage</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dosages</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">dosages</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># get the cor</span>
+    <span class="n">cor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">dosage</span><span class="p">))</span>
+    <span class="n">dosage</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># write output files</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out</span> <span class="o">+</span> <span class="s2">&quot;.bim&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variants</span><span class="p">:</span>
+            <span class="n">chrm</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">pos</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">alt</span> <span class="o">=</span> <span class="n">var</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">chrm</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="n">elems</span> <span class="o">=</span> <span class="p">[</span><span class="n">chrm</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">var</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">alt</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">ref</span><span class="p">]</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elems</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">xz</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">,</span> <span class="n">preset</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:.6f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cor</span><span class="p">[</span><span class="n">r</span><span class="p">,</span> <span class="p">:]])</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="ii-ld-pruning-within-each-ld-block">
-<h3>ii. LD pruning within each LD block<a class="headerlink" href="#ii-ld-pruning-within-each-ld-block" title="Permalink to this heading">#</a></h3>
-<p>We create a small pipeline for the purpose,</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>global<span class="o">]</span>
-parameter:<span class="w"> </span><span class="nv">cwd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>path<span class="o">(</span><span class="s2">&quot;output&quot;</span><span class="o">)</span>
-parameter:<span class="w"> </span><span class="nv">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
-import<span class="w"> </span>re
-parameter:<span class="w"> </span><span class="nv">entrypoint</span><span class="o">=</span><span class="w"> </span><span class="o">(</span><span class="s1">&#39;micromamba run -a &quot;&quot; -n&#39;</span><span class="w"> </span>+<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span>+<span class="w"> </span>re.sub<span class="o">(</span>r<span class="s1">&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;</span>,<span class="w"> </span><span class="s1">&#39;&#39;</span>,<span class="w"> </span>container.split<span class="o">(</span><span class="s1">&#39;/&#39;</span><span class="o">)[</span>-1<span class="o">]))</span><span class="w"> </span><span class="k">if</span><span class="w"> </span>container<span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
-parameter:<span class="w"> </span><span class="nv">job_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>
-parameter:<span class="w"> </span><span class="nv">walltime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1h&quot;</span>
-parameter:<span class="w"> </span><span class="nv">mem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;80G&quot;</span>
-parameter:<span class="w"> </span><span class="nv">numThreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>LD_pruning_1<span class="o">]</span>
-parameter:<span class="w"> </span><span class="nv">genotype_list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>path
-parameter:<span class="w"> </span><span class="nv">window</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50</span>
-parameter:<span class="w"> </span><span class="nb">shift</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span>
-parameter:<span class="w"> </span><span class="nv">r2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>1e-3
-
-import<span class="w"> </span>pandas<span class="w"> </span>as<span class="w"> </span>pd
-<span class="nv">geno_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>pd.read_csv<span class="o">(</span>genotype,<span class="w"> </span><span class="nv">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;\t&quot;</span><span class="o">)</span>
-<span class="nv">input_df</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>geno_path.values.tolist<span class="o">()</span>
-<span class="nv">input_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>x<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>x<span class="w"> </span><span class="k">in</span><span class="w"> </span>input_df<span class="o">]</span>
-<span class="nv">input_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>x<span class="o">[</span><span class="m">1</span>:<span class="o">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>x<span class="w"> </span><span class="k">in</span><span class="w"> </span>input_df<span class="o">]</span><span class="w"> </span>
-
-input:<span class="w"> </span>input_files,<span class="w"> </span><span class="nv">group_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="nv">group_with</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;input_blocks&quot;</span>
-output:<span class="w"> </span><span class="nv">prune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="s1">&#39;{cwd}/{step_name[:-2]}/{_input_blocks}.prune.in&#39;</span>
-task:<span class="w"> </span><span class="nv">trunk_workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="nv">trunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>job_size,<span class="w"> </span><span class="nv">walltime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>walltime,<span class="w"> </span><span class="nv">mem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>mem,<span class="w"> </span><span class="nv">cores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>numThreads,<span class="w"> </span><span class="nv">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="s1">&#39;{step_name}_{_output:bn}&#39;</span>
-bash:<span class="w"> </span><span class="nv">container</span><span class="o">=</span>container,<span class="w"> </span><span class="nv">expand</span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="p"> </span><span class="si">}</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="nv">stderr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="s1">&#39;{_output:n}.stderr&#39;</span>,<span class="w"> </span><span class="nv">stdout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="s1">&#39;{_output:n}.stdout&#39;</span>,<span class="w"> </span><span class="nv">entrypoint</span><span class="o">=</span>entrypoint
-<span class="w">    </span>plink2<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--bfile<span class="w">  </span><span class="si">${</span><span class="nv">_input</span><span class="p">:</span><span class="nv">anr</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--indep-pairwise<span class="w">  </span><span class="si">${</span><span class="nv">window</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">shift</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">r2</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--rm-dup<span class="w"> </span>force-first<span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--out<span class="w"> </span><span class="si">${</span><span class="nv">_output</span><span class="p">[</span><span class="s2">&quot;prune&quot;</span><span class="p">]:</span><span class="nv">annr</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">        </span>--threads<span class="w"> </span><span class="si">${</span><span class="nv">numThreads</span><span class="si">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>LD_pruning_2<span class="o">]</span>
-input:<span class="w"> </span><span class="nv">group_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;all&quot;</span>
-output:<span class="w"> </span>f<span class="s1">&#39;{cwd}/{step_name[:-2]}/LD_pruned_variants.txt&#39;</span>
-R:<span class="w"> </span><span class="nv">expand</span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="p"> </span><span class="si">}</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="nv">stderr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="s1">&#39;{_output:n}.stderr&#39;</span>,<span class="w"> </span><span class="nv">stdout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="s1">&#39;{_output:n}.stdout&#39;</span>,<span class="w"> </span><span class="nv">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>container,<span class="w"> </span><span class="nv">entrypoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>entrypoint
-<span class="w">    </span>library<span class="o">(</span>data.table<span class="o">)</span>
-<span class="w">    </span>library<span class="o">(</span>dplyr<span class="o">)</span>
-<span class="w">    </span>library<span class="o">(</span>stringr<span class="o">)</span>
-<span class="w">    </span><span class="nv">per_block_variants</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>c<span class="o">(</span><span class="si">${</span><span class="nv">_input</span><span class="p">:</span><span class="nv">ar</span><span class="p">,</span><span class="si">}</span><span class="o">)</span>
-<span class="w">    </span><span class="nv">uncorrelated_variants</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>as.data.frame<span class="o">(</span>rbindlist<span class="o">(</span>lapply<span class="o">(</span>per_block_variants,<span class="w"> </span>fread,<span class="w"> </span><span class="nv">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>FALSE<span class="o">)))</span>
-<span class="w">    </span><span class="nv">random_variants</span><span class="w">  </span><span class="o">=</span><span class="w"> </span>str_split<span class="o">(</span>gsub<span class="o">(</span><span class="s2">&quot;_&quot;</span>,<span class="s2">&quot;:&quot;</span>,uncorrelated_variants<span class="nv">$V1</span><span class="o">)</span>,<span class="s2">&quot;:&quot;</span>,simplify<span class="o">=</span>TRUE<span class="o">)</span>%&gt;%data.frame<span class="o">()</span>%&gt;%
-<span class="w">                    </span>rename<span class="o">(</span><span class="s2">&quot;chrom&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;X1&quot;</span>,<span class="s2">&quot;pos&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;X2&quot;</span>,<span class="s2">&quot;alt&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;X3&quot;</span>,<span class="s2">&quot;ref&quot;</span><span class="o">=</span><span class="s2">&quot;X4&quot;</span><span class="o">)</span>%&gt;%
-<span class="w">                    </span>mutate<span class="o">(</span><span class="nv">variant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>paste<span class="o">(</span>chrom,<span class="w"> </span>pos,<span class="w"> </span>alt,<span class="w"> </span>ref,<span class="w"> </span><span class="nv">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;:&quot;</span><span class="o">))</span>
-<span class="w">    </span>fwrite<span class="o">(</span>random_variants,<span class="w"> </span><span class="si">${</span><span class="nv">_output</span><span class="p">:</span><span class="nv">r</span><span class="si">}</span>,<span class="w"> </span>row.names<span class="o">=</span>F,sep<span class="o">=</span><span class="s2">&quot;\t&quot;</span>,quote<span class="o">=</span>F<span class="o">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>ld_prune_reference.ipynb<span class="w"> </span>LD_pruning<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--cwd<span class="w"> </span>output/ROSMAP_LD_pruned<span class="w"> </span><span class="se">\</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p><strong>FIXME: please note that I uused LD pruning step 2 to merge them. Please test it. Also you did not show how to actually run this. Please add it above</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">random_variants</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>data.table::fread<span class="o">(</span><span class="s2">&quot;LD_pruned_variants.txt&quot;</span><span class="o">)</span>
-head<span class="o">(</span>random_variants<span class="o">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 6 × 5</caption>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h2>
+<table class="table">
 <thead>
-	<tr><th></th><th scope=col>chrom</th><th scope=col>pos</th><th scope=col>alt</th><th scope=col>ref</th><th scope=col>variant_id</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Substep</p></th>
+<th class="head"><p>Problem</p></th>
+<th class="head"><p>Possible Reason</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
 </thead>
 <tbody>
-	<tr><th scope=row>1</th><td>chr1</td><td>16206</td><td>T</td><td>A</td><td>chr1:16206:T:A</td></tr>
-	<tr><th scope=row>2</th><td>chr1</td><td>16433</td><td>C</td><td>G</td><td>chr1:16433:C:G</td></tr>
-	<tr><th scope=row>3</th><td>chr1</td><td>16471</td><td>C</td><td>T</td><td>chr1:16471:C:T</td></tr>
-	<tr><th scope=row>4</th><td>chr1</td><td>16542</td><td>C</td><td>A</td><td>chr1:16542:C:A</td></tr>
-	<tr><th scope=row>5</th><td>chr1</td><td>16570</td><td>C</td><td>T</td><td>chr1:16570:C:T</td></tr>
-	<tr><th scope=row>6</th><td>chr1</td><td>16635</td><td>G</td><td>A</td><td>chr1:16635:G:A</td></tr>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
-</div></div>
-</div>
-</section>
 </section>
 </section>
 
@@ -661,16 +719,16 @@ head<span class="o">(</span>random_variants<span class="o">)</span>
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "bash"
+            mode: "python"
         },
         kernelOptions: {
-            name: "bash",
+            name: "python3",
             path: "./code/reference_data"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'bash'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -683,20 +741,20 @@ head<span class="o">(</span>random_variants<span class="o">)</span>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="generalized_TADB.html"
+       href="ld_prune_reference.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Generation of Topologically Associated Domains and their Boundaries</p>
+        <p class="prev-next-title">Independent list of variants using LD clumping</p>
       </div>
     </a>
     <a class="right-next"
-       href="ld_reference_generation.html"
+       href="../molecular_phenotypes/bulk_expression.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Generating LD Reference Panel</p>
+        <p class="prev-next-title">RNA-seq expression</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -718,11 +776,8 @@ head<span class="o">(</span>random_variants<span class="o">)</span>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-extract-genotypes-per-ld-block">i. Extract genotypes per LD block</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-ld-pruning-within-each-ld-block">ii. LD pruning within each LD block</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
 </ul>
   </nav></div>
 

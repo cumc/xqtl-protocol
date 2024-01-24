@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="TensorQTL QTL Association Testing" href="TensorQTL/TensorQTL.html" />
-    <link rel="prev" title="Covariate Data Formatting" href="../data_preprocessing/covariate/covariate_formatting.html" />
+    <link rel="prev" title="Hidden Factor Analysis" href="../data_preprocessing/covariate/covariate_hidden_factor.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -491,17 +492,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-cis-tensorqtl-command">i. Cis TensorQTL Command</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-trans-tensorqtl-command">ii. Trans TensorQTL Command</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standardize-the-results-to-be-updated-you-can-safely-skip-it-for-now">Standardize the results - To be updated, you can safely skip it for now.</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-yml">Generate yml</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-target">Generate the target</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standardized-the-sumstat">Standardized the sumstat</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-sumstats-to-vcf">Convert sumstats to VCF</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#associate-result-processing">Associate result processing</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-result-to-be-update">Summary of result - To be update</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anticipated-results">Anticipated Results</a></li>
 </ul>
             </nav>
         </div>
@@ -591,115 +584,10 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="standardize-the-results-to-be-updated-you-can-safely-skip-it-for-now">
-<h3>Standardize the results - To be updated, you can safely skip it for now.<a class="headerlink" href="#standardize-the-results-to-be-updated-you-can-safely-skip-it-for-now" title="Permalink to this heading">#</a></h3>
-<section id="generate-yml">
-<h4>Generate yml<a class="headerlink" href="#generate-yml" title="Permalink to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>xqtl-pipeline/pipeline/yml_generator.ipynb<span class="w"> </span>yml_list<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--sumstat-list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/TADB/TensorQTL.cis._recipe.tsv<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--cwd<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--name<span class="w"> </span>pQTL<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--container<span class="w"> </span>/mnt/vast/hpc/csg/containers/bioinfo.sif
-</pre></div>
-</div>
-</div>
-</div>
 </section>
-<section id="generate-the-target">
-<h4>Generate the target<a class="headerlink" href="#generate-the-target" title="Permalink to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>xqtl-pipeline/pipeline/summary_stats_standardizer.ipynb<span class="w"> </span>TARGET_generation<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--fasta<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta<span class="w">  </span><span class="se">\</span>
-<span class="w">    </span>--sumstat-list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/qced_sumstat_list.txt<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--yml-list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/yml_list.txt<span class="w">  </span><span class="se">\</span>
-<span class="w">    </span>--cwd<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--container<span class="w"> </span>/mnt/vast/hpc/csg/containers/bioinfo.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--walltime<span class="w"> </span>100h<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--numThreads<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--mem<span class="w"> </span>150G<span class="w"> </span>-J<span class="w"> </span><span class="m">50</span><span class="w"> </span>-c<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml<span class="w"> </span>-q<span class="w"> </span>csg
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="standardized-the-sumstat">
-<h4>Standardized the sumstat<a class="headerlink" href="#standardized-the-sumstat" title="Permalink to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>xqtl-pipeline/pipeline/summary_stats_standardizer.ipynb<span class="w"> </span>sumstat_standardization<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--sumstat-list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/qced_sumstat_list.txt<span class="w">  </span><span class="se">\</span>
-<span class="w">    </span>--yml-list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/yml_list.txt<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--TARGET_list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/TARGET.ref.list<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--cwd<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--container<span class="w"> </span>/mnt/vast/hpc/csg/containers/bioinfo.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--walltime<span class="w"> </span>100h<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--numThreads<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--mem<span class="w"> </span>200G<span class="w"> </span>-J<span class="w"> </span><span class="m">50</span><span class="w"> </span>-c<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml<span class="w"> </span>-q<span class="w"> </span>csg
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="convert-sumstats-to-vcf">
-<h4>Convert sumstats to VCF<a class="headerlink" href="#convert-sumstats-to-vcf" title="Permalink to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>xqtl-pipeline/pipeline/summary_stats_standardizer.ipynb<span class="w"> </span>sumstat_to_vcf<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--sumstat-list<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/qced_sumstat_list.txt<span class="w">  </span><span class="se">\</span>
-<span class="w">    </span>--cwd<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--container<span class="w"> </span>/mnt/vast/hpc/csg/containers/bioinfo.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--walltime<span class="w"> </span>100h<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--numThreads<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--mem<span class="w"> </span>200G<span class="w"> </span>-J<span class="w"> </span><span class="m">50</span><span class="w"> </span>-c<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml<span class="w"> </span>-q<span class="w"> </span>csg
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="associate-result-processing">
-<h4>Associate result processing<a class="headerlink" href="#associate-result-processing" title="Permalink to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sos<span class="w"> </span>run<span class="w"> </span>xqtl-pipeline/pipeline/assoc_result_processing.ipynb<span class="w"> </span>genome<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--vcf<span class="w"> </span><span class="sb">`</span>ls<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/*/*cis_long_table.vcf<span class="sb">`</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--padjust-method<span class="w"> </span><span class="s2">&quot;bonferroni&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--container<span class="w"> </span>/mnt/vast/hpc/csg/containers/bioinfo.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--mem<span class="w"> </span>200G<span class="w"> </span>-J<span class="w"> </span><span class="m">22</span><span class="w"> </span>-q<span class="w"> </span>csg<span class="w"> </span>-c<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml<span class="w">  </span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="summary-of-result-to-be-update">
-<h4>Summary of result - To be update<a class="headerlink" href="#summary-of-result-to-be-update" title="Permalink to this heading">#</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>/mnt/vast/hpc/csg/molecular_phenotype_calling/pQTL_cis/rosmap_stad/pQTL.1/pheno_recipe_rosmap_pheno.rosmap_cov.ROSMAP_NIA_WGS.leftnorm.filtered.pQTL.unrelated.filtered.prune.pca.resid.Marchenko_pc.1.n_sig.txt
-</pre></div>
-</div>
-</div>
-</div>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>tissue</p></th>
-<th class="head"><p>n_assoc</p></th>
-<th class="head"><p>n_snp</p></th>
-<th class="head"><p>n_gene</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>pQTL</p></td>
-<td><p>290330</p></td>
-<td><p>266394</p></td>
-<td><p>3166</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
+<section id="anticipated-results">
+<h2>Anticipated Results<a class="headerlink" href="#anticipated-results" title="Permalink to this heading">#</a></h2>
+<p>TensorQTL will produce empirical and standardized cis/trans results.</p>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -736,12 +624,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../data_preprocessing/covariate/covariate_formatting.html"
+       href="../data_preprocessing/covariate/covariate_hidden_factor.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Covariate Data Formatting</p>
+        <p class="prev-next-title">Hidden Factor Analysis</p>
       </div>
     </a>
     <a class="right-next"
@@ -775,17 +663,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-cis-tensorqtl-command">i. Cis TensorQTL Command</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-trans-tensorqtl-command">ii. Trans TensorQTL Command</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standardize-the-results-to-be-updated-you-can-safely-skip-it-for-now">Standardize the results - To be updated, you can safely skip it for now.</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-yml">Generate yml</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-target">Generate the target</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standardized-the-sumstat">Standardized the sumstat</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-sumstats-to-vcf">Convert sumstats to VCF</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#associate-result-processing">Associate result processing</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-result-to-be-update">Summary of result - To be update</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anticipated-results">Anticipated Results</a></li>
 </ul>
   </nav></div>
 

@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -484,6 +485,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-genotype-data">Example genotype data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-phenotype-list">Example phenotype list</a></li>
@@ -492,11 +494,14 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#susie-with-twas-weights">SuSiE with TWAS weights</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie">fSuSiE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-susie-with-twas-weights">i. SuSiE with TWAS weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-fsusie">ii. fSuSiE</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-implementation">Workflow implementation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-analysis-susie-and-twas">Univariate analysis: SuSiE and TWAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-analysis-mvsusie-and-mr-mash">Multivariate analysis: mvSuSiE and mr.mash</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mvsusie">mvSuSiE</a></li>
@@ -518,6 +523,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="advanced-cis-qtl-analysis-with-individual-level-data">
 <h1>Advanced cis-QTL analysis with individual level data<a class="headerlink" href="#advanced-cis-qtl-analysis-with-individual-level-data" title="Permalink to this heading">#</a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
 <p>This notebook performs various advanced statistical analysis on multiple xQTL in a given region. Current procedures implemented include:</p>
 <ol class="arabic simple">
 <li><p>Univariate analysis</p>
@@ -539,6 +546,7 @@ document.write(`
 </ul>
 </li>
 </ol>
+</section>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
 <ol class="arabic simple">
@@ -574,14 +582,14 @@ document.write(`
 <section id="example-cis-window-file">
 <h3>Example cis-window file<a class="headerlink" href="#example-cis-window-file" title="Permalink to this heading">#</a></h3>
 <p>It should have strictly 4 columns, with the header a commented out line:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#chr	start	end	gene_id</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">6480000</span>	<span class="n">ENSG00000008128</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">6480000</span>	<span class="n">ENSG00000008130</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">6480000</span>	<span class="n">ENSG00000067606</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">7101193</span>	<span class="n">ENSG00000069424</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">7960000</span>	<span class="n">ENSG00000069812</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">6480000</span>	<span class="n">ENSG00000078369</span>
-<span class="n">chr1</span>	<span class="mi">0</span>	<span class="mi">6480000</span>	<span class="n">ENSG00000078808</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#chr    start    end    gene_id</span>
+<span class="n">chr10</span>   <span class="mi">0</span>    <span class="mi">6480000</span>    <span class="n">ENSG00000008128</span>
+<span class="n">chr1</span>    <span class="mi">0</span>    <span class="mi">6480000</span>    <span class="n">ENSG00000008130</span>
+<span class="n">chr1</span>    <span class="mi">0</span>    <span class="mi">6480000</span>    <span class="n">ENSG00000067606</span>
+<span class="n">chr1</span>    <span class="mi">0</span>    <span class="mi">7101193</span>    <span class="n">ENSG00000069424</span>
+<span class="n">chr1</span>    <span class="mi">0</span>    <span class="mi">7960000</span>    <span class="n">ENSG00000069812</span>
+<span class="n">chr1</span>    <span class="mi">0</span>    <span class="mi">6480000</span>    <span class="n">ENSG00000078369</span>
+<span class="n">chr1</span>    <span class="mi">0</span>    <span class="mi">6480000</span>    <span class="n">ENSG00000078808</span>
 </pre></div>
 </div>
 <p>The key is that the 4th column ID should match with the 4th column ID in the phenotype list. Otherwise the cis-window to analyze will not be found.</p>
@@ -595,29 +603,36 @@ document.write(`
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
 <p>For each analysis region, the output is SuSiE model fitted and saved in RDS format.</p>
 </section>
-<section id="minimal-working-example">
-<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
-<section id="susie-with-twas-weights">
-<h3>SuSiE with TWAS weights<a class="headerlink" href="#susie-with-twas-weights" title="Permalink to this heading">#</a></h3>
+<section id="minimal-working-example-steps">
+<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Permalink to this heading">#</a></h2>
+<section id="i-susie-with-twas-weights">
+<h3>i. SuSiE with TWAS weights<a class="headerlink" href="#i-susie-with-twas-weights" title="Permalink to this heading">#</a></h3>
+<p>Timing [FIXME]</p>
 <p>Below we duplicate the examples for phenotype and covariates to demonstrate that when there are multiple phenotypes for the same genotype it is possible to use this pipeline to analyze all of them (more than two is accepted as well).</p>
 <p>Here using <code class="docutils literal notranslate"><span class="pre">--region-name</span></code> we focus the analysis on 3 genes. In practice if this parameter is dropped, the union of all regions in all phenotype region lists will be analyzed. It is possible for some of the regions there are no genotype data, in which case the pipeline will output RDS files with a warning message to indicate the lack of genotype data to analyze.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># suggested output naming convention is cohort_modality, eg ROSMAP_snRNA_pseudobulk</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span>  \
-    <span class="o">--</span><span class="n">name</span> <span class="n">protocol_example_protein</span>  \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span>   \
+<p><strong>Note:</strong> Suggested output naming convention is cohort_modality, eg ROSMAP_snRNA_pseudobulk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span>  \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">protocol_example_protein</span>  \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="nb">input</span><span class="o">/</span><span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span>   \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
                 <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">covFile</span> <span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
               <span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span>  \
-    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">cis</span><span class="o">-</span><span class="n">windows</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
-    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="n">name</span> <span class="n">ENSG00000241973_P42356</span> <span class="n">ENSG00000160209_O00764</span> <span class="n">ENSG00000100412_Q99798</span> \
+    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">cis</span><span class="o">-</span><span class="n">windows</span> <span class="nb">input</span><span class="o">/</span><span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="kp">name</span> <span class="n">ENSG00000241973_P42356</span> <span class="n">ENSG00000160209_O00764</span> <span class="n">ENSG00000100412_Q99798</span> \
     <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">names</span> <span class="n">trait_A</span> <span class="n">trait_B</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">pecotmr_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>It is also possible to analyze a selected list of regions using option <code class="docutils literal notranslate"><span class="pre">--region-list</span></code>. The last column of this file will be used for the list to analyze. Here for example use the same list of regions as we used for customized cis-window:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span>  \
-    <span class="o">--</span><span class="n">name</span> <span class="n">protocol_example_protein</span>  \
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span>  \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">protocol_example_protein</span>  \
     <span class="o">--</span><span class="n">genoFile</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">bed</span>   \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
                 <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
@@ -629,7 +644,10 @@ document.write(`
     <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">pecotmr_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
-<p>When both <code class="docutils literal notranslate"><span class="pre">--region-name</span></code> and <code class="docutils literal notranslate"><span class="pre">--region-list</span></code> are used, the union of regions from these parameters will be analyzed.</p>
+</div>
+</div>
+<p><strong>Note:</strong> When both <code class="docutils literal notranslate"><span class="pre">--region-name</span></code> and <code class="docutils literal notranslate"><span class="pre">--region-list</span></code> are used, the union of regions from these parameters will be analyzed.</p>
+<p>FIXME: We should probably just explain these parameters, will work better for conversion script</p>
 <p>To perform fine-mapping only without TWAS weights,</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">twas</span><span class="o">-</span><span class="n">weights</span> <span class="o">...</span> <span class="c1"># rest of parameters the same. </span>
 </pre></div>
@@ -651,12 +669,15 @@ document.write(`
 </pre></div>
 </div>
 </section>
-<section id="fsusie">
-<h3>fSuSiE<a class="headerlink" href="#fsusie" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># suggested output naming convention is cohort_modality, eg ROSMAP_snRNA_pseudobulk</span>
-<span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie</span> \
-    <span class="o">--</span><span class="n">name</span> <span class="n">protocol_example_methylation</span> \
-    <span class="o">--</span><span class="n">genoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_region</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">methylation</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22_genotype_by_region</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">genotype_by_region_files</span><span class="o">.</span><span class="n">txt</span> \
+<section id="ii-fsusie">
+<h3>ii. fSuSiE<a class="headerlink" href="#ii-fsusie" title="Permalink to this heading">#</a></h3>
+<p>Timing [FIXME]</p>
+<p><strong>Note:</strong> Suggested output naming convention is cohort_modality, eg ROSMAP_snRNA_pseudobulk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">protocol_example_methylation</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="n">xqtl_association</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">plink_per_chrom</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">phenoFile</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_region</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">methylation</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">phenotype_by_region_files</span><span class="o">.</span><span class="n">txt</span> \
                 <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_region</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">methylation</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">phenotype_by_region_files</span><span class="o">.</span><span class="n">txt</span>  \
     <span class="o">--</span><span class="n">covFile</span> <span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">methylation</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
@@ -664,6 +685,43 @@ document.write(`
     <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">pecotmr_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
+</div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Substep</p></th>
+<th class="head"><p>Problem</p></th>
+<th class="head"><p>Possible Reason</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">cis_workhorse</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="workflow-implementation">
+<h2>Workflow implementation<a class="headerlink" href="#workflow-implementation" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -791,7 +849,7 @@ document.write(`
         <span class="c1"># Adapt pheno file paths and add additional information</span>
         <span class="n">pheno_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">adapt_file_path_all</span><span class="p">(</span><span class="n">pheno_df</span><span class="p">,</span> <span class="n">pheno_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pheno_path</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">pheno_df</span> <span class="o">=</span> <span class="n">pheno_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-            <span class="n">cov_path</span><span class="o">=</span><span class="n">cov_path</span><span class="p">,</span> 
+            <span class="n">cov_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">cov_path</span><span class="p">),</span> 
             <span class="n">cond</span><span class="o">=</span><span class="n">phenotype_name</span><span class="p">)</span>
 
         <span class="c1"># Merge with the accumulated DataFrame</span>
@@ -834,7 +892,7 @@ document.write(`
     <span class="n">geno_meta_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">genoFile</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">geno_meta_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">adapt_file_path_all</span><span class="p">(</span><span class="n">geno_meta_data</span><span class="p">,</span> <span class="n">geno_meta_data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">genoFile</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">geno_meta_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">,</span> <span class="s1">&#39;geno_path&#39;</span><span class="p">]</span>
-    <span class="n">geno_meta_data</span><span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geno_meta_data</span><span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;chr&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;chr</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">geno_meta_data</span><span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geno_meta_data</span><span class="p">[</span><span class="s1">&#39;#chr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;chr&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;chr</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># Checking the DataFrame</span>
 <span class="n">valid_chr_values</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;chr</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;chrX&#39;</span><span class="p">]</span>
@@ -873,7 +931,7 @@ document.write(`
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mismatches</span><span class="p">)</span><span class="si">}</span><span class="s2"> regions to analyze cannot be found in ``</span><span class="si">{</span><span class="n">customized_cis_windows</span><span class="si">}</span><span class="s2">``. Please check your ``</span><span class="si">{</span><span class="n">customized_cis_windows</span><span class="si">}</span><span class="s2">`` database to make sure it contains all cis-window definitions. &quot;</span><span class="p">)</span>
 <span class="kn">else:</span>
     <span class="k">if</span> <span class="n">window</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please either input cis-window file ``--customized-cis-windows`` or set ``--window`` to a positive integer&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please either input valid path to cis-window file via ``--customized-cis-windows``, or set ``--window`` to a positive integer&quot;</span><span class="p">)</span>
     <span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;start_cis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">window</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
     <span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;end_cis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">meta_data</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">window</span>
 <span class="c1"># Create the final dictionary</span>
@@ -887,7 +945,6 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="univariate-analysis-susie-and-twas">
 <h2>Univariate analysis: SuSiE and TWAS<a class="headerlink" href="#univariate-analysis-susie-and-twas" title="Permalink to this heading">#</a></h2>
@@ -913,6 +970,7 @@ parameter: twas_weights = True
 # Perform K folds valiation CV for TWAS
 # Set it to zero if this is to be skipped
 parameter: twas_cv_folds = 5
+parameter: ld_reference_meta_file = path()
 depends: sos_variable(&quot;regional_data&quot;)
 
 meta_info = regional_data[&#39;meta_info&#39;]
@@ -956,17 +1014,16 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
                                        fdat$maf[[r]], secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff}, 
                                        other_quantities = list(dropped_samples = fdat$dropped_sample[[r]]))
       if ( ${&quot;TRUE&quot; if twas_weights else &quot;FALSE&quot;} ) {
-          weight_methods = list(enet_weights = list(),
-                          lasso_weights = list(),
-                          mrash_weights = list(init_prior_sd = TRUE)
-                        )
-          # if previously SuSiE fit has no potential signal at all, we will not fit SuSiE for TWAS here. Otherwise using precomputed model so we don&#39;t have to run it again
-          if (length(fitted[[r]]$susie_result_trimmed) != 0) weight_methods$susie_weights = list(susie_fit = fitted[[r]]$susie_result_trimmed)
-          fitted[[r]]$twas_weights = twas_weights(fdat$residual_X[[r]], fdat$residual_Y[[r]], weight_methods = weight_methods)
+          weight_methods = list(enet_weights = list(), lasso_weights = list(), mrash_weights = list(init_prior_sd = TRUE), susie_weights = list())
+          if ( ${&quot;TRUE&quot; if ld_reference_meta_file.is_file() else &quot;FALSE&quot; } ) {
+              X = filter_genotype_by_ld_reference(fdat$residual_X[[r]], ld_reference_meta_file, &quot;${_meta_info[0]}&quot;)
+          } else {
+              X = fdat$residual_X[[r]]
+          }
+          fitted[[r]]$twas_weights = twas_weights(X, fdat$residual_Y[[r]], weight_methods = weight_methods)
+          fitted[[r]]$twas_predictions = twas_predict(X, fitted[[r]]$twas_weights) # get TWAS predictions for possible next steps such as computing correlations between predicted expression values
           if ( ${&quot;TRUE&quot; if twas_cv_folds &gt; 0 else &quot;FALSE&quot;} ) {
-              # Reset previously used SuSiE model from complete data in order to rerun SuSiE each fold
-              if (length(fitted[[r]]$susie_result_trimmed) != 0) weight_methods$susie_weights = list()
-              fitted[[r]]$twas_cv_result = twas_weights_cv(fdat$residual_X[[r]], fdat$residual_Y[[r]], fold = ${twas_cv_folds}, weight_methods = weight_methods, seed = ${seed})
+              fitted[[r]]$twas_cv_result = twas_weights_cv(X, fdat$residual_Y[[r]], fold = ${twas_cv_folds}, weight_methods = weight_methods, seed = ${seed})
           }
       }
     }
@@ -1168,7 +1225,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[fsusie_1]
-parameter: max_L = 30
+parameter: max_L = 20
 # remove a variant if it has more than imiss missing individual level data
 parameter: imiss = 0.1
 # MAF cutoff
@@ -1180,7 +1237,7 @@ parameter: maf = 0.0
 parameter: mac = 10
 # prior can be either of [&quot;mixture_normal&quot;, &quot;mixture_normal_per_scale&quot;]
 parameter: prior  = &quot;mixture_normal_per_scale&quot;
-parameter: max_SNP_EM = 1000
+parameter: max_SNP_EM = 100
 # Remove indels if indel = False
 parameter: indel = True
 depends: sos_variable(&quot;regional_data&quot;)
@@ -1190,38 +1247,34 @@ input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, 
 output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[0]}.fsusie_{prior}.rds&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
-    # Load regional association data
-    fdat = load_regional_association_data(genotype = ${_input[0]:anr},
-                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1::2]])}),
-                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[2::2]])}),
-                                          region = ${&#39;&quot;%s:%s-%s&quot;&#39; % (_meta_info[1], _meta_info[2], _meta_info[3])},
+    library(pecotmr)
+    library(dplyr)
+
+    # Load regional functional data
+    fdat = load_regional_functional_data(genotype = ${_input[0]:anr},
+                                          phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1:len(_input)//2+1]])}),
+                                          covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[len(_input)//2+1:]])}),
+                                          region = &quot;${_meta_info[0]}&quot;,
+                                          conditions = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x for x in _meta_info[3:]])}),
                                           maf_cutoff = ${maf},
                                           mac_cutoff = ${mac},
                                           imiss_cutoff = ${imiss},
                                           y_as_matrix = FALSE,
                                           keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;})
+    
     # Fine-mapping with fSuSiE
     library(&quot;susiF.alpha&quot;)
     fitted = list()
-    for (r in 1:length(fdat$residual_Y)) {
+    for (r in 1:length(fdat$residual_Y)){
         st = proc.time()  
-        fitted[[r]] &lt;- susiF(fdat$residual_X[[r]],
-                             fdat$residual_Y[[r]],
-                             pos=fdat$phenotype_coordiates[[r]], #FIXME: this needs to be edited and added dto load_regional_association_data
+        fitted[[r]] &lt;- susiF_wrapper(X = fdat$residual_X[[r]],
+                             Y = fdat$residual_Y[[r]],
+                             pos=fdat$Y_coordinates[[r]]$start, #FIXME: this needs to be edited and added to load_regional_association_data
                              L=${max_L},
                              prior=&quot;${prior}&quot;,
-                             max_SNP_EM=${max_SNP_EM})
-        fitted[[r]]$analysis_time = proc.time() - st
-        fitted[[r]]$cs_corr = get_cs_correlation(fitted[[r]], X=fdat$residual_X[[r]])
-        fitted[[r]]$cs_snps = names(fitted[[r]]$X_column_scale_factors[unlist(fitted[[r]]$sets$cs)])
-        fitted[[r]]$variable_name = names(fitted[[r]]$pip)
-        fitted[[r]]$coef = coef.susie(fitted[[r]])
-        fitted[[r]]$analysis_script = load_script()
-        fitted[[r]]$analysis_name = fdat$traits[[r]]
-        fitted[[r]]$dropped_samples = fdat$dropped_sample[[r]]
-        fitted[[r]]$sample_names = colnames(fdat$residual_Y[[r]])
-    }
+                             max_SNP_EM=${max_SNP_EM}, secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff} )
     saveRDS(fitted, ${_output:ar}, compress=&#39;xz&#39;)
+    
 </pre></div>
 </div>
 </div>
@@ -1354,6 +1407,7 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-genotype-data">Example genotype data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-phenotype-list">Example phenotype list</a></li>
@@ -1362,11 +1416,14 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#susie-with-twas-weights">SuSiE with TWAS weights</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fsusie">fSuSiE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-susie-with-twas-weights">i. SuSiE with TWAS weights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-fsusie">ii. fSuSiE</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-implementation">Workflow implementation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-analysis-susie-and-twas">Univariate analysis: SuSiE and TWAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-analysis-mvsusie-and-mr-mash">Multivariate analysis: mvSuSiE and mr.mash</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mvsusie">mvSuSiE</a></li>

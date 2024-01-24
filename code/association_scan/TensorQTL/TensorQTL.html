@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -484,16 +485,21 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-tensorqtl-command">Cis TensorQTL Command</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trans-tensorqtl-command">Trans TensorQTL Command</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-phenotype-list">Example phenotype list</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-cis-tensorqtl-command">i. Cis TensorQTL Command</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-trans-tensorqtl-command">ii. Trans TensorQTL Command</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#old-minimal-working-example">Old Minimal working example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-parameter-settings">Global parameter settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-xqtl-association-testing">cis-xQTL association testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transqtl-association-testing">TransQTL association testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#association-results-processing">Association results processing</a></li>
@@ -510,16 +516,32 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="tensorqtl-qtl-association-testing">
 <h1>TensorQTL QTL Association Testing<a class="headerlink" href="#tensorqtl-qtl-association-testing" title="Permalink to this heading">#</a></h1>
-<p>This notebook implements a workflow using <a class="reference external" href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1836-7">TensorQTL</a> to perform QTL association testing.</p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
+<p>We perform QTL association testing using TensorQTL [<a class="reference external" href="https://doi.org/10.1186/s13059-019-1836-7">cf. Taylor-Weiner et al (2019)</a>].</p>
+</section>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
-<ul>
-<li><p>List of molecular phenotype files: a list of <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> files containing the table for the molecular phenotype. It should have a companion index file in <code class="docutils literal notranslate"><span class="pre">tbi</span></code> format.</p>
-<p>The header of the bed.gz is per the <a class="reference external" href="https://github.com/broadinstitute/tensorqtl">TensorQTL</a> convention:</p>
-<blockquote>
-<div><p>Phenotypes must be provided in BED format, with a single header line starting with # and the first four columns corresponding to: chr, start, end, phenotype_id, with the remaining columns corresponding to samples (the identifiers must match those in the genotype input). The BED file should specify the center of the cis-window (usually the TSS), with start == end-1.</p>
-</div></blockquote>
-</li>
+<ul class="simple">
+<li><p>List of molecular phenotype files: a list of <code class="docutils literal notranslate"><span class="pre">bed.gz</span></code> files containing the table for the molecular phenotype. It should have a companion index file in <code class="docutils literal notranslate"><span class="pre">tbi</span></code> format. It is the output of gene_annotation or phenotype_by_chorm</p></li>
+</ul>
+<section id="example-phenotype-list">
+<h3>Example phenotype list<a class="headerlink" href="#example-phenotype-list" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#chr    start   end ID  path</span>
+<span class="n">chr12</span>   <span class="mi">752578</span>  <span class="mi">752579</span>  <span class="n">ENSG00000060237</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">chr12</span>   <span class="mi">990508</span>  <span class="mi">990509</span>  <span class="n">ENSG00000082805</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">chr12</span>   <span class="mi">2794969</span> <span class="mi">2794970</span> <span class="n">ENSG00000004478</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">chr12</span>   <span class="mi">4649113</span> <span class="mi">4649114</span> <span class="n">ENSG00000139180</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">chr12</span>   <span class="mi">6124769</span> <span class="mi">6124770</span> <span class="n">ENSG00000110799</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">chr12</span>   <span class="mi">6534516</span> <span class="mi">6534517</span> <span class="n">ENSG00000111640</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gw</span><span class="o">/</span><span class="n">GIT</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">Wang_Columbia</span><span class="o">/</span><span class="n">ROSMAP</span><span class="o">/</span><span class="n">MWE</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>The header of the bed.gz is per the [TensorQTL](https://github.com/broadinstitute/tensorqtl) convention:
+
+&gt;    Phenotypes must be provided in BED format, with a single header line starting with # and the first four columns corresponding to: chr, start, end, phenotype_id, with the remaining columns corresponding to samples (the identifiers must match those in the genotype input). The BED file should specify the center of the cis-window (usually the TSS), with start == end-1.
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>List of genotypes in PLINK binary format (<code class="docutils literal notranslate"><span class="pre">bed</span></code>/<code class="docutils literal notranslate"><span class="pre">bim</span></code>/<code class="docutils literal notranslate"><span class="pre">fam</span></code>) for each chromosome, previously processed through our genotype QC pipelines.</p></li>
 <li><p>Covariate file, a file with #id + samples name as colnames and each row a covariate: fixed and known covariates as well as hidden covariates recovered from factor analysis.</p></li>
 <li><p>Optionally, a list of traits (genes, regions of molecular features etc) to analyze.</p></li>
@@ -528,6 +550,7 @@ document.write(`
 <ul class="simple">
 <li><p>Optionally, a list of genomic regions associate with each molecular features to analyze. The default cis-analysis will use a window around TSS. This can be customized to take given start and end genomic coordinates.</p></li>
 </ul>
+</section>
 </section>
 <section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
@@ -569,16 +592,16 @@ document.write(`
 <li><p>pval_beta - Second permutation P-value obtained via beta approximation. This is the one to use for downstream analysis</p></li>
 </ul>
 </section>
-<section id="minimal-working-example">
-<h2>Minimal Working Example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
+<section id="minimal-working-example-steps">
+<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Permalink to this heading">#</a></h2>
 <p>The data can be found on <a class="reference external" href="https://www.synapse.org/#!Synapse:syn36416559/files/">Synapse</a>.</p>
-<section id="cis-tensorqtl-command">
-<h3>Cis TensorQTL Command<a class="headerlink" href="#cis-tensorqtl-command" title="Permalink to this heading">#</a></h3>
+<section id="i-cis-tensorqtl-command">
+<h3>i. Cis TensorQTL Command<a class="headerlink" href="#i-cis-tensorqtl-command" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">pipeline</span><span class="o">/</span><span class="n">TensorQTL</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">cis</span> \
     <span class="o">--</span><span class="n">genotype</span><span class="o">-</span><span class="n">file</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">genotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">file</span>  <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">phenotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">file</span>  <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">phenotype_by_chrom_files</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">covariate</span><span class="o">-</span><span class="n">file</span> <span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">customized_cis_windows</span> <span class="n">prototype_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
     <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">cis_association</span><span class="o">/</span> \
@@ -588,8 +611,8 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="trans-tensorqtl-command">
-<h3>Trans TensorQTL Command<a class="headerlink" href="#trans-tensorqtl-command" title="Permalink to this heading">#</a></h3>
+<section id="ii-trans-tensorqtl-command">
+<h3>ii. Trans TensorQTL Command<a class="headerlink" href="#ii-trans-tensorqtl-command" title="Permalink to this heading">#</a></h3>
 <p>Note: Some protein is not in the customized cis windows list. There we will need to remove them from the analysis by create a region_list. Noted that the region list need to be a actual file. So <code class="docutils literal notranslate"><span class="pre">&lt;()</span></code> file is not acceptable.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -604,7 +627,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">TensorQTL</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">trans</span> \
     <span class="o">--</span><span class="n">genotype</span><span class="o">-</span><span class="n">file</span> <span class="n">output</span><span class="o">/</span><span class="n">genotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">genotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">file</span>  <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">phenotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">file</span>  <span class="n">output</span><span class="o">/</span><span class="n">phenotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">phenotype_by_chrom_files</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
     <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="nb">list</span> <span class="n">output</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">region_list</span> \
     <span class="o">--</span><span class="n">covariate</span><span class="o">-</span><span class="n">file</span> <span class="n">output</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">unrelated</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">cis</span><span class="o">-</span><span class="n">windows</span> <span class="nb">input</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">enhanced_cis_chr21_chr22</span><span class="o">.</span><span class="n">bed</span> \
@@ -615,6 +638,27 @@ document.write(`
 </div>
 </div>
 </section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Substep</p></th>
+<th class="head"><p>Problem</p></th>
+<th class="head"><p>Possible Reason</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="command-interface">
 <h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
@@ -754,8 +798,8 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 </div>
 </div>
 </section>
-<section id="global-parameter-settings">
-<h2>Global parameter settings<a class="headerlink" href="#global-parameter-settings" title="Permalink to this heading">#</a></h2>
+<section id="setup-and-global-parameters">
+<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -770,8 +814,9 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <span class="kn">parameter:</span> <span class="n">customized_cis_windows</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
 <span class="c1"># Path to the work directory of the analysis.</span>
 <span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
-<span class="c1"># Phenotype file, a list of phenotype per chrom.</span>
+<span class="c1"># Phenotype file, a list of phenotype per region.</span>
 <span class="kn">parameter:</span> <span class="n">phenotype_file</span> <span class="o">=</span> <span class="n">path</span>
+
 <span class="c1"># Prefix for the analysis output</span>
 <span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">phenotype_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">covariate_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="c1"># Minor allele count cutoff</span>
@@ -787,8 +832,8 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <span class="c1"># Specify the cis window for the up and downstream radius to analyze around the region of interest in units of bp</span>
 <span class="c1"># This parameter will be zero if `customized_cis_windows` is provided.</span>
 <span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">1000000</span>
-
-
+<span class="c1"># Set number of sample to be keep</span>
+<span class="kn">parameter:</span> <span class="n">keep_sample</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
 
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
@@ -820,9 +865,11 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 # parse input file lists
 import pandas as pd
 molecular_pheno_files = pd.read_csv(phenotype_file, sep = &quot;\t&quot;)
+if &quot;#chr&quot; in molecular_pheno_files.columns:
+    molecular_pheno_files = molecular_pheno_files.groupby([&#39;#chr&#39;, &#39;#dir&#39;]).size().reset_index(name=&#39;count&#39;).drop(&quot;count&quot;,axis = 1).rename(columns = {&quot;#chr&quot;:&quot;#id&quot;})
 genotype_files = pd.read_csv(genotype_file,sep = &quot;\t&quot;)
-genotype_files[&quot;#id&quot;] = genotype_files[&quot;#id&quot;].astype(str)
-molecular_pheno_files[&quot;#id&quot;] = molecular_pheno_files[&quot;#id&quot;].astype(str)
+genotype_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in genotype_files[&quot;#id&quot;].astype(str)]
+molecular_pheno_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in molecular_pheno_files[&quot;#id&quot;].astype(str)]
 
 input_files = molecular_pheno_files.merge(genotype_files, on = &quot;#id&quot;)
 input_files = input_files.values.tolist()
@@ -858,26 +905,21 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     phenotype_id = phenotype_pos_df.index.name
     ## Analyze only the regions listed
     if $[region_list.is_file()]:
-        region = pd.read_csv(&quot;$[region_list:a]&quot;, comment=&quot;#&quot;, header=None)
+        region = pd.read_csv(&quot;$[region_list:a]&quot;, comment=&quot;#&quot;, header=None, sep=&quot;\t&quot; )
         phenotype_column = 1 if len(region.columns) == 1 else  $[region_list_phenotype_column]
         keep_region = region.iloc[:,phenotype_column-1].to_list()
         phenotype_df = phenotype_df[phenotype_df.index.isin(keep_region)]
         phenotype_pos_df = phenotype_pos_df[phenotype_pos_df.index.isin(keep_region)]
 
-    ## use custom cis windows
-    if $[customized_cis_windows.is_file()]:
-        cis_list = pd.read_csv(&quot;$[customized_cis_windows:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,phenotype_id], sep=&quot;\t&quot;)
-        phenotype_pos_df = phenotype_pos_df.reset_index() #move the phenotype id index to a new column of the dataframe
-        phenotype_pos_df = phenotype_pos_df.merge(cis_list, left_on = [&quot;chr&quot;,phenotype_id],right_on = [cis_list.columns[0],cis_list.columns[3]])#in some cases (gene expression for eQTLs) the phenotype_id may be in the cis_list file
-        phenotype_pos_df = phenotype_pos_df.set_index(phenotype_id)[[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;]] # The final phenotype_pos_df will have three columns(chr, start, end) and index is the phenotype ID
-        if len(phenotype_df.index) != len(phenotype_pos_df.index):
-            raise ValueError(&quot;cannot uniquely match all the phentoype data in the input to the customized cis windows provided&quot;)
-        window = 0 # In the updated tensorQTL, by default if there is a customized cis window, the actual cis window will be start - window &amp; end + window, so it is necessary to change the window parameter to 0
-    
     covariates_df = pd.read_csv(covariates_file, sep=&#39;\t&#39;, index_col=0).T
     pr = genotypeio.PlinkReader(plink_prefix_path)
     genotype_df = pr.load_genotypes()
     variant_df = pr.bim.set_index(&#39;snp&#39;)[[&#39;chrom&#39;, &#39;pos&#39;,&#39;a0&#39;,&#39;a1&#39;]]
+
+    ## use custom sample list to subset the covariates data
+    if $[keep_sample.is_file()]:
+        sample_list = pd.read_csv(&quot;$[keep_sample:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;sample_id&quot;], sep=&quot;\t&quot;)
+        covariates_df.loc[sample_list.sample_id]
 
     ## Retaining only common samples
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, covariates_df.index)]
@@ -885,8 +927,20 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     covariates_df = covariates_df.transpose()[np.intersect1d(phenotype_df.columns, covariates_df.index)].transpose()
     
     ## To simplify things, there should really not be &quot;chr&quot; prefix
-    phenotype_pos_df.chr = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in phenotype_pos_df.chr]
-    variant_df.chrom = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in variant_df.chrom]
+    phenotype_pos_df.chr = phenotype_pos_df.chr.astype(str).str.replace(&quot;chr&quot;, &quot;&quot;)
+    variant_df.chrom =  variant_df.chrom.astype(&quot;str&quot;).str.replace(&quot;chr&quot;, &quot;&quot;) 
+
+    ## use custom cis windows list
+    if $[customized_cis_windows.is_file()]:
+        cis_list = pd.read_csv(&quot;$[customized_cis_windows:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,phenotype_id], sep=&quot;\t&quot;)
+        cis_list.chr = cis_list.chr.astype(str).str.replace(&quot;chr&quot;, &quot;&quot;)  ## Again to simplify things for chr format concordance.
+        phenotype_pos_df = phenotype_pos_df.reset_index() #move the phenotype id index to a new column of the dataframe
+        phenotype_pos_df = phenotype_pos_df.merge(cis_list, left_on = [&quot;chr&quot;,phenotype_id],right_on = [cis_list.columns[0],cis_list.columns[3]])#in some cases (gene expression for eQTLs) the phenotype_id may be in the cis_list file
+        phenotype_pos_df = phenotype_pos_df.set_index(phenotype_id)[[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;]] # The final phenotype_pos_df will have three columns(chr, start, end) and index is the phenotype ID
+        if len(phenotype_df.index) != len(phenotype_pos_df.index):
+            raise ValueError(&quot;cannot uniquely match all the phentoype data in the input to the customized cis windows provided&quot;)
+        window = 0 # In the updated tensorQTL, by default if there is a customized cis window, the actual cis window will be start - window &amp; end + window, so it is necessary to change the window parameter to 0
+
     ## Read phenotype group if availble
     if $[phenotype_group.is_file()]:
         group_s = pd.read_csv($[phenotype_group:r], sep=&#39;\t&#39;, header=None, index_col=0, squeeze=True)
@@ -1013,7 +1067,7 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
 
     ## Analyze only the regions listed
     if $[region_list.is_file()]:
-        region = pd.read_csv(&quot;$[region_list:a]&quot;, comment=&quot;#&quot;, header=None)
+        region = pd.read_csv(&quot;$[region_list:a]&quot;, comment=&quot;#&quot;, header=None,sep=&quot;\t&quot;)
         phenotype_column = 1 if len(region.columns) == 1 else  $[region_list_phenotype_column]
         keep_region = region.iloc[:,phenotype_column-1].to_list()
         phenotype_df = phenotype_df[phenotype_df.index.isin(keep_region)]
@@ -1031,6 +1085,10 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
 
 
     covariates_df = pd.read_csv(covariates_file, sep=&#39;\t&#39;, index_col=0).T
+    ## use custom sample list to subset the covariates data
+    if $[keep_sample.is_file()]:
+        sample_list = pd.read_csv(&quot;$[keep_sample:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;sample_id&quot;], sep=&quot;\t&quot;)
+        covariates_df.loc[sample_list.sample_id]
     pr = genotypeio.PlinkReader(plink_prefix_path)
     genotype_df = pr.load_genotypes()
     variant_df = pr.bim.set_index(&#39;snp&#39;)[[&#39;chrom&#39;, &#39;pos&#39;,&#39;a0&#39;,&#39;a1&#39;]]
@@ -1267,16 +1325,21 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-tensorqtl-command">Cis TensorQTL Command</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trans-tensorqtl-command">Trans TensorQTL Command</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-phenotype-list">Example phenotype list</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-cis-tensorqtl-command">i. Cis TensorQTL Command</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-trans-tensorqtl-command">ii. Trans TensorQTL Command</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#old-minimal-working-example">Old Minimal working example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-parameter-settings">Global parameter settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-xqtl-association-testing">cis-xQTL association testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transqtl-association-testing">TransQTL association testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#association-results-processing">Association results processing</a></li>

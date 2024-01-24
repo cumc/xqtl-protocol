@@ -65,8 +65,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'code/data_preprocessing/covariate/covariate_hidden_factor';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Covariate Data Formatting" href="covariate_formatting.html" />
-    <link rel="prev" title="Covariate Data Preprocessing" href="../covariate_preprocessing.html" />
+    <link rel="next" title="QTL Association Analysis" href="../../association_scan/qtl_association_testing.html" />
+    <link rel="prev" title="Covariate Data Formatting" href="covariate_formatting.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
 </ul>
 </li>
 </ul>
@@ -221,13 +222,13 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../covariate_preprocessing.html">Covariate Data Preprocessing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hidden Factor Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hidden Factor Analysis</a></li>
 </ul>
 </li>
 </ul>
@@ -500,9 +501,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-peer-method">a. PEER Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-marchenko-principal-components">b. Marchenko Principal Components</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-bicv-factor-analysis-with-apex">c. BiCV Factor Analysis with APEX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-generate-hidden-factors">ii. Generate Hidden Factors</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-peer-method">a. PEER Method</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-marchenko-principal-components">b. Marchenko Principal Components</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#c-bicv-factor-analysis-with-apex">c. BiCV Factor Analysis with APEX</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
@@ -601,8 +605,10 @@ document.write(`
 <p>An MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1yjTwoO0DYGi-J9ouMsh9fHKfDmsXJ_4I?usp=sharing">google drive</a>.
 The singularity image (sif) for running this MWE is uploaded to <a class="reference external" href="https://drive.google.com/drive/folders/1mLOS3AVQM8yTaWtCbO8Q3xla98Nr5bZQ">google drive</a></p>
 <p>FIXME: need updated links</p>
+<section id="ii-generate-hidden-factors">
+<h3>ii. Generate Hidden Factors<a class="headerlink" href="#ii-generate-hidden-factors" title="Permalink to this heading">#</a></h3>
 <section id="a-peer-method">
-<h3>a. PEER Method<a class="headerlink" href="#a-peer-method" title="Permalink to this heading">#</a></h3>
+<h4>a. PEER Method<a class="headerlink" href="#a-peer-method" title="Permalink to this heading">#</a></h4>
 <p>Because the MWE only contains 10 genes but 400+ samples. The computed N will be far greater than the number of genes. Therefore in the MWE the N is fixed to be 3.</p>
 <p>Timing: X min</p>
 <p>FIXME: need updated examples</p>
@@ -677,7 +683,7 @@ Exporting results ... Done.
 </div>
 </section>
 <section id="b-marchenko-principal-components">
-<h3>b. Marchenko Principal Components<a class="headerlink" href="#b-marchenko-principal-components" title="Permalink to this heading">#</a></h3>
+<h4>b. Marchenko Principal Components<a class="headerlink" href="#b-marchenko-principal-components" title="Permalink to this heading">#</a></h4>
 <p>This step will compute residual on merged covariates (<code class="docutils literal notranslate"><span class="pre">Marchenko_PC_1</span></code>) and perform hidden factor analysis  (<code class="docutils literal notranslate"><span class="pre">Marchenko_PC_2</span></code>)</p>
 <p>Timing: &lt;1 min</p>
 <div class="cell docutils container">
@@ -703,7 +709,7 @@ Exporting results ... Done.
 </div>
 </section>
 <section id="c-bicv-factor-analysis-with-apex">
-<h3>c. BiCV Factor Analysis with APEX<a class="headerlink" href="#c-bicv-factor-analysis-with-apex" title="Permalink to this heading">#</a></h3>
+<h4>c. BiCV Factor Analysis with APEX<a class="headerlink" href="#c-bicv-factor-analysis-with-apex" title="Permalink to this heading">#</a></h4>
 <p>Timing: X min</p>
 <p>FIXME</p>
 <div class="cell docutils container">
@@ -717,6 +723,7 @@ Exporting results ... Done.
 </div>
 </div>
 </div>
+</section>
 </section>
 </section>
 <section id="troubleshooting">
@@ -1276,20 +1283,20 @@ bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../covariate_preprocessing.html"
+       href="covariate_formatting.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Covariate Data Preprocessing</p>
+        <p class="prev-next-title">Covariate Data Formatting</p>
       </div>
     </a>
     <a class="right-next"
-       href="covariate_formatting.html"
+       href="../../association_scan/qtl_association_testing.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Covariate Data Formatting</p>
+        <p class="prev-next-title">QTL Association Analysis</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1324,9 +1331,12 @@ bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-peer-method">a. PEER Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-marchenko-principal-components">b. Marchenko Principal Components</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-bicv-factor-analysis-with-apex">c. BiCV Factor Analysis with APEX</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-generate-hidden-factors">ii. Generate Hidden Factors</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-peer-method">a. PEER Method</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-marchenko-principal-components">b. Marchenko Principal Components</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#c-bicv-factor-analysis-with-apex">c. BiCV Factor Analysis with APEX</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>

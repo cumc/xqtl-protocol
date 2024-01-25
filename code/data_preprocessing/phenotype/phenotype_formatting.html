@@ -536,15 +536,15 @@ document.write(`
 <section id="iii-partition-by-chromosome">
 <h3>iii. Partition by chromosome<a class="headerlink" href="#iii-partition-by-chromosome" title="Permalink to this heading">#</a></h3>
 <p>This is necessary for cis TensorQTL analysis.</p>
-<p>Timing X min</p>
-<p>FIXME</p>
+<p>Timing &lt; 1 min</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
-    --cwd output/phenotype_by_chrom \
-    --phenoFile output/phenotype/protocol_example.protein.bed.gz \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run phenotype_formatting.ipynb phenotype_by_chrom \
+    --cwd ../../../output_test/phenotype_by_chrom \
+    --phenoFile ../../../output_test/phenotype_by_chrom/protocol_example.protein.bed.gz \
     --chrom `for i in {21..22}; do echo chr$i; done` \
-    --container containers/bioinfo.sif
+    --container oras://ghcr.io/cumc/bioinfo_apptainer:latest \
+    -c ../../csg.yml  -q neurology
 </pre></div>
 </div>
 </div>

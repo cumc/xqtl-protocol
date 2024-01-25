@@ -1019,7 +1019,7 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     def qqnorm(x):
         n=len(x)
         a=3.0/8.0 if n&lt;=10 else 0.5
-        return(norm.ppf( (rankdata(x)-a)/(n+1.0-2.0*a) ))
+        return(norm.ppf( (rankdata(x,nan_policy=&quot;omit&quot;)-a)/(n+1.0-2.0*a) ))
 
     raw_df = pd.read_csv(f&#39;${_input}&#39;,sep = &quot;\t&quot;)
     valRows = raw_df.iloc[:,4:]
@@ -1033,11 +1033,9 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
         # If ratio is missing for over 40% of the samples, drop
         if (row.isna().sum()) &gt; na_limit:
             drop_list.append(index)
-        # Set missing values as the mean of existed values in a row
-        else:
-            valRows.iloc[index, ] = row.fillna(row.mean())
+
         # drop introns with variance smaller than some minimal value
-        if np.std(row) &lt; ${min_variance}:
+        if np.nanstd(row) &lt; ${min_variance}:
             drop_list.append(index)
 
     # save the intron information and sample values for remaining introns/rows

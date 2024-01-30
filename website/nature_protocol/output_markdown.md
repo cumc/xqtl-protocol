@@ -291,16 +291,18 @@ Timing ~20min
 Timing <1 min
 
 ```
-sos run gene_annotation.ipynb annotate_coord_gene \
-    --container container/rna_quantification.sif --phenotype-id-type gene_name
-```
-
-
-Timing X min
+!sos run gene_annotation.ipynb annotate_coord_gene \
+    --container  oras://ghcr.io/cumc/rna_quantification_apptainer:latest --phenotype-id-type gene_name \
 
 ```
-sos run pipeline/gene_annotation.ipynb annotate_coord_protein \
-    --container containers/rna_quantification.sif --sep "," 
+
+
+Timing <1 min
+
+```
+!sos run gene_annotation.ipynb annotate_coord_protein \
+    --container  oras://ghcr.io/cumc/rna_quantification_apptainer:latest --sep ","  \
+
 ```
 
 
@@ -314,11 +316,12 @@ sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb flash \
 
 
 ##### iii. Partition by chromosome
-Timing X min
+Timing < 1 min
 
 ```
-sos run pipeline/phenotype_formatting.ipynb phenotype_by_chrom \
-    --container containers/bioinfo.sif
+!sos run phenotype_formatting.ipynb phenotype_by_chrom \
+    --container oras://ghcr.io/cumc/bioinfo_apptainer:latest \
+
 ```
 
 

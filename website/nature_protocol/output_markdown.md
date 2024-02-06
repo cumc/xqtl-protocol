@@ -347,24 +347,6 @@ sos run pipeline/PEER_factor.ipynb PEER \
 ```
 
 
-
-```
-
-```
-
-
-
-```
-
-```
-
-
-
-```
-
-```
-
-
 Timing <1 min
 
 ```
@@ -380,7 +362,7 @@ sos run pipeline/covariate_hidden_factor.ipynb Marchenko_PC \
 
 ```
 sos run pipeline/TensorQTL.ipynb cis \
-    --container containers/TensorQTL.sif --MAC 5
+    --container containers/TensorQTL.sif 
 ```
 
 
@@ -388,14 +370,8 @@ sos run pipeline/TensorQTL.ipynb cis \
 
 
 ```
-
-```
-
-
-
-```
 sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
-    --container containers/TensorQTL.sif --MAC 5 --numThreads 8 -J 1 -q csg --mem 240G -c /mnt/vast/hpc/csg/molecular_phenotype_calling/csg.yml 
+    --container containers/TensorQTL.sif 
 ```
 
 
@@ -412,10 +388,8 @@ sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
 |Reference data| Reference Data| ~4 hours|
 |Molecular Phenotypes| RNA-seq expression| <3.5 hours|
 | | Alternative splicing from RNA-seq data| <2 hours|
-|Data Pre-processing| Phenotype data preprocessing| < X minutes
-|
-| | Covariate Data Preprocessing| < X minutes
-|
+|Data Pre-processing| Phenotype data preprocessing| < X minutes|
+| | Covariate Data Preprocessing| < X minutes|
 |QTL Association Testing| QTL Association Analysis| < X minutes|
 |Advanced cis-QTL Analysis| SuSiE fine-mapping workflow| <X hours|
 
@@ -453,6 +427,25 @@ TensorQTL will produce empirical and standardized cis/trans results.
 
 
 
+
+
+![](PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.tpm.gct.D_stat_hist.png)
+
+
+
+**Figure 1A. Bulk RNA-Seq Quality Control D-Statistic Distribution.**
+
+![](PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.tpm.gct.RLEplot.png)
+
+
+
+**Figure 1B. Bulk RNA-Seq Quality Control Relative Log Expression Residuals.**
+
+![](PCC_sample_list_subset.rnaseqc.low_expression_filtered.outlier_removed.tpm.gct.preQC_cluster.png)
+
+
+
+**Figure 1C. Bulk RNA-Seq Quality Control Mahalanobis Distance P-Value Clustering.**
 
 ## Tables
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -141,6 +141,7 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../../README.html">
@@ -444,6 +445,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -453,6 +455,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -807,10 +810,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[twas_mr]
 depends: sos_variable(&quot;regional_data&quot;)
+
+parameter: allele_qc = True
+parameter: sets = &quot;sets&quot;
+parameter: coverage = &quot;coverage_0.95&quot;
 meta_info = [x[&quot;meta_info&quot;] for x in regional_data[&#39;xQTL&#39;].values()]
 xqtl_files = [x[&quot;files&quot;] for x in regional_data[&#39;xQTL&#39;].values()]
 input: xqtl_files, group_by = lambda x: group_by_region(x, xqtl_files), group_with = &quot;meta_info&quot;
-output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[3]}.twas_mr.txt&#39;
+output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[3]}.twas_mr.rds&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
     # we have potentially multiple weight db RDS files for each region of interest
@@ -827,35 +834,49 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     # Step 0: Load GWAS data for the region of interest, for each study
     # Generate the region of interest
     region_of_interest = data.frame(chrom = chrom, start = start, end = end)
-    # Generate the LD_meta_file data frame as the input of load_LD_matrix function
-    LD_metadata = genomic_file_paths(paste0(ld_meta_data,&quot;/&quot;,chrom,sep=&quot;&quot;))
+    #Step 1: load the weight lists for the specified conditions; each element of weight list is a weight matrix for each condition. The column names should be methods. The row names should be variant names.
+    twas_weights_results = load_twas_weights(weight_db, xqtl_conditions, variable_name_obj=&quot;variant_names&quot;, twas_weights_table = &quot;twas_weights&quot;)
+    #Step 2: Load GWAS data for the region of interest, for each study
     gwas_data = list()
-    for (s in length(gwas_studies)) {
+    twas_mr_result = list()
+    for (s in seq_along(gwas_studies)) {
       gwas_data[[gwas_studies[s]]] = list()
       gwas_sumstats = fread(gwas_files[s])%&gt;% 
                  rename(&quot;pos&quot; = &quot;position&quot;, &quot;chrom&quot; = &quot;chromosome&quot;, &quot;A1&quot; = &quot;ref&quot;,&quot;A2&quot; = &quot;alt&quot;)%&gt;%
                  mutate(z=beta/se)
       # Load LD list containing LD matrix and corresponding variants
-      gwas_LD_list = load_LD_matrix(LD_metadata, region_of_interest, gwas_sumstats)
+      gwas_LD_list = load_LD_matrix(LD_meta_file_path, region_of_interest, gwas_sumstats)
       # Allele flip
-      gwas_allele_flip= allele_qc(gwas_sumstats, gwas_LD_list$combined_LD_variants, match.min.prop=0.2, remove_dups=FALSE, flip=TRUE, remove=TRUE)
+      gwas_allele_flip= allele_qc(gwas_sumstats[,c(&quot;chrom&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;)], gwas_LD_list$combined_LD_variants,gwas_sumstats,c(&quot;beta&quot;,&quot;se&quot;,&quot;z&quot;))
       # Load LD matrix and sumstats
-      gwas_data[[gwas_studies[s]]][&quot;LD&quot;] = gwas_LD_list$combined_LD_matrix
-      gwas_data[[gwas_studies[s]]][&quot;sumstats&quot;] = gwas_allele_flip %&gt;% mutate(variant_allele_flip = paste(chrom,pos,A1.sumstats,A2.sumstats,sep=&quot;:&quot;))      
-    }
-    for (condition in xqtl_conditions) {
-        # For each region of interest for a particular xQTL (condtion), we can perform TWAS for all the input studies, with all of the weights available
-        # Step 1: load the weight matrix: a matrix of weights for the specified condition and region; each column is weight for a method. The row names should be variant names.
-        weights[[xqtl_conditions[condition]]] = list()
-        # For each condition, we extract the weights of multiple weight df RDS file
-        for (weight_db_file in length(weight_db)){
-        weights_matrix = load_twas_weights(weight_db[weight_db_file], condition, variable_name_obj=&quot;variant_names&quot;, twas_weights_table = &quot;twas_weights&quot;)
-        adjusted_susie_weights = adjust_susie_weights(weight_db[weight_db_file], weights_matrix, keep_variants = gwas_data[[gwas_studies[s]]][&quot;sumstats&quot;]$variant_allele_flip)
-        # Step 2: for each study we perform TWAS: 
-        # take overlap between weights and the gwas_data summstats for each study. If there are some variants in sumstats but not in weights then simply make weight zero
-        # Step 2-1: NOT YET IMPLEMEMENTED (FIXME) adjust susie_weights if possible --- if susie_fit exist in weight_db. This should replace the origional SuSiE_weight computed above
-        # Step 3: perform TWAS on the weights and sumstats
-    }
+      gwas_data[[gwas_studies[s]]][[&quot;LD&quot;]] = gwas_LD_list$combined_LD_matrix
+      gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]] = gwas_allele_flip$target_data_qced
+   for (condition in xqtl_conditions) {
+      twas_mr_result[[gwas_studies[s]]][[condition]] = list()
+      # Step 3: TWAS analysis
+      # Step 3-1: Intersect with gwas summary statistics and adjust susie weights
+      adjusted_susie_weights = adjust_susie_weights(twas_weights_results, condition,keep_variants = get_nested_element(gwas_data, c(gwas_studies[s], &quot;sumstats&quot;, &quot;variant&quot;)),allele_qc = ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;})
+      # Step 3-2: Overlap weights of other methods with the variants name of adjusted_susie_weights, then combine with adjusted susie weights to obtain the subsetted weight matrix
+      weights_matrix = get_nested_element(twas_weights_results, c(&quot;weights&quot;, condition))
+      weights_matrix_subset = cbind(susie_weights = adjusted_susie_weights$adjusted_susie_weights, weights_matrix[adjusted_susie_weights$remained_variants_ids,!colnames(weights_matrix) %in% &quot;susie_weights&quot;])
+      if(allele_qc == ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;}){
+            weights_matrix_qced &lt;- allele_qc(rownames(weights_matrix_subset), gwas_LD_list$combined_LD_variants, weights_matrix_subset,1:ncol(weights_matrix))
+            weights_matrix_subset &lt;- weights_matrix_qced$target_data_qced[,!colnames(weights_matrix_qced$target_data_qced) %in% c(&quot;chrom&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;variant_id&quot;)]
+            rownames(weights_matrix_subset) &lt;- get_nested_element(weights_matrix_qced, c(&quot;target_data_qced&quot;,&quot;variant_id&quot;))
+      }
+      # Step 3-3: Conduct twas analysis
+      twas_result &lt;- twas_analysis(weights_matrix_subset, gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]],gwas_data[[gwas_studies[s]]][[&quot;LD&quot;]],rownames(weights_matrix_subset))
+      # Step 4: Conduct mr analysis
+      mr_formatted_input &lt;- mr_format(twas_weights_results, condition, gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]], sets = ${sets},coverage = ${coverage},allele_qc = ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;})
+      mr_result &lt;- mr_analysis(mr_formatted_input, cpip_cutoff = 0.5)
+      # Step 5: Output the twas mr result
+      twas_mr_result[[gwas_studies[s]]][[condition]] = list(twas_weights_matrix_subset = weights_matrix_subset, 
+                                                              mr_formatted_input = mr_formatted_input,
+                                                                     twas_result = twas_result,
+                                                                       mr_result = mr_result)
+   }
+}
+saveRDS(twas_mr_result, ${_output:ar})
 </pre></div>
 </div>
 </div>
@@ -891,7 +912,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="SuSiE_enloc.html"
@@ -958,6 +979,7 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
       © Copyright 2021+, FunGen xQTL Analysis Working Group.
@@ -984,8 +1006,8 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

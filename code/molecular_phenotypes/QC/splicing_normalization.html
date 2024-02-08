@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -139,6 +139,7 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../../../README.html">
@@ -442,6 +443,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -451,6 +453,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -530,7 +533,7 @@ document.write(`
 <h1>Normalization and phenotype table generation for splicingQTL analysis<a class="headerlink" href="#normalization-and-phenotype-table-generation-for-splicingqtl-analysis" title="Permalink to this heading">#</a></h1>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data.</p>
+<p>Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and any remaining missing values are retained. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. Imputation of missing values is done separately afterwards.</p>
 </section>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
@@ -589,20 +592,26 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">leafcutter_norm_1</span>: 
-INFO: t7dd380a023cbb83f <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 3952981 (&quot;job_t7dd380a023cbb83f&quot;) has been submitted
+INFO: t7dd380a023cbb83f <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t7dd380a023cbb83f <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 3983798 (&quot;job_t7dd380a023cbb83f&quot;) has been submitted
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: <span class=" -Color -Color-Green">leafcutter_norm_1</span> output:   <span class=" -Color -Color-Green">../../output_test/leafcutter/PCC_sample_list_subset_leafcutter_intron_usage_perind.counts.gz_phenotype_file_list.txt</span>
 INFO: Running <span class=" -Color -Color-Green">leafcutter_norm_2</span>: 
-INFO: t634c64984cd57dce <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 3952983 (&quot;job_t634c64984cd57dce&quot;) has been submitted
+INFO: td8bff19d02211b90 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 3983807 (&quot;job_td8bff19d02211b90&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: <span class=" -Color -Color-Green">leafcutter_norm_2</span> output:   <span class=" -Color -Color-Green">../../output_test/leafcutter/PCC_sample_list_subset_leafcutter_intron_usage_perind.counts.gz_raw_data.txt</span>
 INFO: Running <span class=" -Color -Color-Green">leafcutter_norm_3</span>: 
-INFO: t3805dbf053c7c1f2 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 3952990 (&quot;job_t3805dbf053c7c1f2&quot;) has been submitted
+INFO: t2b8b4754c0be4cbc <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 3983815 (&quot;job_t2b8b4754c0be4cbc&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: <span class=" -Color -Color-Green">leafcutter_norm_3</span> output:   <span class=" -Color -Color-Green">../../output_test/leafcutter/PCC_sample_list_subset_leafcutter_intron_usage_perind.counts.gz_raw_data.qqnorm.txt</span>
-INFO: Workflow leafcutter_norm (ID=w5aa4df9fe62c5183) is executed successfully with 3 completed steps and 3 completed tasks.
+INFO: Workflow leafcutter_norm (ID=w9a20332cfb71c800) is executed successfully with 3 completed steps and 3 completed tasks.
 </pre></div>
 </div>
 </div>
@@ -623,25 +632,15 @@ INFO: Workflow leafcutter_norm (ID=w5aa4df9fe62c5183) is executed successfully w
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Running <span class=" -Color -Color-Green">psichomics_norm_1</span>: 
-INFO: tbc563f768bb4313d <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2490541 (&quot;job_tbc563f768bb4313d&quot;) has been submitted
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">psichomics_norm_1</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
+INFO: <span class=" -Color -Color-Green">psichomics_norm_1</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> due to saved signature
 INFO: <span class=" -Color -Color-Green">psichomics_norm_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/psichomics/normalize/psichomics_raw_data_bedded.txt</span>
 INFO: Running <span class=" -Color -Color-Green">psichomics_norm_2</span>: 
-INFO: te6284c5142d74a6f <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2490565 (&quot;job_te6284c5142d74a6f&quot;) has been submitted
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
-INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: t261c5bcc674fd156 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 4284374 (&quot;job_t261c5bcc674fd156&quot;) has been submitted
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
 INFO: <span class=" -Color -Color-Green">psichomics_norm_2</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/psichomics/normalize/psichomics_raw_data_bedded.qqnorm.txt</span>
-INFO: Workflow psichomics_norm (ID=w2fbf4cd3c12ccfef) is executed successfully with 2 completed steps and 2 completed tasks.
+INFO: Workflow psichomics_norm (ID=w414de35dd6b2a7af) is executed successfully with 1 completed step, 1 ignored step and 1 completed task.
 </pre></div>
 </div>
 </div>
@@ -1017,6 +1016,7 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
         n=len(x)
         a=3.0/8.0 if n&lt;=10 else 0.5
         return(norm.ppf( (rankdata(x,nan_policy=&quot;omit&quot;)-a)/(n+1.0-2.0*a) ))
+        #return(norm.ppf( (rankdata(x)-a)/(n+1.0-2.0*a) ))
 
     raw_df = pd.read_csv(f&#39;${_input}&#39;,sep = &quot;\t&quot;)
     valRows = raw_df.iloc[:,4:]
@@ -1030,7 +1030,9 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
         # If ratio is missing for over 40% of the samples, drop
         if (row.isna().sum()) &gt; na_limit:
             drop_list.append(index)
-
+        # Set missing values as the mean of existed values in a row
+        #else:
+        #    row.fillna(row.mean())
         # drop introns with variance smaller than some minimal value
         if np.nanstd(row) &lt; ${min_variance}:
             drop_list.append(index)
@@ -1118,6 +1120,12 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     from scipy.stats import norm
     from scipy.stats import rankdata
 
+    def qqnorm(x):
+        n=len(x)
+        a=3.0/8.0 if n&lt;=10 else 0.5
+        return(norm.ppf( (rankdata(x,nan_policy=&quot;omit&quot;)-a)/(n+1.0-2.0*a) ))
+        #return(norm.ppf( (rankdata(x)-a)/(n+1.0-2.0*a) ))
+
     raw_df = pd.read_csv(f&#39;${_input}&#39;,sep = &quot;\t&quot;)
     valRows = raw_df.iloc[:,4:]
     headers = list(raw_df)
@@ -1134,38 +1142,20 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
         elif np.std(row) &lt; ${min_variance}:
             drop_list.append(index)
 
-    
-    # OLD code，Saved temporarily for inspection
-    #for index, row in valRows.iterrows():
-
-        ## If ratio is missing for over 40% of the samples, drop
-        #if (row.isna().sum()) &gt; na_limit:
-            #drop_list.append(index)
-        ## Set missing values as the mean of existed values in a row
-        #else:
-            #row.fillna(row.mean())
-        ## drop introns with variance smaller than some minimal value
-        #if np.std(row) &lt; ${min_variance}:
-            #drop_list.append(index)
-
     # save the intron information and sample values for remaining introns/rows
     newtable = raw_df.drop(drop_list).iloc[:,0:4]
     valRows = valRows.drop(drop_list)
-
-    valMeans = valRows.mean(axis=1)
-
-    # Mean imputation
-    for i, col in enumerate(valRows):
-        valRows.iloc[:, i] = valRows.iloc[:, i].fillna(valMeans)
 
     # scale normalize on each row
     valRows_matrix = []
     for c in (valRows.values.tolist()):
         c = preprocessing.scale(c)
         valRows_matrix.append(c)
-    
+
     # qqnorms on the columns
     matrix = np.array(valRows_matrix)
+    for i in range(len(matrix[0,:])):
+        matrix[:,i] = qqnorm(matrix[:,i])
     normalized_table = pd.DataFrame(matrix)
 
     # reset row index for the saved intron infomation so the index will match sample values
@@ -1211,7 +1201,7 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="../calling/splicing_calling.html"
@@ -1300,6 +1290,7 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
       © Copyright 2021+, FunGen xQTL Analysis Working Group.
@@ -1326,8 +1317,8 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

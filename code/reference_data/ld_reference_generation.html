@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -139,6 +139,7 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../../README.html">
@@ -442,6 +443,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -451,6 +453,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -522,7 +525,7 @@ document.write(`
 <p>We start off by loading all of the requisite libraries</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cyvcf2</span> <span class="kn">import</span> <span class="n">VCF</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cyvcf2</span> <span class="kn">import</span> <span class="n">VCF</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">nan</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
@@ -535,7 +538,7 @@ document.write(`
 <p>There are multiple VCFs per chromosome, so we group them into a Python dictionary.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># vcf_files for each chromosome</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># vcf_files for each chromosome</span>
 <span class="n">vcf_files</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">chrm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">22</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">base</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/xqtl/R4_QC_NHWonly_rm_monomorphic/&quot;</span>
@@ -550,7 +553,7 @@ document.write(`
 <p>When calculating the correlations between different variants we do mean imputation of the missing variants</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># replaces NaN values in matrix with means of their rows</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># replaces NaN values in matrix with means of their rows</span>
 <span class="k">def</span> <span class="nf">fill_missing_with_row_means</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="c1"># Calculate means of rows ignoring NaNs</span>
     <span class="n">row_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -566,7 +569,7 @@ document.write(`
 <p>Dosages are then calculated using the cyvcf2 package. We use a minor allele frequency threshold of 0.05%, minor allele count threshold of 5, and a missingness threshold of 5% to filter variants</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># gets dosages (which pass filter criteria) from VCF file object</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gets dosages (which pass filter criteria) from VCF file object</span>
 <span class="k">def</span> <span class="nf">get_dosages</span><span class="p">(</span><span class="n">vcf_obj</span><span class="p">,</span> <span class="n">maf_min</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span> <span class="n">mac_min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">msng_min</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
@@ -604,7 +607,7 @@ document.write(`
 <p>We then create a function to get the dosages from a specific range (which is useful for the LD blocks)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1"># returns output of dosages on a per LD block basis</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># returns output of dosages on a per LD block basis</span>
 <span class="k">def</span> <span class="nf">get_dosages_range</span><span class="p">(</span><span class="n">vcf_obj</span><span class="p">,</span> <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="n">vcf_qry_str</span> <span class="o">=</span> <span class="n">chrm</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">get_dosages</span><span class="p">(</span><span class="n">vcf_obj</span><span class="p">(</span><span class="n">vcf_qry_str</span><span class="p">))</span>
@@ -619,7 +622,7 @@ document.write(`
 <p>We then load the LD block locations into memory</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!head /restricted/projectnb/casa/oaolayin/ROSMAP_NIA_geno/EUR_LD_blocks.bed 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head<span class="w"> </span>/restricted/projectnb/casa/oaolayin/ROSMAP_NIA_geno/EUR_LD_blocks.bed<span class="w"> </span>
 </pre></div>
 </div>
 </div>
@@ -640,7 +643,7 @@ chr1 	 17351816 	 20110062
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">ld_block_file</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/casa/oaolayin/ROSMAP_NIA_geno/EUR_LD_blocks.bed&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ld_block_file</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/casa/oaolayin/ROSMAP_NIA_geno/EUR_LD_blocks.bed&quot;</span>
 <span class="n">ld_blocks</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ld_block_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
@@ -654,7 +657,7 @@ chr1 	 17351816 	 20110062
 <p>We now calculate the correlation matrices for each of the blocks</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">ld_blocks</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">ld_blocks</span><span class="p">:</span>
     <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">block</span>
     <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;/restricted/projectnb/xqtl/R4_cor_out/</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.cor.xz&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">chrm</span><span class="p">,</span> <span class="n">chrm</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
     <span class="c1"># aggregate dosages from different files</span>
@@ -686,21 +689,34 @@ chr1 	 17351816 	 20110062
 <p>Finally, the following R function can help generate meta-data table for all the files produced,</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">generate_ld_meta_file</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">ld_meta_file_path</span><span class="p">){</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+<span class="n">library</span><span class="p">(</span><span class="n">stringr</span><span class="p">)</span>
+<span class="n">generate_ld_meta_file</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">ld_meta_file_path</span><span class="p">){</span>
     <span class="n">ld_meta_file</span> <span class="o">&lt;-</span> <span class="nb">list</span><span class="o">.</span><span class="n">files</span><span class="p">(</span><span class="n">ld_meta_file_path</span><span class="p">,</span> <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">.bim$&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
-    <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">path</span> <span class="o">=</span> <span class="o">.</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">path</span> <span class="o">=</span> <span class="o">.</span><span class="p">)</span> <span class="o">%&gt;%</span><span class="k">2222</span>
     <span class="n">mutate</span><span class="p">(</span>
       <span class="n">chrom</span> <span class="o">=</span> <span class="n">str_extract</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;^[^_]+&quot;</span><span class="p">),</span>
       <span class="n">start_end</span> <span class="o">=</span> <span class="n">str_extract</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;_[0-9]+_[0-9]+&quot;</span><span class="p">),</span>
       <span class="n">start</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">str_extract</span><span class="p">(</span><span class="n">start_end</span><span class="p">,</span> <span class="s2">&quot;[0-9]+&quot;</span><span class="p">)),</span>
       <span class="n">end</span> <span class="o">=</span> <span class="k">as</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">str_extract</span><span class="p">(</span><span class="n">start_end</span><span class="p">,</span> <span class="s2">&quot;[0-9]+$&quot;</span><span class="p">)),</span>
-      <span class="n">path</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="n">ld_meta_data</span><span class="p">,</span> <span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="s2">&quot;.cor.xz&quot;</span><span class="p">,</span> 
-                  <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">ld_meta_data</span><span class="p">,</span> <span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="s2">&quot;.cor.xz.bim&quot;</span><span class="p">)</span>
-    <span class="p">)</span><span class="o">%&gt;%</span><span class="n">select</span><span class="p">(</span><span class="n">chrom</span><span class="p">,</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">path</span><span class="p">)</span>
+      <span class="n">path</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="n">basename</span><span class="p">(</span><span class="n">ld_meta_file_path</span><span class="p">),</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="s2">&quot;.cor.xz&quot;</span><span class="p">,</span> 
+                  <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">basename</span><span class="p">(</span><span class="n">ld_meta_file_path</span><span class="p">),</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="n">chrom</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="s2">&quot;.cor.xz.bim&quot;</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">%&gt;%</span><span class="k">select</span>(chrom,start,end,path)
     <span class="k">return</span><span class="p">(</span><span class="n">ld_meta_file</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="n">ld_meta_file_path</span> <span class="o">=</span> <span class="s2">&quot;ADSP_LD_matrix/&quot;</span>
-<span class="n">ld_meta_file</span> <span class="o">=</span> <span class="n">generate_ld_meta_file</span> <span class="p">(</span><span class="n">ld_meta_file_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then we generate ld_meta_file_chr file for each chromosome</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ADSP_LD_file_path</span> <span class="o">=</span> <span class="s2">&quot;/mnt/vast/hpc/csg/data_public/20240120_ADSP_LD_matrix/&quot;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="mi">1</span><span class="p">:</span><span class="mi">22</span><span class="p">){</span>
+    <span class="n">ADSP_LD_chrom_file_path</span> <span class="o">=</span> <span class="n">paste0</span><span class="p">(</span><span class="n">ADSP_LD_file_path</span><span class="p">,</span><span class="s2">&quot;/chr&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ld_chrom_meta_file</span> <span class="o">=</span> <span class="n">generate_ld_meta_file</span><span class="p">(</span><span class="n">ADSP_LD_chrom_file_path</span><span class="p">)</span>
+    <span class="n">write</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">ld_chrom_meta_file</span><span class="p">,</span><span class="n">paste0</span><span class="p">(</span><span class="n">ADSP_LD_chrom_file_path</span><span class="p">,</span><span class="s2">&quot;/ld_meta_file_chr&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;.tsv&quot;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">col</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="n">TRUE</span><span class="p">,</span><span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">,</span><span class="n">quote</span><span class="o">=</span><span class="n">FALSE</span><span class="p">)</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -738,16 +754,16 @@ chr1 	 17351816 	 20110062
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "sos"
+            mode: "python"
         },
         kernelOptions: {
-            name: "sos",
+            name: "python3",
             path: "./code/reference_data"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'sos'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -757,7 +773,7 @@ chr1 	 17351816 	 20110062
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="ld_prune_reference.html"
@@ -818,6 +834,7 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
       © Copyright 2021+, FunGen xQTL Analysis Working Group.
@@ -844,8 +861,8 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Phenotype Data Imputation &#8212; FunGen-xQTL Consortium</title>
+    <title>Phenotype data imputation &#8212; FunGen-xQTL Consortium</title>
   
   
   
@@ -222,7 +222,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../phenotype_preprocessing.html">Phenotype data preprocessing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Phenotype Data Imputation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Phenotype data imputation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
@@ -475,7 +475,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Phenotype Data Imputation</h1>
+    <h1>Phenotype data imputation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -485,16 +485,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-phenotype-imputation">ii. Phenotype Imputation</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command Interface</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a></li>
 </ul>
             </nav>
         </div>
@@ -507,11 +500,8 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="phenotype-data-imputation">
-<h1>Phenotype Data Imputation<a class="headerlink" href="#phenotype-data-imputation" title="Permalink to this heading">#</a></h1>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>A collection of methods for the imputation of missing omics data values are included in our pipelinle. Imputation is optional of eQTL analysis, but necessary for other QTLs. We use <code class="docutils literal notranslate"><span class="pre">flashier</span></code>, a Empirical Bayes Matrix Factorization model, to impute missing values. Other imputation methods include missForest, XGBoost, k-nearest neighbors, soft impute, mean imputation, and last observed data.</p>
-</section>
+<h1>Phenotype data imputation<a class="headerlink" href="#phenotype-data-imputation" title="Permalink to this heading">#</a></h1>
+<p>This workflow contains a collection of methods on imputation of missing omics data values. The imputation methods are benchmarked in <a class="reference external" href="https://www.medrxiv.org/content/10.1101/2023.11.29.23299181v1">Multi-Omics Imputation Benchmark Paper</a>. Refer to this paper, we select a low-rank approximation method, EBMF(flashier), as our primary imputation method for imputation on molecular phenotype data.</p>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -526,116 +516,20 @@ document.write(`
 </section>
 <section id="minimal-working-example">
 <h2>Minimal Working Example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
-<section id="ii-phenotype-imputation">
-<h3>ii. Phenotype Imputation<a class="headerlink" href="#ii-phenotype-imputation" title="Permalink to this heading">#</a></h3>
-<p>Timing: X min</p>
+<p>FIXME: will update this after container is done.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">phenotype_imputation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">flash</span> \
-    <span class="o">--</span><span class="n">phenoFile</span> <span class="o">/</span><span class="n">phenotype</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span><span class="o">/</span><span class="n">phenotype</span> \
-    <span class="o">--</span><span class="n">prior</span> <span class="n">ebnm_point_normal</span> <span class="o">--</span><span class="n">varType</span> <span class="mi">1</span> \
-    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">omics_imputation_apptainer</span><span class="p">:</span><span class="n">latest</span>
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">phenotype_imputation</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">EBMF</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">bed</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="o">./</span><span class="n">test</span> \
+    <span class="o">--</span><span class="n">prior</span> <span class="n">ebnm_point_laplace</span> <span class="o">--</span><span class="n">varType</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="o">.</span><span class="n">containers</span><span class="o">/</span><span class="n">factor_analysis</span><span class="o">.</span><span class="n">sif</span> \
+    <span class="o">--</span><span class="kp">mem</span> <span class="mi">40</span><span class="n">G</span> \
+    <span class="o">--</span><span class="kp">walltime</span> <span class="mi">100</span><span class="n">h</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="troubleshooting">
-<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h2>
-<table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Step</p></th>
-<th class="head"><p>Substep</p></th>
-<th class="head"><p>Problem</p></th>
-<th class="head"><p>Possible Reason</p></th>
-<th class="head"><p>Solution</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p></p></td>
-<td><p></p></td>
-<td><p></p></td>
-<td><p></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="command-interface">
-<h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run phenotype_imputation.ipynb -h
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run phenotype_imputation.ipynb
-               [workflow_name | -t targets] [options] [workflow_options]
-  workflow_name:        Single or combined workflows defined in this script
-  targets:              One or more targets to generate
-  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
-  workflow_options:     Double-hyphen workflow-specific parameters
-
-Workflows:
-  flash
-  missforest
-  missxgboost
-  knn
-  soft
-  mean
-  lod
-  bed_filter_na
-
-Global Workflow Options:
-  --cwd output (as path)
-                        Work directory &amp; output directory
-  --phenoFile VAL (as path, required)
-                        Molecular phenotype matrix
-  --job-size 1 (as int)
-                        For cluster jobs, number commands to run per job
-  --walltime 72h
-                        Wall clock time expected
-  --mem 16G
-                        Memory expected
-  --numThreads 20 (as int)
-                        Number of threads
-  --container &#39;&#39;
-  --entrypoint  (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
-
-
-Sections
-  flash:
-    Workflow Options:
-      --prior  ebnm_point_normal
-
-                        prior distribution of loadings and factors
-  missforest:
-  missxgboost:
-  knn:
-  soft:
-  mean:
-  lod:
-  bed_filter_na:
-    Workflow Options:
-      --rank-max 50 (as int)
-      --lambda-hyp 30 (as int)
-      --impute-method soft
-      --tol-missing 0.05 (as float)
-                        Tolerance of missingness rows with missing rate larger
-                        than tol_missing will be removed, with missing rate
-                        smaller than tol_missing will be mean_imputed. Say if we
-                        want to keep rows with less than 5% missing, then we use
-                        0.05 as tol_missing.
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="setup-and-global-parameters">
-<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -660,26 +554,114 @@ Sections
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[flash]
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[EBMF]
 # prior distribution of loadings and factors
-parameter: prior = &quot;ebnm_point_normal&quot;
-# type of estimated variance: 1 is a estimated variance for each row.
+parameter: prior = &quot;ebnm_point_laplace&quot;
 parameter: varType = &#39;1&#39;
+parameter: num_factor = &#39;60&#39;
 input: phenoFile
 output: f&#39;{cwd:a}/{_input:bn}.imputed.bed.gz&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;  
 R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
-   library(flashier)
+   library(&quot;flashier&quot;)
    library(&quot;tibble&quot;)
    library(&quot;readr&quot;)
    library(&quot;dplyr&quot;)
-    
+   #library(&quot;irlba&quot;)
+   library(&quot;softImpute&quot;)
+  
     pheno &lt;- read_delim(${_input:ar}, delim = &quot;\t&quot;)
     pheno_NAs &lt;- pheno[, 5:ncol(pheno)]
-    f &lt;- flashier::flash(as.matrix(pheno_NAs), ebnm_fn = ${prior}, var_type = ${varType})
-    Yfill &lt;- ifelse(is.na(as.matrix(pheno_NAs)), fitted(f), as.matrix(pheno_NAs))
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    # Tunning the parameter
+    lambda &lt;- 30
+    rank &lt;- 50
+    if (nrow(pheno_NAs) &lt; 1500) {
+      lambda &lt;- 5
+    } else {
+      lambda &lt;- 30
+    }  
+    # Impute
+    X_mis_C &lt;- as(as.matrix(pheno_NAs), &quot;Incomplete&quot;)
+    ###uses &quot;svd&quot; algorithm
+    fit1 &lt;- softImpute::softImpute(X_mis_C,rank = rank,lambda = lambda,type = &quot;svd&quot;)
+    pheno_soft &lt;- softImpute::complete(as.matrix(pheno_NAs),fit1)
+    min_sd &lt;- min(apply(pheno_soft, 1, sd)) / 100
+    pca_res &lt;- irlba::irlba(pheno_soft, nv = ${num_factor})
+    pca_res &lt;- list(pca_res$d, pca_res$u, pca_res$v)
+    names(pca_res) &lt;- c(&#39;d&#39;, &#39;u&#39;, &#39;v&#39;)
+    fl_pca &lt;- flash_init(as.matrix(pheno_NAs), S = min_sd, var_type = ${varType}) |&gt;
+      flash_factors_init(pca_res, ebnm_fn = ${prior}) |&gt;
+      flash_backfit(maxiter = 300)
+    pheno.imp &lt;- ifelse(is.na(as.matrix(pheno_NAs)), fitted(fl_pca), as.matrix(pheno_NAs))
+    write_delim(cbind(pheno[, 1:4], pheno_imp), &quot;${_output:n}&quot;, delim = &quot;\t&quot; )
+
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    bgzip -f ${_output:n}
+    tabix ${_output}
+
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+        stdout=$[_output:n].stdout
+        for i in $[_output] ; do 
+        echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_rows:&quot; `cat $i | wc -l  | cut -f 1 -d &quot; &quot;`   &gt;&gt; $stdout;
+        echo &quot;output_column:&quot; `cat $i | head -1 | wc -w `   &gt;&gt; $stdout;
+        echo &quot;output_headerow:&quot; `cat $i | grep &quot;##&quot; | wc -l `   &gt;&gt; $stdout;
+        echo &quot;output_preview:&quot;   &gt;&gt; $stdout;
+        cat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6   &gt;&gt; $stdout ; done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[gEMBF]
+parameter: nCores = &#39;1&#39;
+parameter: num_factor = &#39;60&#39;
+parameter: backfit_iter = &#39;3&#39;
+parameter: save_flash=NULL
+parameter: null_check=FALSE
+input: phenoFile
+output: f&#39;{cwd:a}/{_input:bn}.imputed.bed.gz&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;  
+R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+   library(&quot;flashier&quot;)
+   library(&quot;tibble&quot;)
+   library(&quot;readr&quot;)
+   library(&quot;dplyr&quot;)
+   library(&quot;snow&quot;)
+   library(&quot;softImpute&quot;)
+  
+    pheno &lt;- read_delim(${_input:ar}, delim = &quot;\t&quot;)
+    pheno_NAs &lt;- pheno[, 5:ncol(pheno)]
+    dat &lt;- qnorm(pheno_NAs)
+    rm(pheno_NAs)
+    groups &lt;- pheno$`#chr`
+    cl &lt;- flash_init_cluster_for_grouped_data(dat, groups, ${nCores} , K = ${num_factor})
+    for (i in seq_len(${backfit_imput_iter})) {
+        flash_backfit_grouped_data(cl, maxiter = 10)
+        flash_impute_grouped_data(cl)
+
+      }
+    fl &lt;- flash_recover_fl_object_from_cluster(cl)
+    snow::stopCluster(cl)
+    rm(cl)
+
+    if(null_check){
+        fl &lt;- flash_nullcheck(fl)
+
+      }
+
+      if(!is.null(save_flash)){
+        saveRDS(fl,save_flash)
+      }
+
+
+    x_imp &lt;- ifelse(is.na(dat), fitted(fl), dat)
+    #message(&#39;done.&#39;)
+    pheno_imp&lt;-pnorm(x_imp)
+  
+    write_delim(cbind(pheno[, 1:4], pheno_imp), ${_output:n}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -706,16 +688,15 @@ input: phenoFile
 output: f&#39;{cwd:a}/{_input:bn}.imputed.bed.gz&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;  
 R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
-   library(missForest)
+   library(flashier)
    library(&quot;tibble&quot;)
    library(&quot;readr&quot;)
    library(&quot;dplyr&quot;)
     
     pheno &lt;- read_delim(${_input:ar}, delim = &quot;\t&quot;)
     pheno_NAs &lt;- pheno[, 5:ncol(pheno)]
-    Yfill &lt;- missForest(as.matrix(pheno_NAs), parallelize = &#39;variables&#39;)$ximp
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    pheno_imp &lt;- missForest(as.matrix(pheno_NAs), parallelize = &#39;variables&#39;)$ximp
+    write_delim(cbind(pheno[, 1:4], pheno_imp), ${_output:r}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -749,9 +730,8 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     
     pheno &lt;- read_delim(${_input:ar}, delim = &quot;\t&quot;)
     pheno_NAs &lt;- pheno[, 5:ncol(pheno)]
-    Yfill &lt;- xgboost_imputation(as.matrix(pheno_NAs))
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    pheno_imp &lt;- xgboost_imputation(as.matrix(pheno_NAs))
+    write_delim(cbind(pheno[, 1:4], pheno_imp), ${_output:r}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -784,9 +764,8 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     
     pheno &lt;- read_delim(${_input:ar}, delim = &quot;\t&quot;)
     pheno_NAs &lt;- pheno[, 5:ncol(pheno)]
-    Yfill &lt;- impute.knn(as.matrix(pheno_NAs), rowmax = 1)$data
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    pheno_imp &lt;- impute.knn(as.matrix(pheno_NAs), rowmax = 1)$data
+    write_delim(cbind(pheno[, 1:4], pheno_imp), ${_output:r}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -822,9 +801,8 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     X_mis_C &lt;- as(as.matrix(pheno_NAs), &quot;Incomplete&quot;)
     ###uses &quot;svd&quot; algorithm
     fit &lt;- softImpute(X_mis_C,rank = 50,lambda = 30,type = &quot;svd&quot;)
-    Yfill &lt;- complete(as.matrix(pheno_NAs),fit)
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    pheno_imp &lt;- complete(as.matrix(pheno_NAs),fit)
+    write_delim(cbind(pheno[, 1:4], pheno_imp), ${_output:r}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -860,8 +838,7 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     for (t.row in 1:nrow(pheno_NAs)) {
         Yfill[t.row, is.na(Yfill[t.row,])] &lt;- rowMeans(Yfill, na.rm = TRUE)[t.row] 
     }    
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    write_delim(cbind(pheno[, 1:4], Yfill), ${_output:r}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -897,8 +874,7 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     for (t.row in 1:nrow(pheno_NAs)) {
         Yfill[t.row, is.na(Yfill[t.row,])] &lt;- min(Yfill[t.row, ], na.rm = TRUE)
     }
-    pheno_imp &lt;- as.data.frame(cbind(pheno[, 1:4], Yfill))
-    write_delim(pheno_imp, ${_output:r}, delim = &quot;\t&quot; )
+    write_delim(cbind(pheno[, 1:4], Yfill), ${_output:r}, delim = &quot;\t&quot; )
 
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container=container, entrypoint=entrypoint
     bgzip -f ${_output:n}
@@ -1073,16 +1049,9 @@ return code: 0
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-phenotype-imputation">ii. Phenotype Imputation</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command Interface</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a></li>
 </ul>
   </nav></div>
 

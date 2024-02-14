@@ -222,7 +222,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
@@ -828,7 +828,7 @@ document.write(`
 <span class="c1"># input is genoFile, phenoFile, covFile and optionally region_list. If region_list presents then we only analyze what&#39;s contained in the list.</span>
 <span class="c1"># regional_data should be a dictionary like:</span>
 <span class="c1">#{&#39;data&#39;: [(&quot;genotype_1.bed&quot;, &quot;phenotype_1.bed.gz&quot;, &quot;covariate_1.gz&quot;), (&quot;genotype_2.bed&quot;, &quot;phenotype_1.bed.gz&quot;, &quot;phenotype_2.bed.gz&quot;, &quot;covariate_1.gz&quot;, &quot;covariate_2.gz&quot;) ... ],</span>
-<span class="c1"># &#39;meta_info&#39;: [(&quot;chr12:752578-752579&quot;, &quot;gene_1&quot;, &quot;trait_1&quot;), (&quot;chr13:852580-852581&quot;, &quot;gene_2&quot;, &quot;trait_1&quot;, &quot;trait_2&quot;) ... ]}</span>
+<span class="c1"># &#39;meta_info&#39;: [(&quot;chr12:752578-752579&quot;,&quot;chr12:752577-752580&quot;, &quot;gene_1&quot;, &quot;trait_1&quot;), (&quot;chr13:852580-852581&quot;,&quot;chr13:852579-852580&quot;, &quot;gene_2&quot;, &quot;trait_1&quot;, &quot;trait_2&quot;) ... ]}</span>
 
 <span class="k">def</span> <span class="nf">process_pheno_files</span><span class="p">(</span><span class="n">pheno_files</span><span class="p">,</span> <span class="n">cov_files</span><span class="p">,</span> <span class="n">phenotype_names</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -983,7 +983,6 @@ depends: sos_variable(&quot;regional_data&quot;)
 # Check if both &#39;data&#39; and &#39;meta_info&#39; are empty lists
 stop_if(len(regional_data[&#39;data&#39;]) == 0, f&#39;Either genotype or phenotype data are not available for region {&quot;, &quot;.join(region_name)}.&#39;)
 
-
 meta_info = regional_data[&#39;meta_info&#39;]
 input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
 output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[2]}.susie{&quot;_weights_db&quot; if twas_weights else &quot;&quot;}.rds&#39;
@@ -1037,63 +1036,19 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
                                        fdat$maf[[r]], secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
                                        other_quantities = list(dropped_samples = list(X=fdat$dropped_sample$dropped_samples_X[[r]], y=fdat$dropped_sample$dropped_samples_Y[[r]], 
                                                                                       covar=fdat$dropped_sample$dropped_samples_covar[[r]])))
-      if (!is.null(fitted[[r]]$susie_result_trimmed)) {
-          L = length(fitted[[r]]$susie_result_trimmed$V)
-          init_L = max(1, L-2)
-          max_L = L+3
-      } else {
-          init_L = 2
-          max_L = 2
-      }
+
       if ( ${&quot;TRUE&quot; if twas_weights else &quot;FALSE&quot;} ) {
-          if ( ${&quot;TRUE&quot; if ld_reference_meta_file.is_file() else &quot;FALSE&quot; } ) {
-              variants_kept = filter_variants_by_ld_reference(colnames(fdat$residual_X[[r]]), ${ld_reference_meta_file:r})
-              X = fdat$residual_X[[r]][,variants_kept$data,drop=F]
-              fitted[[r]]$preset_variants_result = susie_wrapper(X, fdat$residual_Y[[r]], init_L=init_L, max_L=max_L, refine=TRUE, coverage = ${coverage[0]})
-              fitted[[r]]$preset_variants_result = susie_post_processor(fitted[[r]]$preset_variants_result, X, fdat$residual_Y[[r]], 
-                                       if (fdat$residual_X_scalar[[r]]==1) 1 else fdat$residual_X_scalar[[r]][variants_kept$idx], 
-                                       fdat$residual_Y_scalar[[r]], fdat$maf[[r]][variants_kept$idx], 
-                                       secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff})
-              fitted[[r]]$preset_variants_result$analysis_script=NULL
-              fitted[[r]]$preset_variants_result$sumstats=NULL
-              maf = fdat$maf[[r]][variants_kept$idx]
-              susie_result = fitted[[r]]$preset_variants_result$susie_result_trimmed
-          } else {
-              maf = fdat$maf[[r]]
-              X = fdat$residual_X[[r]]
-              susie_result = fitted[[r]]$susie_result_trimmed
-          }
-          # setup weight methods. Use max.iter = 100 for mr.ash to save computing time
-          weight_methods = list(enet_weights = list(), lasso_weights = list(), mrash_weights = list(init_prior_sd = TRUE, max.iter=100))
-          if (!is.null(susie_result)) weight_methods$susie_weights = list(susie_fit = susie_result)
-          # get TWAS weights
-          fitted[[r]]$twas_weights = twas_weights(X, fdat$residual_Y[[r]], weight_methods = weight_methods)
-          # get TWAS predictions for possible next steps such as computing correlations between predicted expression values
-          fitted[[r]]$twas_predictions = twas_predict(X, fitted[[r]]$twas_weights)
-          # clean up the output database
-          fitted[[r]]$twas_weights = lapply(fitted[[r]]$twas_weights, function(x) { rownames(x) &lt;- NULL; return(x) })
-          if ( ${&quot;TRUE&quot; if twas_cv_folds &gt; 0 else &quot;FALSE&quot;} ) {
-              # A few cutting corners to run things faster:
-              # 1. reset SuSiE to not using refine or adaptive L (more or less the default SuSiE)
-              # 2. at most 100 iterations for mr.ash allowed
-              # 3. only use a subset of top signals and common variants
-              if (!is.null(susie_result)) weight_methods$susie_weights = list(refine=FALSE, init_L=max_L, max_L=max_L)
-              variants_for_cv = c()
-              if (!is.null(fitted[[r]]$preset_variants_result$top_loci) &amp;&amp; nrow(fitted[[r]]$preset_variants_result$top_loci)&gt;0) {
-                  variants_for_cv = fitted[[r]]$preset_variants_result$top_loci[,1]
-              } 
-              common_var = colnames(X)[which(maf&gt;${min_cv_maf})]
-              if (length(common_var) + length(variants_for_cv)&gt;${max_cv_variants}) {
-                  common_var = sample(common_var, ${max_cv_variants} - length(variants_for_cv), replace=F)
-              }
-              variants_for_cv = unique(c(variants_for_cv, common_var))
-              fitted[[r]]$twas_cv_result = twas_weights_cv(X, fdat$residual_Y[[r]], fold = ${twas_cv_folds}, weight_methods = weight_methods, seed = ${seed}, 
-                                                        max_num_variants = ${max_cv_variants}, num_threads = ${twas_cv_threads}, # run CV in as many cores as available
-                                                        variants_to_keep = if (length(variants_for_cv) &gt; 0) variants_for_cv else NULL)
-          }
+        twas_weights_output &lt;- twas_weights_pipeline(fdat$residual_X[[r]], fdat$residual_Y[[r]], fdat$maf[[r]], susie_fit=fitted[[r]]$susie_result_trimmed, 
+                                     ld_reference_meta_file = ${(&#39;&quot;&#39; + ld_reference_meta_file + &#39;&quot;&#39;) if not ld_reference_meta_file.is_dir() else &quot;NULL&quot;},
+                                     X_scalar = fdat$residual_X_scalar[[r]], y_scalar = fdat$residual_Y_scalar[[r]],
+                                     cv_folds = ${twas_cv_folds}, coverage=${coverage[0]}, secondary_coverage=c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
+                                     min_cv_maf=${min_cv_maf}, max_cv_variants=${max_cv_variants}, cv_seed=${seed}, cv_threads=${twas_cv_threads})
+        # clean up the output database
+        fitted[[r]] = c(fitted[[r]], twas_weights_output)
+        fitted[[r]]$twas_weights = lapply(fitted[[r]]$twas_weights, function(x) { rownames(x) &lt;- NULL; return(x) })
       }
       fitted[[r]]$total_time_elapsed = proc.time() - st
-      fitted[[r]]$region_info = list(region_start=parse_region(&quot;${_meta_info[0]}&quot;), grange=parse_region(&quot;${_meta_info[1]}&quot;), region_name=&quot;${_meta_info[2]}&quot;)
+      fitted[[r]]$region_info = list(region_coord=parse_region(&quot;${_meta_info[0]}&quot;), grange=parse_region(&quot;${_meta_info[1]}&quot;), region_name=&quot;${_meta_info[2]}&quot;)
       # original data no longer relevant, set to NA to release memory
       fdat$residual_X[[r]] &lt;- NA
       fdat$residual_Y[[r]] &lt;- NA
@@ -1244,7 +1199,6 @@ depends: sos_variable(&quot;regional_data&quot;)
 # Check if both &#39;data&#39; and &#39;meta_info&#39; are empty lists
 stop_if(len(regional_data[&#39;data&#39;]) == 0, f&#39;Either genotype or phenotype data are not available for region {&quot;, &quot;.join(region_name)}.&#39;)
 
-
 meta_info = regional_data[&#39;meta_info&#39;]
 input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
 output: f&#39;{cwd:a}/{step_name[:-2]}_fold_{fold}/{name}.{_meta_info[0]}.mrmash.rds&#39;
@@ -1301,77 +1255,157 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[fsusie_1]
+# initial number of single effects for SuSiE
+parameter: init_L = 8
+# maximum number of single effects to use for SuSiE
 parameter: max_L = 20
 # remove a variant if it has more than imiss missing individual level data
-parameter: imiss = 0.1
+# here we don&#39;t remove any because we have done QC before
+parameter: imiss = 1.0
 # MAF cutoff
-parameter: maf = 0.0
+parameter: maf = 0.005
 # MAC cutoff, on top of MAF cutoff
-# Here I set default to mac = 10 rather than using an MAF cutoff
-# I don&#39;t set it to 5 because I&#39;m not so sure of performance of SuSiE on somewhat infrequent variants
-# MAC = 10 would not be too infrequenty for xQTL data where sample size is about ~1,000 at most (as of 2022)
-parameter: mac = 10
+parameter: mac = 5
+# Remove indels if indel = False
+parameter: indel = True
+parameter: pip_cutoff = 0.05
+parameter: coverage = [0.95, 0.7, 0.5]
 # prior can be either of [&quot;mixture_normal&quot;, &quot;mixture_normal_per_scale&quot;]
 parameter: prior  = &quot;mixture_normal_per_scale&quot;
 parameter: max_SNP_EM = 100
-parameter: pip_cutoff = 0.1
 # Max scale is such that 2^max_scale being the number of phenotypes in the transformed space. Default to 2^10  = 1024. Don&#39;t change it unless you know what you are doing. Max_scale should be at least larger than 5.
-parameter:  max_scale = 10 
+parameter:  max_scale = 10
 # Purity and coverage used to call cs
 parameter:  min_purity = 0.5
-parameter:  coverage = [0.95, 0.7, 0.5]
-# Remove indels if indel = False
-parameter: indel = True
+# Epigenetics mark filter
+parameter: epigenetics_mark_treshold = 16
+# Run susie for top pc of the fsusie input
+parameter: run_susie_top_pc = False
+# Compute TWAS weights as well
+parameter: twas_weights = True
+# Perform K folds valiation CV for TWAS
+# Set it to zero if this is to be skipped
+parameter: twas_cv_folds = 5
+parameter: twas_cv_threads = twas_cv_folds
+# maximum number of variants to consider for CV
+# We will randomly pick a subset of it for CV purpose
+parameter: max_cv_variants = 5000
+# Further limit CV to only using common variants
+parameter: min_cv_maf = 0.05
+parameter: ld_reference_meta_file = path()
 depends: sos_variable(&quot;regional_data&quot;)
 # Check if both &#39;data&#39; and &#39;meta_info&#39; are empty lists
 stop_if(len(regional_data[&#39;data&#39;]) == 0, f&#39;Either genotype or phenotype data are not available for region {&quot;, &quot;.join(region_name)}.&#39;)
-
-
 meta_info = regional_data[&#39;meta_info&#39;]
 input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
-output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[0]}.fsusie_{prior}.rds&#39;
+output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[0]}.fsusie_{prior}{&quot;_weights_db&quot; if twas_weights else &quot;&quot;}.rds&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
-    library(pecotmr)
-    library(tidyverse)
+    options(warn=1)
+    # extract subset of samples
+    keep_samples = NULL
+    if (${&quot;TRUE&quot; if keep_samples.is_file() else &quot;FALSE&quot;}) {
+      keep_samples = unlist(strsplit(readLines(${keep_samples:ar}), &quot;\\s+&quot;))
+      message(paste(length(keep_samples), &quot;samples are selected to be loaded for analysis&quot;))
+    }
+
     # Load regional functional data
+    library(pecotmr)
+    tryCatch({
     fdat = load_regional_functional_data(genotype = ${_input[0]:anr},
                                           phenotype = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[1:len(_input)//2+1]])}),
                                           covariate = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[len(_input)//2+1:]])}),
                                           region = &quot;${_meta_info[0]}&quot;,
+                                          cis_window = &quot;${_meta_info[1]}&quot;,
                                           conditions = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x for x in _meta_info[3:]])}),
                                           maf_cutoff = ${maf},
                                           mac_cutoff = ${mac},
                                           imiss_cutoff = ${imiss},
                                           y_as_matrix = FALSE,
-                                          keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;},tabix_header = TRUE)
-    
-    # Fine-mapping with fSuSiE
-    library(&quot;fsusieR&quot;)
+                                          keep_indel = ${&quot;TRUE&quot; if indel else &quot;FALSE&quot;},
+                                          keep_samples = keep_samples,
+                                          tabix_header = TRUE,
+                                          phenotype_header = 4,
+                                          region_name_col = 4,
+                                          scale_residuals = FALSE)
+    }, NoSNPsError = function(e) {
+        message(&quot;Error: &quot;, paste(e$message, &quot;${_meta_info[2] + &#39;@&#39; + _meta_info[1]}&quot;))
+        #saveRDS(NULL, ${_output:ar})
+        saveRDS(list(${_meta_info[0]} = e$message), ${_output:ar}, compress=&#39;xz&#39;)
+        quit(save=&quot;no&quot;)
+    })
+    # Filter out list fdat that with less than a treshold of epigenomic marker.
+    library(tidyverse)
+    filter_fdat_except_specific_names &lt;- function(fdat, n) {
+        # Identify which elements in list1 meet the row count criteria
+        indices_to_keep &lt;- sapply(fdat$Y_coordinates, function(x) nrow(x) &gt;= n)
+        fdat_filtered &lt;- map(fdat[!names(fdat) %in% c(&quot;dropped_sample&quot;, &quot;X&quot;, &quot;chrom&quot;)],~.x[indices_to_keep]) 
+        return(c(fdat_filtered,fdat[names(fdat) %in% c(&quot;dropped_sample&quot;, &quot;X&quot;, &quot;chrom&quot;)]))
+    }
+
+    fdat = filter_fdat_except_specific_names(fdat, n = ${epigenetics_mark_treshold})
+    # Check if Y_coordinates is empty after filtering
+    if (length(fdat$Y_coordinates) == 0) {
+        e_msg = paste0(&quot;None of the study have more than or equal to &quot;,${epigenetics_mark_treshold}, &quot; epigenetics marks, region skipped&quot;)
+        message(e_msg)
+        saveRDS(list(&quot;${_meta_info[0]}&quot; = e_msg ),  ${_output:ar}, compress=&#39;xz&#39;)
+        quit(save=&quot;no&quot;)
+    }
+
+    if (${&quot;TRUE&quot; if save_data else &quot;FALSE&quot;}) {
+      # save data object for debug purpose
+      saveRDS(list(&quot;${_meta_info[0]}&quot; = fdat), &quot;${_output:ann}.${epigenetics_mark_treshold}_marks.dataset.rds&quot;, compress=&#39;xz&#39;)
+    }
+  
     fitted = list()
     for (r in 1:length(fdat$residual_Y)){
-        st = proc.time()  
-        fitted[[r]] &lt;- fsusie_wrapper(X = fdat$residual_X[[r]],
-                             Y = fdat$residual_Y[[r]],
-                             pos=fdat$Y_coordinates[[r]]$start,
-                             L=${max_L},
-                             prior=&quot;${prior}&quot;,
-                             max_SNP_EM=${max_SNP_EM}, 
-                             max_scale  = ${max_scale },
-                             min.purity = ${min_purity},
-                             cov_lev = ${coverage[0]}  )
-
-      fitted[[r]]$V = rep(1,nrow(fitted[[r]]$alpha)) # Since fsusie dont have the V slice and all the alpha are presumable filtered by prior variance already, The prior_eff_tol check were skipped.
-      original = fitted[[r]]
-      ## I don&#39;t think the output of susie_post_processor can replace what was in the original object. 
-      fitted[[r]] =  susie_post_processor(fitted[[r]], fdat$residual_X[[r]], fdat$residual_Y[[r]], fdat$residual_X_scalar[[r]], fdat$residual_Y_scalar[[r]], 
-                                          fdat$maf[[r]], secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
-                                          other_quantities = list(dropped_samples = list(X=fdat$dropped_sample$dropped_samples_X[[r]], y=fdat$dropped_sample$dropped_samples_Y[[r]], 
-                                                                  covar=fdat$dropped_sample$dropped_samples_covar[[r]])))
-      fitted[[r]]$original = original
-      fitted[[r]]$total_time_elapsed = proc.time() - st
+        st = proc.time()
+        fitted[[r]] = list()
+        top_pc_data &lt;- prcomp(fdat$residual_Y[[r]], center = TRUE, scale. = TRUE)$x[,1] # Get thet first pc
+        # Run fSuSiE first
+        fitted[[r]]$fsusie_obj &lt;- fsusie_wrapper(X = fdat$residual_X[[r]],
+                                      Y = fdat$residual_Y[[r]],
+                                      pos=fdat$Y_coordinates[[r]]$start,
+                                      L=${max_L},
+                                      prior=&quot;${prior}&quot;,
+                                      max_SNP_EM=${max_SNP_EM}, 
+                                      max_scale = ${max_scale },
+                                      min.purity = ${min_purity},
+                                      cov_lev = ${coverage[0]})
+        fitted[[r]]$fsusie_output &lt;- susie_post_processor(fitted[[r]]$fsusie_obj, fdat$residual_X[[r]], top_pc_data, fdat$residual_X_scalar[[r]], 1, fdat$maf[[r]], 
+                                                          secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
+                                                          other_quantities = list(dropped_samples = list(X=fdat$dropped_sample$dropped_samples_X[[r]], y=fdat$dropped_sample$dropped_samples_Y[[r]], 
+                                                                                  covar=fdat$dropped_sample$dropped_samples_covar[[r]])))
+        # Run SuSiE on top PC
+        if(${&quot;TRUE&quot; if (run_susie_top_pc or twas_weights) else &quot;FALSE&quot;}) {
+            fitted[[r]]$susie_on_top_pc &lt;- susie_wrapper(fdat$residual_X[[r]], top_pc_data, init_L=${init_L}, max_L=${max_L}, refine=TRUE, coverage = ${coverage[0]})
+            fitted[[r]]$susie_on_top_pc &lt;- susie_post_processor(susie_top_pc, fdat$residual_X[[r]], top_pc_data, fdat$residual_X_scalar[[r]], 1, fdat$maf[[r]],
+                                           secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
+                                           other_quantities = list(dropped_samples = list(X=fdat$dropped_sample$dropped_samples_X[[r]], 
+                                                                   y=fdat$dropped_sample$dropped_samples_Y[[r]], 
+                                                                   covar=fdat$dropped_sample$dropped_samples_covar[[r]])))
+        }     
+        
+        # Run SuSiE TWAS weights on top PC
+        # Exactly the same codes copied from susie_twas
+        if ( ${&quot;TRUE&quot; if twas_weights else &quot;FALSE&quot;} ) {
+            twas_weights_output &lt;- twas_weights_pipeline(fdat$residual_X[[r]], top_pc_data, fdat$maf[[r]], susie_fit=fitted[[r]]$susie_on_top_pc$susie_result_trimmed, 
+                                     ld_reference_meta_file = ${(&#39;&quot;&#39; + ld_reference_meta_file + &#39;&quot;&#39;) if not ld_reference_meta_file.is_dir() else &quot;NULL&quot;},
+                                     X_scalar = fdat$residual_X_scalar[[r]], y_scalar = fdat$residual_Y_scalar[[r]],
+                                     cv_folds = ${twas_cv_folds}, coverage=${coverage[0]}, secondary_coverage=c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
+                                     min_cv_maf=${min_cv_maf}, max_cv_variants=${max_cv_variants}, cv_seed=${seed}, cv_threads=${twas_cv_threads})
+            # clean up the output database
+            fitted[[r]] = c(fitted[[r]], twas_weights_output)
+            fitted[[r]]$twas_weights = lapply(fitted[[r]]$twas_weights, function(x) { rownames(x) &lt;- NULL; return(x) })
+        }
+        fitted[[r]]$total_time_elapsed = proc.time() - st
+        fitted[[r]]$region_info = list(region_coord=parse_region(&quot;${_meta_info[0]}&quot;), grange=parse_region(&quot;${_meta_info[1]}&quot;), region_name=&quot;${_meta_info[2]}&quot;)
+        # original data no longer relevant, set to NA to release memory
+        fdat$residual_X[[r]] &lt;- NA
+        fdat$residual_Y[[r]] &lt;- NA
     }
-    saveRDS(fitted, ${_output:ar}, compress=&#39;xz&#39;)
+    names(fitted) &lt;- names(fdat$residual_Y)
+    saveRDS(list(&quot;${_meta_info[0]}&quot; = fitted), ${_output:ar}, compress=&#39;xz&#39;)
 </pre></div>
 </div>
 </div>

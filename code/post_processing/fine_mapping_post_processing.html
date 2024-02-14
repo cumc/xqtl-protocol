@@ -221,7 +221,7 @@ const thebe_selector_output = ".output, .cell_output"
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype Data Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
 </ul>
 </li>
@@ -487,8 +487,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-susie-results">Extracting susie results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-susie-rss-results-for-adgwas">Extracting susie_rss results for ADGWAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-fsusie-results">Extracting fsusie results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-cis-analysis-susie-twas-results">Exporting cis_analysis susie_twas results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-pip-plot">Plotting the pip plot</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#into-vcf-format">Into VCF format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-window-analysis-result-consolidation">Cis-window analysis Result consolidation</a></li>
 </ul>
             </nav>
         </div>
@@ -589,6 +591,62 @@ sos run pipeline/SuSiE_post_processing.ipynb susie_tsv_collapse \
     --cwd output/f_susie_tad_meQTL_pos_2/ --rds_path `ls output/f_susie_tad_meQTL_pos_2//cache/*rds ` \
     --region-list ../eqtl/dlpfc_tad_list \
     --container containers/stephenslab.sif -s build
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="exporting-cis-analysis-susie-twas-results">
+<h2>Exporting cis_analysis susie_twas results<a class="headerlink" href="#exporting-cis-analysis-susie-twas-results" title="Permalink to this heading">#</a></h2>
+<p>meta file is produced by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_condition</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">Author</span><span class="p">,</span> <span class="n">qtl_type</span><span class="p">){</span>
+    <span class="n">strings</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">()</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">condition</span> <span class="ow">in</span> <span class="n">conditions</span><span class="p">){</span>
+        <span class="n">string</span> <span class="o">=</span>  <span class="n">paste</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">Author</span><span class="p">,</span> <span class="n">qtl_type</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>  
+        <span class="n">string</span> <span class="o">=</span> <span class="n">paste</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">unlist</span><span class="p">(</span><span class="n">strsplit</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))),</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="n">strings</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="n">strings</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">raw_name</span><span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;Mic&quot;</span><span class="p">,</span><span class="s2">&quot;Ast&quot;</span><span class="p">,</span><span class="s2">&quot;Oli&quot;</span><span class="p">,</span><span class="s2">&quot;OPC&quot;</span><span class="p">,</span><span class="s2">&quot;Exc&quot;</span><span class="p">,</span><span class="s2">&quot;Inh&quot;</span><span class="p">,</span><span class="s2">&quot;DLPFC&quot;</span><span class="p">,</span><span class="s2">&quot;PCC&quot;</span><span class="p">,</span><span class="s2">&quot;AC&quot;</span><span class="p">)</span>
+<span class="n">raw_name_kellis</span><span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;Mic_Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;Ast_Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;Oli_Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;OPC_Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;Exc_Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;Inh_Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;Ast.10&quot;</span><span class="p">,</span><span class="s2">&quot;Mic.12&quot;</span><span class="p">,</span><span class="s2">&quot;Mic.13&quot;</span><span class="p">)</span>
+
+<span class="n">dejager_name</span> <span class="o">&lt;-</span> <span class="n">get_condition</span><span class="p">(</span><span class="n">raw_name</span><span class="p">,</span> <span class="s2">&quot;De_Jager&quot;</span><span class="p">,</span><span class="s2">&quot;eQTL&quot;</span><span class="p">)</span>
+<span class="n">kellis_name</span> <span class="o">&lt;-</span> <span class="n">get_condition</span><span class="p">(</span><span class="n">raw_name_kellis</span><span class="p">,</span> <span class="s2">&quot;Kellis&quot;</span><span class="p">,</span><span class="s2">&quot;eQTL&quot;</span><span class="p">)</span>
+<span class="n">eQTL_meta</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span><span class="n">raw_name</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">raw_name</span><span class="p">,</span> <span class="n">raw_name_kellis</span><span class="p">),</span> <span class="n">new_name</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="n">dejager_name</span><span class="p">,</span> <span class="n">kellis_name</span><span class="p">))</span>
+<span class="n">write_delim</span><span class="p">(</span><span class="n">eQTL_meta</span><span class="p">,</span> <span class="s2">&quot;/mnt/vast/hpc/csg/rf2872/Work/Multivariate/susie_2024_new/eQTL_meta.tsv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">rf2872</span><span class="o">/</span><span class="n">Work</span><span class="o">/</span><span class="n">Multivariate</span><span class="o">/</span><span class="n">susie_2024_new</span><span class="o">/</span><span class="n">eQTL_meta</span><span class="o">.</span><span class="n">tsv</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>raw_name new_name
+Mic Mic_De_Jager_eQTL
+Ast Ast_De_Jager_eQTL
+Oli Oli_De_Jager_eQTL
+OPC OPC_De_Jager_eQTL
+Exc Exc_De_Jager_eQTL
+Inh Inh_De_Jager_eQTL
+DLPFC DLPFC_De_Jager_eQTL
+PCC PCC_De_Jager_eQTL
+AC AC_De_Jager_eQTL
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">codes</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">fine_mapping_post_processing</span><span class="o">.</span><span class="n">ipynb</span>  <span class="n">cis_results_export</span> \
+    <span class="o">--</span><span class="n">condition_meta</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">rf2872</span><span class="o">/</span><span class="n">Work</span><span class="o">/</span><span class="n">Multivariate</span><span class="o">/</span><span class="n">susie_2024_new</span><span class="o">/</span><span class="n">eQTL_meta</span><span class="o">.</span><span class="n">tsv</span> \
+    <span class="o">--</span><span class="n">region_list</span> <span class="o">~/</span><span class="n">codes</span><span class="o">/</span><span class="n">fungen</span><span class="o">-</span><span class="n">xqtl</span><span class="o">-</span><span class="n">analysis</span><span class="o">/</span><span class="n">resource</span><span class="o">/</span><span class="n">TADB_enhanced_cis</span><span class="o">.</span><span class="n">protein_coding</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">file_path</span> <span class="o">./</span><span class="n">rds_files</span> \
+    <span class="o">--</span><span class="n">prefix</span> <span class="n">ROSMAP_eQTL</span> <span class="n">ROSMAP_eQTL_Kellis</span> \
+    <span class="o">--</span><span class="kp">name</span> <span class="n">ROSMAP_eQTL</span>
 </pre></div>
 </div>
 </div>
@@ -1499,6 +1557,130 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:nn}.stdout&quot;, stderr = 
 </div>
 </div>
 </section>
+<section id="cis-window-analysis-result-consolidation">
+<h2>Cis-window analysis Result consolidation<a class="headerlink" href="#cis-window-analysis-result-consolidation" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Result: first 3 col are chr start end, 4th column is region ID, 5th col are original file names, 6 col the consolidated file name
+# 7 col containing all the condition names comma split, to indicate what&#39;s available inside of RDS file on 6 col
+[cis_results_export_1]
+# per chunk we process at most 200 datasets
+parameter: per_chunk = 200
+# Region list should have last column being region name. 
+# Meta-data will be written to this column
+parameter:region_list=path()
+parameter:file_path=&#39;&#39;
+parameter:prefix=[&#39;ROSMAP_eQTL&#39;,&#39;ROSMAP_sQTL&#39;]
+parameter:suffix=&#39;susie_weights_db.rds&#39;
+parameter: condition_meta = path()
+import pandas as pd
+region = pd.read_csv(region_list, delim_whitespace=&#39;\t&#39;)
+# Function to create list of formatted strings for each row
+def create_formatted_list(row):
+    formatted_list = [f&quot;{file_path}/{p}.{row[&#39;gene_id&#39;]}.{suffix}&quot; for p in prefix]
+    return formatted_list
+# Apply the function to each row
+region[&#39;original_data&#39;] = region.apply(create_formatted_list, axis=1)
+
+import pandas as pd
+import os
+
+def group_by_region(lst, partition):
+    # from itertools import accumulate
+    # partition = [len(x) for x in partition]
+    # Compute the cumulative sums once
+    # cumsum_vector = list(accumulate(partition))
+    # Use slicing based on the cumulative sums
+    # return [lst[(cumsum_vector[i-1] if i &gt; 0 else 0):cumsum_vector[i]] for i in range(len(partition))]
+    return partition
+
+def filter_existing_paths(row):
+    existing_paths = [path for path in row if os.path.exists(path)]
+    return existing_paths
+
+region[&#39;original_data&#39;] = region[&#39;original_data&#39;].apply(filter_existing_paths)
+region = region[region[&#39;original_data&#39;].map(bool)]
+regional_data = {
+    &#39;meta&#39;: [(row[&#39;#chr&#39;], row[&#39;start&#39;], row[&#39;end&#39;], row[&#39;gene_id&#39;]) for _, row in region.iterrows()],
+    &#39;data&#39;: [(row[&#39;original_data&#39;]) for _, row in region.iterrows()]
+}
+
+meta_info = regional_data[&#39;meta&#39;]
+
+input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
+output: f&quot;{cwd}/{name}_cache/{name}_batch{_index+1}.tsv&quot;
+task: trunk_workers = job_size, walltime = walltime, trunk_size = 1, mem = mem, cores = numThreads, tags = f&#39;{_output:bn}&#39;
+R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    library(tidyverse)
+    # Process each path and collect results
+    orig_files = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[0:len(_input)//2+1]])})
+    meta &lt;- read_delim(&quot;${condition_meta}&quot;, col_names = F)
+     # Extract info from each RDS file
+    results &lt;- list()
+    gene = &quot;${_meta_info[3]}&quot;
+    results[[gene]] &lt;- lapply(orig_files, function(rds_path) {
+      dat &lt;- readRDS(rds_path)
+        # .*?_ : Non-greedy match of any characters up to the first underscore.
+        # (.*?) : Captures as few characters as possible between an underscore and the first period in a non-greedy manner.
+        # \\..* : Matches a literal period and all characters following it.
+      qtl_type &lt;-  sub(&quot;(\\.*?)\\..*&quot;, &quot;\\1&quot;, basename(rds_path))%&gt;% sub(&quot;.*?_&quot;, &quot;\\1&quot;, .)
+
+      lapply(names(dat[[1]]), function(condition) {
+        dat_con &lt;- dat[[1]][[condition]]
+
+        list(
+          region_info = dat_con$region_info,
+          top_loci = dat_con$top_loci,
+          preset_top_loci = dat_con$preset_variants_result$top_loci,
+          pip = dat_con$susie_result_trimmed$pip,
+          variant_names = dat_con$variant_names,
+          CV_table = dat_con$twas_cv_result$performance,
+          sumstats = dat_con$sumstats
+        ) %&gt;% list(qtl_con = meta %&gt;% filter(X1 == condition) %&gt;% pull(X2)) # store condition name
+      })
+    }) %&gt;% unlist(recursive = FALSE)
+
+    names(results[[gene]]) &lt;- map_chr(results[[gene]], &quot;qtl_con&quot;)
+    results[[gene]] &lt;- map(results[[gene]], ~ .x[-which(names(.x) == &quot;qtl_con&quot;)])
+    res &lt;- res_sum &lt;- list()
+    res[[gene]] &lt;- lapply(results[[gene]], function(element) { element[[1]][c(&#39;region_info&#39;, &#39;top_loci&#39;, &#39;preset_top_loci&#39;, &#39;pip&#39;, &#39;variant_names&#39;, &#39;CV_table&#39;)] })
+    res_sum[[gene]] &lt;- lapply(results[[gene]], function(element) { element[[1]][c(&quot;variant_names&quot;, &quot;sumstats&quot;)] })
+  
+    combine_data = paste0(&quot;${_output:add}&quot;,&quot;/&quot;,&quot;${_input[0]:bn}&quot;, &quot;.export.rds&quot;)
+    combine_data_sumstats = paste0(&quot;${_output:add}&quot;,&quot;/&quot;,&quot;${_input[0]:bn}&quot;, &quot;.export_sumstats.rds&quot;)
+    saveRDS(res, combine_data)
+    saveRDS(res_sum, combine_data_sumstats)
+    meta = data.frame(chr=&quot;${_meta_info[0]}&quot;, start=&quot;${_meta_info[1]}&quot;, end=&quot;${_meta_info[2]}&quot;, gene_id=&quot;${_meta_info[3]}&quot;, 
+                      original_data = paste(orig_files, collapse = &quot;, &quot;), combined_data = combine_data, combined_data_sumstats = combine_data_sumstats, conditions = paste(names(results[[gene]]), collapse = &quot;,&quot;))
+    write_delim(meta, &quot;${_output}&quot;, delim = &#39;\t&#39;)
+  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[cis_results_export_2]
+input: group_by = &#39;all&#39;
+output: f&quot;{cwd}/{name}.cis_results_db.tsv&quot; 
+task: trunk_workers = 1, walltime = &#39;1h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
+bash: expand = &quot;{ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    input_path=$(echo ${_input[0]:adr}| sed &#39;s/^\$//&#39;)
+    output_file=$(echo ${_output:r}|sed &#39;s/^\$//g&#39;)
+
+    for file in $input_path/*.tsv; do
+      if [ &quot;$file&quot; == &quot;$(echo *.tsv | cut -d&#39; &#39; -f1)&quot; ]; then
+        head -n 1 &quot;$file&quot;| sed &#39;s/^chr/#chr/&#39; &gt; $output_file
+      fi
+
+      tail -n +2 &quot;$file&quot; &gt;&gt; $output_file
+    done
+    rm -rf $input_path
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1558,8 +1740,10 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:nn}.stdout&quot;, stderr = 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-susie-results">Extracting susie results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-susie-rss-results-for-adgwas">Extracting susie_rss results for ADGWAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-fsusie-results">Extracting fsusie results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-cis-analysis-susie-twas-results">Exporting cis_analysis susie_twas results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-pip-plot">Plotting the pip plot</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#into-vcf-format">Into VCF format</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-window-analysis-result-consolidation">Cis-window analysis Result consolidation</a></li>
 </ul>
   </nav></div>
 

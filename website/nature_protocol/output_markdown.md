@@ -99,8 +99,6 @@ Quality control and normalization are performed on output from the leafcutter an
 We use a gene coordinate annotation pipeline based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py). This adds genomic coordinate annotations to gene-level molecular phenotype files generated in `gct` format and converts them to `bed` format for downstreams analysis.
 
 
-A collection of methods for the imputation of missing omics data values are included in our pipelinle. Imputation is optional of eQTL analysis, but necessary for other QTLs. We use `flashier`, a Empirical Bayes Matrix Factorization model, to impute missing values. Other imputation methods include missForest, XGBoost, k-nearest neighbors, soft impute, mean imputation, and last observed data.
-
 We include a collection of workflows to format molecular phenotype data. These include workflows to separate phenotypes by chromosome, by user-provided regions, a workflow to subset bam files and a workflow to extract samples from phenotype files.
 
 ##### B.  Covariate Data Preprocessing
@@ -306,12 +304,11 @@ Timing <1 min
 ```
 
 
-##### ii. Phenotype Imputation
-Timing X min
 
 ```
-sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb flash \
-    --container oras://ghcr.io/cumc/omics_imputation_apptainer:latest
+sos run phenotype_imputation.ipynb EBMF \
+    --container .containers/factor_analysis.sif \
+
 ```
 
 

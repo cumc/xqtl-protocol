@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Multivariate SuSiE and ENLOC model &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/integrative_analysis/COLOC/mvenloc';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Functional annotation integration" href="../functional_annotation.html" />
+    <link rel="prev" title="Colocalization with FastENLOC" href="fastenloc_dap.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../data_preprocessing/reference_data.html">Reference data standardization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">Genotype VCF file quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK file quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">Principal component analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">Genomic relationship matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">Genotype data formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene coordinate annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype data formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden factor analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate data formatting</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/qtl_association_testing.html">QTL association analysis</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL association testing</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Statistical Fine-mapping</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../fine_mapping/univariate_fine_mapping.html">Univariate fine-mapping workflows</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE.html">Fine-mapping with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fine_mapping/SuSiE/SuSiE_RSS.html">Fine-mapping with SuSiE RSS model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fine_mapping/multivariate_fine_mapping.html">Multivariate fine-mapping workflows</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/METAL/METAL.html">Meta-analysis with METAL</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-omics integration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../colocalization.html">QTL and GWAS Colocalization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fastenloc_dap.html">Colocalization with FastENLOC</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Multivariate SuSiE and ENLOC model</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../functional_annotation.html">Functional annotation integration</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../enrichment/gwas_enrichment.html">Enrichment analysis: TORUS and GREGOR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../enrichment/ldsc.html">Stratified LD Score Regression</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Utilities</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../misc/summary_stats_standardizer.html">Summary statistics standardization and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/rds_to_vcf.html">Summary statistics in VCF format</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/integrative_analysis/COLOC/mvenloc.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/integrative_analysis/COLOC/mvenloc.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/code/integrative_analysis/COLOC/mvenloc.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multivariate SuSiE and ENLOC model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aim">Aim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-0-data-formatting">Step 0: data formatting</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">Extract common SNPS between the GWAS summary statistics and eQTL data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-common-snps-between-the-summary-statistics-and-ld">Extract common SNPS between the summary statistics and LD</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-fine-mapping">Step 1: fine-mapping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-fine-mapping-results-processing">Step 2: fine-mapping results processing</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">Construct eQTL annotation file using eQTL SNP PIPs and credible sets</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#export-gwas-pip">Export GWAS PIP</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-colocalization-with-fastenloc">Step 3: Colocalization with FastEnloc</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="multivariate-susie-and-enloc-model">
+<h1>Multivariate SuSiE and ENLOC model<a class="headerlink" href="#multivariate-susie-and-enloc-model" title="Permalink to this heading">#</a></h1>
+<section id="aim">
+<h2>Aim<a class="headerlink" href="#aim" title="Permalink to this heading">#</a></h2>
+<p>This notebook aims to demonstrate a workflow of generating posterior inclusion probabilities (PIPs) from GWAS summary statistics using SuSiE regression and construsting SNP signal clusters from global eQTL analysis data obtained from multivariate SuSiE models.</p>
+</section>
+<section id="methods-overview">
+<h2>Methods overview<a class="headerlink" href="#methods-overview" title="Permalink to this heading">#</a></h2>
+<p>This procedure assumes that molecular phenotype summary statistics and GWAS summary statistics are aligned and harmonized to have consistent allele coding (see <span class="xref myst">this module</span> for implementation details). Both molecular phenotype QTL and GWAS should be fine-mapped beforehand using mvSusiE or SuSiE. We further assume (and require) that molecular phenotype and GWAS data come from the same population ancestry. Violations from this assumption may not cause an error in the analysis computational workflow but the results obtained may not be valid.</p>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>GWAS Summary Statistics with the following columns:</p>
+<ul class="simple">
+<li><p>chr: chromosome number</p></li>
+<li><p>bp: base pair position</p></li>
+<li><p>a1: effect allele</p></li>
+<li><p>a2: other allele</p></li>
+<li><p>beta: effect size</p></li>
+<li><p>se: standard error of beta</p></li>
+<li><p>z: z score</p></li>
+</ul>
+</li>
+<li><p>eQTL data from multivariate SuSiE model with the following columns:</p>
+<ul class="simple">
+<li><p>chr: chromosome number</p></li>
+<li><p>bp: base pair position</p></li>
+<li><p>a1: effect allele</p></li>
+<li><p>a2: other allele</p></li>
+<li><p>pip: posterior inclusion probability</p></li>
+</ul>
+</li>
+<li><p>LD correlation matrix</p></li>
+</ol>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h2>
+<p>Intermediate files:</p>
+<ol class="arabic simple">
+<li><p>GWAS PIP file with the following columns</p>
+<ul class="simple">
+<li><p>var_id</p></li>
+<li><p>ld_block</p></li>
+<li><p>snp_pip</p></li>
+<li><p>block_pip</p></li>
+</ul>
+</li>
+<li><p>eQTL annotation file with the following columns</p>
+<ul class="simple">
+<li><p>chr</p></li>
+<li><p>bp</p></li>
+<li><p>var_id</p></li>
+<li><p>a1</p></li>
+<li><p>a2</p></li>
+<li><p>annotations, in the format: <code class="docutils literal notranslate"><span class="pre">gene:cs_num&#64;tissue=snp_pip[cs_pip:cs_total_snps]</span></code></p></li>
+</ul>
+</li>
+</ol>
+<p>Final Outputs:</p>
+<ol class="arabic simple">
+<li><p>Enrichment analysis result prefix.enloc.enrich.rst: estimated enrichment parameters and standard errors.</p></li>
+<li><p>Signal-level colocalization result prefix.enloc.sig.out: the main output from the colocalization analysis with the following format</p>
+<ul class="simple">
+<li><p>column 1: signal cluster name (from eQTL analysis)</p></li>
+<li><p>column 2: number of member SNPs</p></li>
+<li><p>column 3: cluster PIP of eQTLs</p></li>
+<li><p>column 4: cluster PIP of GWAS hits (without eQTL prior)</p></li>
+<li><p>column 5: cluster PIP of GWAS hits (with eQTL prior)</p></li>
+<li><p>column 6: regional colocalization probability (RCP)</p></li>
+</ul>
+</li>
+<li><p>SNP-level colocalization result prefix.enloc.snp.out: SNP-level colocalization output with the following form at</p>
+<ul class="simple">
+<li><p>column 1: signal cluster name</p></li>
+<li><p>column 2: SNP name</p></li>
+<li><p>column 3: SNP-level PIP of eQTLs</p></li>
+<li><p>column 4: SNP-level PIP of GWAS (without eQTL prior)</p></li>
+<li><p>column 5: SNP-level PIP of GWAS (with eQTL prior)</p></li>
+<li><p>column 6: SNP-level colocalization probability</p></li>
+</ul>
+</li>
+<li><p>Sorted list of colocalization signals</p></li>
+</ol>
+<p>Takes into consideration 3 situations:</p>
+<ol class="arabic simple">
+<li><p>“Major” and “minor” alleles flipped</p></li>
+<li><p>Different strand but same variant</p></li>
+<li><p>Remove variants with A/T and C/G alleles due to ambiguity</p></li>
+</ol>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">merge</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">eqtl</span><span class="o">-</span><span class="n">sumstats</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">gwas</span><span class="o">-</span><span class="n">sumstats</span> <span class="o">..</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">eqtl</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">sumstats</span><span class="o">-</span><span class="n">file</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">ld</span><span class="o">-</span><span class="n">region</span> <span class="o">..</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">gwas</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">sumstats</span><span class="o">-</span><span class="n">file</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">ld</span><span class="o">-</span><span class="n">region</span> <span class="o">..</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">enloc</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="n">output</span> \
+    <span class="o">--</span><span class="n">eqtl</span><span class="o">-</span><span class="n">pip</span> <span class="o">..</span> \
+    <span class="o">--</span><span class="n">gwas</span><span class="o">-</span><span class="n">pip</span> <span class="o">..</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="n">enloc</span><span class="o">.</span><span class="n">enrich</span><span class="o">.</span><span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="n">enloc</span><span class="o">.</span><span class="n">snp</span><span class="o">.</span><span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">mvenloc</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="step-0-data-formatting">
+<h3>Step 0: data formatting<a class="headerlink" href="#step-0-data-formatting" title="Permalink to this heading">#</a></h3>
+<section id="extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">
+<h4>Extract common SNPS between the GWAS summary statistics and eQTL data<a class="headerlink" href="#extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[merger]
+# eQTL summary statistics as a list of RData
+parameter: eqtl_sumstats = path 
+# GWAS summary stats in gz format
+parameter: gwas_sumstats = path 
+input: eqtl_sumstats, gwas_sumstats
+output: f&quot;{cwd:a}/{eqtl_sumstats:bn}.standardized.gz&quot;, f&quot;{cwd:a}/{gwas_sumstats:bn}.standardized.gz&quot;
+R: expand = &quot;${ }&quot;
+
+    ###
+    # functions
+    ###
+
+    allele.qc = function(a1,a2,ref1,ref2) {
+        # a1 and a2 are the first data-set
+        # ref1 and ref2 are the 2nd data-set
+        # Make all the alleles into upper-case, as A,T,C,G:
+            a1 = toupper(a1)
+            a2 = toupper(a2)
+            ref1 = toupper(ref1)
+            ref2 = toupper(ref2)
+        # Strand flip, to change the allele representation in the 2nd data-set
+        strand_flip = function(ref) {
+            flip = ref
+            flip[ref == &quot;A&quot;] = &quot;T&quot;
+            flip[ref == &quot;T&quot;] = &quot;A&quot;
+            flip[ref == &quot;G&quot;] = &quot;C&quot;
+            flip[ref == &quot;C&quot;] = &quot;G&quot;
+            flip
+        }
+        flip1 = strand_flip(ref1)
+        flip2 = strand_flip(ref2)
+        snp = list()
+        # Remove strand ambiguous SNPs (scenario 3)
+        snp[[&quot;keep&quot;]] = !((a1==&quot;A&quot; &amp; a2==&quot;T&quot;) | (a1==&quot;T&quot; &amp; a2==&quot;A&quot;) | (a1==&quot;C&quot; &amp; a2==&quot;G&quot;) | (a1==&quot;G&quot; &amp; a2==&quot;C&quot;))
+        # Remove non-ATCG coding
+        snp[[&quot;keep&quot;]][ a1 != &quot;A&quot; &amp; a1 != &quot;T&quot; &amp; a1 != &quot;G&quot; &amp; a1 != &quot;C&quot; ] = F
+        snp[[&quot;keep&quot;]][ a2 != &quot;A&quot; &amp; a2 != &quot;T&quot; &amp; a2 != &quot;G&quot; &amp; a2 != &quot;C&quot; ] = F
+        # as long as scenario 1 is involved, sign_flip will return TRUE
+        snp[[&quot;sign_flip&quot;]] = (a1 == ref2 &amp; a2 == ref1) | (a1 == flip2 &amp; a2 == flip1)
+        # as long as scenario 2 is involved, strand_flip will return TRUE
+        snp[[&quot;strand_flip&quot;]] = (a1 == flip1 &amp; a2 == flip2) | (a1 == flip2 &amp; a2 == flip1)
+        # remove other cases, eg, tri-allelic, one dataset is A C, the other is A G, for example.
+        exact_match = (a1 == ref1 &amp; a2 == ref2) 
+        snp[[&quot;keep&quot;]][!(exact_match | snp[[&quot;sign_flip&quot;]] | snp[[&quot;strand_flip&quot;]])] = F
+        return(snp)
+    }
+
+    # Extract information from RData
+    eqtl.split = function(eqtl){
+      rows = length(eqtl)
+      chr = vector(length = rows)
+      pos = vector(length = rows)
+      a1 = vector(length = rows)
+      a2 = vector(length = rows)
+      for (i in 1:rows){
+        split1 = str_split(eqtl[i], &quot;:&quot;)
+        split2 = str_split(split1[[1]][2], &quot;_&quot;)
+        chr[i]= split1[[1]][1]
+        pos[i] = split2[[1]][1]
+        a1[i] = split2[[1]][2]
+        a2[i] = split2[[1]][3]
+
+      }
+      eqtl.df = data.frame(eqtl,chr,pos,a1,a2)
+    }
+
+    remove.dup = function(df){
+      df = df %&gt;% arrange(PosGRCh37, -N)
+      df = df[!duplicated(df$PosGRCh37),]
+      return(df)
+    }
+  
+    ###
+    # Code
+    ###
+    
+    # gene regions: 
+    # 1 = ENSG00000203710
+    # 2 = ENSG00000064687
+    # 3 = ENSG00000203710
+    
+    # eqtl
+    gene.name = scan(${_input[0]:r}, what=&#39;character&#39;)
+
+    # initial filter of gwas variants that are in eqtl
+    gwas = gwas_sumstats
+    gwas_filter = gwas[which(gwas$id %in% var),]
+
+    # create eqtl df
+    eqtl.df = eqtl.split(eqtl$var)
+
+    # allele flip
+    f_gwas = gwas %&gt;% filter(chr %in% eqtl.df$chr &amp; PosGRCh37 %in% eqtl.df$pos)
+    eqtl.df.f = eqtl.df %&gt;% filter(pos %in% f_gwas$PosGRCh37)
+
+    # check if there are duplicate pos
+    length(unique(f_gwas$PosGRCh37))
+
+    # multiple snps with same pos
+    dup.pos = f_gwas %&gt;% group_by(PosGRCh37) %&gt;% filter(n() &gt; 1) 
+
+    f_gwas = remove.dup(f_gwas)
+
+    qc = allele.qc(f_gwas$testedAllele, f_gwas$otherAllele, eqtl.df.f$a1, eqtl.df.f$a2)
+    keep = as.data.frame(qc$keep)
+    sign = as.data.frame(qc$sign_flip)
+    strand = as.data.frame(qc$strand_flip)
+
+    # sign flip
+    f_gwas$z[qc$sign_flip] = -1 * f_gwas$z[qc$sign_flip]
+    f_gwas$testedAllele[qc$sign_flip] = eqtl.df.f$a1[qc$sign_flip]
+    f_gwas$otherAllele[qc$sign_flip] = eqtl.df.f$a2[qc$sign_flip]
+
+    f_gwas$testedAllele[qc$strand_flip] = eqtl.df.f$a1[qc$strand_flip]
+    f_gwas$otherAllele[qc$strand_flip] = eqtl.df.f$a2[qc$strand_flip]
+
+    # remove ambigiuous 
+    if ( sum(!qc$keep) &gt; 0 ) {
+      eqtl.df.f = eqtl.df.f[qc$keep,]
+      f_gwas = f_gwas[qc$keep,]
+    }
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-common-snps-between-the-summary-statistics-and-ld">
+<h4>Extract common SNPS between the summary statistics and LD<a class="headerlink" href="#extract-common-snps-between-the-summary-statistics-and-ld" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[eqtl_1, gwas_1 (filter LD file and sumstat file)]
+parameter: sumstat_file = path
+# LD and region information: chr, start, end, LD file
+paramter: ld_region = path
+input: sumstat_file, for_each = &#39;ld_region&#39;
+output: f&quot;{cwd:a}/{sumstat_file:bn}_{region[0]}_{region[1]}_{region[2]}.z.rds&quot;,
+        f&quot;{cwd:a}/{sumstat_file:bn}_{region[0]}_{region[1]}_{region[2]}.ld.rds&quot;
+R:
+    # FIXME: need to filter both ways for sumstats and for LD
+    # lds filtered
+  
+    eqtl_id = which(var %in% eqtl.df.f$eqtl)
+    ld_f = ld[eqtl_id, eqtl_id]
+
+    # ld missing
+    miss = which(is.na(ld_f), arr.ind=TRUE)
+    miss_r = unique(as.data.frame(miss)$row)
+    miss_c = unique(as.data.frame(miss)$col)
+
+    total_miss = unique(union(miss_r,miss_c))
+    # FIXME: LD should not have missing data if properly processed by our pipeline
+    # In the future we should throw an error when it happens
+
+    if (length(total_miss)!=0){
+    ld_f2 = ld_f[-total_miss,]
+    ld_f2 = ld_f2[,-total_miss]
+    dim(ld_f2)
+    }else{ld_f2 = ld_f}
+    
+    f_gwas.f = f_gwas %&gt;% filter(id %in% eqtl_id.f$eqtl)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-1-fine-mapping">
+<h3>Step 1: fine-mapping<a class="headerlink" href="#step-1-fine-mapping" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[eqtl_2, gwas_2 (finemapping)]
+# FIXME: RDS file should have included region information
+output: f&quot;{_input[0]:nn}.susieR.rds&quot;, f&quot;{_input[0]:nn}.susieR_plot.rds&quot;
+R:
+    susie_results = susieR::susie_rss(z = f_gwas.f$z,R = ld_f2, check_prior = F)
+    susieR::susie_plot(susie_results,&quot;PIP&quot;)
+    susie_results$z = f_gwas.f$z
+    susieR::susie_plot(susie_results,&quot;z_original&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-fine-mapping-results-processing">
+<h3>Step 2: fine-mapping results processing<a class="headerlink" href="#step-2-fine-mapping-results-processing" title="Permalink to this heading">#</a></h3>
+<section id="construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">
+<h4>Construct eQTL annotation file using eQTL SNP PIPs and credible sets<a class="headerlink" href="#construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[eqtl_3 (create signal cluster using CS)]
+output: f&quot;{_input[0]:nn}.enloc_annot.gz&quot;
+R:
+    cs = eqtl[[&quot;sets&quot;]][[&quot;cs&quot;]][[&quot;L1&quot;]]
+    o_id = which(var %in% eqtl_id.f$eqtl)
+    pip = eqtl$pip[o_id]
+    eqtl_annot = cbind(eqtl_id.f, pip) %&gt;% mutate(gene = gene.name,cluster = -1, cluster_pip = 0, total_snps = 0)
+
+    for(snp in cs){
+      eqtl_annot$cluster[snp] = 1
+      eqtl_annot$cluster_pip[snp] = eqtl[[&quot;sets&quot;]][[&quot;coverage&quot;]]
+       eqtl_annot$total_snps[snp] = length(cs)
+    }
+
+    eqtl_annot1 = eqtl_annot %&gt;% filter(cluster != -1)%&gt;% 
+      mutate(annot = sprintf(&quot;%s:%d@=%e[%e:%d]&quot;,gene,cluster,pip,cluster_pip,total_snps)) %&gt;%
+      select(c(chr,pos,eqtl,a1,a2,annot))
+      
+    
+    # FIXME: repeats whole process (extracting+fine-mapping+cs creation) 3 times before this next step 
+    eqtl_annot_comb = rbind(eqtl_annot3, eqtl_annot1, eqtl_annot2)
+
+    # FIXME: write to a zip file
+    write.table(eqtl_annot_comb, file = &quot;eqtl.annot.txt&quot;, col.names = T, row.names = F, quote = F)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="export-gwas-pip">
+<h4>Export GWAS PIP<a class="headerlink" href="#export-gwas-pip" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[gwas_3 (format PIP into enloc GWAS input)]
+output: f&quot;{_input[0]:nn}.enloc_gwas.gz&quot;
+R:
+    gwas_annot1 = f_gwas.f %&gt;% mutate(pip = susie_results$pip)
+    
+    # FIXME: repeat whole process (extracting common snps + fine-mapping) 3 times before the next steps
+    
+    gwas_annot_comb = rbind(gwas_annot3, gwas_annot1, gwas_annot2)
+    gwas_loc_annot = gwas_annot_comb %&gt;% select(id, chr, PosGRCh37,z)
+    write.table(gwas_loc_annot, file = &quot;loc.gwas.txt&quot;, col.names = F, row.names = F, quote = F)
+
+bash:    
+    perl format2torus.pl loc.gwas.txt &gt; loc2.gwas.txt
+    
+R:
+    loc = data.table::fread(&quot;loc2.gwas.txt&quot;)
+    loc = loc[[&quot;V2&quot;]]
+    
+    gwas_annot_comb2 = gwas_annot_comb %&gt;% select(id, chr, PosGRCh37,pip)
+    gwas_annot_comb2 = cbind(gwas_annot_comb2, loc) %&gt;% select(id, loc, pip)
+    
+    write.table(gwas_annot_comb2, file = &quot;gwas.pip.txt&quot;, col.names = F, row.names = F, quote = F)
+
+bash:
+    perl format2torus.pl gwas.pip.txt | gzip --best &gt; gwas.pip.gz
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-3-colocalization-with-fastenloc">
+<h3>Step 3: Colocalization with FastEnloc<a class="headerlink" href="#step-3-colocalization-with-fastenloc" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">enloc</span><span class="p">]</span>
+<span class="c1"># eQTL summary statistics as a list of RData</span>
+<span class="c1"># FIXME: to replace later</span>
+<span class="kn">parameter:</span> <span class="n">eqtl_pip</span> <span class="o">=</span> <span class="n">path</span> 
+<span class="c1"># GWAS summary stats in gz format</span>
+<span class="kn">parameter:</span> <span class="n">gwas_pip</span> <span class="o">=</span> <span class="n">path</span> 
+<span class="kn">input:</span> <span class="n">eqtl_pip</span><span class="p">,</span> <span class="n">gwas_pip</span>
+<span class="kn">output:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">eqtl_pip</span><span class="si">:</span><span class="s2">bnn</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">gwas_pip</span><span class="si">:</span><span class="s2">bnn</span><span class="si">}</span><span class="s2">.xx.gz&quot;</span>
+<span class="kn">bash:</span>
+    <span class="n">fastenloc</span> <span class="o">-</span><span class="n">eqtl</span> <span class="n">eqtl</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">gwas</span> <span class="n">gwas</span><span class="o">.</span><span class="n">pip</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">sort</span> <span class="o">-</span><span class="n">grk6</span> <span class="n">prefix</span><span class="o">.</span><span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">out</span> <span class="o">|</span> <span class="n">gzip</span> <span class="o">--</span><span class="n">best</span> <span class="o">&gt;</span> <span class="n">prefix</span><span class="o">.</span><span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">sorted</span><span class="o">.</span><span class="n">gz</span>
+    <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">prefix</span><span class="o">.</span><span class="n">enloc</span><span class="o">.</span><span class="n">sig</span><span class="o">.</span><span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/integrative_analysis/COLOC"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fastenloc_dap.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Colocalization with FastENLOC</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../functional_annotation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Functional annotation integration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aim">Aim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-overview">Methods overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-0-data-formatting">Step 0: data formatting</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-common-snps-between-the-gwas-summary-statistics-and-eqtl-data">Extract common SNPS between the GWAS summary statistics and eQTL data</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-common-snps-between-the-summary-statistics-and-ld">Extract common SNPS between the summary statistics and LD</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-fine-mapping">Step 1: fine-mapping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-fine-mapping-results-processing">Step 2: fine-mapping results processing</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#construct-eqtl-annotation-file-using-eqtl-snp-pips-and-credible-sets">Construct eQTL annotation file using eQTL SNP PIPs and credible sets</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#export-gwas-pip">Export GWAS PIP</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-colocalization-with-fastenloc">Step 3: Colocalization with FastEnloc</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

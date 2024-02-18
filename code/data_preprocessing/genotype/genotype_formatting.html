@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -139,6 +139,7 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../../../README.html">
@@ -442,6 +443,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -451,6 +453,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -1067,22 +1070,22 @@ skip_if(len(genoFile) == 1)
 parameter: name = str
 # The path to the file that contains the list of samples to keep (format FID, IID)
 parameter: keep_samples = path(&#39;.&#39;)
+parameter: extra_plink_opts = []
 input: genoFile, group_by = &#39;all&#39;
-output: f&quot;{cwd}/{name}.bed&quot;
+output: f&quot;{cwd}/{name}{_input[0]:x}&quot;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
     echo ${_input:n} | tr &#39; &#39; &#39;\n&#39; | tail -n +2 &gt;  ${_output:n}.merge_list
-    plink2 \
-    --bfile ${_input[0]:n} \
-    --pmerge-list ${_output:n}.merge_list \
-    --make-bed \
+    plink${&quot;2&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot; --keep-allele-order&quot;} \
+    --${&quot;p&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot;b&quot;}file ${_input[0]:n} \
+    --${&quot;p&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot;&quot;}merge-list ${_output:n}.merge_list \
+    --make-${&quot;pgen&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot;bed&quot;} \
     --out ${_output:n} \
     --threads ${numThreads} \
-    --memory ${int(expand_size(mem) * 0.9)/1e06} ${(&#39;--keep %s&#39; % keep_samples) if keep_samples.is_file() else &quot;&quot;} 
+    --memory ${int(expand_size(mem) * 0.9)/1e06} ${(&#39;--keep %s&#39; % keep_samples) if keep_samples.is_file() else &quot;&quot;} ${&quot; &quot;.join([(&quot;--%s&quot; % x) for x in extra_plink_opts])}
     rm -f ${_output:n}.merge_list
 
-bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
     i=&quot;${_output}&quot;
     output_size=$(ls -lh $i | cut -f 5 -d &#39; &#39;)
     output_rows=$(zcat $i | wc -l | cut -f 1 -d &#39; &#39;)
@@ -1160,7 +1163,7 @@ bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdou
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="GRM.html"
@@ -1240,6 +1243,7 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
       © Copyright 2021+, FunGen xQTL Analysis Working Group.
@@ -1266,8 +1270,8 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

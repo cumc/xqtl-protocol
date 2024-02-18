@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,9 +38,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
-  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
@@ -138,6 +138,7 @@ const thebe_selector_output = ".output, .cell_output"
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
+
   
 
 <a class="navbar-brand logo" href="../../README.html">
@@ -441,6 +442,7 @@ const thebe_selector_output = ".output, .cell_output"
 </button>
 
 
+
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
@@ -450,6 +452,7 @@ document.write(`
   </button>
 `);
 </script>
+
 
 <script>
 document.write(`
@@ -1615,6 +1618,44 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     has_rows &lt;- function(df) {
       !is.null(df) &amp;&amp; nrow(df) &gt; 0
     }
+   
+    # function to filter the cs with all variants pip &lt; 0.05
+      update_and_filter_cs_ids &lt;- function(df) {
+      cs_columns &lt;- grep(&quot;^cs_coverage&quot;, names(df), value = TRUE)
+
+      df$cs_all_non_zero_orig &lt;- ifelse(rowSums(df[cs_columns] == 0) == length(cs_columns), FALSE, TRUE)
+
+      for (cs_column in cs_columns) {
+        unique_cs_ids &lt;- unique(df[[cs_column]])
+
+        for (cs_id in unique_cs_ids) {
+          if (cs_id &gt; 0) {
+            pip_check &lt;- df[df[[cs_column]] == cs_id, &quot;pip&quot;] &lt; 0.05
+            if (all(pip_check, na.rm = TRUE)) {
+              df[[cs_column]] &lt;- ifelse(df[[cs_column]] == cs_id, 0, df[[cs_column]])
+            }
+          }
+        }
+      }
+
+      df &lt;- df %&gt;%
+        filter(!(cs_coverage_0.95 == 0 &amp; cs_coverage_0.7 == 0 &amp; cs_coverage_0.5 == 0 &amp; cs_all_non_zero_orig))
+
+      df &lt;- select(df, -cs_all_non_zero_orig)
+
+      return(df)
+    }
+
+  
+    # function to decide run update_and_filter_cs_ids or not
+    process_top_loci &lt;- function(data_frame) {
+      if (!is.null(data_frame) &amp;&amp; nrow(data_frame) &gt; 0) {
+        return(update_and_filter_cs_ids(data_frame))
+      } else {
+        return(data_frame)
+      }
+    }
+  
     # Process each path and collect results
     orig_files = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[0:len(_input)//2+1]])})
     meta &lt;- read_delim(&quot;${condition_meta}&quot;, col_names = F)
@@ -1634,12 +1675,16 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
         condition &lt;- names(dat[[1]])[j]
         dat_con &lt;- dat[[1]][[condition]]
         qtl_con &lt;- meta %&gt;% filter(X1 == condition) %&gt;% pull(X2)
+        if (length(qtl_con) == 0) {
+          qtl_con &lt;- condition
+          message(&quot;No matching entries found. qtl_con has been set to the condition value.&quot;)
+        }
         con_top_loci &lt;- ifelse(has_rows(dat_con$top_loci) || has_rows(dat_con$preset_top_loci), qtl_con, NA)
-
+    
         temp_list[[j]] &lt;- list(
           region_info = dat_con$region_info,
-          top_loci = dat_con$top_loci,
-          preset_top_loci = dat_con$preset_variants_result$top_loci,
+          top_loci = process_top_loci(dat_con$top_loci),
+          preset_top_loci = process_top_loci(dat_con$preset_variants_result$top_loci),
           pip = dat_con$susie_result_trimmed$pip,
           variant_names = dat_con$variant_names,
           CV_table = dat_con$twas_cv_result$performance,
@@ -1731,7 +1776,7 @@ bash: expand = &quot;{ }&quot;, container = container, stderr = f&#39;{_output:n
               
               
                 <footer class="prev-next-footer">
-                  <!-- Previous / next buttons -->
+                  
 <div class="prev-next-area">
     <a class="left-prev"
        href="association_scan_post_processing.html"
@@ -1785,6 +1830,7 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   
   <div class="footer-item">
     
+
   <p class="copyright">
     
       © Copyright 2021+, FunGen xQTL Analysis Working Group.
@@ -1811,8 +1857,8 @@ By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL C
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
 
   <footer class="bd-footer">
   </footer>

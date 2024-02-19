@@ -91,15 +91,13 @@ Our pipeline calls alternative splicing events from RNA-seq data using leafcutte
 We use two different tools to quantify the many types of splicing events which are outlined in [[cf. Wang et al (2008)](https://doi.org/10.1038/nature07509)] and [[cf. Park et al (2018)](https://doi.org/10.1016/j.ajhg.2017.11.002)]. The first, leafcutter, quantifies the usage of alternatively excised introns. This collectively captures skipped exons, 5’ and 3’ alternative splice site usage and other complex events [[cf. Li et al 2018](https://doi.org/10.1038/s41588-017-0004-9)]. This method was previously applied to ROSMAP data as part of the Brain xQTL version 2.0.  The second, psichomics, quantifies specific splicing events [[cf. Agostinho et al. 2019](https://doi.org/10.1093/nar/gky888)].
 
 
-Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and the replacement of NA values in the remaining samples with mean existing values. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. 
+Quality control and normalization are performed on output from the leafcutter and psichomics tools. The raw output data is first converted to bed format. Quality control involves the removal of features with high missingness across samples (default 40%) and any remaining missing values are retained. Then introns with less than a minimal variation (default of 0.005) are removed from the data. Quantile-Quantile normalization is performed on the quality controlled data. Imputation of missing values is done separately afterwards. 
 #### Data Pre-processing (Step 3)
 ##### A.  Phenotype data preprocessing
 
 
 We use a gene coordinate annotation pipeline based on [`pyqtl`, as demonstrated here](https://github.com/broadinstitute/gtex-pipeline/blob/master/qtl/src/eqtl_prepare_expression.py). This adds genomic coordinate annotations to gene-level molecular phenotype files generated in `gct` format and converts them to `bed` format for downstreams analysis.
 
-
-A collection of methods for the imputation of missing omics data values are included in our pipelinle. Imputation is optional of eQTL analysis, but necessary for other QTLs. We use `flashier`, a Empirical Bayes Matrix Factorization model, to impute missing values. Other imputation methods include missForest, XGBoost, k-nearest neighbors, soft impute, mean imputation, and last observed data.
 
 We include a collection of workflows to format molecular phenotype data. These include workflows to separate phenotypes by chromosome, by user-provided regions, a workflow to subset bam files and a workflow to extract samples from phenotype files.
 
@@ -306,12 +304,11 @@ Timing <1 min
 ```
 
 
-##### ii. Phenotype Imputation
-Timing X min
 
 ```
-sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb flash \
-    --container oras://ghcr.io/cumc/omics_imputation_apptainer:latest
+sos run phenotype_imputation.ipynb EBMF \
+    --container .containers/factor_analysis.sif \
+
 ```
 
 

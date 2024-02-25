@@ -488,9 +488,13 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-susie-rss-results-for-adgwas">Extracting susie_rss results for ADGWAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-fsusie-results">Extracting fsusie results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-cis-analysis-susie-twas-results">Exporting cis_analysis susie_twas results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-gwas-data">Export gwas data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlapped-gwas-data-and-eqtl-data">Overlapped gwas data and eQTL data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-pip-plot">Plotting the pip plot</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#into-vcf-format">Into VCF format</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-window-analysis-result-consolidation">Cis-window analysis Result consolidation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwas-results-consolidation">GWAS results consolidation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-qtl-and-gwas-results">Overlap QTL and GWAS results</a></li>
 </ul>
             </nav>
         </div>
@@ -648,6 +652,32 @@ AC AC_De_Jager_eQTL
     <span class="o">--</span><span class="n">prefix</span> <span class="n">ROSMAP_eQTL</span> <span class="n">ROSMAP_eQTL_Kellis</span> \
     <span class="o">--</span><span class="n">suffix</span> <span class="n">susie_weights_db</span><span class="o">.</span><span class="n">rds</span> \
     <span class="o">--</span><span class="kp">name</span> <span class="n">ROSMAP_eQTL</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="export-gwas-data">
+<h2>Export gwas data<a class="headerlink" href="#export-gwas-data" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run ~/codes/xqtl-pipeline/pipeline/fine_mapping_post_processing.ipynb  gwas_results_export \
+    --rds-files ` ls /mnt/vast/hpc/csg/hs3393/RSS_QC/GWAS_finemapping_result/SuSiE_RSS/*rds` \
+    --name ADGWAS
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="overlapped-gwas-data-and-eqtl-data">
+<h2>Overlapped gwas data and eQTL data<a class="headerlink" href="#overlapped-gwas-data-and-eqtl-data" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run ~/codes/xqtl-pipeline/pipeline/fine_mapping_post_processing.ipynb  overlap_qtl_gwas \
+    --qtl-files `ls /mnt/vast/hpc/csg/rf2872/Work/Multivariate/susie_2024/data/*/*export.rds  ` \
+    --gwas-union-file  /mnt/vast/hpc/csg/rf2872/Work/Multivariate/gwas/output/ADGWAS.union_export.tsv.gz \
+    --name ROSMAP_eQTL \
+    -c ~/env_files/csg.yml -J 50
 </pre></div>
 </div>
 </div>
@@ -1618,16 +1648,13 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     has_rows &lt;- function(df) {
       !is.null(df) &amp;&amp; nrow(df) &gt; 0
     }
-   
+    
     # function to filter the cs with all variants pip &lt; 0.05
-      update_and_filter_cs_ids &lt;- function(df) {
+    update_and_filter_cs_ids &lt;- function(df) {
       cs_columns &lt;- grep(&quot;^cs_coverage&quot;, names(df), value = TRUE)
-
       df$cs_all_non_zero_orig &lt;- ifelse(rowSums(df[cs_columns] == 0) == length(cs_columns), FALSE, TRUE)
-
       for (cs_column in cs_columns) {
-        unique_cs_ids &lt;- unique(df[[cs_column]])
-
+        unique_cs_ids &lt;- unique(df[[cs_column]])  
         for (cs_id in unique_cs_ids) {
           if (cs_id &gt; 0) {
             pip_check &lt;- df[df[[cs_column]] == cs_id, &quot;pip&quot;] &lt; 0.05
@@ -1637,15 +1664,12 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
           }
         }
       }
-
-      df &lt;- df %&gt;%
-        filter(!(cs_coverage_0.95 == 0 &amp; cs_coverage_0.7 == 0 &amp; cs_coverage_0.5 == 0 &amp; cs_all_non_zero_orig))
-
+      # Filter out rows where all cs_coverage columns are 0 and cs_all_non_zero_orig is TRUE
+      df &lt;- df %&gt;% filter(!(cs_all_non_zero_orig &amp; rowSums(df[cs_columns] == 0) == length(cs_columns)))
+      # Remove the helper column
       df &lt;- select(df, -cs_all_non_zero_orig)
-
       return(df)
     }
-
   
     # function to decide run update_and_filter_cs_ids or not
     process_top_loci &lt;- function(data_frame) {
@@ -1715,7 +1739,7 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     saveRDS(res_sum, combine_data_sumstats)
 
     meta = data.frame(chr=&quot;${_meta_info[0]}&quot;, start=&quot;${_meta_info[1]}&quot;, end=&quot;${_meta_info[2]}&quot;, gene_id=&quot;${_meta_info[3]}&quot;, 
-                      original_data = paste(orig_files, collapse = &quot;, &quot;), combined_data = combine_data, combined_data_sumstats = combine_data_sumstats, 
+                      original_data = paste(basename(orig_files), collapse = &quot;, &quot;), combined_data = basename(combine_data), combined_data_sumstats = basename(combine_data_sumstats), 
                       conditions = paste(names(results[[gene]]), collapse = &quot;,&quot;), conditions_top_loci = cons_top_loci %&gt;% unlist %&gt;% na.omit %&gt;% as.character %&gt;% paste(., collapse = &#39;,&#39;))
     write_delim(meta, &quot;${_output}&quot;, delim = &#39;\t&#39;)
   
@@ -1741,6 +1765,407 @@ bash: expand = &quot;{ }&quot;, container = container, stderr = f&#39;{_output:n
       tail -n +2 &quot;$file&quot; &gt;&gt; $output_file
     done
     rm -rf $input_path
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="gwas-results-consolidation">
+<h2>GWAS results consolidation<a class="headerlink" href="#gwas-results-consolidation" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[gwas_results_export_1]
+# per chunk we process at most 200 datasets
+# Region list should have last column being region name. 
+# Meta-data will be written to this column
+parameter:gwas_methods=[&#39;single_effect_regression&#39;, &#39;noqc&#39;, &#39;qc_impute&#39;, &#39;qc_only&#39;, &#39;conditional_regression_noqc&#39;, &#39;conditional_regression_qc_impute&#39;, &#39;conditional_regression_qc_only&#39;]
+parameter:coverages=[&quot;cs_coverage_0.95&quot;, &quot;cs_coverage_0.7&quot;, &quot;cs_coverage_0.5&quot;]
+parameter: rds_files = paths
+input: rds_files, group_by = 1
+output: f&quot;{cwd}/gwas_export/{_input:bn}.export.rds&quot;
+task: trunk_workers = job_size, walltime = walltime, trunk_size = 1, mem = mem, cores = numThreads, tags = f&#39;{_output:bn}&#39;
+R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    library(dplyr)
+    
+    # Function to check if a dataframe has rows
+    has_rows &lt;- function(df) {
+      !is.null(df) &amp;&amp; nrow(df) &gt; 0
+    }
+   
+    # function to filter the cs with all variants pip &lt; 0.05, if a CS has anything &gt; 0.05 we keep the entire CS with other variants in it
+    update_and_filter_cs_ids &lt;- function(df) {
+      cs_columns &lt;- grep(&quot;^cs_coverage&quot;, names(df), value = TRUE)
+      df$cs_all_non_zero_orig &lt;- ifelse(rowSums(df[cs_columns] == 0) == length(cs_columns), FALSE, TRUE)
+      for (cs_column in cs_columns) {
+        unique_cs_ids &lt;- unique(df[[cs_column]])  
+        for (cs_id in unique_cs_ids) {
+          if (cs_id &gt; 0) {
+            pip_check &lt;- df[df[[cs_column]] == cs_id, &quot;pip&quot;] &lt; 0.05
+            if (all(pip_check, na.rm = TRUE)) {
+              df[[cs_column]] &lt;- ifelse(df[[cs_column]] == cs_id, 0, df[[cs_column]])
+            }
+          }
+        }
+      }
+      # Filter out rows where all cs_coverage columns are 0 and cs_all_non_zero_orig is TRUE
+      df &lt;- df %&gt;% filter(!(cs_all_non_zero_orig &amp; rowSums(df[cs_columns] == 0) == length(cs_columns)))
+      # Remove the helper column
+      df &lt;- select(df, -cs_all_non_zero_orig)
+      return(df)
+    }
+   
+     # Process coverage data
+    process_coverage &lt;- function(dat, coverage) {
+      df &lt;- data.frame(variants = character())
+        for (m in methods) {
+            if (has_rows(dat[[m]]$top_loci)) {
+                # process top loci first
+                top_loci_table &lt;- update_and_filter_cs_ids(dat[[m]]$top_loci)
+                tmp &lt;- data.frame(variant_id = top_loci_table$variant_id,
+                                  m_value = top_loci_table[[coverage]])
+                colnames(tmp) &lt;- c(&quot;variants&quot;, m)
+
+                # Filter rows where m_value &gt; 0 to get the cs variants
+                tmp &lt;- tmp %&gt;% filter(.data[[m]] &gt; 0)
+
+                if (nrow(df) == 0) {
+                    df &lt;- tmp
+                } else {
+                    df &lt;- merge(df, tmp, by = &quot;variants&quot;, all = TRUE)
+                }
+            } else {
+                if (nrow(df) == 0) {
+                    # If df has no rows yet, create a placeholder to enable column assignment
+                    df &lt;- data.frame(variants = NA)
+                }
+                df[[m]] &lt;- 0  # Assign 0 to the entire column if there are no rows in dat[[m]]$top_loci
+            }
+        }
+      df &lt;- df %&gt;% filter(!(is.na(variants)))
+      # Replace NA values with 0
+      df[is.na(df)] &lt;- 0
+      if(nrow(df) &gt; 0) return(df) else return(NULL)
+    }
+
+    # Process pip data
+
+    process_pip &lt;- function(dat) {
+      pip &lt;- data.frame(variants = character())
+      for (m in methods) {
+        if (!is.null(dat[[m]]$susie_result_trimmed)) {
+          tmp &lt;- data.frame(dat[[m]]$susie_result_trimmed$pip, dat[[m]]$variant_names)
+          colnames(tmp) &lt;- c(m, &quot;variants&quot;)
+          pip &lt;- if (nrow(pip) &gt; 0) merge(pip, tmp, by = &quot;variants&quot;, all = TRUE) else tmp
+        } else {
+            if (nrow(pip) == 0) {
+                # If df has no rows yet, create a placeholder to enable column assignment
+                pip &lt;- data.frame(variants = NA)
+            }
+            pip[[m]] &lt;- 0  # Assign 0 to the entire column if there are no rows in dat[[m]]$top_loci
+        }
+      }
+      pip &lt;- pip %&gt;% filter(!(is.na(variants)))
+      return(pip)
+    }
+
+
+    process_others &lt;- function(dat) {
+      top_locis_Others &lt;- data.frame(variants = character())
+      for (m in methods) {
+        if (has_rows(dat[[m]]$top_loci)) {
+          # Dynamically generate filtering expression based on &#39;coverages&#39;
+          coverage_conditions &lt;- sapply(coverages, function(cov) paste0(cov, &quot; == 0&quot;))
+          condition_expr &lt;- paste(coverage_conditions, collapse = &quot; &amp; &quot;)
+
+          # Use &#39;eval&#39; and &#39;parse&#39; to apply the dynamically generated filter condition
+          vars &lt;- dat[[m]]$top_loci %&gt;%
+            filter(eval(parse(text=condition_expr))) %&gt;%
+            pull(variant_id)
+
+          if (length(vars) &gt; 0) {
+            tmp &lt;- data.frame(variants = vars)
+            tmp[[m]] &lt;- 0 # Set coverage to 0 for these variants
+            # Merge with existing data, ensuring all variants are included
+            top_locis_Others &lt;- if(nrow(top_locis_Others) == 0) tmp else merge(top_locis_Others, tmp, by = &quot;variants&quot;, all = TRUE)
+          }
+        }
+      }
+      top_locis_Others[is.na(top_locis_Others)] &lt;- 0
+      if(nrow(top_locis_Others) &gt; 0) return(top_locis_Others) else return(NULL)
+    }
+
+
+    # Function to extract numeric values from coverage strings
+    extract_coverage_value &lt;- function(coverage_string) {
+      # Use gsub to remove all non-numeric characters, converting the result to numeric
+      as.numeric(gsub(&quot;[^0-9.]&quot;, &quot;&quot;, coverage_string))
+    }
+
+    # Processing
+    methods &lt;- c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x for x in gwas_methods])})
+    coverages &lt;-  c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x for x in coverages])})
+    ad &lt;- readRDS(${_input:r})
+    datas &lt;- names(ad)
+    res &lt;- list()
+    report_top_loci &lt;- c()
+
+    for (data_name in datas) {
+      dat &lt;- ad[[data_name]]
+      coverage_results &lt;- list()
+
+      for (coverage in coverages) {
+        cov &lt;- extract_coverage_value(coverage)
+        table_name &lt;- paste0(&quot;top_loci_&quot;, cov*100)
+        coverage_results[[table_name]] &lt;- process_coverage(dat, coverage)
+        report_top_loci &lt;- c(report_top_loci, table_name)
+      }
+
+      pip &lt;- process_pip(dat)
+      others &lt;- process_others(dat) # Process &quot;CS Others&quot;
+      report_top_loci &lt;- c(report_top_loci, &quot;top_loci_others&quot;)
+      # Store all results, including special handling for PIP
+      res[[data_name]] &lt;- c(coverage_results, list(pip = pip %&gt;% select(-variants), variants = pip$variants, top_loci_others = others))
+    }
+    writeLines(report_top_loci %&gt;% unique, paste0(${_output:adr}, &quot;/report_top_loci&quot;))  
+    saveRDS(res, ${_output:r})
+  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>#get union of step1
+#1200 blocks costed ~2mins with in one for loop
+[gwas_results_export_2]
+input: group_by = &#39;all&#39;
+output: f&quot;{cwd}/{name}.union_export.tsv.gz&quot; 
+task: trunk_workers = 1, walltime = &#39;1h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
+R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    library(plyr)
+    library(tidyverse)
+    library(data.table)
+
+    # Assuming extract_coverage_value is correctly defined elsewhere
+    extract_coverage_value &lt;- function(coverage) {
+      as.numeric(gsub(&quot;cs_coverage_&quot;, &quot;&quot;, coverage))
+    }
+
+    files &lt;- c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input])})
+    table_list &lt;- readLines(paste0(${_input[0]:adr}, &quot;/report_top_loci&quot;))
+    combined_data &lt;- data.frame()
+
+
+    for (file in files) {
+        res &lt;- readRDS(file)
+        print(file)
+        for (name in names(res)) {
+            dat &lt;- res[[name]]
+            top_loci_tmp &lt;- data.frame()
+            pip_tmp &lt;- dat$pip
+            if(nrow(pip_tmp) &gt; 0){
+                colnames(pip_tmp) &lt;- paste0(&#39;pip_&#39;, colnames(pip_tmp))
+                pip_tmp[[&quot;variants&quot;]] &lt;- dat$variants
+                pip_tmp[[&quot;study&quot;]] &lt;- name
+
+                for (i in seq_along(table_list)) {
+                    if (table_list[i] %in% names(dat)) {
+                        tmp &lt;- dat[[table_list[i]]]
+                        if (!is.null(tmp)) {
+                            colnames(tmp)[2:ncol(tmp)] &lt;- paste0(&quot;cs_&quot;,colnames(tmp)[2:ncol(tmp)])
+                            tmp[[&quot;coverage&quot;]] &lt;- table_list[i]
+                            top_loci_tmp &lt;- rbind.fill(top_loci_tmp, tmp)
+                        }
+                    }
+                }
+
+                # Merge top_loci_tmp with pip_tmp based on &quot;variants&quot;
+                if(nrow(top_loci_tmp) &gt; 0 &amp;&amp; nrow(pip_tmp)&gt;0){
+                    tmp_merged &lt;- merge(top_loci_tmp, pip_tmp, by = &quot;variants&quot;, all.x = TRUE)
+                    tmp_merged[[&quot;block&quot;]] &lt;- basename(file)%&gt;%str_split(.,&quot;[.]&quot;,simplify=T)%&gt;%.[1]
+                    combined_data &lt;- rbind.fill(combined_data, tmp_merged)
+                }
+            }
+        }
+    }
+    fwrite(combined_data, ${_output:r})
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="overlap-qtl-and-gwas-results">
+<h2>Overlap QTL and GWAS results<a class="headerlink" href="#overlap-qtl-and-gwas-results" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[overlap_qtl_gwas_1]
+parameter: gwas_methods=[&#39;single_effect_regression&#39;, &#39;noqc&#39;, &#39;qc_impute&#39;, &#39;qc_only&#39;, &#39;conditional_regression_noqc&#39;, &#39;conditional_regression_qc_impute&#39;, &#39;conditional_regression_qc_only&#39;]
+parameter: gwas_coverage_values = [0.95, 0.7, 0.5] # use &#39;-1&#39; means others here 
+parameter: qtl_coverage_values = [0.95, 0.7, 0.5]# use &#39;-1&#39; means others here 
+parameter: per_chunk = 100
+parameter: qtl_files = paths
+parameter: gwas_union_file = path
+input: qtl_files, group_by = per_chunk
+output: f&quot;{cwd}/gwas_qtl/{name}_gwas_batch{_index+1}.tsv&quot; 
+task: trunk_workers = 1, walltime = &#39;1h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
+R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    library(tidyverse)
+    library(data.table)
+    
+    # Function to change the coverage values to corresponding table name 
+     process_cov_values &lt;- function(raw_cov_values, data) {
+      # exclude &#39;others&#39; first
+      cov_values &lt;- raw_cov_values[raw_cov_values != -1 ] %&gt;% as.numeric 
+      if (data == &#39;gwas&#39;){
+          if (any(cov_values &lt; 1)) cov_values &lt;- paste0(&#39;top_loci_&#39;, cov_values * 100) else cov_values &lt;- paste0(&#39;top_loci_&#39;, cov_values)  
+          # add others back 
+      } else if (data == &#39;qtl&#39;) {
+          if (any(cov_values &gt; 1)) cov_values &lt;- paste0(&#39;cs_coverage_&#39;, round(cov_values / 100, 2)) else cov_values &lt;- paste0(&#39;cs_coverage_&#39;, cov_values)  
+      }
+     if ( -1 %in% raw_cov_values) {
+        cov_values &lt;- c(cov_values, &quot;top_loci_others&quot;)
+      }
+      return(cov_values)
+    }
+  
+    # Function to add &#39;chr&#39; in variants
+        add_chr_prefix &lt;- function(var) {
+        if (any(grepl(&quot;chr&quot;, var))) {
+            var &lt;- var
+        } else {
+            var &lt;- paste0(&quot;chr&quot;, var)
+        }
+        return(var)
+    }  
+     
+    # Function to check if a dataframe has rows
+    has_rows &lt;- function(df) {
+      !is.null(df) &amp;&amp; nrow(df) &gt; 0
+    }
+  
+    # Function to filter QTL top loci table
+    filter_qtl_loci &lt;- function(dat_top_loci, qtl_cov_values, cov_prefix = &quot;cs_&quot;) {
+      # Identify columns that start with the specified prefix
+      cov_values &lt;- colnames(dat_top_loci) %&gt;% .[str_detect(., paste0(&quot;^&quot;, cov_prefix))]
+
+      # Add temporary columns for row sums of qtl_cov_values and cov_values
+      dat_top_loci &lt;- dat_top_loci %&gt;%
+        mutate(rowSum_qtl = rowSums(select(., all_of(qtl_cov_values[qtl_cov_values!=&#39;top_loci_others&#39;])), na.rm = TRUE),
+               rowSum_cov = rowSums(select(., all_of(cov_values)), na.rm = TRUE))
+
+      # Filter rows based on specified conditions
+      dat_top_loci_filtered &lt;- dat_top_loci %&gt;%
+        filter(
+          if (&#39;top_loci_others&#39; %in% qtl_cov_values &amp; length(qtl_cov_values) == 1) {
+            # If qtl_cov_values contains only &#39;others&#39;, select rows where cov_values sum to 0
+            rowSum_cov == 0
+          } else if (&#39;top_loci_others&#39; %in% qtl_cov_values) {
+            # If &#39;others&#39; is in qtl_cov_values, select rows where cov_values sum to 0 or qtl_cov_values sum &gt; 0
+            rowSum_cov == 0 | rowSum_qtl &gt; 0
+          } else {
+            # If &#39;others&#39; is not in qtl_cov_values, select rows where qtl_cov_values sum &gt; 0
+            rowSum_qtl &gt; 0
+          }
+        ) %&gt;%
+        select(-rowSum_qtl, -rowSum_cov) # Remove the temporary sum columns
+
+      return(dat_top_loci_filtered)
+    }
+
+    # Function to filter GWAS top loci table
+    filter_gwas_loci &lt;- function(gwas, gwas_cov_values, gwas_methods) {
+      # Load the GWAS data from the given file path
+      gwas &lt;- gwas %&gt;%
+        # Initial filter based on coverage values specified
+        filter(coverage %in% gwas_cov_values) %&gt;%
+        # Calculate the sum of the specified methods, ignoring NA
+        mutate(rowSum = rowSums(select(., all_of(gwas_methods)), na.rm = TRUE))
+
+      # Apply conditional filtering based on &#39;top_loci_others&#39;
+      if (&#39;top_loci_others&#39; %in% gwas_cov_values) {
+        if (length(gwas_cov_values) == 1) {
+          # Only &#39;top_loci_others&#39; is in gwas_cov_values
+          gwas &lt;- gwas %&gt;% filter(rowSum == 0 | coverage == &#39;top_loci_others&#39;)
+        } else {
+          # &#39;top_loci_others&#39; and other values are in gwas_cov_values
+          gwas &lt;- gwas %&gt;% filter(rowSum &gt; 0 | coverage == &#39;top_loci_others&#39;)
+        }
+      } else {
+        # &#39;top_loci_others&#39; not in gwas_cov_values
+        gwas &lt;- gwas %&gt;% filter(rowSum &gt; 0)
+      }
+
+      # Remove the temporary rowSum column before returning
+      gwas &lt;- gwas %&gt;% select(-rowSum)
+
+      return(gwas)
+    }
+
+    # Processing
+    # load gwas data
+    # load selection conditions 
+    gwas_methods &lt;- c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x  for x in gwas_methods])}) %&gt;% paste0(&quot;cs_&quot;, .)
+    gwas_cov_values &lt;- c(${&quot;,&quot;.join([str(x)  for x in gwas_coverage_values])}) %&gt;% process_cov_values(., data = &#39;gwas&#39;)
+    qtl_cov_values &lt;- c(${&quot;,&quot;.join([str(x)  for x in qtl_coverage_values])}) %&gt;% process_cov_values(., data = &#39;qtl&#39;)
+    
+    # subset the gwas processed top loci table  
+    gwas &lt;- fread(${gwas_union_file:r}) %&gt;% filter_gwas_loci(., gwas_cov_values, gwas_methods)
+  
+    # load qtl data
+    meta_all &lt;- data.frame() 
+    qtl_paths &lt;-  c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input])})
+    for(qtl_path in qtl_paths){
+      qtl &lt;- readRDS(qtl_path)
+        #get all qtl variants
+        qtl_var &lt;- c()
+        for(name in names(qtl[[1]])){
+            dat &lt;- qtl[[1]][[name]]
+            dat_top_loci &lt;- dat$top_loci
+             if(has_rows(dat_top_loci)) {
+                dat_top_loci &lt;- filter_qtl_loci(dat_top_loci, qtl_cov_values = qtl_cov_values, cov_prefix = &quot;cs_&quot;)          
+                tmp_var &lt;- dat_top_loci$variant_id
+                qtl_var &lt;- c(qtl_var, tmp_var)
+              }
+        }
+        # to avoid variant name difference in GWAS and QTL results
+        if(any(grepl(&quot;chr&quot;, qtl_var))) gwas$variants &lt;- add_chr_prefix(gwas$variants) else gwas$variants &lt;- gsub(&quot;chr&quot;,&quot;&quot;,gwas$variants)
+
+        #overlap qtl and gwas variants
+        gwas_sub &lt;- gwas %&gt;% filter(variants %in% qtl_var)
+        gwas_list &lt;- split(gwas_sub, gwas_sub$coverage)
+        meta &lt;- data.frame(gene = names(qtl), qtl_combine = basename(qtl_path), qtl_gwas_overlap = NA)
+        if(length(gwas_list)&gt;0){
+          names(gwas_list) &lt;- paste0(&quot;GWAS_&quot;, names(gwas_list))
+          qtl[[1]] &lt;- c(qtl[[1]], gwas_list)
+          new_qtl_path &lt;-  paste0(${_output:dr},&quot;/&quot;,gsub(&quot;.rds&quot;,&quot;.overlapped.gwas.rds&quot;,basename(qtl_path)))
+          saveRDS(qtl, new_qtl_path)
+          meta[[&#39;qtl_gwas_overlap&#39;]] &lt;-  basename(new_qtl_path)
+        } 
+       meta_all &lt;- rbind(meta_all, meta)
+    }
+    write_delim(meta_all, &quot;${_output}&quot;, delim = &#39;\t&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[overlap_qtl_gwas_2]
+input: group_by = &#39;all&#39;
+output: f&quot;{cwd}/{name}.overlapped.gwas.tsv&quot; 
+task: trunk_workers = 1, walltime = &#39;1h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
+bash: expand = &quot;{ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    input_path=$(echo ${_input[0]:adr}| sed &#39;s/^\$//&#39;)
+    output_file=$(echo ${_output:r}|sed &#39;s/^\$//g&#39;)
+
+    for file in $input_path/*.tsv; do
+      if [ &quot;$file&quot; == &quot;$(echo $input_path/*.tsv | cut -d&#39; &#39; -f1)&quot; ]; then
+        head -n 1 &quot;$file&quot; &gt; $output_file
+      fi
+
+      tail -n +2 &quot;$file&quot; &gt;&gt; $output_file
+    done
+    rm -rf $input_path/*.tsv
 </pre></div>
 </div>
 </div>
@@ -1806,9 +2231,13 @@ bash: expand = &quot;{ }&quot;, container = container, stderr = f&#39;{_output:n
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-susie-rss-results-for-adgwas">Extracting susie_rss results for ADGWAS</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-fsusie-results">Extracting fsusie results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-cis-analysis-susie-twas-results">Exporting cis_analysis susie_twas results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#export-gwas-data">Export gwas data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlapped-gwas-data-and-eqtl-data">Overlapped gwas data and eQTL data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-the-pip-plot">Plotting the pip plot</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#into-vcf-format">Into VCF format</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-window-analysis-result-consolidation">Cis-window analysis Result consolidation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gwas-results-consolidation">GWAS results consolidation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overlap-qtl-and-gwas-results">Overlap QTL and GWAS results</a></li>
 </ul>
   </nav></div>
 

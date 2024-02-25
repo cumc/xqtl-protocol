@@ -1032,25 +1032,18 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout 
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[trans_1]
 
-fail_if(not region_list.is_file(), msg = &quot;For trans analysis, ``region_list`` must be provided.&quot;)
-
-
 # parse input file lists
 import pandas as pd
-molecular_pheno_files = pd.read_csv(phenotype_file, sep = &quot;\t&quot;)
 genotype_files = pd.read_csv(genotype_file,sep = &quot;\t&quot;)
-genotype_files[&quot;#id&quot;] = genotype_files[&quot;#id&quot;].astype(str)
-molecular_pheno_files[&quot;#id&quot;] = molecular_pheno_files[&quot;#id&quot;].astype(str)
-
-input_files = molecular_pheno_files.merge(genotype_files, on = &quot;#id&quot;)
-input_files = input_files.values.tolist()
-input_chroms = [x[0] for x in input_files]
-input_files = [x[1:] for x in input_files]
-
-input: input_files, group_by = len(input_files[0]), group_with = &quot;input_chroms&quot; 
-output: nominal = f&#39;{cwd:a}/{_input[0]:bnn}.trans_qtl_nominal.gz&#39;
+genotype_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in genotype_files[&quot;#id&quot;].astype(str)]
+input_files = [x[1:] for x in genotype_files.values.tolist()]
+input: input_files, group_by = len(input_files[0])
+output: nominal = f&#39;{cwd:a}/{_input[0]:bnn}.trans_qtl_nominal.gz&#39;       
 parameter: batch_size = 50000
 parameter: pval_threshold = 1.0
+# Permutation testing is incorrect when the analysis is done by chrom
+parameter: permutation = False
+
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
 python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;,container =container, entrypoint = entrypoint
     import pandas as pd
@@ -1058,8 +1051,8 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     import tensorqtl
     from tensorqtl import genotypeio, cis, trans
     ## Define paths
-    plink_prefix_path = $[_input[1]:nar]
-    expression_bed = $[_input[0]:ar]
+    plink_prefix_path = $[_input[0]:nar]
+    expression_bed = $[phenotype_file:ar]
     covariates_file = &quot;$[covariate_file:a]&quot;
     window = $[window]
     ## Loading Data
@@ -1078,13 +1071,12 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     ## use custom cis windows
     if $[customized_cis_windows.is_file()]:
         cis_list = pd.read_csv(&quot;$[customized_cis_windows:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,phenotype_id], sep=&quot;\t&quot;)
-        phenotype_pos_df = phenotype_pos_df.reset_index() #move the phenotype id index to a new column of the dataframe
-        phenotype_pos_df = phenotype_pos_df.merge(cis_list, left_on = [&quot;chr&quot;,phenotype_id],right_on = [cis_list.columns[0],cis_list.columns[3]])#in some cases (gene expression for eQTLs) the phenotype_id may be in the cis_list file
-        phenotype_pos_df = phenotype_pos_df.set_index(phenotype_id)[[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;]] # The final phenotype_pos_df will have three columns(chr, start, end) and index is the phenotype ID
-        if len(phenotype_df.index) != len(phenotype_pos_df.index):
+        phenotype_pos_df_reset = phenotype_pos_df.reset_index() #move the phenotype id index to a new column of the dataframe
+        phenotype_pos_df = phenotype_pos_df_reset.merge(cis_list, left_on = [&quot;chr&quot;,phenotype_id],right_on = [cis_list.columns[0],cis_list.columns[3]])#in some cases (gene expression for eQTLs) the phenotype_id may be in the cis_list file
+        if len(phenotype_df.index) - phenotype_pos_df_reset[~phenotype_pos_df_reset[&#39;ID&#39;].isin(cis_list[&#39;ID&#39;])].shape[0]!= len(phenotype_pos_df.index):
             raise ValueError(&quot;cannot uniquely match all the phentoype data in the input to the customized cis windows provided&quot;)
+        phenotype_pos_df = phenotype_pos_df.set_index(phenotype_id)[[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;]] # The final phenotype_pos_df will have three columns(chr, start, end) and index is the phenotype ID
         window = 0 # In the updated tensorQTL, by default if there is a customized cis window, the actual cis window will be start - window &amp; end + window, so it is necessary to change the window parameter to 0
-
 
     covariates_df = pd.read_csv(covariates_file, sep=&#39;\t&#39;, index_col=0).T
     ## use custom sample list to subset the covariates data
@@ -1094,11 +1086,17 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     pr = genotypeio.PlinkReader(plink_prefix_path)
     genotype_df = pr.load_genotypes()
     variant_df = pr.bim.set_index(&#39;snp&#39;)[[&#39;chrom&#39;, &#39;pos&#39;,&#39;a0&#39;,&#39;a1&#39;]]
+
+    ## Retaining only traits in cis_list
+    if phenotype_pos_df_reset[~phenotype_pos_df_reset[&#39;ID&#39;].isin(cis_list[&#39;ID&#39;])].shape[0] != 0:
+        phenotype_df = phenotype_df.loc[phenotype_df.index.isin(cis_list[&#39;ID&#39;])]
+
     ## Retaining only common samples
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, covariates_df.index)]
-
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, genotype_df.columns)]
     covariates_df = covariates_df.transpose()[np.intersect1d(phenotype_df.columns, covariates_df.index)].transpose()
+
+
 
     ## To simplify things, there should really not be &quot;chr&quot; prefix
     phenotype_pos_df.chr = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in phenotype_pos_df.chr]
@@ -1118,9 +1116,12 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     trans_df = trans.filter_cis(trans_df, phenotype_pos_df, variant_df, window=window)   
 
     ## Permutation
-    perm_df = trans.map_permutations(genotype_df, covariates_df, batch_size=$[batch_size],
+
+    if $[&#39;True&#39; if permutation else &#39;False&#39;]:
+        perm_df = trans.map_permutations(genotype_df, covariates_df, batch_size=$[batch_size],
                              maf_threshold=$[maf_threshold])
-    perm_output = trans.apply_permutations(perm_df,trans_df)
+        perm_output = trans.apply_permutations(perm_df,trans_df)
+        perm_output.to_csv(&quot;$[_output:nn].transqtl_permutation.gz&quot;, sep=&#39;\t&#39;,index = None, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
 
     ## Output
     trans_df.columns.values[1]  = &quot;molecular_trait_id&quot;
@@ -1128,7 +1129,8 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     trans_df.columns.values[3]  = &quot;beta&quot;
     trans_df.columns.values[4]  = &quot;se&quot;
     trans_df = trans_df.merge(variant_df,left_on = &quot;variant_id&quot;, right_index=True)
-    trans_df.to_csv(&quot;$[_output]&quot;, sep=&#39;\t&#39;,index = None)
+    trans_df.to_csv(&quot;$[_output]&quot;, sep=&#39;\t&#39;,index = None, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
+    covariates_df.index.to_series().to_csv(&quot;$[_output:bnn].sample_analyzed.txt&quot;, sep=&#39;\t&#39;, index=None, header=False)
 
 bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
         for i in $[_output] ; do 

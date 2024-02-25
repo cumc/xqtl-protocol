@@ -921,7 +921,17 @@ R: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.
                     <span class="n">tmpvalRow</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
                     <span class="n">aveReads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
 
-            <span class="n">chr_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">clu</span> <span class="o">=</span> <span class="n">chrom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">chrom</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Check the number of parts to determine how to unpack</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">chr_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">clu</span><span class="p">,</span> <span class="n">category</span> <span class="o">=</span> <span class="n">parts</span> <span class="c1">#leafcutter2 would have 5 columns, the last column is function category</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">chr_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">clu</span> <span class="o">=</span> <span class="n">parts</span> <span class="c1">#leafcutter would have 4 columns</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># or some default value, if necessary</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected format of &#39;chrom&#39; string&quot;</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmpvalRow</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">fout</span><span class="p">[</span><span class="n">chr_</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">chr_</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">chrom</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tmpvalRow</span><span class="p">])</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="n">fout_ave</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">chrom</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">aveReads</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">aveReads</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">aveReads</span><span class="p">))])</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -981,8 +991,16 @@ R: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[leafcutter_norm_2]
+parameter: autosomes = True
 import pandas as pd
 molecular_pheno_chr_inv = pd.read_csv(f&#39;{_input[0]}&#39;,sep = &quot;\t&quot;)
+# filter the autosomes or not
+if autosomes:
+    print(&quot;Analyzing autosomes 1 to 22...&quot;)
+    mask = molecular_pheno_chr_inv[&#39;#chr&#39;].str.match(r&#39;chr(\d+)$&#39;)
+    chr_numbers = molecular_pheno_chr_inv[&#39;#chr&#39;].str.extract(r&#39;chr(\d+)&#39;, expand=False).dropna().astype(int)
+    molecular_pheno_chr_inv = molecular_pheno_chr_inv[mask &amp; chr_numbers.between(1, 22)]
+    
 molecular_pheno_chr_inv = molecular_pheno_chr_inv.values.tolist()
 file_inv = [x[1] for x in molecular_pheno_chr_inv]
 input: file_inv # This design is necessary to avoid using for_each, as sos can not take chr number as an input.

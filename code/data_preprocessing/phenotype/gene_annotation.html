@@ -1301,6 +1301,12 @@ bash: expand = &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout
 ## Extract the code in case psichromatic needs to be processed the same way
 ## PheoFile in this step is the intron_count file
 parameter: intron_count = path
+# Defines the mapping strategy options: &#39;site&#39; or &#39;region&#39;, with &#39;site&#39; as the default. 
+# The &#39;site&#39; strategy maps introns to the start and end of each exon. 
+# The &#39;region&#39; strategy, to be recommended in leafcutter2, maps each intron based on it overlapping more than overlap_ratio of a gene&#39;s region.
+parameter: map_stra = &quot;site&quot; 
+# Define the overlap ratio as the proportion of the cluster length that intersects with a gene, used to determine mapping to the gene.
+parameter: overlap_ratio = 0.8
 input: intron_count, annotation_gtf
 output: f&#39;{cwd}/{_input[1]:b}.exon_list&#39;, f&#39;{cwd}/{_input[0]:b}.leafcutter.clusters_to_genes.txt&#39;
 python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
@@ -1325,21 +1331,27 @@ R:expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = 
     #&#39; @return Data.frame with chr, start, end, cluster id
     #&#39; @export
     get_intron_meta &lt;- function(introns) {
-      intron_meta &lt;- do.call(rbind, strsplit(introns,&quot;:&quot;))
-      colnames(intron_meta) &lt;- c(&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,&quot;clu&quot;)
-      intron_meta &lt;- as.data.frame(intron_meta, stringsAsFactors=FALSE)
+      intron_meta &lt;- do.call(rbind, strsplit(introns, &quot;:&quot;))  
+      if (ncol(intron_meta) == 5) {
+        colnames(intron_meta) &lt;- c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;, &quot;clu&quot;, &quot;category&quot;)
+      } else {
+        colnames(intron_meta) &lt;- c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;, &quot;clu&quot;)
+      }
+
+      intron_meta &lt;- as.data.frame(intron_meta, stringsAsFactors = FALSE)
       intron_meta$start &lt;- as.numeric(intron_meta$start)
       intron_meta$end &lt;- as.numeric(intron_meta$end)
-      intron_meta
+
+      return(intron_meta)
     }
-    
     #&#39; Work out which gene each cluster belongs to. Note the chromosome names used in the two inputs must match.
     #&#39; @param intron_meta Data frame describing the introns, usually from get_intron_meta
     #&#39; @param exons_table Table of exons, see e.g. /data/gencode19_exons.txt.gz
     #&#39; @return Data.frame with cluster ids and genes separated by commas
     #&#39; @import dplyr
     #&#39; @export
-    map_clusters_to_genes &lt;- function(intron_meta, exons_table) {
+    map_clusters_to_genes_site &lt;- function(intron_meta, exons_table) {
+      suppressMessages(library(foreach, quietly=TRUE))
       gene_df &lt;- foreach (chr=sort(unique(intron_meta$chr)), .combine=rbind) %dopar% {
     
         intron_chr &lt;- intron_meta[ intron_meta$chr==chr, ]
@@ -1366,19 +1378,44 @@ R:expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = 
       class(clu_df) &lt;- &quot;data.frame&quot;
       clu_df
     }
+    
+    map_clusters_to_genes_region &lt;- function(intron_meta, exons_table, f) {
+        #combine the exon position to get gene region
+        merged_df &lt;- exons_table %&gt;%
+            group_by(chr, gene_id) %&gt;%
+            summarize(start = min(start), end = max(end), .groups = &#39;drop&#39;) %&gt;% as.data.frame()%&gt;%
+            .[,c(&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,&quot;gene_id&quot;)]
+        # use bedtools to map the intron region to gene region 
+         options(bedtools.path = &quot;/home/rf2872/software/bedtools2/bin/&quot;) #Fixme: build bedtools in leafcutter sif
+                map_res &lt;- bedtoolsr::bt.intersect(a = intron_meta, b = merged_df,f = f, wa = TRUE, wb=TRUE)
+        #organize output of mapped file
+        exon_map &lt;- map_res %&gt;% 
+            mutate(clu = paste(V1, V4, sep=&quot;:&quot;), 
+                   genes = .[[paste0(&quot;V&quot;, 4 + ncol(intron_meta))]]) %&gt;%
+                select(clu,genes)
+          return(exon_map)
+    }
 
     cat(&quot;LeafCutter: mapping clusters to genes\n&quot;)
     intron_counts &lt;- read.table(${_input[0]:r}, header=TRUE, check.names=FALSE, row.names=1)
     intron_meta &lt;- get_intron_meta(rownames(intron_counts))
     exon_table &lt;- read.table(${_output[0]:r}, header=TRUE, stringsAsFactors=FALSE)
-    if(!str_detect(intron_meta,&quot;chr&quot;)) {
-        exon_table = exon_table%&gt;%mutate(chr = str_remove_all(chr,&quot;chr&quot;))
+    if(!str_detect(intron_meta$chr[1],&quot;chr&quot;)) {
+        exon_table = exon_table %&gt;% mutate(chr = str_remove_all(chr,&quot;chr&quot;))
     } else if (!any(str_detect(exon_table$chr[1],&quot;chr&quot;))) {
-        exon_table = exon_table%&gt;%mutate(chr = paste0(&quot;chr&quot;,chr))
-    } else (exon_table = exon_table)
+        exon_table = exon_table %&gt;% mutate(chr = paste0(&quot;chr&quot;,chr))
+    } else {exon_table = exon_table}
     stopifnot(is.element(&#39;gene_id&#39;, colnames(exon_table)))
     exon_table[, &#39;gene_name&#39;] &lt;- exon_table[, &#39;gene_id&#39;]
-    m &lt;- map_clusters_to_genes(intron_meta, exon_table)
+    if(&quot;${map_stra}&quot; == &quot;site&quot;){
+      cat(&quot;mapping clusters to genes by splicing site\n&quot;)
+      m &lt;- map_clusters_to_genes_site(intron_meta, exon_table)
+      } else if(&quot;${map_stra}&quot; == &quot;region&quot;){
+      cat(&quot;mapping clusters to genes by overlapping gene region\n&quot;)
+      m &lt;- map_clusters_to_genes_region(intron_meta, exon_table, f = ${overlap_ratio})
+    } else {
+      stop(&quot;Map strategy should only be &#39;site&#39; or &#39;region&#39;.&quot;)
+    }
     write.table(m, ${_output[1]:r}, sep = &quot;\t&quot;, quote=FALSE, row.names=FALSE)
   
 bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
@@ -1407,6 +1444,7 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     import numpy as np
     import qtl.io
     from pathlib import Path
+
     # Load data
     tss_df = qtl.io.gtf_to_tss_bed(${_input[1]:r})
     bed_df = pd.read_csv(${_input[0]:ar}, sep=&#39;\t&#39;, skiprows=0)
@@ -1420,7 +1458,7 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     group_s = {}
     for _,r in bed_df.iterrows():
         s = r[&#39;ID&#39;].split(&#39;:&#39;)
-        cluster_id = s[0]+&#39;:&#39;+s[-1]
+        cluster_id = s[0]+&#39;:&#39;+s[3]
         if cluster_id in cluster2gene_dict:
             gene_ids = cluster2gene_dict[cluster_id].split(&#39;,&#39;)
             for g in gene_ids:
@@ -1436,6 +1474,8 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     gene_bed_df = pd.DataFrame(gene_bed_df, columns=bed_df.columns)
     # sort by TSS
     gene_bed_df = gene_bed_df.groupby(&#39;#chr&#39;, sort=False, group_keys=False).apply(lambda x: x.sort_values(&#39;start&#39;))
+    #rename the samples if they named by file name (simply pick the first element with [.])
+    gene_bed_df.columns = list(gene_bed_df.columns[:4]) + [name.split(&#39;.&#39;)[0] if &#39;junc&#39; in name else name for name in gene_bed_df.columns[4:]]
     # change sample IDs to participant IDs
     if sample_participant_lookup.is_file():
         sample_participant_lookup_s = pd.read_csv(sample_participant_lookup, sep=&quot;\t&quot;, index_col=0, dtype={0:str,1:str})
@@ -1445,14 +1485,18 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
         # Get the column names to be replaced
         column_names = gene_bed_df.columns[4:]
         # Replace the column names using the mapping dictionary
-        new_column_names = [column_mapping.get(col, &#39;missing_data&#39;) for col in column_names]
+        #new_column_names = [column_mapping.get(col, &#39;missing_data&#39;) for col in column_names]
+        #it should overlap with genotype in downstream anyways
+        new_column_names = [column_mapping.get(col, col) for col in column_names]
         gene_bed_df.rename(columns=dict(zip(column_names, new_column_names)), inplace=True)
 
     gene_bed_df = gene_bed_df.drop_duplicates()
     qtl.io.write_bed(gene_bed_df, ${_output[0]:r})
     gene_bed_df[[&#39;start&#39;, &#39;end&#39;]] = gene_bed_df[[&#39;start&#39;, &#39;end&#39;]].astype(np.int32)
     gene_bed_df[gene_bed_df.columns[4:]] = gene_bed_df[gene_bed_df.columns[4:]].astype(np.float32)
-    pd.Series(group_s).sort_values().to_csv(${_output[1]:r}, sep=&#39;\t&#39;, header=False)
+    group_s_df =  pd.Series(group_s).sort_values().reset_index()
+    group_s_df.columns = [&#39;ID&#39;, &#39;gene&#39;]
+    group_s_df.to_csv(${_output[1]:r}, sep=&#39;\t&#39;, index=False, header=True)
 
 bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
         stdout=$[_output[0]:n].stdout

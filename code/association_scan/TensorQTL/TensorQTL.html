@@ -243,14 +243,19 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced cis-QTL Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../cis_analysis/cis_advanced_overview.html">Overview of advanced cis-QTL analysis</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../cis_analysis/cis_workhorse.html">Advanced cis-QTL analysis with individual level data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../mnm_analysis/cis_advanced_overview.html">Overview of advanced cis-QTL analysis</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../cis_analysis/SuSiE.html">SuSiE fine-mapping workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cis_analysis/fSuSiE.html">fSuSiE workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cis_analysis/mvSuSiE.html">Multivariate fine-mapping workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../cis_analysis/mrmash.html">Multivariate TWAS prediction model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/SuSiE.html">SuSiE fine-mapping workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/fSuSiE.html">fSuSiE workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/mvSuSiE.html">Multivariate fine-mapping workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/mrmash.html">Multivariate TWAS prediction model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment Analysis</span></p>
 <ul class="nav bd-sidenav">
@@ -1036,9 +1041,12 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout 
 import pandas as pd
 genotype_files = pd.read_csv(genotype_file,sep = &quot;\t&quot;)
 genotype_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in genotype_files[&quot;#id&quot;].astype(str)]
-input_files = [x[1:] for x in genotype_files.values.tolist()]
-input: input_files, group_by = len(input_files[0])
-output: nominal = f&#39;{cwd:a}/{_input[0]:bnn}.trans_qtl_nominal.gz&#39;       
+genotype_files = genotype_files.assign(phenotype_path=phenotype_file).values.tolist()
+input_chroms = [x[0] for x in genotype_files]
+input_files = [x[1:] for x in genotype_files]
+input: input_files, group_by = len(input_files[0]), group_with = &quot;input_chroms&quot;
+output: nominal = f&#39;{cwd:a}/{_input[1]:bnn}_{input_chroms[_index]}_trans_qtl_nominal.gz&#39;
+
 parameter: batch_size = 50000
 parameter: pval_threshold = 1.0
 # Permutation testing is incorrect when the analysis is done by chrom

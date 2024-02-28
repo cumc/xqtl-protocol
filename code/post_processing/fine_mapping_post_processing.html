@@ -242,14 +242,19 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced cis-QTL Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../cis_analysis/cis_advanced_overview.html">Overview of advanced cis-QTL analysis</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../cis_analysis/cis_workhorse.html">Advanced cis-QTL analysis with individual level data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mnm_analysis/cis_advanced_overview.html">Overview of advanced cis-QTL analysis</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cis_analysis/SuSiE.html">SuSiE fine-mapping workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cis_analysis/fSuSiE.html">fSuSiE workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cis_analysis/mvSuSiE.html">Multivariate fine-mapping workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cis_analysis/mrmash.html">Multivariate TWAS prediction model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/SuSiE.html">SuSiE fine-mapping workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/fSuSiE.html">fSuSiE workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mvSuSiE.html">Multivariate fine-mapping workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mrmash.html">Multivariate TWAS prediction model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment Analysis</span></p>
 <ul class="nav bd-sidenav">
@@ -2000,8 +2005,8 @@ R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[overlap_qtl_gwas_1]
 parameter: gwas_methods=[&#39;single_effect_regression&#39;, &#39;noqc&#39;, &#39;qc_impute&#39;, &#39;qc_only&#39;, &#39;conditional_regression_noqc&#39;, &#39;conditional_regression_qc_impute&#39;, &#39;conditional_regression_qc_only&#39;]
-parameter: gwas_coverage_values = [0.95, 0.7, 0.5] # use &#39;-1&#39; means others here 
-parameter: qtl_coverage_values = [0.95, 0.7, 0.5]# use &#39;-1&#39; means others here 
+parameter: gwas_coverage_values = [0.95, 0.7, 0.5, -1] # use &#39;-1&#39; means others here 
+parameter: qtl_coverage_values = [0.95, 0.7, 0.5, -1]# use &#39;-1&#39; means others here 
 parameter: per_chunk = 100
 parameter: qtl_files = paths
 parameter: gwas_union_file = path
@@ -2010,39 +2015,40 @@ output: f&quot;{cwd}/gwas_qtl/{name}_gwas_batch{_index+1}.tsv&quot;
 task: trunk_workers = 1, walltime = &#39;1h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
 R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
     library(tidyverse)
+    library(plyr)
     library(data.table)
-    
-    # Function to change the coverage values to corresponding table name 
-     process_cov_values &lt;- function(raw_cov_values, data) {
+
+    # Function to change the coverage values to corresponding table name
+    process_cov_values &lt;- function(raw_cov_values, data) {
       # exclude &#39;others&#39; first
-      cov_values &lt;- raw_cov_values[raw_cov_values != -1 ] %&gt;% as.numeric 
+      cov_values &lt;- raw_cov_values[raw_cov_values != -1 ] %&gt;% as.numeric
       if (data == &#39;gwas&#39;){
-          if (any(cov_values &lt; 1)) cov_values &lt;- paste0(&#39;top_loci_&#39;, cov_values * 100) else cov_values &lt;- paste0(&#39;top_loci_&#39;, cov_values)  
-          # add others back 
+        if (any(cov_values &lt; 1)) cov_values &lt;- paste0(&#39;top_loci_&#39;, cov_values * 100) else cov_values &lt;- paste0(&#39;top_loci_&#39;, cov_values)
+        # add others back
       } else if (data == &#39;qtl&#39;) {
-          if (any(cov_values &gt; 1)) cov_values &lt;- paste0(&#39;cs_coverage_&#39;, round(cov_values / 100, 2)) else cov_values &lt;- paste0(&#39;cs_coverage_&#39;, cov_values)  
+        if (any(cov_values &gt; 1)) cov_values &lt;- paste0(&#39;cs_coverage_&#39;, round(cov_values / 100, 2)) else cov_values &lt;- paste0(&#39;cs_coverage_&#39;, cov_values)
       }
-     if ( -1 %in% raw_cov_values) {
+      if ( -1 %in% raw_cov_values) {
         cov_values &lt;- c(cov_values, &quot;top_loci_others&quot;)
       }
       return(cov_values)
     }
-  
+
     # Function to add &#39;chr&#39; in variants
-        add_chr_prefix &lt;- function(var) {
-        if (any(grepl(&quot;chr&quot;, var))) {
-            var &lt;- var
-        } else {
-            var &lt;- paste0(&quot;chr&quot;, var)
-        }
-        return(var)
-    }  
-     
+    add_chr_prefix &lt;- function(var) {
+      if (any(grepl(&quot;chr&quot;, var))) {
+        var &lt;- var
+      } else {
+        var &lt;- paste0(&quot;chr&quot;, var)
+      }
+      return(var)
+    }
+
     # Function to check if a dataframe has rows
     has_rows &lt;- function(df) {
       !is.null(df) &amp;&amp; nrow(df) &gt; 0
     }
-  
+
     # Function to filter QTL top loci table
     filter_qtl_loci &lt;- function(dat_top_loci, qtl_cov_values, cov_prefix = &quot;cs_&quot;) {
       # Identify columns that start with the specified prefix
@@ -2101,6 +2107,127 @@ R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.
       return(gwas)
     }
 
+
+    # Process GWAS data
+    process_gwas_data &lt;- function(gwas) {
+      gwas %&gt;%
+        pivot_longer(cols = starts_with(&quot;cs_&quot;), names_to = &quot;method&quot;, values_to = &quot;value&quot;) %&gt;%
+        mutate(method = str_remove(method, &quot;cs_&quot;)) %&gt;%
+        pivot_wider(names_from = coverage, values_from = value) %&gt;%
+        split(.$study)
+    }
+
+    # Process each GWAS subset
+    process_gwas_subset &lt;- function(df) {
+      cs_columns &lt;-  names(df) %&gt;% .[grep(&quot;^top_loci&quot;,.)]
+      base_columns &lt;- c(&quot;variants&quot;, &quot;study&quot;, &quot;block&quot;, &quot;method&quot;, cs_columns) ##FIXME: should be cleaner
+      methods &lt;- unique(df$method)
+
+      lapply(methods, function(m) {
+        pip_columns &lt;- grep(paste0(&quot;^pip_&quot;, m), names(df), value = TRUE)
+        selected_columns &lt;- c(base_columns, pip_columns)
+
+        df %&gt;%
+          filter(method == m) %&gt;%
+          select(all_of(selected_columns)) %&gt;%
+          rename_with(~ ifelse(. %in% pip_columns, &quot;pip&quot;, .), .cols = everything())
+      }) |&gt;
+        setNames(methods)
+    }
+
+    # Combine all GWAS subsets
+    combine_gwas_data &lt;- function(gwas_list) {
+      do.call(rbind, lapply(gwas_list, bind_rows)) %&gt;%
+        dplyr::rename(variant_id = variants, region = block)
+    }
+
+
+    # Process column names
+    process_column_names &lt;- function(col_names) {
+      col_names %&gt;% .[grep(&quot;^cs&quot;,.)] %&gt;%
+        map_chr(function(name) {
+          parts &lt;- str_split(name, &quot;_&quot;, simplify = TRUE)
+          if (ncol(parts) &gt;= 2) {
+            # Assuming the last part is what we want after &quot;cs_&quot;
+            part &lt;- parts[, ncol(parts)]
+            # Replace this line with the actual processing you intend, e.g., process_cov_values(part, data = &#39;gwas&#39;)
+            return(part)
+          } else {
+            # Fallback or error handling if the expected structure is not present
+            return(NA) # Or some other appropriate action
+          }
+        })
+    }
+
+    # Process a single QTL
+    # Adjusted process_single_qtl to reflect above changes
+    process_single_qtl &lt;- function(qtl_study, study_name, region_name) {
+      top_loci_cols &lt;- names(qtl_study)[grep(&quot;top_loci&quot;, names(qtl_study))]
+
+      map_df(top_loci_cols, function(col_name) {
+        current_col &lt;- qtl_study[[col_name]]
+
+        if(!is.null(current_col) &amp;&amp; nrow(current_col) &gt; 0){
+          new_colnames &lt;- process_column_names(colnames(current_col))%&gt;% process_cov_values(., data = &#39;gwas&#39;)
+          # Ensure colnames are correctly assigned back to current_col
+          colnames(current_col)[grep(&quot;^cs_&quot;, colnames(current_col))] &lt;- new_colnames
+
+          tmp_col &lt;- current_col %&gt;%
+            select(all_of(c(&quot;pip&quot;, &quot;variant_id&quot;, new_colnames))) %&gt;%
+            mutate(
+              top_loci_others = ifelse(rowSums(select(., starts_with(&quot;top_loci&quot;))) == 0, 0, NA),
+              method = col_name,
+              study = study_name,
+              region = region_name
+            )
+
+          return(tmp_col)
+        } else {
+          return(tibble()) # Return an empty tibble if there&#39;s no data to avoid NULLs
+        }
+      }) %&gt;%
+        bind_rows()
+    }
+
+    # Define functions for repetitive tasks
+    process_qtl_data &lt;- function(qtl_path, gwas, gwas_cov_values, qtl_cov_values) {
+      qtl &lt;- readRDS(qtl_path)
+
+      qtl_var &lt;- unlist(lapply(qtl[[1]], function(gene_data) {
+        if (has_rows(gene_data$top_loci)) {
+          dat_top_loci &lt;- filter_qtl_loci(gene_data$top_loci, qtl_cov_values = qtl_cov_values, cov_prefix = &quot;cs_&quot;)
+          return(dat_top_loci$variant_id)
+        }
+        return(character(0))
+      }))
+
+      gwas$variants &lt;- if(any(grepl(&quot;chr&quot;, qtl_var))) add_chr_prefix(gwas$variants) else gsub(&quot;chr&quot;, &quot;&quot;, gwas$variants)
+
+      gwas_sub &lt;- gwas %&gt;% filter(variants %in% qtl_var) 
+      gwas_list &lt;- process_gwas_data(gwas_sub)
+
+      meta &lt;- data.frame(gene = names(qtl), qtl_combine = basename(qtl_path), qtl_gwas_overlap = NA)
+
+      if (length(gwas_list) &gt; 0 &amp;&amp; any(sapply(gwas_list, nrow) &gt; 0)) {
+        processed_gwas_list &lt;- lapply(gwas_list, process_gwas_subset)
+        gwas_combined_df &lt;- combine_gwas_data(processed_gwas_list)
+
+        qtl_df &lt;- map2_df(qtl[[1]], names(qtl[[1]]), ~process_single_qtl(.x, .y, names(qtl)[1]))
+        # save rds
+        qtl[[1]] &lt;- c(qtl[[1]], processed_gwas_list)
+        new_qtl_path &lt;-  paste0(${_output:dr},&quot;/&quot;,gsub(&quot;.rds&quot;,&quot;.overlapped.gwas.rds&quot;,basename(qtl_path)))
+        saveRDS(qtl, new_qtl_path)
+
+        all_df &lt;- rbind.fill(gwas_combined_df, qtl_df)
+        cols_to_update &lt;- grep(&quot;^top_loci(?!_others$)&quot;, colnames(all_df), perl = TRUE)
+        all_df[, cols_to_update] &lt;- lapply(all_df[, cols_to_update], function(x) ifelse(is.na(x), 0, x))
+        fwrite(all_df, gsub(&quot;.rds&quot;,&quot;.csv&quot;,new_qtl_path))
+
+        meta$qtl_gwas_overlap &lt;- basename(new_qtl_path)
+      }
+      return(meta)
+    }
+
     # Processing
     # load gwas data
     # load selection conditions 
@@ -2112,37 +2239,14 @@ R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.
     gwas &lt;- fread(${gwas_union_file:r}) %&gt;% filter_gwas_loci(., gwas_cov_values, gwas_methods)
   
     # load qtl data
-    meta_all &lt;- data.frame() 
     qtl_paths &lt;-  c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input])})
-    for(qtl_path in qtl_paths){
-      qtl &lt;- readRDS(qtl_path)
-        #get all qtl variants
-        qtl_var &lt;- c()
-        for(name in names(qtl[[1]])){
-            dat &lt;- qtl[[1]][[name]]
-            dat_top_loci &lt;- dat$top_loci
-             if(has_rows(dat_top_loci)) {
-                dat_top_loci &lt;- filter_qtl_loci(dat_top_loci, qtl_cov_values = qtl_cov_values, cov_prefix = &quot;cs_&quot;)          
-                tmp_var &lt;- dat_top_loci$variant_id
-                qtl_var &lt;- c(qtl_var, tmp_var)
-              }
-        }
-        # to avoid variant name difference in GWAS and QTL results
-        if(any(grepl(&quot;chr&quot;, qtl_var))) gwas$variants &lt;- add_chr_prefix(gwas$variants) else gwas$variants &lt;- gsub(&quot;chr&quot;,&quot;&quot;,gwas$variants)
+    
+    # main processing
+    results &lt;- lapply(qtl_paths, process_qtl_data, gwas = gwas, gwas_cov_values = gwas_cov_values, qtl_cov_values = qtl_cov_values)
 
-        #overlap qtl and gwas variants
-        gwas_sub &lt;- gwas %&gt;% filter(variants %in% qtl_var)
-        gwas_list &lt;- split(gwas_sub, gwas_sub$coverage)
-        meta &lt;- data.frame(gene = names(qtl), qtl_combine = basename(qtl_path), qtl_gwas_overlap = NA)
-        if(length(gwas_list)&gt;0){
-          names(gwas_list) &lt;- paste0(&quot;GWAS_&quot;, names(gwas_list))
-          qtl[[1]] &lt;- c(qtl[[1]], gwas_list)
-          new_qtl_path &lt;-  paste0(${_output:dr},&quot;/&quot;,gsub(&quot;.rds&quot;,&quot;.overlapped.gwas.rds&quot;,basename(qtl_path)))
-          saveRDS(qtl, new_qtl_path)
-          meta[[&#39;qtl_gwas_overlap&#39;]] &lt;-  basename(new_qtl_path)
-        } 
-       meta_all &lt;- rbind(meta_all, meta)
-    }
+    # Combine all meta data
+    meta_all &lt;- bind_rows(results)
+
     write_delim(meta_all, &quot;${_output}&quot;, delim = &#39;\t&#39;)
 </pre></div>
 </div>
@@ -2152,20 +2256,23 @@ R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[overlap_qtl_gwas_2]
 input: group_by = &#39;all&#39;
-output: f&quot;{cwd}/{name}.overlapped.gwas.tsv&quot; 
+output: f&quot;{cwd}/{name}.overlapped.gwas.tsv&quot;
 task: trunk_workers = 1, walltime = &#39;1h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
+R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    library(data.table)
+    input_path &lt;- ${_input[0]:adr}
+    meta_files &lt;- c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input])})
+    exp_files &lt;- list.files(input_path, &quot;overlapped.gwas.csv&quot;, full.names = T)
+    meta_list &lt;- exp_list &lt;- list()
+    meta_combined &lt;- rbindlist(lapply(meta_files, fread), fill = TRUE)
+    exp_combined &lt;- rbindlist(lapply(exp_files, fread), fill = TRUE)
+    fwrite(meta_combined, &quot;${_output}&quot;, sep = &#39;\t&#39;)
+    fwrite(exp_combined, gsub(&quot;tsv&quot;,&quot;export.csv.gz&quot;,&quot;${_output}&quot;))
+  
 bash: expand = &quot;{ }&quot;, container = container, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
     input_path=$(echo ${_input[0]:adr}| sed &#39;s/^\$//&#39;)
-    output_file=$(echo ${_output:r}|sed &#39;s/^\$//g&#39;)
-
-    for file in $input_path/*.tsv; do
-      if [ &quot;$file&quot; == &quot;$(echo $input_path/*.tsv | cut -d&#39; &#39; -f1)&quot; ]; then
-        head -n 1 &quot;$file&quot; &gt; $output_file
-      fi
-
-      tail -n +2 &quot;$file&quot; &gt;&gt; $output_file
-    done
-    rm -rf $input_path/*.tsv
+    #rm -rf $input_path/*.tsv
+    #rm -rf $input_path/*.csv
 </pre></div>
 </div>
 </div>

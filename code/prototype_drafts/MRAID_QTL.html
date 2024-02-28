@@ -1,0 +1,1428 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Mendelian Randomization using MRAID &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/prototype_drafts/MRAID_QTL';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="GREGOR enrichment analysis" href="../enrichment/gregor.html" />
+    <link rel="prev" title="Fine-mapping with PolyFun" href="polyfun.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_data/reference_data.html">Reference Data</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/apa.html">Alternative polyadenylation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/methylation.html">Methylation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">Genotype Data Formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../association_scan/qtl_association_testing.html">QTL Association Analysis</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">TensorQTL QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced cis-QTL Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mnm_analysis/cis_advanced_overview.html">Overview of advanced cis-QTL analysis</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/SuSiE.html">SuSiE fine-mapping workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/fSuSiE.html">fSuSiE workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mvSuSiE.html">Multivariate fine-mapping workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mrmash.html">Multivariate TWAS prediction model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="polyfun.html">Fine-mapping with PolyFun</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Mendelian Randomization using MRAID</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/gregor.html">GREGOR enrichment analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/ldsc.html">Stratified LD Score Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">xQTL-GWAS Integration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pecotmr_integration/pecotmr.html">The PECOTMR intergration framework</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pecotmr_integration/SuSiE_enloc.html">GWAS integration: enrichment and colocalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pecotmr_integration/twas_mr.html">GWAS integration: TWAS and MR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pecotmr_integration/intact.html">TWAS and COLOC integration</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Analysis</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/METAL_pipeline.html">Meta-analysis with METAL</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/METAL/METAL.html">Meta-analysis with METAL</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/MASH_pipeline.html">Multivariate association with MASH</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_preprocessing.html">Extract genome-wide data for multivariate analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_posterior.html">MASH analysis pipeline with posterior computation</a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Rare xQTL</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../rare_xqtl/watershed.html">watershed analysis for rare xQTL</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Post Processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/sumstats_standardizer.html">Summary statistics standardization and export</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/rds_to_vcf.html">Summary statistics in VCF format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/association_scan_post_processing.html">Association result processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../post_processing/fine_mapping_post_processing.html">SuSIE results post process</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/edit/gh-pages/code/prototype_drafts/MRAID_QTL.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-pipeline/issues/new?title=Issue%20on%20page%20%2Fcode/prototype_drafts/MRAID_QTL.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/code/prototype_drafts/MRAID_QTL.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Mendelian Randomization using MRAID</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-parameters">Global parameters</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="mendelian-randomization-using-mraid">
+<h1>Mendelian Randomization using MRAID<a class="headerlink" href="#mendelian-randomization-using-mraid" title="Permalink to this heading">#</a></h1>
+<p>This notebook is to perform MRAID analysis for different targets with QTL data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="o">~/</span><span class="n">Work</span><span class="o">/</span><span class="n">MR</span><span class="o">/</span><span class="mf">2023.4</span><span class="n">_MR</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">metabolics</span><span class="o">/</span><span class="n">Metabolon_Bile_Biocrate_targets_df</span><span class="o">.</span><span class="n">csv</span><span class="o">|</span><span class="n">cut</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">d</span> <span class="s1">&#39; &#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>841
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">nohup</span> <span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">codes</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">MRAID_QTL</span><span class="o">.</span><span class="n">ipynb</span><span class="o">/</span> <span class="n">mraid_qtl</span>    \
+    <span class="o">--</span><span class="n">n</span> <span class="mi">840</span> \
+    <span class="o">--</span><span class="n">targets_df</span> <span class="s2">&quot;~/Work/MR/2023.4_MR/output/metabolics/Metabolon_Bile_Biocrate_targets_df.csv&quot;</span>  \
+    <span class="o">--</span><span class="n">con</span> <span class="s2">&quot;metabolics_pval_beta_0.001&quot;</span>    \
+    <span class="o">--</span><span class="n">qtl</span> <span class="s2">&quot;metaQTL&quot;</span>    \
+    <span class="o">--</span><span class="n">p_cut</span> <span class="mf">0.001</span> \
+    <span class="o">--</span><span class="n">pval_beta</span> <span class="mi">1</span> \
+    <span class="o">-</span><span class="n">s</span> <span class="n">build</span> <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">~/</span><span class="n">test</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span>   <span class="o">&amp;&gt;</span> <span class="n">mraid_meta_1</span><span class="mf">.2</span><span class="o">.</span><span class="n">log</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">rf2872</span><span class="o">/</span><span class="n">Work</span><span class="o">/</span><span class="n">MR</span><span class="o">/</span><span class="mf">2023.4</span><span class="n">_MR</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">ADlist_lit</span><span class="o">/</span><span class="n">Causal_AD_genes_from_literature_targets_df</span><span class="o">.</span><span class="n">csv</span><span class="o">|</span><span class="n">cut</span> <span class="o">-</span><span class="n">f1</span> <span class="o">-</span><span class="n">d</span> <span class="s1">&#39; &#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>19
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for i in 0.01 0.001 0.0001 0.00001;
+do
+    nohup sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \
+        --n 19 \
+        --targets_df &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature_targets_df.csv&quot; \
+        --con ADlist_lit_eQTL_GWAS_${i} \
+        --qtl &quot;eQTL&quot; \
+        --p_cut ${i} \
+        --pval_beta 0 \
+        -s build -J 200 -q csg -c ~/test/csg.yml &amp;&gt; mraid_eQTL_${i}.log &amp;
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for i in 0.01 0.001 0.0001 0.00001;
+do
+    n=$(($(wc -l &lt; /mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature_targets_df.csv) - 1))
+    sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \
+        --n $n \
+        --targets_df &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature_targets_df.csv&quot; \
+        --con ADlist_lit_eQTL_GWAS_${i} \
+        --qtl &quot;eQTL&quot; \
+        --p_cut ${i} \
+        --pval_beta 0 \
+        -s build -J 200 -q csg -c ~/test/csg.yml 
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1">#library(tidyverse)</span>
+<span class="c1">#dir.create(&quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit_pQTL_GWAS&quot;)</span>
+<span class="c1">#AD_df&lt;-data.table::fread(&quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot;)</span>
+<span class="c1">#targets_df&lt;-data.frame(targets=AD_df$ID,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))%&gt;%.[.$targets!=&quot;&quot;,]</span>
+<span class="c1">#data.table::fwrite(targets_df,&quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit_pQTL_GWAS/Causal_AD_genes_from_literature_pqtl_targets.csv&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message in dir.create(&quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit_pQTL_GWAS&quot;):
+“&#39;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit_pQTL_GWAS&#39; already exists”
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="c1">#for i in 0.01 0.001 0.0001 0.00001;</span>
+<span class="c1">#do</span>
+<span class="c1">#    n=$(($(wc -l &lt; /mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature_targets_df.csv) - 1))</span>
+<span class="c1">#    sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \</span>
+<span class="c1">#        --n $n \</span>
+<span class="c1">#        --AD_df &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot; \</span>
+<span class="c1">#        --qtl &quot;pQTL&quot; \</span>
+<span class="c1">#        --p_cut ${i} \</span>
+<span class="c1">#        --pval_beta 0 \</span>
+<span class="c1">#        -s build -J 200 -q csg -c ~/test/csg.yml </span>
+<span class="c1">#done</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for i in 0.01 0.001 0.0001 0.0001 0.00001;
+do
+    sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \
+        --AD_df &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot; \
+        --qtl &quot;pQTL&quot; \
+        --p_cut ${i} \
+        --pval_beta 0 \
+        -s build -J 200 -q csg -c ~/test/csg.yml 
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">codes</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">MRAID_QTL</span><span class="o">.</span><span class="n">ipynb</span><span class="o">/</span> <span class="n">mraid_qtl</span> \
+        <span class="o">--</span><span class="n">AD_df</span> <span class="s2">&quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot;</span>  \
+        <span class="o">--</span><span class="n">qtl</span> <span class="s2">&quot;pQTL&quot;</span> \
+        <span class="o">--</span><span class="n">p_cut</span> <span class="mf">0.01</span> \
+        <span class="o">--</span><span class="n">out</span> <span class="s2">&quot;eQTL&quot;</span> \
+        <span class="o">--</span><span class="n">pval_beta</span> <span class="mi">0</span> \
+        <span class="o">-</span><span class="n">s</span> <span class="n">build</span> <span class="o">-</span><span class="n">J</span> <span class="mi">200</span> <span class="o">-</span><span class="n">q</span> <span class="n">csg</span> <span class="o">-</span><span class="n">c</span> <span class="o">~/</span><span class="n">test</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for out in &quot;GWAS&quot; &quot;pQTL&quot;;
+do 
+
+for i in 0.01 0.001 0.0001 0.0001 0.00001;
+do
+    sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \
+        --AD_df &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot; \
+        --qtl &quot;eQTL&quot; \
+        --p_cut ${i} \
+        --out ${out} \
+        --pval_beta 0 \
+        -s build -J 200 -q csg -c ~/test/csg.yml 
+done
+
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for ad in &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot; &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist/Causal_AD_genes.csv&quot;;
+do
+
+for out in &quot;GWAS&quot; &quot;pQTL&quot;;
+do 
+
+for i in 0.01 0.001 0.0001 0.0001 0.00001;
+do
+    sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \
+        --AD_df ${ad}  \
+        --qtl &quot;eQTL&quot; \
+        --p_cut ${i} \
+        --out ${out} \
+        --pval_beta 0 \
+        -s build -J 200 -q csg -c ~/test/csg.yml 
+done
+
+done
+
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for ad in &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist_lit/Causal_AD_genes_from_literature.csv&quot; &quot;/mnt/vast/hpc/csg/rf2872/Work/MR/2023.4_MR/output/ADlist/Causal_AD_genes.csv&quot;;
+do
+
+for out in &quot;GWAS&quot; &quot;eQTL&quot;;
+do 
+
+for i in 0.01 0.001 0.0001 0.0001 0.00001;
+do
+    sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl \
+        --AD_df ${ad}  \
+        --qtl &quot;pQTL&quot; \
+        --p_cut ${i} \
+        --out ${out} \
+        --pval_beta 0 \
+        -s build -J 200 -q csg -c ~/test/csg.yml 
+done
+
+done
+
+done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>for ad in &quot;~/Work/MR/2023.4_MR/output/metabolics/Metabolon_Bile_Biocrate.csv&quot;;
+do
+
+for i in 0.01 0.001 0.0001 0.0001 0.00001;
+do
+   sos run ~/codes/xqtl-pipeline/pipeline/MRAID_QTL.ipynb/ mraid_qtl    \
+       --AD_df ${ad} \
+       --qtl &quot;metaQTL&quot;    \
+       --p_cut ${i} \
+       --pval_beta 1 \
+       -s build -J 200 -q csg -c ~/test/csg.yml   
+done
+done
+</pre></div>
+</div>
+</div>
+</div>
+<section id="global-parameters">
+<h2>Global parameters<a class="headerlink" href="#global-parameters" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># Work directory &amp; output directory</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+<span class="c1"># The filename prefix for output data</span>
+<span class="kn">parameter:</span> <span class="kp">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span>
+<span class="kn">parameter:</span> <span class="n">job_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="kn">parameter:</span> <span class="n">container</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="kn">parameter:</span> <span class="n">table_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1">#parameter: con = str</span>
+<span class="kn">parameter:</span> <span class="n">qtl</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="kn">parameter:</span> <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;GWAS&quot;</span>
+<span class="kn">parameter:</span> <span class="n">p_cut</span> <span class="o">=</span> <span class="mf">0.001</span>
+<span class="kn">parameter:</span> <span class="n">AD_df</span> <span class="o">=</span> <span class="n">path</span>
+<span class="kn">parameter:</span> <span class="n">per_chunk</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">parameter:</span> <span class="n">samplen1</span> <span class="o">=</span> <span class="mi">900</span>
+<span class="kn">parameter:</span> <span class="n">samplen2</span> <span class="o">=</span> <span class="mi">788989</span>
+<span class="c1">##  conditions can be excluded if needs arise. If nothing to exclude keep the default 0</span>
+<span class="kn">parameter:</span> <span class="n">datadir</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1">#parameter: analysis_units = path</span>
+<span class="kn">parameter:</span> <span class="n">pval_beta</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># set as 1 if you use metabolic data, which would use pavlue_beta in sumstats result</span>
+<span class="c1"># handle N = per_chunk data-set in one job</span>
+<span class="c1">#regions = [x.replace(&quot;\&quot;&quot;,&quot;&quot;).strip().split() for x in open(analysis_units).readlines() if x.strip() and not x.strip().startswith(&#39;target&#39;)]</span>
+<span class="kn">parameter:</span> <span class="n">con</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">AD_df</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">qtl</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="n">targets_df</span> <span class="o">=</span> <span class="n">file_target</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cwd</span><span class="si">:</span><span class="s2">a</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">con</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">con</span><span class="si">}</span><span class="s2">_target_df.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[mraid_qtl_1]
+input: AD_df
+output: targets_df
+
+R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39; 
+    library(data.table)
+    library(tidyverse)
+       AD_df&lt;-data.table::fread(&quot;${AD_df}&quot;)
+       qtl=&quot;${qtl}&quot;
+            if (qtl == &quot;eQTL&quot;) {
+                targets_df&lt;-data.frame(targets=AD_df$ensembl,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))
+            }
+            if (qtl == &quot;pQTL&quot;) {
+                targets_df&lt;-data.frame(targets=AD_df$ID,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))%&gt;%.[.$targets!=&quot;&quot;,]
+
+            }
+            if (qtl == &quot;mQTL&quot;) {
+                targets_df&lt;-NA #need to add sth..
+            }
+            if (qtl == &quot;haQTL&quot;) {
+                targets_df&lt;-NA #need to add sth..
+            }
+            if (qtl == &quot;metaQTL&quot;) {
+                targets_df&lt;-data.frame(targets=AD_df$molecular_trait_id,chromosome=AD_df$group)
+            }  
+      data.table::fwrite(targets_df,${_output:r})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># perform mraid analysis with QTL data
+[mraid_qtl_2]
+import os
+import pandas as pd
+df = pd.read_csv(f&quot;{cwd:a}/{con}/{con}_target_df.csv&quot;)
+n = df.shape[0]
+n  = [x+1 for x in range(n)]
+input: for_each = &#39;n&#39;
+output: f&quot;{cwd:a}/{con}/{qtl}/sig_{p_cut}/res_mraid_{con}_p_cut_{p_cut}_{_n}.csv&quot;
+task: trunk_workers = 1, trunk_size = job_size, walltime = &#39;24h&#39;,  mem = &#39;80G&#39;, tags = f&#39;{_output:bn}&#39;  
+
+R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39; 
+    library(data.table)
+    library(tidyverse)
+    library(UpSetR)
+    library(dplyr)
+    library(stringr)
+    library(&quot;data.table&quot;)
+    library(stringr)
+    library(RcppCNPy)
+    library(arrow)
+    library(reticulate)
+    library(MRAID)    
+    find_SNP_from_sum&lt;-function(ref,refpath,SNP,ID=&quot;variant&quot;,full_chr=FALSE,snp.df=NULL,ref_with_fullpath=NULL,IDsep=&quot;:&quot;,suffix=&#39;.norminal.cis_long_table.txt&#39;,IDsep_in_sum=&quot;_&quot;){
+        chr&lt;-unique(stringr::str_split(SNP,IDsep,simplify=T)[,1])
+        if(isTRUE(full_chr))chr.use&lt;-chr else chr.use&lt;-gsub(&quot;chr&quot;,&quot;&quot;,chr)
+        for(i in 1:length(chr.use))try({
+            c&lt;-chr.use[i]
+            use.ref&lt;-ref[grep(paste0(&quot;[.]&quot;,c,suffix),ref)]
+            if(isTRUE(ref_with_fullpath)){
+                tmp.f &lt;- data.table::fread(use.ref[i],sep=&quot;\t&quot;,header=T)} else {
+                tmp.f &lt;- data.table::fread(paste0(refpath,&quot;/&quot;,use.ref),sep=&quot;\t&quot;,header=T)
+            }
+            if(stringr::str_split_fixed(tmp.f[[ID]],IDsep,n=2)[1,1]!=chr[i]){
+                tmp.f[[ID]]&lt;-sub(IDsep_in_sum,IDsep,tmp.f[[ID]])
+            }
+            tmp.f&lt;-tmp.f[tmp.f[[ID]] %in% SNP,]
+            snp.df&lt;-rbind(snp.df,tmp.f)    
+        })
+        return(snp.df)
+    }
+        # mraid function
+        mraid &lt;- function(target,path, qtl, res = NULL, p_cut, targets_df, con ,outcome,pval_beta=FALSE,samplen1,samplen2) {
+        chr=targets_df[targets_df$targets == target, &quot;chromosome&quot;]%&gt;%unique()
+            if (qtl == &quot;eQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/eQTL/dlpfc_batch_all.rnaseqc.low_expression_filtered.outlier_removed.tmm.expression.bed.processed_phenotype.per_chrom_dlpfc_batch_all.rnaseqc.ROSMAP_covariates.ROSMAP_NIA_WGS.pca.PEER.txt.&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+            }
+            if (qtl == &quot;pQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/pQTL/rf_standard/pheno_recipe_pheno.rosmap_cov.ROSMAP_NIA_WGS.leftnorm.filtered.filtered.prune.pca.resid.PEER.&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+                # there are so many duplicated rows in exp matrix
+                exp.chr &lt;- exp.chr[-which(duplicated(exp.chr)), ]
+                # in pQTL files, the snps are chrx_tacg_... but in most files should be chrx:tacg_...
+                exp.chr$variant &lt;- sub(&quot;_&quot;, &quot;:&quot;, exp.chr$variant)
+            }
+            if (qtl == &quot;mQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/mQTL/ROSMAP_arrayMethylation_covariates.sesame.methyl.beta.sample_matched.bed_BMIQ.bed.filter_na.bed.softImputed.bed.processed_phenotype.per_chrom_methy.peer.pca.chr&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+                exp.chr &lt;- exp.chr %&gt;% rename(&quot;chromosome&quot; = &quot;chrom&quot;, &quot;position&quot; = &quot;pos&quot;)
+                exp.chr$chromosome &lt;- gsub(&quot;chr&quot;, &quot;&quot;, exp.chr$chromosome)
+            }
+            if (qtl == &quot;haQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/haQTL/h3k9ac_bed_recipe_h3k9ac_whole.k9_cov.xqtl_protocol_data.filtered.related.filtered.extracted.pca.projected.resid.PEER.merged.&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+                exp.chr &lt;- exp.chr %&gt;% rename(&quot;chromosome&quot; = &quot;chrom&quot;, &quot;position&quot; = &quot;pos&quot;)
+                exp.chr$chromosome &lt;- gsub(&quot;chr&quot;, &quot;&quot;, exp.chr$chromosome)
+            }
+            if (qtl == &quot;metaQTL&quot;) {
+                exp.chr &lt;- fread(list.files(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/metaQTL/&quot;, chr,&quot;/rf/&quot;),&quot;_rf.norminal.trans_long_table.txt$&quot;,full.names = T))
+                exp.chr &lt;- exp.chr %&gt;% rename(&quot;chromosome&quot; = &quot;chrom&quot;, &quot;position&quot; = &quot;pos&quot;)
+                exp.chr$chromosome &lt;- gsub(&quot;chr&quot;, &quot;&quot;, exp.chr$chromosome)
+                exp.chr$position &lt;- str_split(exp.chr$position,&quot;:&quot;,simplify = T)[,2]%&gt;%as.numeric()
+            }
+                ## 2. prapare the input for MR
+                ### 2.1 exposure GWAS sumstats
+                # get qtl Data
+                exp &lt;- exp.chr[molecular_trait_id == target]
+                snps_ana_gene &lt;- exp$variant
+                if(pval_beta==1){exp &lt;- exp[pval_beta &lt; p_cut, ]} else exp &lt;- exp[pvalue &lt; p_cut, ]
+                snps_asso_gene &lt;- exp$variant
+                res &lt;- data.table(target = target, n_snps_ana = length(snps_ana_gene), p_cut = p_cut, n_snps_asso = length(snps_asso_gene))
+                message(length(snps_asso_gene), &quot; SNPs associated with &quot;, target)
+                if (length(snps_asso_gene) &gt; 0) {
+                    ### 2.2 outcome GWAS sumstats
+                    # get snps&#39; GWAS data
+                    if (outcome == &quot;GWAS&quot;) {
+                        path &lt;- &quot;/home/rf2872/Work/MR/2023.4_MR/data/sumtats/GWAS/&quot;
+                        out &lt;- find_SNP_from_sum(ref = list.files(path), refpath = path, SNP = snps_asso_gene, suffix = &quot;.sumstat.tsv&quot;, full_chr = T, IDsep_in_sum = &quot;_&quot;)
+                    } else {
+                        out.path &lt;- paste0(&quot;/home/rf2872/Work/MR/2023.4_MR/data/sumtats/&quot;,outcome)
+                        out &lt;- find_SNP_from_sum(ref = list.files(out.path), refpath = out.path, SNP = snps_asso_gene, full_chr = F, IDsep_in_sum = &quot;_&quot;)
+                        ###find out data
+                        if (outcome == &quot;eQTL&quot;) {
+                        out &lt;- out[out$molecular_trait_id==AD_df$ensembl[AD_df$ID==target],]}
+                        if (outcome == &quot;pQTL&quot;) {
+                        out &lt;- out[out$molecular_trait_id==AD_df$ID[AD_df$ensembl==target],]}
+                             
+                        int_snps &lt;- intersect(snps_asso_gene, out$variant)
+                    }
+                    int_snps &lt;- intersect(snps_asso_gene, out$variant)
+                    if(length(int_snps)&gt;0){
+                    ### 2.3/2.4 exposure LD matrix
+                    # since the LD files are saved separately accrodding to their postions, I&#39;d like to use bedtools to map the SNPs to LD files
+                    LD &lt;- read.table(&quot;/mnt/vast/hpc/csg/molecular_phenotype_calling/LD/output/1300_hg38_EUR_LD_blocks_LD/ROSMAP_NIA_WGS.leftnorm.filtered.filtered.ld.list&quot;, header = F, sep = &quot;\t&quot;)
+                    LD.bed &lt;- str_split(LD$V1, &quot;_&quot;, simplify = T) %&gt;% cbind(., LD)
+                    
+                    # if(qtl == &quot;eQTL&quot; | qtl == &quot;pQTL&quot;){
+                    exp_LD.bed &lt;- data.frame(chrome = paste0(&quot;chr&quot;, exp$chromosome), start = exp$position, end = (exp$position + nchar(exp$ref) - 1))
+                    # }
+                    # if(qtl == &quot;mQTL&quot;){
+                    # exp_LD.bed &lt;- data.frame(chrome = exp$chrom, start = exp$pos, end = (exp$pos + nchar(exp$ref) - 1))
+                    # }
+                    options(bedtools.path = &quot;/home/rf2872/software/bedtools2/bin/&quot;)
+                    LD.files &lt;- bedtoolsr::bt.intersect(a = LD.bed, b = exp_LD.bed)
+                      
+                    # load python tools to read npz files, but there would be an error for npz1$f[[&quot;arr_1&quot;]], so I need to read the bim file to locate the snps. (Hao says they are in sam order)
+                    np &lt;- import(&quot;numpy&quot;)
+                    LD_files &lt;- unique(LD.files$V5)
+                    
+                    # some snp sets could locate in more than 1 ld files. so I have to read those files separately and combine them (I don&#39;t know which function can do this easily, so I just write a new one)
+                    LD.list &lt;- list()
+                    for (f in 1:length(LD_files)) {
+                        npz1 &lt;- np$load(LD_files[f])
+                        ld.mtx &lt;- npz1$f[[&quot;arr_0&quot;]]
+                        ld.snps &lt;- stringr::str_split(LD_files[f], &quot;[.]&quot;, simplify = T) %&gt;%
+                            .[, -c(length(.), (length(.) - 1))] %&gt;%
+                            paste(., collapse = &quot;.&quot;) %&gt;%
+                            paste0(., &quot;.bim&quot;) %&gt;%
+                            read.table(.) %&gt;%
+                            .[, 2]
+                        colnames(ld.mtx) &lt;- rownames(ld.mtx) &lt;- ld.snps
+                        LD.list[[f]] &lt;- as.data.frame(ld.mtx)
+                        realsnps.tmp &lt;- intersect(colnames(LD.list[[f]]), int_snps)
+                        if(length(realsnps.tmp)&gt;0) {
+                    LD.list[[f]] &lt;- LD.list[[f]][realsnps.tmp, realsnps.tmp]%&gt;%as.data.frame()
+                    colnames(LD.list[[f]]) &lt;- rownames(LD.list[[f]]) &lt;- realsnps.tmp} else LD.list[[f]]&lt;-NA 
+                        
+                    }      
+                    LD.list[sapply(LD.list,function(x) all(is.na(x)))] &lt;- NULL
+                    
+                    if(length(LD.list)&gt;0){
+                    u &lt;- LD.list[[1]]
+                    if (length(LD.list) &gt; 1) {
+                        for (x in 2:length(LD.list)) {
+                            t.col &lt;- ncol(u) + ncol(LD.list[[x]])
+                            u.n &lt;- matrix(ncol = t.col, nrow = t.col, 0)
+                            u.n[1:ncol(u), 1:ncol(u)] &lt;- as.matrix(u)
+                            u.n[(ncol(u) + 1):ncol(u.n), (ncol(u) + 1):ncol(u.n)] &lt;- as.matrix(LD.list[[x]])
+                            colnames(u.n) &lt;- rownames(u.n) &lt;- c(colnames(u), colnames(LD.list[[x]]))
+                            u &lt;- u.n
+                        }
+                    }
+                      
+                    # the snps in LD matrix and sumstats files are not exactly same, so I need to get the overlapped ones
+                    realsnps &lt;- intersect(colnames(u), int_snps)
+                    LD.out.m &lt;- LD.exp.m &lt;- as.matrix(u[realsnps, realsnps])
+                    res[, n_snps_real := length(realsnps)]
+                    message(length(realsnps), &quot; SNPs in &quot;, target, &quot; analyzed in MRAID&quot;)
+                      
+                    ### 2.5 exposure sample size
+                    # from [DLPFC ROSMAP](https://github.com/cumc/fungen-xqtl-analysis/blob/main/data/descriptor/qtl/ROSMAP_DLPFC_expression_qtl.md) (The number on this page is wrong on 4/11/2023, it should be ~950, let&#39;s set 900 for now)
+                    samplen1 = as.numeric(samplen1)
+                    ### 2.6 outcome sample size
+                    # from [Bellenguez GWAS paper](https://pubmed.ncbi.nlm.nih.gov/35379992/)(111,326 AD cases and 677,663 controls)
+                    samplen2 = as.numeric(samplen2)
+                    
+                      
+                    ## 3. RUN MRAID
+                    exp.real &lt;- exp[exp$variant %in% realsnps, ]
+                    exp.z &lt;- as.numeric(exp.real$beta) / as.numeric(exp.real$se)
+                      
+                    out.real &lt;- out[out$variant %in% realsnps, ]
+                    out.z &lt;- as.numeric(out.real$beta) / as.numeric(out.real$se)
+                      
+                    res[, n_snps_real := length(realsnps)]
+                        
+                    # you can check the parameters info for MRAID  in [here](https://github.com/yuanzhongshang/MRAID/blob/main/man/MRAID.Rd)
+                    message(target, &quot; MRAID analysis...&quot;)
+                      
+                    # running MRAID with a big LD matrix would cost so much time, I would like to document the time used
+                    start.time &lt;- Sys.time()
+                    result &lt;- tryCatch(MRAID(exp.z, out.z, LD.exp.m, LD.out.m, samplen1, samplen2,
+                        Gibbsnumber = 1000, burninproportion = 0.2, pi_beta_shape = 0.5,
+                        pi_beta_scale = 4.5, pi_c_shape = 0.5, pi_c_scale = 9.5, pi_1_shape = 0.5, pi_1_scale = 1.5, pi_0_shape = 0.05, pi_0_scale = 9.95
+                    ), error = function(x) {
+                        message(&quot;Can&#39;t get a valid LD matrix for &quot;, target)
+                        return(NA)
+                    })
+                    end.time &lt;- Sys.time()
+                    } else {
+                    res[, n_snps_real := 0]
+                    result &lt;- NA
+                }
+                    } else {
+                    res[, n_snps_real := 0]
+                    result &lt;- NA
+                }
+                } else {
+                    res[, n_snps_real := 0]
+                    result &lt;- NA
+                }
+                
+                if (is.na(result[[1]])) {
+                    result &lt;- matrix(nrow = 1, ncol = 7, NA)
+                    colnames(result) &lt;- c(&quot;causal_effect&quot;, &quot;causal_pvalue&quot;, &quot;correlated_pleiotropy_effect&quot;, &quot;sigmabeta&quot;, &quot;sigmaeta&quot;, &quot;sigma_error_1&quot;, &quot;sigma_error_2&quot;)
+                }
+                
+                result &lt;- as.data.table(result)[, target := target]
+    
+                res &lt;- tryCatch(merge(res, result, by = &quot;target&quot;), error = function(x) {
+                    return(res)
+                })
+                # I am afraid of receiveing error in final result, so I&#39;d like to save the result per target....
+                #fwrite(res, paste0(outpath, &quot;res_mraid_&quot;, qtl, &quot;_&quot;, con, &quot;_p_cut_&quot;, p_cut, &quot;_&quot;, target, &quot;.csv.gz&quot;))
+                return(res)
+          }
+      #out&lt;-data.frame()
+      #for (f in c(${_input:r,})) {
+       AD_df&lt;-data.table::fread(&quot;${AD_df}&quot;)
+      # qtl=&quot;${qtl}&quot;
+      #      if (qtl == &quot;eQTL&quot;) {
+      #          targets_df&lt;-data.frame(targets=AD_df$ensembl,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))
+      #      }
+      #      if (qtl == &quot;pQTL&quot;) {
+      #         targets_df&lt;-data.frame(targets=AD_df$ID,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))%&gt;%.[.$targets!=&quot;&quot;,]
+      #      }
+      #      if (qtl == &quot;mQTL&quot;) {
+      #          targets_df&lt;-NA #need to add sth..
+      #      }
+      #      if (qtl == &quot;haQTL&quot;) {
+      #          targets_df&lt;-NA #need to add sth..
+      #      }
+      #      if (qtl == &quot;metaQTL&quot;) {
+      #          targets_df&lt;-data.frame(targets=AD_df$molecular_trait_id,chromosome=AD_df$group)
+      #      }  
+       #target=targets_df$targets[${_n}+1]
+  
+       targets_df&lt;-data.table::fread(&quot;${targets_df}&quot;)
+       target=targets_df$targets[${_n}]
+       eqtl.mr &lt;- mraid(target=target,path=paste0(&quot;${cwd:a}&quot;,&quot;/&quot;),qtl=&quot;${qtl}&quot;,p_cut=${p_cut},con=&quot;${con}&quot;,targets_df=targets_df,pval_beta=${pval_beta},outcome=&quot;${out}&quot;,samplen1=&#39;${samplen1}&#39;,samplen2=&#39;${samplen2}&#39;)
+       #fwrite(eqtl.mr, paste0(&quot;${_output:d}&quot;,&quot;res_mraid_&quot;,&quot;${con}&quot;,&quot;_p_cut_&quot;,&quot;{p_cut}&quot;,f,&quot;.csv&quot;))
+       #out&lt;-rbind(out,eqtl.mr)
+      #}
+    fwrite(eqtl.mr, ${_output:r})
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># perform mraid analysis with QTL data
+#[mraid_qtl_1]
+import os
+import pandas as pd
+#parameter: analysis_units = path
+#regions = [x.replace(&quot;\&quot;&quot;,&quot;&quot;).strip().split() for x in open(analysis_units).readlines() if x.strip() and not x.strip().startswith(&#39;target&#39;)]
+parameter: n = 10
+n  = [x+1 for x in range(n)]
+input: for_each = &#39;n&#39;
+output: f&quot;{cwd:a}/{con}/{qtl}/sig_{p_cut}/res_mraid_{con}_p_cut_{p_cut}_{_n}.csv&quot;
+task: trunk_workers = 1, trunk_size = job_size, walltime = &#39;24h&#39;,  mem = &#39;80G&#39;, tags = f&#39;{_output:bn}&#39;  
+
+R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39; 
+    library(data.table)
+    library(tidyverse)
+    library(UpSetR)
+    library(dplyr)
+    library(stringr)
+    library(&quot;data.table&quot;)
+    library(stringr)
+    library(RcppCNPy)
+    library(arrow)
+    library(reticulate)
+    library(MRAID)    
+    find_SNP_from_sum&lt;-function(ref,refpath,SNP,ID=&quot;variant&quot;,full_chr=FALSE,snp.df=NULL,ref_with_fullpath=NULL,IDsep=&quot;:&quot;,suffix=&#39;.norminal.cis_long_table.txt&#39;,IDsep_in_sum=&quot;_&quot;){
+        chr&lt;-unique(stringr::str_split(SNP,IDsep,simplify=T)[,1])
+        if(isTRUE(full_chr))chr.use&lt;-chr else chr.use&lt;-gsub(&quot;chr&quot;,&quot;&quot;,chr)
+        for(i in 1:length(chr.use))try({
+            c&lt;-chr.use[i]
+            use.ref&lt;-ref[grep(paste0(&quot;[.]&quot;,c,suffix),ref)]
+            if(isTRUE(ref_with_fullpath)){
+                tmp.f &lt;- data.table::fread(use.ref[i],sep=&quot;\t&quot;,header=T)} else {
+                tmp.f &lt;- data.table::fread(paste0(refpath,&quot;/&quot;,use.ref),sep=&quot;\t&quot;,header=T)
+            }
+            if(stringr::str_split_fixed(tmp.f[[ID]],IDsep,n=2)[1,1]!=chr[i]){
+                tmp.f[[ID]]&lt;-sub(IDsep_in_sum,IDsep,tmp.f[[ID]])
+            }
+            tmp.f&lt;-tmp.f[tmp.f[[ID]] %in% SNP,]
+            snp.df&lt;-rbind(snp.df,tmp.f)    
+        })
+        return(snp.df)
+    }
+        # mraid function
+        mraid &lt;- function(target,path, qtl, res = NULL, p_cut, targets_df, con ,outcome,pval_beta=FALSE,samplen1,samplen2) {
+        chr=targets_df[targets_df$targets == target, &quot;chromosome&quot;]%&gt;%unique()
+            if (qtl == &quot;eQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/eQTL/dlpfc_batch_all.rnaseqc.low_expression_filtered.outlier_removed.tmm.expression.bed.processed_phenotype.per_chrom_dlpfc_batch_all.rnaseqc.ROSMAP_covariates.ROSMAP_NIA_WGS.pca.PEER.txt.&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+            }
+            if (qtl == &quot;pQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/pQTL/rf_standard/pheno_recipe_pheno.rosmap_cov.ROSMAP_NIA_WGS.leftnorm.filtered.filtered.prune.pca.resid.PEER.&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+                # there are so many duplicated rows in exp matrix
+                exp.chr &lt;- exp.chr[-which(duplicated(exp.chr)), ]
+                # in pQTL files, the snps are chrx_tacg_... but in most files should be chrx:tacg_...
+                exp.chr$variant &lt;- sub(&quot;_&quot;, &quot;:&quot;, exp.chr$variant)
+            }
+            if (qtl == &quot;mQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/mQTL/ROSMAP_arrayMethylation_covariates.sesame.methyl.beta.sample_matched.bed_BMIQ.bed.filter_na.bed.softImputed.bed.processed_phenotype.per_chrom_methy.peer.pca.chr&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+                exp.chr &lt;- exp.chr %&gt;% rename(&quot;chromosome&quot; = &quot;chrom&quot;, &quot;position&quot; = &quot;pos&quot;)
+                exp.chr$chromosome &lt;- gsub(&quot;chr&quot;, &quot;&quot;, exp.chr$chromosome)
+            }
+            if (qtl == &quot;haQTL&quot;) {
+                exp.chr &lt;- fread(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/haQTL/h3k9ac_bed_recipe_h3k9ac_whole.k9_cov.xqtl_protocol_data.filtered.related.filtered.extracted.pca.projected.resid.PEER.merged.&quot;, chr, &quot;.norminal.cis_long_table.txt&quot;))
+                exp.chr &lt;- exp.chr %&gt;% rename(&quot;chromosome&quot; = &quot;chrom&quot;, &quot;position&quot; = &quot;pos&quot;)
+                exp.chr$chromosome &lt;- gsub(&quot;chr&quot;, &quot;&quot;, exp.chr$chromosome)
+            }
+            if (qtl == &quot;metaQTL&quot;) {
+                exp.chr &lt;- fread(list.files(paste0(&quot;~/Work/MR/2023.4_MR/data/sumtats/metaQTL/&quot;, chr,&quot;/rf/&quot;),&quot;_rf.norminal.trans_long_table.txt$&quot;,full.names = T))
+                exp.chr &lt;- exp.chr %&gt;% rename(&quot;chromosome&quot; = &quot;chrom&quot;, &quot;position&quot; = &quot;pos&quot;)
+                exp.chr$chromosome &lt;- gsub(&quot;chr&quot;, &quot;&quot;, exp.chr$chromosome)
+                exp.chr$position &lt;- str_split(exp.chr$position,&quot;:&quot;,simplify = T)[,2]%&gt;%as.numeric()
+            }
+                ## 2. prapare the input for MR
+                ### 2.1 exposure GWAS sumstats
+                # get qtl Data
+                exp &lt;- exp.chr[molecular_trait_id == target]
+                snps_ana_gene &lt;- exp$variant
+                if(pval_beta==1){exp &lt;- exp[pval_beta &lt; p_cut, ]} else exp &lt;- exp[pvalue &lt; p_cut, ]
+                snps_asso_gene &lt;- exp$variant
+                res &lt;- data.table(target = target, n_snps_ana = length(snps_ana_gene), p_cut = p_cut, n_snps_asso = length(snps_asso_gene))
+                message(length(snps_asso_gene), &quot; SNPs associated with &quot;, target)
+                if (length(snps_asso_gene) &gt; 0) {
+                    ### 2.2 outcome GWAS sumstats
+                    # get snps&#39; GWAS data
+                    if (outcome == &quot;GWAS&quot;) {
+                        path &lt;- &quot;/home/rf2872/Work/MR/2023.4_MR/data/sumtats/GWAS/&quot;
+                        out &lt;- find_SNP_from_sum(ref = list.files(path), refpath = path, SNP = snps_asso_gene, suffix = &quot;.sumstat.tsv&quot;, full_chr = T, IDsep_in_sum = &quot;_&quot;)
+                    } else {
+                        out.path &lt;- paste0(&quot;/home/rf2872/Work/MR/2023.4_MR/data/sumtats/&quot;,outcome)
+                        out &lt;- find_SNP_from_sum(ref = list.files(out.path), refpath = out.path, SNP = snps_asso_gene, full_chr = F, IDsep_in_sum = &quot;_&quot;)
+                        int_snps &lt;- intersect(snps_asso_gene, out$variant)
+                    }
+                    int_snps &lt;- intersect(snps_asso_gene, out$variant)
+                    if(length(int_snps)&gt;0){
+                    ### 2.3/2.4 exposure LD matrix
+                    # since the LD files are saved separately accrodding to their postions, I&#39;d like to use bedtools to map the SNPs to LD files
+                    LD &lt;- read.table(&quot;/mnt/vast/hpc/csg/molecular_phenotype_calling/LD/output/1300_hg38_EUR_LD_blocks_LD/ROSMAP_NIA_WGS.leftnorm.filtered.filtered.ld.list&quot;, header = F, sep = &quot;\t&quot;)
+                    LD.bed &lt;- str_split(LD$V1, &quot;_&quot;, simplify = T) %&gt;% cbind(., LD)
+                    
+                    # if(qtl == &quot;eQTL&quot; | qtl == &quot;pQTL&quot;){
+                    exp_LD.bed &lt;- data.frame(chrome = paste0(&quot;chr&quot;, exp$chromosome), start = exp$position, end = (exp$position + nchar(exp$ref) - 1))
+                    # }
+                    # if(qtl == &quot;mQTL&quot;){
+                    # exp_LD.bed &lt;- data.frame(chrome = exp$chrom, start = exp$pos, end = (exp$pos + nchar(exp$ref) - 1))
+                    # }
+                    options(bedtools.path = &quot;/home/rf2872/software/bedtools2/bin/&quot;)
+                    LD.files &lt;- bedtoolsr::bt.intersect(a = LD.bed, b = exp_LD.bed)
+                      
+                    # load python tools to read npz files, but there would be an error for npz1$f[[&quot;arr_1&quot;]], so I need to read the bim file to locate the snps. (Hao says they are in sam order)
+                    np &lt;- import(&quot;numpy&quot;)
+                    LD_files &lt;- unique(LD.files$V5)
+                    
+                    # some snp sets could locate in more than 1 ld files. so I have to read those files separately and combine them (I don&#39;t know which function can do this easily, so I just write a new one)
+                    LD.list &lt;- list()
+                    for (f in 1:length(LD_files)) {
+                        npz1 &lt;- np$load(LD_files[f])
+                        ld.mtx &lt;- npz1$f[[&quot;arr_0&quot;]]
+                        ld.snps &lt;- stringr::str_split(LD_files[f], &quot;[.]&quot;, simplify = T) %&gt;%
+                            .[, -c(length(.), (length(.) - 1))] %&gt;%
+                            paste(., collapse = &quot;.&quot;) %&gt;%
+                            paste0(., &quot;.bim&quot;) %&gt;%
+                            read.table(.) %&gt;%
+                            .[, 2]
+                        colnames(ld.mtx) &lt;- rownames(ld.mtx) &lt;- ld.snps
+                        LD.list[[f]] &lt;- as.data.frame(ld.mtx)
+                        realsnps.tmp &lt;- intersect(colnames(LD.list[[f]]), int_snps)
+                        if(length(realsnps.tmp)&gt;0) {
+                    LD.list[[f]] &lt;- LD.list[[f]][realsnps.tmp, realsnps.tmp]%&gt;%as.data.frame()
+                    colnames(LD.list[[f]]) &lt;- rownames(LD.list[[f]]) &lt;- realsnps.tmp} else LD.list[[f]]&lt;-NA 
+                        
+                    }      
+                    LD.list[sapply(LD.list,function(x) all(is.na(x)))] &lt;- NULL
+                    
+                    if(length(LD.list)&gt;0){
+                    u &lt;- LD.list[[1]]
+                    if (length(LD.list) &gt; 1) {
+                        for (x in 2:length(LD.list)) {
+                            t.col &lt;- ncol(u) + ncol(LD.list[[x]])
+                            u.n &lt;- matrix(ncol = t.col, nrow = t.col, 0)
+                            u.n[1:ncol(u), 1:ncol(u)] &lt;- as.matrix(u)
+                            u.n[(ncol(u) + 1):ncol(u.n), (ncol(u) + 1):ncol(u.n)] &lt;- as.matrix(LD.list[[x]])
+                            colnames(u.n) &lt;- rownames(u.n) &lt;- c(colnames(u), colnames(LD.list[[x]]))
+                            u &lt;- u.n
+                        }
+                    }
+                      
+                    # the snps in LD matrix and sumstats files are not exactly same, so I need to get the overlapped ones
+                    realsnps &lt;- intersect(colnames(u), int_snps)
+                    LD.out.m &lt;- LD.exp.m &lt;- as.matrix(u[realsnps, realsnps])
+                    res[, n_snps_real := length(realsnps)]
+                    message(length(realsnps), &quot; SNPs in &quot;, target, &quot; analyzed in MRAID&quot;)
+                      
+                    ### 2.5 exposure sample size
+                    # from [DLPFC ROSMAP](https://github.com/cumc/fungen-xqtl-analysis/blob/main/data/descriptor/qtl/ROSMAP_DLPFC_expression_qtl.md) (The number on this page is wrong on 4/11/2023, it should be ~950, let&#39;s set 900 for now)
+                    samplen1 = as.numeric(samplen1)
+                    ### 2.6 outcome sample size
+                    # from [Bellenguez GWAS paper](https://pubmed.ncbi.nlm.nih.gov/35379992/)(111,326 AD cases and 677,663 controls)
+                    samplen2 = as.numeric(samplen2)
+                    
+                      
+                    ## 3. RUN MRAID
+                    exp.real &lt;- exp[exp$variant %in% realsnps, ]
+                    exp.z &lt;- as.numeric(exp.real$beta) / as.numeric(exp.real$se)
+                      
+                    out.real &lt;- out[out$variant %in% realsnps, ]
+                    out.z &lt;- as.numeric(out.real$beta) / as.numeric(out.real$se)
+                      
+                    res[, n_snps_real := length(realsnps)]
+                        
+                    # you can check the parameters info for MRAID  in [here](https://github.com/yuanzhongshang/MRAID/blob/main/man/MRAID.Rd)
+                    message(target, &quot; MRAID analysis...&quot;)
+                      
+                    # running MRAID with a big LD matrix would cost so much time, I would like to document the time used
+                    start.time &lt;- Sys.time()
+                    result &lt;- tryCatch(MRAID(exp.z, out.z, LD.exp.m, LD.out.m, samplen1, samplen2,
+                        Gibbsnumber = 1000, burninproportion = 0.2, pi_beta_shape = 0.5,
+                        pi_beta_scale = 4.5, pi_c_shape = 0.5, pi_c_scale = 9.5, pi_1_shape = 0.5, pi_1_scale = 1.5, pi_0_shape = 0.05, pi_0_scale = 9.95
+                    ), error = function(x) {
+                        message(&quot;Can&#39;t get a valid LD matrix for &quot;, target)
+                        return(NA)
+                    })
+                    end.time &lt;- Sys.time()
+                    } else {
+                    res[, n_snps_real := 0]
+                    result &lt;- NA
+                }
+                    } else {
+                    res[, n_snps_real := 0]
+                    result &lt;- NA
+                }
+                } else {
+                    res[, n_snps_real := 0]
+                    result &lt;- NA
+                }
+                
+                if (is.na(result[[1]])) {
+                    result &lt;- matrix(nrow = 1, ncol = 7, NA)
+                    colnames(result) &lt;- c(&quot;causal_effect&quot;, &quot;causal_pvalue&quot;, &quot;correlated_pleiotropy_effect&quot;, &quot;sigmabeta&quot;, &quot;sigmaeta&quot;, &quot;sigma_error_1&quot;, &quot;sigma_error_2&quot;)
+                }
+                
+                result &lt;- as.data.table(result)[, target := target]
+    
+                res &lt;- tryCatch(merge(res, result, by = &quot;target&quot;), error = function(x) {
+                    return(res)
+                })
+                # I am afraid of receiveing error in final result, so I&#39;d like to save the result per target....
+                #fwrite(res, paste0(outpath, &quot;res_mraid_&quot;, qtl, &quot;_&quot;, con, &quot;_p_cut_&quot;, p_cut, &quot;_&quot;, target, &quot;.csv.gz&quot;))
+                return(res)
+          }
+      #out&lt;-data.frame()
+      #for (f in c(${_input:r,})) {
+       AD_df&lt;-data.table::fread(&quot;${AD_df}&quot;)
+       qtl=&quot;${qtl}&quot;
+            if (qtl == &quot;eQTL&quot;) {
+                targets_df&lt;-data.frame(targets=AD_df$ensembl,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))
+            }
+            if (qtl == &quot;pQTL&quot;) {
+                targets_df&lt;-data.frame(targets=AD_df$ID,chromosome=gsub(&quot;chr&quot;,&quot;&quot;,AD_df$chr))%&gt;%.[.$targets!=&quot;&quot;,]
+
+            }
+            if (qtl == &quot;mQTL&quot;) {
+                targets_df&lt;-NA #need to add sth..
+            }
+            if (qtl == &quot;haQTL&quot;) {
+                targets_df&lt;-NA #need to add sth..
+            }
+            if (qtl == &quot;metaQTL&quot;) {
+                targets_df&lt;-data.frame(targets=AD_df$molecular_trait_id,chromosome=AD_df$group)
+            }  
+       #target=targets_df$targets[${_n}+1]
+       target=targets_df$targets[${_n}]
+       eqtl.mr &lt;- mraid(target=target,path=paste0(&quot;${cwd:a}&quot;,&quot;/&quot;),qtl=&quot;${qtl}&quot;,p_cut=${p_cut},con=&quot;${con}&quot;,targets_df=targets_df,pval_beta=${pval_beta},outcome=&quot;${out}&quot;,samplen1=&#39;${samplen1}&#39;,samplen2=&#39;${samplen2}&#39;)
+       #fwrite(eqtl.mr, paste0(&quot;${_output:d}&quot;,&quot;res_mraid_&quot;,&quot;${con}&quot;,&quot;_p_cut_&quot;,&quot;{p_cut}&quot;,f,&quot;.csv&quot;))
+       #out&lt;-rbind(out,eqtl.mr)
+      #}
+    fwrite(eqtl.mr, ${_output:r})
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[mraid_qtl_3]
+input: group_by = &quot;all&quot;
+output: f&quot;{cwd}/{con}/{qtl}/sig_{p_cut}/all_res_mraid_{con}_p_cut_{p_cut}.csv&quot;
+task: trunk_workers = 1, walltime = &#39;2h&#39;, trunk_size = 1, mem = &#39;16G&#39;, cores = 1, tags = f&#39;{_output:bn}&#39;
+
+  
+bash: expand =&#39;${ }&#39;, stderr = f&quot;{_output:n}.stderr&quot;, stdout = f&quot;{_output:n}.stdout&quot;
+     cd ${_input[0]:d}
+     echo &#39;target,n_snps_ana,p_cut,n_snps_asso,n_snps_real,causal_effect,causal_pvalue,correlated_pleiotropy_effect,sigmabeta,sigmaeta,sigma_error_1,sigma_error_2&#39; &gt; ${_output:b}
+     cat *.csv|grep -v n_snps_ana &gt;&gt; ${_output:b}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/prototype_drafts"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="polyfun.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Fine-mapping with PolyFun</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../enrichment/gregor.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">GREGOR enrichment analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#global-parameters">Global parameters</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

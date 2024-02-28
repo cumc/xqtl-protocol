@@ -113,7 +113,6 @@ We provide two different procedures for hidden factor analysis from omics data i
 
 We perform QTL association testing using TensorQTL [[cf. Taylor-Weiner et al (2019)](https://doi.org/10.1186/s13059-019-1836-7)].
 #### Advanced cis-QTL Analysis (Step 5)
-##### A.  SuSiE fine-mapping workflow
 
 ### Expertise needed to implement the protocol
 
@@ -307,7 +306,15 @@ Timing <1 min
 
 ```
 sos run phenotype_imputation.ipynb EBMF \
-    --container .containers/factor_analysis.sif \
+    --container containers/factor_analysis.sif \
+
+```
+
+
+
+```
+sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb gEBMF \
+    --container containers/factor_analysis.sif \
 
 ```
 
@@ -373,7 +380,6 @@ sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
 
 
 ### 5. Advanced cis-QTL Analysis
-#### A.  SuSiE fine-mapping workflow
 
 ## Timing
 
@@ -388,7 +394,6 @@ sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
 |Data Pre-processing| Phenotype data preprocessing| < X minutes|
 | | Covariate Data Preprocessing| < X minutes|
 |QTL Association Testing| QTL Association Analysis| < X minutes|
-|Advanced cis-QTL Analysis| SuSiE fine-mapping workflow| <X hours|
 
 ## Troubleshooting
 
@@ -418,7 +423,6 @@ Processed covariate data includes a file with covariates and hidden factors for 
 ####  QTL Association Analysis
 
 TensorQTL will produce empirical and standardized cis/trans results.
-####  SuSiE fine-mapping workflow
 
 ## Figures
 

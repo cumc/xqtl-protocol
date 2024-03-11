@@ -986,10 +986,10 @@ parameter: hwe_filter = 0.0
 output: f&quot;{_input:nn}.bcftools_qc.vcf.gz&quot;
 task: trunk_workers = 1, trunk_size=job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 bash: container = container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
-    # Initial filtering based on depth and genotype quality for SNPs and INDELs
-    bcftools filter -S . -e \
-    &#39;(TYPE=&quot;SNP&quot; &amp; (FMT/DP)&lt;${DP_snp} &amp; (FMT/GQ)&lt;${GQ}) | 
-     (TYPE=&quot;INDEL&quot; &amp; (FMT/DP)&lt;${DP_indel} &amp; (FMT/GQ)&lt;${GQ})&#39; ${_input} | \
+    # Initial filtering based on depth and genotype quality for SNPs and INDELs. Will set to missing genotypes that do not meet both conditions (DP&gt;=DP_spns &amp; GQ&gt;=GQ), similarly for indels
+    bcftools filter -S . -i \
+    &#39;(TYPE=&quot;SNP&quot; &amp; (FMT/DP)&gt;=${DP_snp} &amp; (FMT/GQ)&gt;=${GQ}) | 
+     (TYPE=&quot;INDEL&quot; &amp; (FMT/DP)&gt;=${DP_indel} &amp; (FMT/GQ)&gt;=${GQ})&#39; ${_input} | \
      
     # Further filtering to retain only variants that are PASS and have at least one non-reference allele 
     bcftools view -c1 | \

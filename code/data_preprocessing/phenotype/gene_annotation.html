@@ -1322,6 +1322,7 @@ parameter: map_stra = &quot;site&quot;
 parameter: overlap_ratio = 0.8
 input: intron_count, annotation_gtf
 output: f&#39;{cwd}/{_input[1]:b}.exon_list&#39;, f&#39;{cwd}/{_input[0]:b}.leafcutter.clusters_to_genes.txt&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output[0]:bn}&#39;  
 python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
     import pandas as pd
     import qtl.annotation
@@ -1410,7 +1411,7 @@ R:expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = 
     }
 
     cat(&quot;LeafCutter: mapping clusters to genes\n&quot;)
-    intron_counts &lt;- read.table(${_input[0]:r}, header=TRUE, check.names=FALSE, row.names=1)
+    intron_counts &lt;- read.table(${_input[0]:r}, header=TRUE, check.names=FALSE, row.names=4)
     intron_meta &lt;- get_intron_meta(rownames(intron_counts))
     exon_table &lt;- read.table(${_output[0]:r}, header=TRUE, stringsAsFactors=FALSE)
     if(!str_detect(intron_meta$chr[1],&quot;chr&quot;)) {

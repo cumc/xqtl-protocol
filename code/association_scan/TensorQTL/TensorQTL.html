@@ -1081,7 +1081,7 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
         cis_list = pd.read_csv(&quot;$[customized_cis_windows:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,phenotype_id], sep=&quot;\t&quot;)
         phenotype_pos_df_reset = phenotype_pos_df.reset_index() #move the phenotype id index to a new column of the dataframe
         phenotype_pos_df = phenotype_pos_df_reset.merge(cis_list, left_on = [&quot;chr&quot;,phenotype_id],right_on = [cis_list.columns[0],cis_list.columns[3]])#in some cases (gene expression for eQTLs) the phenotype_id may be in the cis_list file
-        if len(phenotype_df.index) - phenotype_pos_df_reset[~phenotype_pos_df_reset[&#39;ID&#39;].isin(cis_list[&#39;ID&#39;])].shape[0]!= len(phenotype_pos_df.index):
+        if len(phenotype_df.index) - phenotype_pos_df_reset[~phenotype_pos_df_reset[phenotype_id].isin(cis_list[phenotype_id])].shape[0]!= len(phenotype_pos_df.index):
             raise ValueError(&quot;cannot uniquely match all the phentoype data in the input to the customized cis windows provided&quot;)
         phenotype_pos_df = phenotype_pos_df.set_index(phenotype_id)[[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;]] # The final phenotype_pos_df will have three columns(chr, start, end) and index is the phenotype ID
         window = 0 # In the updated tensorQTL, by default if there is a customized cis window, the actual cis window will be start - window &amp; end + window, so it is necessary to change the window parameter to 0
@@ -1096,8 +1096,8 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     variant_df = pr.bim.set_index(&#39;snp&#39;)[[&#39;chrom&#39;, &#39;pos&#39;,&#39;a0&#39;,&#39;a1&#39;]]
 
     ## Retaining only traits in cis_list
-    if phenotype_pos_df_reset[~phenotype_pos_df_reset[&#39;ID&#39;].isin(cis_list[&#39;ID&#39;])].shape[0] != 0:
-        phenotype_df = phenotype_df.loc[phenotype_df.index.isin(cis_list[&#39;ID&#39;])]
+    if phenotype_pos_df_reset[~phenotype_pos_df_reset[phenotype_id].isin(cis_list[phenotype_id])].shape[0] != 0:
+        phenotype_df = phenotype_df.loc[phenotype_df.index.isin(cis_list[phenotype_id])]
 
     ## Retaining only common samples
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, covariates_df.index)]
@@ -1138,7 +1138,7 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     trans_df.columns.values[4]  = &quot;se&quot;
     trans_df = trans_df.merge(variant_df,left_on = &quot;variant_id&quot;, right_index=True)
     trans_df.to_csv(&quot;$[_output]&quot;, sep=&#39;\t&#39;,index = None, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
-    covariates_df.index.to_series().to_csv(&quot;$[_output:bnn].sample_analyzed.txt&quot;, sep=&#39;\t&#39;, index=None, header=False)
+
 
 bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
         for i in $[_output] ; do 

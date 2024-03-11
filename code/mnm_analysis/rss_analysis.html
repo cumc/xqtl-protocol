@@ -577,7 +577,7 @@ document.write(`
 <li><p>conditional_regression_noqc: Bayesian conditional regression, original sumstat</p></li>
 <li><p>conditional_regression_qc_only: Bayesian conditional regression, sumstat QCed</p></li>
 <li><p>conditional_regression_qc_impute: Bayesian conditional regression, sumstat QCed and imputed.</p></li>
-<li><p>sumstats_allele_qc_only: a table of sumstat after allele qc (check each variant to see if ref/alt are alipped, and correct them)</p></li>
+<li><p>sumstats_allele_qc_only: a table of sumstat after allele qc (check each variant to see if ref/alt are flipped, and correct them)</p></li>
 <li><p>sumstats_qc_impute: a table of sumstat after qc and imputation.</p></li>
 <li><p>sumstats_qc_impute: a table of sumstat after qc and imputation, bad quality imputation variants removed by empirical thresholds. (the actual input of all qc_impute results)</p></li>
 </ol>
@@ -731,25 +731,29 @@ document.write(`
                                  <span class="sa">f</span><span class="s2">&quot;Conflicting entries: </span><span class="si">{</span><span class="n">existing_entry</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="p">[</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">mapping_file</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mapping_file</span><span class="p">,</span> <span class="n">n_sample</span><span class="p">,</span> <span class="n">n_case</span><span class="p">,</span> <span class="n">n_control</span><span class="p">]</span>
 
-    <span class="c1"># Process region_list and region_name</span>
-    <span class="n">region_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">region_list</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">region_list</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">region_list</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
-                <span class="c1"># Skip empty lines</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-                    <span class="k">continue</span>
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
-                    <span class="k">continue</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">region</span> <span class="o">=</span> <span class="n">parse_region</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-                    <span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid region format in region_list&quot;</span><span class="p">)</span>
+         <span class="c1"># Process region_list and region_name</span>
+            <span class="n">region_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">region_list</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">region_list</span><span class="p">):</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">region_list</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+                        <span class="c1"># Skip empty lines</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                            <span class="k">continue</span>
+                        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+                            <span class="k">continue</span>
+                        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">region</span> <span class="o">=</span> <span class="n">parse_region</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                            <span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span>
+                        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="ow">and</span>  <span class="n">region_list</span> <span class="o">!=</span> <span class="n">ld_meta_data</span> <span class="p">:</span> <span class="c1"># for eQTL where chr:start:end:gene_id:gene_name, and path if LD_meta are used.</span>
+                            <span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+
+        
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid region format in region_list&quot;</span><span class="p">)</span>
                 
-                <span class="n">region_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">region</span>
+                        <span class="n">region_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">region</span>
                 
     <span class="k">if</span> <span class="n">region_name</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">region_name</span><span class="p">:</span>
@@ -808,6 +812,8 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
         n = rss_input$n
         var_y = rss_input$var_y 
         input_processed = rss_input_preprocess(sumstats = sumstats, LD_data = LD_data, skip_region = skip_region)
+        
+
         L = ${L} 
         final_result = susie_rss_pipeline(input_processed, R = LD_data$combined_LD_matrix, ref_panel = LD_data$ref_panel, n = n, L = L,
             var_y = var_y, QC = ${&quot;TRUE&quot; if QC else &quot;FALSE&quot;},
@@ -851,195 +857,6 @@ R: container=container, expand = &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}
     susieR::susie_plot(res, y= &quot;PIP&quot;, pos=list(attr=&#39;pos&#39;,start=res$pos[1],end=res$pos[length(res$pos)]), add_legend=T, xlab=&quot;position&quot;)
     susieR::susie_plot(res, y= &quot;z&quot;, pos=list(attr=&#39;pos&#39;,start=res$pos[1],end=res$pos[length(res$pos)]), add_legend=T, xlab=&quot;position&quot;, ylab=&quot;-log10(p)&quot;)
     dev.off()
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[SuSiE_slides_1]
-input: group_by = &#39;all&#39;
-output: analysis_summary = f&#39;{cwd}/{sumstats_path:bnn}.analysis_summary.md&#39;, variants_csv = f&#39;{cwd}/{sumstats_path:bnn}.variants.csv&#39;
-R: container=container, expand = &quot;${ }&quot;, entrypoint = entrypoint
-    # Define the theme string
-    theme &lt;- &#39;---
-    theme: base-theme
-    style: |
-     p {
-       font-size: 24px;
-       height: 900px;
-       margin-top:1cm;
-      }
-      img {
-        height: 70%;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      body {
-       margin-top: auto;
-       margin-bottom: auto;
-       font-family: verdana;
-      }
-    ---    
-    &#39;
-    text &lt;- &quot;&quot;
-    sep &lt;- &#39;\n\n---\n&#39;
-
-    inp &lt;- strsplit(&quot;${_input:r}&quot;, &quot; &quot;)[[1]]
-    inp &lt;- sapply(inp, function(x) paste(head(strsplit(x, &quot;\\.&quot;)[[1]], -1), collapse = &quot;.&quot;))
-
-    r &lt;- unique(strsplit(&quot;${_input:bn}&quot;, &quot; &quot;)[[1]])
-
-    num_csets &lt;- numeric()
-    region_info &lt;- character()
-
-    variant_info &lt;- list()
-
-    for (reg_i in seq_along(unique(inp))) {
-
-      rid &lt;- unlist(strsplit(r[reg_i], &#39;\\.&#39;))[1]
-
-      text_temp &lt;- &quot;&quot;
-      text_temp &lt;- paste0(text_temp, &quot;#\n\n SuSiE RSS &quot;, r[reg_i], &quot; \n&quot;)
-      text_temp &lt;- paste0(text_temp, &quot;![](&quot;, r[reg_i], &quot;.png)&quot;, sep, &quot; \n \n&quot;)
-
-      rd &lt;- readRDS(substr(each, 2, nchar(each)) + &quot;.rds&quot;)
-
-      # find the number of cs in the current region
-      if (is.null(rd$sets$cs)) {
-        num_csets &lt;- c(num_csets, 0)
-      } else {
-        num_csets &lt;- c(num_csets, length(rd$sets$cs))
-      }
-      cat(num_csets, &quot;\n&quot;)
-
-      # this will store the indices of all variants that cross the threshold
-      ind_p &lt;- which(rd$pip &gt;= ${pip_cutoff})
-      sumvars &lt;- 0
-
-      # if we have at least one cs in the current region
-      if (num_csets[reg_i] &gt; 0) {
-        tbl_header &lt;- &quot;| chr number | pos at highest pip | ref | alt | region id | cs | highest pip |  \n| --- | --- | --- | --- | --- | --- | --- |  \n&quot;
-
-        table &lt;- &quot;&quot;
-
-        sumpips &lt;- 0
-
-        for (cset in names(rd$sets$cs)) {
-          print(cset)
-
-          # if we have many variants in the cs
-          if (length(rd$sets$cs[[cset]]) &gt; 1) {
-            highestpip &lt;- max(rd$pip[rd$sets$cs[[cset]]])
-            poswhighestpip &lt;- which.max(rd$pip[rd$sets$cs[[cset]]])
-
-            # we make sure that ind_p only stores the variants that aren&#39;t in any cs
-            ind_p &lt;- setdiff(ind_p, rd$sets$cs[[cset]])
-
-            # append variant info
-            i &lt;- poswhighestpip
-            variant_info[[length(variant_info) + 1]] &lt;- list(rd$chr[i], rd$pos[i], rd$ref[i], rd$alt[i], rid, cset, rd$pip[i])
-
-            table &lt;- paste0(table, &quot;| &quot;, rd$chr[i], &quot; | &quot;, rd$pos[i], &quot; | &quot;, rd$ref[i], &quot; | &quot;, rd$alt[i], &quot; | &quot;, rid, &quot; | &quot;, cset, &quot; | &quot;, sprintf(&quot;%.2f&quot;, rd$pip[i]), &quot; |  \n&quot;)
-
-            sumpips &lt;- sumpips + sum(rd$pip[rd$sets$cs[[cset]]])
-            sumvars &lt;- sumvars + length(rd$sets$cs[[cset]])
-          } else { # if we have only one variant in the cs
-            i &lt;- rd$sets$cs[[cset]]
-
-            # we make sure that ind_p only stores the variants that aren&#39;t in any cs
-            ind_p &lt;- setdiff(ind_p, i)
-
-            # append variant info
-            variant_info[[length(variant_info) + 1]] &lt;- list(rd$chr[i], rd$pos[i], rd$ref[i], rd$alt[i], rid, cset, rd$pip[i])
-
-            table &lt;- paste0(table, &quot;| &quot;, rd$chr[i], &quot; | &quot;, rd$pos[i], &quot; | &quot;, rd$ref[i], &quot; | &quot;, rd$alt[i], &quot; | &quot;, rid, &quot; | &quot;, cset, &quot; | &quot;, sprintf(&quot;%.2f&quot;, rd$pip[i]), &quot; |  \n&quot;)
-
-            sumpips &lt;- sumpips + rd$pip[i]
-            sumvars &lt;- sumvars + 1
-          }
-        }
-
-        text_temp &lt;- paste0(text_temp, &quot;- Total number of variants: &quot;, length(rd$pip), &quot;\n&quot;)
-        text_temp &lt;- paste0(text_temp, &quot;- Expected number of causal variants: &quot;, sprintf(&quot;%.2f&quot;, sumpips), &quot;\n&quot;)
-        text_temp &lt;- paste0(text_temp, &quot;- Number of variants with PIP &gt; &quot;, ${pip_cutoff}, &quot; and not in any CS: &quot;, length(ind_p), &quot;\n\n&quot;)
-        text_temp &lt;- paste0(text_temp, tbl_header, table, sep)
-
-        if (num_csets[reg_i] &gt; 1) {
-          text_temp &lt;- paste0(text_temp, &quot;#### CORR: Correlation between CS | OLAP: Overlap between CS\n&quot;)
-
-          cs &lt;- names(rd$sets$cs)
-
-          corrheader &lt;- &quot;|  |&quot;
-          corrbreak &lt;- &quot;| --- |&quot;
-
-          for (i in cs) {
-            corrheader &lt;- paste0(corrheader, &quot; CORR &quot;, i, &quot; |&quot;)
-            corrbreak &lt;- paste0(corrbreak, &quot; --- |&quot;)
-          }
-
-          corrheader &lt;- paste0(corrheader, &quot;  |&quot;)
-          corrbreak &lt;- paste0(corrbreak, &quot; --- |&quot;)
-
-          for (i in cs) {
-            corrheader &lt;- paste0(corrheader, &quot; OLAP &quot;, i, &quot; |&quot;)
-            corrbreak &lt;- paste0(corrbreak, &quot; --- |&quot;)
-          }
-
-          corrheader &lt;- paste0(corrheader, &quot;\n&quot;)
-          corrbreak &lt;- paste0(corrbreak, &quot;\n&quot;)
-
-          body &lt;- &quot;&quot;
-
-          for (en in seq_along(cs)) {
-            i &lt;- cs[en]
-            body &lt;- paste0(body, &quot;| &quot;, i, &quot; |&quot;)
-            for (j in rd$cscorr[[en]]) {
-              body &lt;- paste0(body, &quot; &quot;, sprintf(&quot;%.2f&quot;, j), &quot; |&quot;)
-            }
-            body &lt;- paste0(body, &quot;  |&quot;)
-            for (j in names(rd$sets$cs)) {
-              body &lt;- paste0(body, &quot; &quot;, length(intersect(rd$sets$cs[[i]], rd$sets$cs[[j]])), &quot; |&quot;)
-            }
-            body &lt;- paste0(body, &quot;\n&quot;)
-          }
-
-          text_temp &lt;- paste0(text_temp, corrheader, corrbreak, body, sep)
-        }
-
-        region_info &lt;- c(region_info, text_temp)
-      }
-    }
-
-    f &lt;- file(${_output[&quot;analysis_summary&quot;]:r}, &quot;w&quot;)
-    writeLines(paste0(theme, text), f)
-    close(f)
-
-    for (i in ind_p) {
-      # append variant info
-      variant_info[[length(variant_info) + 1]] &lt;- list(rd$chr[i], rd$pos[i], rd$ref[i], rd$alt[i], rid, &quot;None&quot;, rd$pip[i])
-    }
-
-    df &lt;- do.call(rbind, variant_info)
-    colnames(df) &lt;- c(&quot;chr&quot;, &quot;pos&quot;, &quot;ref&quot;, &quot;alt&quot;, &quot;rid&quot;, &quot;cs&quot;, &quot;pip&quot;)
-    write.table(df, ${_output[&quot;variants_csv&quot;]:r}, sep = &quot;\t&quot;, row.names = TRUE, col.names = TRUE)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Generate analysis report: HTML file, and optionally PPTX file
-[SuSiE_slides_2]
-output: f&quot;{_input[&#39;analysis_summary&#39;]:n}.html&quot;
-sh: container=container_marp, expand = &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint = entrypoint
-    node /opt/marp/.cli/marp-cli.js ${_input[&#39;analysis_summary&#39;]} -o ${_output:a} \
-        --title &#39;${region_file:bnn} fine mapping analysis&#39; \
-        --allow-local-files
-    node /opt/marp/.cli/marp-cli.js ${_input[&#39;analysis_summary&#39;]} -o ${_output:an}.pptx \
-        --title &#39;${region_file:bnn} fine mapping analysis&#39; \
-        --allow-local-files
 </pre></div>
 </div>
 </div>

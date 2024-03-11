@@ -579,7 +579,7 @@ parameter: varType = &#39;1&#39;
 parameter: num_factor = &#39;60&#39;
 input: phenoFile
 output: f&#39;{cwd:a}/{_input:bn}.imputed.bed.gz&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;  
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;, cores = numThreads  
 R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
    library(&quot;flashier&quot;)
    library(&quot;tibble&quot;)
@@ -603,7 +603,7 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     ###uses &quot;svd&quot; algorithm
     fit1 &lt;- softImpute::softImpute(X_mis_C,rank = rank,lambda = lambda,type = &quot;svd&quot;)
     pheno_soft &lt;- softImpute::complete(as.matrix(pheno_NAs),fit1)
-    min_sd &lt;- min(apply(pheno_soft, 1, sd)) / 100
+    min_sd &lt;- min(apply(pheno_soft, 1, sd))
     pca_res &lt;- irlba::irlba(pheno_soft, nv = ${num_factor})
     pca_res &lt;- list(pca_res$d, pca_res$u, pca_res$v)
     names(pca_res) &lt;- c(&#39;d&#39;, &#39;u&#39;, &#39;v&#39;)
@@ -641,7 +641,7 @@ parameter: save_flash = True
 parameter: null_check = False
 input: phenoFile
 output: f&#39;{cwd:a}/{_input:bn}.imputed.bed.gz&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;  
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output:bn}&#39;, cores = numThreads  
 R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
    library(&quot;flashier&quot;)
    library(&quot;tibble&quot;)

@@ -793,8 +793,8 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     res &lt;- list()
     for (i in 1:nrow(meta_df)) {
       line &lt;- meta_df[i,]
-      region_file &lt;- line[6]
-      sumstats_db_file &lt;- line[7]
+      region_file &lt;- line[7]
+      sumstats_db_file &lt;- line[8]
       strong_file &lt;- load_multitrait_R_sumstat(readRDS(region_file), readRDS(sumstats_db_file), coverage = &quot;${coverage}&quot;, top_loci=TRUE, exclude_condition = exclude_condition)
       ran_null_file &lt;- load_multitrait_R_sumstat(readRDS(region_file), readRDS(sumstats_db_file), filter_file=${independent_variant_list:r}, exclude_condition = exclude_condition)
       ran_null &lt;- mash_rand_null_sample(ran_null_file, ${n_random}, ${n_null}, exclude_condition = exclude_condition, seed=${seed})

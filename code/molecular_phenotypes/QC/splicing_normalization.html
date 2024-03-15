@@ -1119,6 +1119,8 @@ R: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     names(bed_file)[1] &lt;- &quot;#Chr&quot;
     bed_file$&#39;#Chr&#39; &lt;- sub(&quot;^&quot;, &quot;chr&quot;, bed_file$&#39;#Chr&#39;)
     row.names(bed_file) &lt;- NULL   
+
+    bed_file &lt;- bed_file[order(bed_file$&#39;#Chr&#39;,bed_file$start,bed_file$end),]
   
     # Create BED file output
     write.table(x=bed_file, file = &quot;${cwd}/psichomics_raw_data_bedded.txt&quot;, quote = FALSE, row.names = FALSE, sep = &quot;\t&quot;)

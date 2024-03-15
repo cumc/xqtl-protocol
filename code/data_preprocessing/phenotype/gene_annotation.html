@@ -1544,6 +1544,7 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdou
 parameter: sample_participant_lookup = path()
 input: phenoFile, annotation_gtf
 output: f&#39;{cwd:a}/{_input[0]:bn}.formated.bed.gz&#39;, f&#39;{cwd:a}/{_input[0]:bn}.phenotype_group.txt&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output[0]:bn}&#39;  
 python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
     import pandas as pd
     import numpy as np

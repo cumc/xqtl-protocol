@@ -1752,100 +1752,129 @@ parameter: chimJunctionOverhangMin = 15
 parameter: chimOutType = [&quot;Junctions&quot;, &quot;WithinBAM&quot;, &quot;SoftClip&quot;]
 parameter: chimMainSegmentMultNmax = 1 
 parameter: sjdbOverhang = 100
-parameter: varVCFfile = path(&quot;.&quot;)
+parameter: varVCFfile = &quot;&quot;
+parameter: mapping_quality = 255
 if int(mem.replace(&quot;G&quot;,&quot;&quot;)) &lt;  40:
     print(&quot;Insufficent memory for STAR, changing to 40G&quot;)
     star_mem = &#39;40G&#39;
 else:
     star_mem = mem
+if varVCFfile:
+    if not path(varVCFfile).is_file():
+        raise FileNotFoundError(f&quot;Cannot find varVCFfile ``{varVCFfile}``&quot;)
+    print(&quot;Adding wasp filter in STAR alignment&quot;)
 # This option is commented out because it will force the downstream analysis to use 40G, which significantlly slow down the process.
-input: raw_reads,group_by = is_paired_end + 1,group_with = {&quot;sample_id&quot;,&quot;read_length&quot;}
-output: cord_bam = f&#39;{cwd}/{_sample_id}.Aligned.sortedByCoord.out{&quot;_wasp_qc&quot; if varVCFfile.is_file() else &quot;&quot;}.bam&#39;,
-        trans_bam = f&#39;{cwd}/{_sample_id}.Aligned.toTranscriptome.out{&quot;_wasp_qc&quot; if varVCFfile.is_file() else &quot;&quot;}.bam&#39;
+input: raw_reads, group_by = is_paired_end + 1,group_with = {&quot;sample_id&quot;,&quot;read_length&quot;}
+output: cord_bam = f&#39;{cwd}/{_sample_id}.Aligned.sortedByCoord.out{&quot;_wasp_qc&quot; if varVCFfile else &quot;&quot;}.bam&#39;,
+        trans_bam = f&#39;{cwd}/{_sample_id}.Aligned.toTranscriptome.out{&quot;_wasp_qc&quot; if varVCFfile else &quot;&quot;}.bam&#39;
 if _read_length == 0:
     print(&quot;Using specified --sjdbOverhang as read length&quot;)
 else:
     print(&quot;Using read length specified in the sample list&quot;)
-if varVCFfile.is_file():
-    print(&quot;Adding wasp filter in STAR alignment&quot;)
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = star_mem, cores = numThreads
 bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+
+    # Remove previous output files
     rm -rf $[cwd]/$[_sample_id].*.out.*.gz
     rm -rf $[cwd]/$[_sample_id]._STARpass1
-    set -e
-    touch $[_output[0]:n].star_start.timestamp
-    STAR --runMode alignReads \
-        --runThreadN $[numThreads] \
-        --genomeDir  $[STAR_index] \
-        --readFilesIn  $[_input:r] \
-        --readFilesCommand $[&quot;cat&quot; if uncompressed else &quot;zcat&quot;] \
-        --outFileNamePrefix $[_output[0]:nnnn]. \
-        --outSAMstrandField $[outSAMstrandField] \
-        --twopassMode Basic \
-        --outFilterMultimapNmax $[outFilterMultimapNmax] \
-        --alignSJoverhangMin $[alignSJoverhangMin] \
-        --alignSJDBoverhangMin $[alignSJDBoverhangMin] \
-        --outFilterMismatchNmax $[outFilterMismatchNmax] \
-        --outFilterMismatchNoverLmax $[outFilterMismatchNoverLmax] \
-        --alignIntronMin $[alignIntronMin] \
-        --alignIntronMax $[alignIntronMax] \
-        --alignMatesGapMax $[alignMatesGapMax] \
-        --outFilterType $[outFilterType] \
-        --outFilterScoreMinOverLread $[outFilterScoreMinOverLread] \
-        --outFilterMatchNminOverLread $[outFilterMatchNminOverLread] \
-        --limitSjdbInsertNsj $[limitSjdbInsertNsj] \
-        --outFilterIntronMotifs $[outFilterIntronMotifs] \
-        --alignSoftClipAtReferenceEnds $[alignSoftClipAtReferenceEnds] \
-        --quantMode $[&quot; &quot;.join(quantMode)] \
-        --outSAMtype BAM Unsorted \
-        --outSAMunmapped Within \
-        --genomeLoad NoSharedMemory \
-        --chimSegmentMin $[chimSegmentMin] \
-        --chimJunctionOverhangMin $[chimJunctionOverhangMin] \
-        --chimOutType $[&quot; &quot;.join(chimOutType)] \
-        --chimMainSegmentMultNmax $[chimMainSegmentMultNmax] \
-        --chimOutJunctionFormat 0 \
-        --outSAMattributes $[&quot; &quot;.join(outSAMattributes)] $[&quot;vW&quot; if varVCFfile.is_file() else &quot;&quot;] \
-        --outSAMattrRGline $[&quot; &quot;.join(outSAMattrRGline)] \
-        --sjdbOverhang $[sjdbOverhang if _read_length == 0 else _read_length  ] \
-        --sjdbGTFfile $[gtf] $[(&quot;--varVCFfile %s --waspOutputMode SAMtag&quot; % varVCFfile) if varVCFfile.is_file() else &quot;&quot;]
 
+    set -e
+
+    # Record start timestamp for alignment
+    align_start_time=$(date +%s)
+
+    # Run STAR alignment
+    STAR --runMode alignReads \
+         --runThreadN $[numThreads] \
+         --genomeDir $[STAR_index] \
+         --readFilesIn $[_input:r] \
+         --readFilesCommand $[&quot;cat&quot; if uncompressed else &quot;zcat&quot;] \
+         --outFileNamePrefix $[_output[0]:nnnn]. \
+         --outSAMstrandField $[outSAMstrandField] \
+         --twopassMode Basic \
+         --outFilterMultimapNmax $[outFilterMultimapNmax] \
+         --alignSJoverhangMin $[alignSJoverhangMin] \
+         --alignSJDBoverhangMin $[alignSJDBoverhangMin] \
+         --outFilterMismatchNmax $[outFilterMismatchNmax] \
+         --outFilterMismatchNoverLmax $[outFilterMismatchNoverLmax] \
+         --alignIntronMin $[alignIntronMin] \
+         --alignIntronMax $[alignIntronMax] \
+         --alignMatesGapMax $[alignMatesGapMax] \
+         --outFilterType $[outFilterType] \
+         --outFilterScoreMinOverLread $[outFilterScoreMinOverLread] \
+         --outFilterMatchNminOverLread $[outFilterMatchNminOverLread] \
+         --limitSjdbInsertNsj $[limitSjdbInsertNsj] \
+         --outFilterIntronMotifs $[outFilterIntronMotifs] \
+         --alignSoftClipAtReferenceEnds $[alignSoftClipAtReferenceEnds] \
+         --quantMode $[&quot; &quot;.join(quantMode)] \
+         --outSAMtype BAM Unsorted \
+         --outSAMunmapped Within \
+         --genomeLoad NoSharedMemory \
+         --chimSegmentMin $[chimSegmentMin] \
+         --chimJunctionOverhangMin $[chimJunctionOverhangMin] \
+         --chimOutType $[&quot; &quot;.join(chimOutType)] \
+         --chimMainSegmentMultNmax $[chimMainSegmentMultNmax] \
+         --chimOutJunctionFormat 0 \
+         --outSAMattributes $[&quot; &quot;.join(outSAMattributes)] $[&quot;vW&quot; if varVCFfile else &quot;&quot;] \
+         --outSAMattrRGline $[&quot; &quot;.join(outSAMattrRGline)] \
+         --sjdbOverhang $[sjdbOverhang if _read_length == 0 else _read_length ] \
+         --sjdbGTFfile $[gtf] $[(&quot;--varVCFfile %s --waspOutputMode SAMtag&quot; % varVCFfile) if varVCFfile else &quot;&quot;]
+
+    # Record end timestamp for alignment and calculate runtime
+    align_end_time=$(date +%s)
+    align_runtime=$((align_end_time - align_start_time))
+
+    # Remove temporary files
     rm -r $[_output[0]:nnnn]._STARgenome
     $[ f&#39;rm -rf [_output[0]:nnnn]._STARtmp&#39; if is_paired_end else &quot;&quot;]
-    touch $[_output[0]:n].sort_start.timestamp
-    # According to GTEX, this can help reducing the amount of memory consumption.
-    samtools sort --threads $[numThreads] -o $[_output[0]:nnnn].Aligned.sortedByCoord.out.bam $[_output[0]:nnnn].Aligned.out.bam 
-    rm $[_output[0]:nnnn].Aligned.out.bam 
 
-    # WASP based QC
+    # Record start timestamp for sorting
+    sort_start_time=$(date +%s)
+
+    # Sort the aligned BAM file
+    samtools sort --threads $[numThreads] -o $[_output[0]:nnnn].Aligned.sortedByCoord.out.bam $[_output[0]:nnnn].Aligned.out.bam
+    rm $[_output[0]:nnnn].Aligned.out.bam
+
+    # Record end timestamp for sorting and calculate runtime
+    sort_end_time=$(date +%s)
+    sort_runtime=$((sort_end_time - sort_start_time))
+
+    # WASP-based QC filtering function
     wasp_filter() {
-    # Check if an argument is provided
-    if [[ -z &quot;$1&quot; ]]; then
-        echo &quot;Usage: wasp_filter &lt;file.something.ext&gt;&quot;
-        return 1
-    fi
+        # Check if an argument is provided
+        if [[ -z &quot;$1&quot; ]]; then
+            echo &quot;Usage: wasp_filter &lt;file.something.ext&gt;&quot;
+            return 1
+        fi
 
-    local input_file=&quot;$1&quot;
-    
-    # Derive file.ext from file.something.ext
-    local base_name=&quot;${input_file%.*}&quot;  # Removes the last extension
-    local derived_file=&quot;${base_name%.*}.out.bam&quot;  # Removes the second to last extension and adds .ext
-    
-    # Execute the command
-    samtools view -h -q 255 &quot;$derived_file&quot; | grep -v &quot;vW:i:[2-7]&quot; | samtools view -b &gt; &quot;$input_file&quot;
-    
-    # Delete the derived_file after using it, to save storage, if you don&#39;t want do that, comment out
-    rm &quot;$derived_file&quot;
+        local input_file=&quot;$1&quot;
+        local base_name=&quot;${input_file%.*}&quot;  # Removes the last extension
+        local derived_file=&quot;${base_name%.*}.out.bam&quot;  # Removes the second to last extension and adds .ext
+
+        # Execute the command; `-q 255` parameter used by GTEx Consortium
+        samtools view -h -q $[mapping_quality] &quot;$derived_file&quot; | grep -v &quot;vW:i:[2-7]&quot; | samtools view -b &gt; &quot;$input_file&quot;
+
+        # Delete the derived_file after using it, to save storage (optional)
+        rm &quot;$derived_file&quot;
     }
 
-    export -f wasp_filter  # To make it available in subshells, if needed.
+    export -f wasp_filter  # Make it available in subshells, if needed
 
-    # Yang&#39;s group did&#39;t add `-q 255`, but GTEx group add `-q 255` here
-    $[ f&#39;wasp_filter  {_output[0]}&#39; if varVCFfile.is_file() else &quot;&quot;]
-    $[ f&#39;wasp_filter  {_output[1]}&#39; if varVCFfile.is_file() else &quot;&quot;]
-    
+    # Perform WASP-based QC filtering
+    $[ f&#39;wasp_filter {_output[0]}&#39; if varVCFfile else &quot;&quot;]
+    $[ f&#39;wasp_filter {_output[1]}&#39; if varVCFfile else &quot;&quot;]
 
+    # Index the final BAM file
     samtools index $[_output[0]]
+
+    # Print runtime information
+    echo &quot;STAR alignment started at: $(date -d @$align_start_time)&quot;
+    echo &quot;STAR alignment ended at: $(date -d @$align_end_time)&quot;
+    echo &quot;STAR alignment runtime: $align_runtime seconds&quot;
+    echo &quot;&quot;
+    echo &quot;Sorting started at: $(date -d @$sort_start_time)&quot;
+    echo &quot;Sorting ended at: $(date -d @$sort_end_time)&quot;
+    echo &quot;Sorting runtime: $sort_runtime seconds&quot;
 </pre></div>
 </div>
 </div>
@@ -1939,53 +1968,72 @@ parameter: ref_flat = path
 parameter: reference_fasta = path
 # For the patterned flowcell models (HiSeq X), change to 2500
 parameter: optical_distance = 100
-parameter: varVCFfile = path(&quot;.&quot;)
+parameter: zap_raw_bam = True
 picard_strand_dict = {&quot;rf&quot;:&quot;SECOND_READ_TRANSCRIPTION_STRAND&quot;,&quot;fr&quot;: &quot;FIRST_READ_TRANSCRIPTION_STRAND&quot;,&quot;unstranded&quot;:&quot;NONE&quot; }
-input: output_from(&quot;STAR_align_1&quot;),group_by = 2, group_with = {&quot;sample_id&quot;,&quot;strand&quot;}
-output: picard_metrics = f&#39;{_input[0]:nnnn}.alignment_summary_metrics&#39;,
-        picard_rna_metrics = f&#39;{_input[0]:nnnn}.rna_metrics&#39;,
+input: output_from(&quot;STAR_align_1&quot;), group_by = 2, group_with = {&quot;sample_id&quot;,&quot;strand&quot;}
+output: picard_metrics = f&#39;{_sample_id}.alignment_summary_metrics&#39;,
+        picard_rna_metrics = f&#39;{_sample_id}.rna_metrics&#39;,
         md_bam = f&#39;{_input[0]:n}.md.bam&#39;,
-        md_metrics = f&#39;{_input[0]:n}.md.metrics&#39;
+        md_metrics = f&#39;{_input[0]:n}.md.metrics&#39;,
+        bigwig = f&#39;{_input[0]:n}.md.bw&#39;,
+        output_summary = f&#39;{_sample_id}.bam_file_meta&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
-        set -e
-        touch ${_output[0]:n}.CollectMultipleMetrics_start.timestamp
-        picard -Xmx${java_mem} CollectMultipleMetrics \
-            -REFERENCE_SEQUENCE ${reference_fasta} \
-            -PROGRAM CollectAlignmentSummaryMetrics \
-            -PROGRAM CollectInsertSizeMetrics \
-            -PROGRAM QualityScoreDistribution \
-            -PROGRAM MeanQualityByCycle \
-            -PROGRAM CollectBaseDistributionByCycle \
-            -PROGRAM CollectGcBiasMetrics \
-            -VALIDATION_STRINGENCY STRICT \
-            -INPUT  ${_input[&quot;cord_bam&quot;]} \
-            -OUTPUT  ${_output[0]:n}
+    # Record start timestamp for CollectMultipleMetrics
+    start_time=$(date +%s)
+    echo &quot;CollectMultipleMetrics started at: $(date)&quot;
+    set -e
+    picard -Xmx${java_mem} CollectMultipleMetrics \
+        -REFERENCE_SEQUENCE ${reference_fasta} \
+        -PROGRAM CollectAlignmentSummaryMetrics \
+        -PROGRAM CollectInsertSizeMetrics \
+        -PROGRAM QualityScoreDistribution \
+        -PROGRAM MeanQualityByCycle \
+        -PROGRAM CollectBaseDistributionByCycle \
+        -PROGRAM CollectGcBiasMetrics \
+        -VALIDATION_STRINGENCY STRICT \
+        -INPUT  ${_input[&quot;cord_bam&quot;]} \
+        -OUTPUT  ${_output[0]:n}
+    
+    # Record end timestamp and calculate runtime for CollectMultipleMetrics
+    end_time=$(date +%s)
+    runtime=$((end_time - start_time))
+    echo &quot;CollectMultipleMetrics ended at: $(date)&quot;
+    echo &quot;CollectMultipleMetrics runtime: $runtime seconds&quot;
 
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[-1]:n}.stderr&#39;, stdout = f&#39;{_output[-1]:n}.stdout&#39;, entrypoint=entrypoint
-        set -e
-        touch ${_output[2]:n}.MarkDuplicates_start.timestamp
-        picard -Xmx${java_mem}  MarkDuplicates \
-            -I ${_input[&quot;cord_bam&quot;]}  \
-            -O ${_output[2]} \
-            -PROGRAM_RECORD_ID null \
-            -M ${_output[3]} \
-            -TMP_DIR ${cwd}\
-            -MAX_RECORDS_IN_RAM 500000 -SORTING_COLLECTION_SIZE_RATIO 0.25 \
-            -ASSUME_SORT_ORDER coordinate \
-            -TAGGING_POLICY DontTag \
-            -OPTICAL_DUPLICATE_PIXEL_DISTANCE ${optical_distance} \
-            -CREATE_INDEX true \
-            -CREATE_MD5_FILE true \
-            -VALIDATION_STRINGENCY STRICT \
-            -REMOVE_SEQUENCING_DUPLICATES false \
-            -REMOVE_DUPLICATES false 
+    start_time=$(date +%s)
+    echo &quot;MarkDuplicates started at: $(date)&quot;
+    set -e
+    picard -Xmx${java_mem}  MarkDuplicates \
+        -I ${_input[&quot;cord_bam&quot;]}  \
+        -O ${_output[2]} \
+        -PROGRAM_RECORD_ID null \
+        -M ${_output[3]} \
+        -TMP_DIR ${cwd}\
+        -MAX_RECORDS_IN_RAM 500000 -SORTING_COLLECTION_SIZE_RATIO 0.25 \
+        -ASSUME_SORT_ORDER coordinate \
+        -TAGGING_POLICY DontTag \
+        -OPTICAL_DUPLICATE_PIXEL_DISTANCE ${optical_distance} \
+        -CREATE_INDEX true \
+        -CREATE_MD5_FILE true \
+        -VALIDATION_STRINGENCY STRICT \
+        -REMOVE_SEQUENCING_DUPLICATES false \
+        -REMOVE_DUPLICATES false
+    
+    # Record end timestamp and calculate runtime for MarkDuplicates
+    end_time=$(date +%s)
+    runtime=$((end_time - start_time))
+    echo &quot;MarkDuplicates ended at: $(date)&quot;
+    echo &quot;MarkDuplicates runtime: $runtime seconds&quot;
 
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, stdout = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, entrypoint=entrypoint
-        set -e
-        # Get only line with rRNA and transcript_id
-        cat ${gtf}| grep rRNA | grep transcript_id &gt; ${gtf}.tmp.${_input[&quot;cord_bam&quot;]:bnnnn}  # To Avoid data racing problem
-        samtools view -H ${_input[&quot;cord_bam&quot;]}  &gt; ${_input[&quot;cord_bam&quot;]}.RI  
+    set -e
+    # Get only lines with rRNA and transcript_id from the GTF file
+    cat ${gtf} | grep rRNA | grep transcript_id &gt; ${gtf}.tmp.${_input[&quot;cord_bam&quot;]:bnnnn}  # To avoid data racing problem
+    
+    # Extract header from the BAM file
+    samtools view -H ${_input[&quot;cord_bam&quot;]}  &gt; ${_input[&quot;cord_bam&quot;]}.RI
 
 python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, stdout = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, entrypoint=entrypoint
         import pandas as pd
@@ -2017,19 +2065,26 @@ python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0
         RI.to_csv(&quot;${_input[&quot;cord_bam&quot;]}.RI&quot;, index = 0, header = 0, mode = &quot;a&quot;,sep = &quot;\t&quot; )
 
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, stdout = f&#39;{_output[0]:n}.rna_metrics.stdout&#39;, entrypoint=entrypoint
-        set -e
-        touch ${_output[0]:n}.CollectRnaSeqMetrics_start.timestamp
-        picard -Xmx${java_mem} CollectRnaSeqMetrics \
-            -REF_FLAT ${ref_flat} \
-            -RIBOSOMAL_INTERVALS ${_input[&quot;cord_bam&quot;]}.RI \
-            -STRAND_SPECIFICITY ${picard_strand_dict[_strand]} \
-            -CHART_OUTPUT ${_output[0]:n}.rna_metrics.pdf \
-            -VALIDATION_STRINGENCY STRICT \
-            -INPUT ${_input[&quot;cord_bam&quot;]}  \
-            -OUTPUT  ${_output[0]:n}.rna_metrics
-        rm ${gtf}.tmp.${_input[&quot;cord_bam&quot;]:bnnnn}
-
-_input[&quot;cord_bam&quot;].zap()
+    # Record start timestamp for CollectRnaSeqMetrics
+    start_time=$(date +%s)
+    echo &quot;CollectRnaSeqMetrics started at: $(date)&quot;
+    set -e
+    picard -Xmx${java_mem} CollectRnaSeqMetrics \
+        -REF_FLAT ${ref_flat} \
+        -RIBOSOMAL_INTERVALS ${_input[&quot;cord_bam&quot;]}.RI \
+        -STRAND_SPECIFICITY ${picard_strand_dict[_strand]} \
+        -CHART_OUTPUT ${_output[0]:n}.rna_metrics.pdf \
+        -VALIDATION_STRINGENCY STRICT \
+        -INPUT ${_input[&quot;cord_bam&quot;]}  \
+        -OUTPUT  ${_output[0]:n}.rna_metrics
+    
+    rm ${gtf}.tmp.${_input[&quot;cord_bam&quot;]:bnnnn}
+    
+    # Record end timestamp and calculate runtime for CollectRnaSeqMetrics
+    end_time=$(date +%s)
+    runtime=$((end_time - start_time))
+    echo &quot;CollectRnaSeqMetrics ended at: $(date)&quot;
+    echo &quot;CollectRnaSeqMetrics runtime: $runtime seconds&quot;
 
 bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.bw.stderr&#39;, stdout = f&#39;{_output[0]:n}.bw.stdout&#39;, entrypoint=entrypoint
     generate_bigwig() {
@@ -2041,8 +2096,8 @@ bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:
 
         local input_file=&quot;$1&quot;
         
-        # Derive file.sorted.bw from file.bam
-        local bigwig_file=&quot;${input_file%.*}.sorted.bw&quot;
+        # Derive file.bw from file.bam
+        local bigwig_file=&quot;${input_file%.*}.bw&quot;
 
         # Execute the commands
         samtools index &quot;$input_file&quot;
@@ -2050,7 +2105,22 @@ bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:
     }
 
     export -f generate_bigwig  # To make it available in subshells, if needed.
-    $[ f&#39;generate_bigwig {_output[2]}&#39; if  varVCFfile.is_file() else &quot;&quot;]
+    generate_bigwig ${_output[&quot;md_bam&quot;]}
+
+import pandas as pd
+out = pd.DataFrame({
+    &quot;sample_id&quot;: _sample_id,
+    &quot;strand&quot;: _strand,
+    &quot;coord_bam_list&quot;: _output[&quot;md_bam&quot;],
+    &quot;BW_list&quot;: _output[&quot;bigwig&quot;],
+    &quot;SJ_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnnn}.SJ.out.tab&#39;,
+    &quot;trans_bam_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnn}.toTranscriptome.out.bam&#39;
+
+})
+out.to_csv(_output[&quot;output_summary&quot;], sep=&quot;\t&quot;, index=False)
+
+if zap_raw_bam:
+    _input[&quot;cord_bam&quot;].zap()
 </pre></div>
 </div>
 </div>
@@ -2060,14 +2130,26 @@ bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[STAR_align_3]
 input: group_by = &quot;all&quot;
 depends: sos_variable(&quot;strand&quot;)
-output: f&#39;{cwd}/{samples:bn}_bam_list&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+output: f&#39;{cwd}/{samples:bn}.bam_file_list&#39;
+task: trunk_workers = 1, trunk_size = 1, walltime = walltime, mem = mem, cores = 1
 python: container=container, expand= &quot;${ }&quot;, entrypoint=entrypoint
+
     import pandas as pd
-    coord_bam_list = [${_input:br,}][2::4]
-    SJ_list = [f&#39;{x}.SJ.out.tab&#39; for x in [${_input:bnnnnnr,}][2::4]] 
-    Trans_bam_list = [f&#39;{x}.toTranscriptome.out.bam&#39; for x in [${_input:bnnnnr,}][2::4]]
-    out = pd.DataFrame({&quot;sample_id&quot; : ${sample_id},&quot;strand&quot; : ${strand} , &quot;coord_bam_list&quot; : coord_bam_list, &quot;SJ_list&quot; :SJ_list,&quot;trans_bam_list&quot; : Trans_bam_list  })
+
+    coord_bam_list = [${_input:br,}][2::6]
+    sorted_bigwig_list = [${_input:br,}][4::6]
+    SJ_list = [f&#39;{x}.SJ.out.tab&#39; for x in [${_input:bnnnnnr,}][2::6]]
+    trans_bam_list = [f&#39;{x}.toTranscriptome.out.bam&#39; for x in [${_input:bnnnnr,}][2::6]]
+
+    out = pd.DataFrame({
+        &quot;sample_id&quot;: ${sample_id},
+        &quot;strand&quot;: ${strand},
+        &quot;coord_bam_list&quot;: coord_bam_list,
+        &quot;BW_list&quot;: sorted_bigwig_list,
+        &quot;SJ_list&quot;: SJ_list,
+        &quot;trans_bam_list&quot;: trans_bam_list
+    })
+
     out.to_csv(&quot;${_output}&quot;, sep=&quot;\t&quot;, index=False)
 </pre></div>
 </div>
@@ -2147,11 +2229,12 @@ bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rnaseqc_call_2]
+parameter: bam_list = path
 input: group_by = &quot;all&quot;
-output: f&#39;{cwd}/{samples:bn}.rnaseqc.gene_tpm.gct.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rnaseqc.gene_readsCount.gct.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rnaseqc.exon_readsCount.gct.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rnaseqc.metrics.tsv&#39;
+output: f&#39;{cwd}/{bam_list:bn}.rnaseqc.gene_tpm.gct.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rnaseqc.gene_readsCount.gct.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rnaseqc.exon_readsCount.gct.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rnaseqc.metrics.tsv&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
 python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
     import pandas as pd
@@ -2184,7 +2267,7 @@ python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0
         output = merge_gct(gct_path_list_list[i])
         output.to_csv(output_path[i], sep = &quot;\t&quot;)
     metrics_list = input_list[3::4]
-    with open(&quot;${cwd}/${samples:bn}.rnaseqc.metrics_output_list&quot;, &quot;w&quot;) as f:
+    with open(&quot;${cwd}/${bam_list:bn}.rnaseqc.metrics_output_list&quot;, &quot;w&quot;) as f:
         f.write(&#39;\n&#39;.join(metrics_list))
 
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
@@ -2213,11 +2296,10 @@ bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_1]
+parameter: bam_list = path
 parameter: RSEM_index = path
 parameter: max_frag_len = 1000
-estimate_rspd = True
-
-parameter: bam_list = path
+parameter: estimate_rspd = True
 
 sample_inv = pd.read_csv(bam_list,sep = &quot;\t&quot;)
 
@@ -2229,8 +2311,8 @@ sample_id = sample_inv.sample_id.values.tolist()
     
 ## Get the file name for trans_bam_list data
 trans_bam_list_inv = sample_inv.trans_bam_list.values.tolist()
-trans_bam_list = [f&#39;{cwd}/{x}&#39; for x in trans_bam_list_inv ]
-input: trans_bam_list ,  group_by = 1, group_with = {&quot;sample_id&quot;,&quot;strand_list&quot;} 
+trans_bam_list = [f&#39;{cwd}/{x}&#39; for x in trans_bam_list_inv]
+input: trans_bam_list, group_by = 1, group_with = {&quot;sample_id&quot;, &quot;strand_list&quot;} 
 output: f&#39;{cwd}/{_sample_id}.rsem.isoforms.results&#39;, f&#39;{cwd}/{_sample_id}.rsem.genes.results&#39;,f&#39;{cwd}/{_sample_id}.rsem.stat/{_sample_id}.rsem.cnt&#39;
 task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
@@ -2249,27 +2331,28 @@ bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_2]
+parameter: bam_list = path
 input: group_by = &quot;all&quot;
-output: f&#39;{cwd}/{samples:bn}.rsem_transcripts_expected_count.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem_transcripts_tpm.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem_transcripts_fpkm.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem_transcripts_isopct.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem_genes_expected_count.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem_genes_tpm.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem_genes_fpkm.txt.gz&#39;,
-        f&#39;{cwd}/{samples:bn}.rsem.aggregated_quality.metrics.tsv&#39;
+output: f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_expected_count.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_tpm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_fpkm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_isopct.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_genes_expected_count.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_genes_tpm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_genes_fpkm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem.aggregated_quality.metrics.tsv&#39;
 
 task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
 python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
     input_list = [${_input:r,}]
-    with open(&#39;${cwd}/${samples:bn}.rsem.isoforms_output_list&#39;, &quot;w&quot;) as f:
+    with open(&#39;${cwd}/${bam_list:bn}.rsem.isoforms_output_list&#39;, &quot;w&quot;) as f:
         f.write(&#39;\n&#39;.join(input_list[0::3]))
-    with open(&#39;${cwd}/${samples:bn}.rsem.genes_output_list&#39;, &quot;w&quot;) as f:
+    with open(&#39;${cwd}/${bam_list:bn}.rsem.genes_output_list&#39;, &quot;w&quot;) as f:
         f.write(&#39;\n&#39;.join(input_list[1::3]))
 
 bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
-         aggregate_rsem_results.py ${cwd}/${samples:bn}.rsem.isoforms_output_list {expected_count,TPM,FPKM,IsoPct} ${_output[0]:nnn}
-         aggregate_rsem_results.py ${cwd}/${samples:bn}.rsem.genes_output_list {expected_count,TPM,FPKM} ${_output[1]:nnn} 
+         aggregate_rsem_results.py ${cwd}/${bam_list:bn}.rsem.isoforms_output_list {expected_count,TPM,FPKM,IsoPct} ${_output[0]:nnn}
+         aggregate_rsem_results.py ${cwd}/${bam_list:bn}.rsem.genes_output_list {expected_count,TPM,FPKM} ${_output[1]:nnn} 
 
 R:  container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[-1]:n}.stderr&#39;, stdout = f&#39;{_output[-1]:n}.stdout&#39;, entrypoint=entrypoint
      readRSEM.cnt &lt;- function (source) {
@@ -2332,7 +2415,7 @@ R:  container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[-1]:n
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_3,rnaseqc_call_3]
-output: f&#39;{cwd}/{samples:bn}.multiqc_report.html&#39;
+output: f&#39;{_input[0]:nnn}.multiqc_report.html&#39;
 task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
 report: output = f&quot;{_output:n}.multiqc_config.yml&quot;
   extra_fn_clean_exts:
@@ -2349,7 +2432,7 @@ bash:  container=container,expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_4, rnaseqc_call_4]
 # Path to flat reference file, for computing QC metric
-output: f&#39;{cwd}/{samples:b}.picard.aggregated_quality.metrics.tsv&#39;
+output: f&#39;{cwd}/{_input[0]:nn}.picard.aggregated_quality.metrics.tsv&#39;
 task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
 R: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
     ## Define Function

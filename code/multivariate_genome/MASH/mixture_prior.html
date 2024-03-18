@@ -1047,21 +1047,20 @@ R: expand = &quot;${ }&quot;, stderr = f&quot;{_output:n}.stderr&quot;, stdout =
     fit0 &lt;- ud_init(mash_data, n_unconstrained = 50, U_scaled = U.can)
     # Fit udr and use penalty as default as suggested by Yunqi
     # penalty is necessary in small sample size case, and there won&#39;t be a difference in large sample size 
-    fit2 = ud_fit(fit0, control = list(unconstrained.update = &quot;ted&quot;, scaled.update = &quot;fa&quot;, resid.update = &#39;none&#39;, 
+    fit2 = ud_fit(fit0, control = list(unconstrained.update = &quot;${unconstrained_prior}&quot;, scaled.update = &quot;fa&quot;, resid.update = &#39;none&#39;, 
                                        lambda =lambda, penalty.type = &quot;iw&quot;, maxiter=1e3, tol = 1e-2, tol.lik = 1e-2))
 
     # extract data-driven covariance from udr model. (A list of covariance matrices)
     U.ud &lt;- lapply(fit2$U,function (e) &quot;[[&quot;(e,&quot;mat&quot;)) 
 
     saveRDS(list(U=U.ud, w=fit2$w, loglik=fit2$loglik), ${_output:r})
-
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ted]
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ud_unconstrained]
 # Method is `ed` or `ted`
 parameter: ud_method = &quot;ed&quot;
 # A typical choice is to estimate scales only for canonical components

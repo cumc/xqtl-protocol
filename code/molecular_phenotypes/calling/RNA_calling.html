@@ -1968,7 +1968,7 @@ parameter: ref_flat = path
 parameter: reference_fasta = path
 # For the patterned flowcell models (HiSeq X), change to 2500
 parameter: optical_distance = 100
-parameter: zap_raw_bam = True
+parameter: zap_raw_bam = False
 picard_strand_dict = {&quot;rf&quot;:&quot;SECOND_READ_TRANSCRIPTION_STRAND&quot;,&quot;fr&quot;: &quot;FIRST_READ_TRANSCRIPTION_STRAND&quot;,&quot;unstranded&quot;:&quot;NONE&quot; }
 input: output_from(&quot;STAR_align_1&quot;), group_by = 2, group_with = {&quot;sample_id&quot;,&quot;strand&quot;}
 output: picard_metrics = f&#39;{_sample_id}.alignment_summary_metrics&#39;,
@@ -2020,7 +2020,7 @@ bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[-1]
         -VALIDATION_STRINGENCY STRICT \
         -REMOVE_SEQUENCING_DUPLICATES false \
         -REMOVE_DUPLICATES false
-    
+    samtools index ${_output[2]}
     # Record end timestamp and calculate runtime for MarkDuplicates
     end_time=$(date +%s)
     runtime=$((end_time - start_time))
@@ -2044,6 +2044,7 @@ python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0
         strand = []
         tag = []
         annotation_gtf = &quot;${gtf}.tmp.${_input[&quot;cord_bam&quot;]:bnnnn}&quot;
+
         with open(annotation_gtf, &#39;r&#39;) as gtf:
             for row in gtf:
                 row = row.strip().split(&#39;\t&#39;)
@@ -2105,16 +2106,16 @@ bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:
     }
 
     export -f generate_bigwig  # To make it available in subshells, if needed.
-    generate_bigwig ${_output[&quot;md_bam&quot;]}
+    generate_bigwig $[_output[&quot;md_bam&quot;]]
 
 import pandas as pd
 out = pd.DataFrame({
     &quot;sample_id&quot;: _sample_id,
     &quot;strand&quot;: _strand,
-    &quot;coord_bam_list&quot;: _output[&quot;md_bam&quot;],
-    &quot;BW_list&quot;: _output[&quot;bigwig&quot;],
+    &quot;coord_bam_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:b}&#39;,
+    &quot;BW_list&quot;: f&#39;{_output[&quot;bigwig&quot;]:b}&#39;,
     &quot;SJ_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnnn}.SJ.out.tab&#39;,
-    &quot;trans_bam_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnn}.toTranscriptome.out.bam&#39;
+    &quot;trans_bam_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnn}.toTranscriptome.out_wasp_qc.bam&#39;
 
 })
 out.to_csv(_output[&quot;output_summary&quot;], sep=&quot;\t&quot;, index=False)

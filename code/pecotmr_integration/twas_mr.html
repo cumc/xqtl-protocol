@@ -503,6 +503,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
             </nav>
         </div>
@@ -649,6 +650,16 @@ document.write(`
 </ul>
 </li>
 </ul>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="o">~/</span><span class="n">githubrepo</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">twas_mr</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">twas_mr</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">twas_mr</span><span class="o">/</span><span class="n">output</span><span class="o">/</span> \
+   <span class="o">--</span><span class="n">gwas_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">twas_mr</span><span class="o">/</span><span class="n">gwas_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">ld_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">twas_mr</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">xqtl_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">twas_mr</span><span class="o">/</span><span class="n">xqtl_meta</span><span class="o">.</span><span class="n">tsv</span> 
+</pre></div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
@@ -790,7 +801,7 @@ document.write(`
         <span class="n">chrom_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;chrom&#39;</span><span class="p">]]</span>
         <span class="k">for</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="n">chrom_range</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">chrom</span> <span class="ow">in</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]]:</span>
-         <span class="n">e</span>       <span class="n">existing_entry</span> <span class="o">=</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span>
+                <span class="n">existing_entry</span> <span class="o">=</span> <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Duplicate chromosome specification for study_id </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, chrom </span><span class="si">{</span><span class="n">chrom</span><span class="si">}</span><span class="s2">. &quot;</span>
                                  <span class="sa">f</span><span class="s2">&quot;Conflicting entries: </span><span class="si">{</span><span class="n">existing_entry</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="p">[</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="n">mapping_file</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">gwas_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;study_id&#39;</span><span class="p">]][</span><span class="n">chrom</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mapping_file</span><span class="p">]</span>
@@ -817,12 +828,11 @@ document.write(`
 depends: sos_variable(&quot;regional_data&quot;)
 
 parameter: allele_qc = True
-parameter: sets = &quot;sets&quot;
-parameter: coverage = &quot;coverage_0.95&quot;
+parameter: coverage = &quot;cs_coverage_0.95&quot;
 meta_info = [x[&quot;meta_info&quot;] for x in regional_data[&#39;xQTL&#39;].values()]
 xqtl_files = [x[&quot;files&quot;] for x in regional_data[&#39;xQTL&#39;].values()]
 input: xqtl_files, group_by = lambda x: group_by_region(x, xqtl_files), group_with = &quot;meta_info&quot;
-output: f&#39;{cwd:a}/{step_name[:-2]}/{name}.{_meta_info[3]}.twas_mr.rds&#39;
+output: f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[3]}.twas_mr.rds&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
     # we have potentially multiple weight db RDS files for each region of interest
@@ -832,6 +842,8 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     end = ${_meta_info[2]}
     region = &quot;${_meta_info[3]}&quot;
     xqtl_conditions = c(${paths(_meta_info[4:]):r,})
+    xqtl_conditions = unlist(strsplit(xqtl_conditions, &quot;,\\s*&quot;))
+    LD_meta_file_path = ${ld_meta_data:r}
     gwas_studies = c(${paths(regional_data[&quot;GWAS&quot;].keys()):r,})
     # load gwas data file for this particular chrom
     gwas_files = c(${paths([v[_meta_info[0]] for k, v in regional_data[&quot;GWAS&quot;].items()]):r,})
@@ -845,43 +857,43 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     gwas_data = list()
     twas_mr_result = list()
     for (s in seq_along(gwas_studies)) {
-      gwas_data[[gwas_studies[s]]] = list()
-      gwas_sumstats = fread(gwas_files[s])%&gt;% 
+        gwas_data[[gwas_studies[s]]] = list()
+        gwas_sumstats = fread(gwas_files[s])%&gt;% 
                  rename(&quot;pos&quot; = &quot;position&quot;, &quot;chrom&quot; = &quot;chromosome&quot;, &quot;A1&quot; = &quot;ref&quot;,&quot;A2&quot; = &quot;alt&quot;)%&gt;%
                  mutate(z=beta/se)
-      # Load LD list containing LD matrix and corresponding variants
-      gwas_LD_list = load_LD_matrix(LD_meta_file_path, region_of_interest, gwas_sumstats)
-      # Allele flip
-      gwas_allele_flip= allele_qc(gwas_sumstats[,c(&quot;chrom&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;)], gwas_LD_list$combined_LD_variants,gwas_sumstats,c(&quot;beta&quot;,&quot;se&quot;,&quot;z&quot;))
-      # Load LD matrix and sumstats
-      gwas_data[[gwas_studies[s]]][[&quot;LD&quot;]] = gwas_LD_list$combined_LD_matrix
-      gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]] = gwas_allele_flip$target_data_qced
-   for (condition in xqtl_conditions) {
-      twas_mr_result[[gwas_studies[s]]][[condition]] = list()
-      # Step 3: TWAS analysis
-      # Step 3-1: Intersect with gwas summary statistics and adjust susie weights
-      adjusted_susie_weights = adjust_susie_weights(twas_weights_results, condition,keep_variants = get_nested_element(gwas_data, c(gwas_studies[s], &quot;sumstats&quot;, &quot;variant&quot;)),allele_qc = ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;})
-      # Step 3-2: Overlap weights of other methods with the variants name of adjusted_susie_weights, then combine with adjusted susie weights to obtain the subsetted weight matrix
-      weights_matrix = get_nested_element(twas_weights_results, c(&quot;weights&quot;, condition))
-      weights_matrix_subset = cbind(susie_weights = adjusted_susie_weights$adjusted_susie_weights, weights_matrix[adjusted_susie_weights$remained_variants_ids,!colnames(weights_matrix) %in% &quot;susie_weights&quot;])
-      if(allele_qc == ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;}){
-            weights_matrix_qced &lt;- allele_qc(rownames(weights_matrix_subset), gwas_LD_list$combined_LD_variants, weights_matrix_subset,1:ncol(weights_matrix))
-            weights_matrix_subset &lt;- weights_matrix_qced$target_data_qced[,!colnames(weights_matrix_qced$target_data_qced) %in% c(&quot;chrom&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;variant_id&quot;)]
-            rownames(weights_matrix_subset) &lt;- get_nested_element(weights_matrix_qced, c(&quot;target_data_qced&quot;,&quot;variant_id&quot;))
-      }
-      # Step 3-3: Conduct twas analysis
-      twas_result &lt;- twas_analysis(weights_matrix_subset, gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]],gwas_data[[gwas_studies[s]]][[&quot;LD&quot;]],rownames(weights_matrix_subset))
-      # Step 4: Conduct mr analysis
-      mr_formatted_input &lt;- mr_format(twas_weights_results, condition, gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]], sets = ${sets},coverage = ${coverage},allele_qc = ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;})
-      mr_result &lt;- mr_analysis(mr_formatted_input, cpip_cutoff = 0.5)
-      # Step 5: Output the twas mr result
-      twas_mr_result[[gwas_studies[s]]][[condition]] = list(twas_weights_matrix_subset = weights_matrix_subset, 
-                                                              mr_formatted_input = mr_formatted_input,
-                                                                     twas_result = twas_result,
-                                                                       mr_result = mr_result)
-   }
-}
-saveRDS(twas_mr_result, ${_output:ar})
+        # Load LD list containing LD matrix and corresponding variants
+        gwas_LD_list = load_LD_matrix(LD_meta_file_path, region_of_interest, gwas_sumstats)
+        # Allele flip
+        gwas_allele_flip= allele_qc(gwas_sumstats[,c(&quot;chrom&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;)], gwas_LD_list$combined_LD_variants,gwas_sumstats,c(&quot;beta&quot;,&quot;se&quot;,&quot;z&quot;))
+        # Load LD matrix and sumstats
+        gwas_data[[gwas_studies[s]]][[&quot;LD&quot;]] = gwas_LD_list$combined_LD_matrix
+        gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]] = gwas_allele_flip$target_data_qced
+        for (condition in xqtl_conditions) {
+            twas_mr_result[[gwas_studies[s]]][[condition]] = list()
+            # Step 3: TWAS analysis
+            # Step 3-1: Intersect with gwas summary statistics and adjust susie weights
+            adjusted_susie_weights = adjust_susie_weights(twas_weights_results, condition,keep_variants = get_nested_element(gwas_data, c(gwas_studies[s], &quot;sumstats&quot;, &quot;variant_id&quot;)),allele_qc = ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;})
+            # Step 3-2: Overlap weights of other methods with the variants name of adjusted_susie_weights, then combine with adjusted susie weights to obtain the subsetted weight matrix
+            weights_matrix = get_nested_element(twas_weights_results, c(&quot;weights&quot;, condition))
+            weights_matrix_subset = cbind(susie_weights = adjusted_susie_weights$adjusted_susie_weights, weights_matrix[adjusted_susie_weights$remained_variants_ids,!colnames(weights_matrix) %in% &quot;susie_weights&quot;])
+            if(${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;}){
+                weights_matrix_qced &lt;- allele_qc(rownames(weights_matrix_subset), gwas_LD_list$combined_LD_variants, weights_matrix_subset,1:ncol(weights_matrix))
+                weights_matrix_subset &lt;- weights_matrix_qced$target_data_qced[,!colnames(weights_matrix_qced$target_data_qced) %in% c(&quot;chrom&quot;,&quot;pos&quot;,&quot;A1&quot;,&quot;A2&quot;,&quot;variant_id&quot;)]
+                rownames(weights_matrix_subset) &lt;- get_nested_element(weights_matrix_qced, c(&quot;target_data_qced&quot;,&quot;variant_id&quot;))
+            }
+            # Step 3-3: Conduct twas analysis
+            twas_result &lt;- twas_analysis(weights_matrix_subset, gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]],gwas_data[[gwas_studies[s]]][[&quot;LD&quot;]],rownames(weights_matrix_subset))
+            # Step 4: Conduct mr analysis
+            mr_formatted_input &lt;- mr_format(twas_weights_results, condition, gwas_data[[gwas_studies[s]]][[&quot;sumstats&quot;]], coverage = &quot;${coverage}&quot;, allele_qc = ${&quot;TRUE&quot; if allele_qc else &quot;FALSE&quot;})
+            mr_result &lt;- mr_analysis(mr_formatted_input, cpip_cutoff = 0.5)
+            # Step 5: Output the twas mr result
+            twas_mr_result[[gwas_studies[s]]][[condition]] = list(twas_weights_matrix_subset = weights_matrix_subset, 
+                                                                  mr_formatted_input = mr_formatted_input,
+                                                                         twas_result = twas_result,
+                                                                           mr_result = mr_result)
+        }
+    }
+    saveRDS(twas_mr_result, ${_output:ar})
 </pre></div>
 </div>
 </div>
@@ -963,6 +975,7 @@ saveRDS(twas_mr_result, ${_output:ar})
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
   </nav></div>
 

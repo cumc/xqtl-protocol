@@ -8,12 +8,13 @@
 
 ## Advanced QTL analysis and integration
 
-1. `cis_analysis`: SuSiE, fSuSiE, mvSuSiE, ColocBoost (for mvSuSiE and ColocBoost input can be QTL individual level data, xQTL summary statistics data and GWAS summary statistics), univariate TWAS weights, mr.mash, mmQTL (individual level data)
-2. `beyond_cis`: SuSiE_RSS (genome-wide, including GWAS), polyfun, MRAID, cTWAS
-3. `multivariate_genome`: MASH, METAL (genome-wide multivariate analysis)
-4. `enrichment`: GREGOR, sLDSC, and a customized implementation using VEP
-5. `pecotmr_integration`: pair-wise enrichment, colocalization, TWAS and MR using the pecotmr framework
-6. `rare_xqtl`: watershed pipeline
+1. `mnm_analysis`: Multivariate and multiple regression analysis, including SuSiE, fSuSiE, mvSuSiE, ColocBoost (for mvSuSiE and ColocBoost input can be QTL individual level data, xQTL summary statistics data and GWAS summary statistics), univariate TWAS weights, mr.mash, mmQTL (individual level data), SuSiE_RSS (xQTL summary statistics data and GWAS summary statistics)
+2. `multivariate_genome`: MASH, METAL (genome-wide multivariate analysis)
+3. `enrichment`: GREGOR, sLDSC, and a customized implementation using VEP
+4. `pecotmr_integration`: pair-wise enrichment, colocalization, TWAS and MR using the pecotmr framework; cTWAS and other analysis that uses wrappers from `pecotmr` library
+5. `rare_xqtl`: watershed pipeline
+6. `quantile_qtl`: an experimental workflow of applying quantile regression to xQTL studies
+7. `prototype_drafts`: unpolished and unused drafts including polyfun, MRAID, CAFEH, COLOC, fastenloc that we once tried but decided to not adopt in this project because of more suitable alternatives.
 
 ## Utilities
 
@@ -21,18 +22,7 @@
 2. `post_processing`: formatting of analysis results
 3. `misc`: various scripts for maintenance and management
 
-## Others
-
-1. `quantile_qtl`: an experiment of applying quantile regression to xQTL studies
-2. `integrative_prototype`: approaches we have tried but decided to not pursue further 
-
 
 \textbf{Currently, what's completely missing are:}
 
-- Workflow to generate LD reference panel, documented in `reference_data.ipynb` (OO).
-- The pecotmr preprocessing steps including padding and formatting (GW).
-- The new SuSiE RSS for AD GWAS with discrepancy between Z and LD fixed, and imputation applied (GW).
-- Enrichment and colocalization pipeline using the pecotmr method (RF).
-- mvSuSiE related workflows (AW).
-- ColocBoost related workflows (PT&HS).
-- MRAID or whatever trans MR (CY&DN).
+- ColocBoost related workflows (XC&HS).

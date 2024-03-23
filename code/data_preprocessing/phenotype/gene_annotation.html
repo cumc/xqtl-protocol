@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
@@ -1322,13 +1322,44 @@ parameter: map_stra = &quot;site&quot;
 # Define the overlap ratio as the proportion of the cluster length that intersects with a gene, used to determine mapping to the gene.
 parameter: overlap_ratio = 0.8
 input: intron_count, annotation_gtf
-output: f&#39;{cwd}/{_input[1]:b}.exon_list&#39;, f&#39;{cwd}/{_input[0]:b}.leafcutter.clusters_to_genes.txt&#39;
+output: f&#39;{cwd}/{_input[0]:b}.exon_list&#39;, f&#39;{cwd}/{_input[0]:b}.leafcutter.clusters_to_genes.txt&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, tags = f&#39;{step_name}_{_output[0]:bn}&#39;  
 python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
     import pandas as pd
     import qtl.annotation
+
+    gtf = ${_input[1]:r}
+    #there is no &quot;gene_type&quot; when using the uncollapsed gtf. Replace &quot;gene_biotype&quot; with &quot;gene_type&quot; in the gtf and temporarily save for use in the annotation
+    has_gene_type = True
+    with open(gtf, &#39;r&#39;) as file:
+        for line in file:
+            if line[0] == &#39;#&#39;:
+                continue
+
+            row = line.strip().split(&#39;\t&#39;)
+            chrom = row[0]
+            # source = row[1]
+            annot_type = row[2]
+
+            if annot_type == &quot;gene&quot;:
+                if &quot;gene_type&quot; not in line:
+                    has_gene_type = False
+                break
+
+    if has_gene_type == False:
+        
+        with open(gtf, &#39;r&#39;) as file:
+            file_contents = file.read()
+        updated_contents = file_contents.replace(&quot;gene_biotype&quot;, &quot;gene_type&quot;)
+        gtf = ${_input[1]:rn}.tmp${_input[1]:rx}
+        print(gtf)
+        with open(gtf, &#39;w&#39;) as file:
+            file.write(updated_contents)
+
+
     # Load data
-    annot = qtl.annotation.Annotation(${_input[1]:r})
+    #annot = qtl.annotation.Annotation(${_input[1]:r})
+    annot = qtl.annotation.Annotation(gtf)
     exon_df = pd.DataFrame([[g.chr, e.start_pos, e.end_pos, g.strand, g.id, g.name]
                         for g in annot.genes for e in g.transcripts[0].exons],
                        columns=[&#39;chr&#39;, &#39;start&#39;, &#39;end&#39;, &#39;strand&#39;, &#39;gene_id&#39;, &#39;gene_name&#39;])
@@ -1458,10 +1489,16 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     import pandas as pd
     import numpy as np
     import qtl.io
+    import os
     from pathlib import Path
 
     # Load data
-    tss_df = qtl.io.gtf_to_tss_bed(${_input[1]:r})
+    if os.path.exists(${_input[1]:rn}.tmp${_input[1]:rx}):
+        gtf = ${_input[1]:rn}.tmp${_input[1]:rx}
+    else:
+        gtf = ${_input[1]:r}
+    #tss_df = qtl.io.gtf_to_tss_bed(${_input[1]:r})
+    tss_df = qtl.io.gtf_to_tss_bed(gtf)
     bed_df = pd.read_csv(${_input[0]:ar}, sep=&#39;\t&#39;, skiprows=0)
     bed_df.columns.values[0] = &quot;#chr&quot; # Temporary
     sample_participant_lookup = Path(&quot;${sample_participant_lookup:a}&quot;)
@@ -1515,6 +1552,9 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
 
 bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
         stdout=$[_output[0]:n].stdout
+
+        rm $[_input[1]:rn].tmp$[_input[1]:rx]
+
         for i in $[_output[0]] ; do 
         echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
         echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;`   &gt;&gt; $stdout;
@@ -1561,7 +1601,15 @@ python: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, std
     # change sample IDs to participant IDs
     if sample_participant_lookup.is_file():
         sample_participant_lookup_s = pd.read_csv(sample_participant_lookup, sep=&quot;\t&quot;, index_col=0, dtype={0:str,1:str})
-        output.rename(columns=sample_participant_lookup_s.to_dict(), inplace=True)
+
+        column_mapping = dict(zip(sample_participant_lookup_s.index, sample_participant_lookup_s[&#39;participant_id&#39;]))
+
+        column_names = output.columns[4:]
+        print(column_names)
+        new_column_names = [column_mapping.get(col, col) for col in column_names]
+        output.rename(columns=dict(zip(column_names, new_column_names)), inplace=True)
+
+        #output.rename(columns=sample_participant_lookup_s.to_dict(), inplace=True)
 
     # Old code grouping by each gene
     #bed_output = output.drop(&quot;gene_id&quot; , axis = 1)

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Fine-mapping with SuSiE RSS model &#8212; FunGen-xQTL Consortium</title>
+    <title>High-dimensional regression with summary statistics &#8212; FunGen-xQTL Consortium</title>
   
   
   
@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">High-dimensional regression with summary statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
@@ -481,7 +481,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Fine-mapping with SuSiE RSS model</h1>
+    <h1>High-dimensional regression with summary statistics</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -493,7 +493,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mwe">MWE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a></li>
 </ul>
             </nav>
         </div>
@@ -505,9 +505,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="fine-mapping-with-susie-rss-model">
-<h1>Fine-mapping with SuSiE RSS model<a class="headerlink" href="#fine-mapping-with-susie-rss-model" title="Permalink to this heading">#</a></h1>
-<p>This notebook take a list of LD reference files and a list of sumstat files from various association studies …</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="high-dimensional-regression-with-summary-statistics">
+<h1>High-dimensional regression with summary statistics<a class="headerlink" href="#high-dimensional-regression-with-summary-statistics" title="Permalink to this heading">#</a></h1>
+<p>This notebook take a list of LD reference files and a list of sumstat files from various association studies, and perform:</p>
+<ol class="arabic simple">
+<li><p>Fine-mapping with SuSiE RSS model</p></li>
+<li><p>TWAS / PRS weights …</p></li>
+</ol>
 <section id="input">
 <h2>Input<a class="headerlink" href="#input" title="Permalink to this heading">#</a></h2>
 <p>I. <strong>GWAS Summary Statistics Files</strong></p>
@@ -584,14 +588,14 @@ document.write(`
 </ol>
 <p>Each rds file is accompanied by 2 tsv files reporting elements 8 and 9 in tsv format for the sake of convenience.</p>
 </section>
-<section id="mwe">
-<h2>MWE<a class="headerlink" href="#mwe" title="Permalink to this heading">#</a></h2>
+<section id="minimal-working-example">
+<h2>Minimal working example<a class="headerlink" href="#minimal-working-example" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">SuSiE_RSS</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">SuSiE_RSS</span> \
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">pipeline</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">rss_analysis</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">univariate_rss</span> \
     <span class="o">--</span><span class="n">ld</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span> <span class="n">ADSP_R4_EUR</span><span class="o">.</span><span class="n">LD</span><span class="o">.</span><span class="n">list</span> \
     <span class="o">--</span><span class="n">gwas</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span> <span class="n">AD_sumstat_list</span><span class="o">.</span><span class="n">txt</span> \
-    <span class="o">--</span><span class="n">impute</span> \
+    <span class="o">--</span><span class="n">impute</span> <span class="o">--</span><span class="n">qc</span><span class="o">-</span><span class="n">method</span> <span class="n">dentist</span> <span class="o">--</span><span class="n">finemapping</span><span class="o">-</span><span class="n">method</span> <span class="n">susie_rss</span> \
     <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">pecotmr_apptainer</span><span class="p">:</span><span class="n">latest</span>
 </pre></div>
 </div>
@@ -773,12 +777,13 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[SuSiE_RSS_1]
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[univariate_rss]
 parameter: L = 5
 parameter: max_L = 10
 # If available the column that indicates sample size within the sumstats
 # filtering threshold for raiss imputation
 parameter: rcond = 0.01
+parameter: lamb = 0.01
 parameter: R2_threshold = 0.6
 parameter: l_step = 5
 parameter: pip_cutoff = 0.025
@@ -787,17 +792,17 @@ parameter: minimum_ld = 5
 parameter: coverage = [0.95, 0.7, 0.5]
 # Whether to impute the sumstat for all the snp in LD but not in sumstat.
 parameter: impute = False 
-parameter: QC = False
-parameter: bayesian_conditional_analysis = False
+# summary stats QC methods: rss_qc, dentist, slalom
+parameter: qc_method = &quot;&quot;
+# analysis method: single_effect, susie_rss, bayesian_conditional_regression
+parameter: finemapping_method = &quot;single_effect&quot;
 depends: sos_variable(&quot;regional_data&quot;)
 regions = list(regional_data[&#39;regions&#39;].keys())
 input: for_each = &quot;regions&quot;
-output: f&#39;{cwd:a}/{step_name[:-2]}/{_regions.replace(&quot;:&quot;, &quot;_&quot;)}.susie_rss.rds&#39;
+output: f&#39;{cwd:a}/{step_name}/{_regions.replace(&quot;:&quot;, &quot;_&quot;)}.{&quot;%s&quot; % qc_method.upper() if qc_method else &quot;noQC&quot;}{&quot;_RAISS_imputed&quot; if impute else &quot;&quot;}.univariate{&quot;_%s&quot; % finemapping_method if finemapping_method else &quot;&quot;}.rds&#39;
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f&quot;{_output:n}.stderr&quot;, container = container, entrypoint = entrypoint
-    library(susieR)
     library(pecotmr)
-    library(dplyr)
     library(data.table)
     skip_region = c(${&#39;, &#39;.join([&#39;&quot;{}&quot;&#39;.format(item) for item in skip_regions])})
     studies = c(${&#39;, &#39;.join([&#39;&quot;{}&quot;&#39;.format(item) for item in regional_data[&quot;GWAS&quot;].keys()])})
@@ -806,39 +811,25 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     n_samples = c(${paths([regional_data[&#39;GWAS&#39;][x][regional_data[&#39;regions&#39;][_regions][0]][2] for x in regional_data[&quot;GWAS&quot;].keys()]):r,})
     n_cases = c(${paths([regional_data[&#39;GWAS&#39;][x][regional_data[&#39;regions&#39;][_regions][0]][3] for x in regional_data[&quot;GWAS&quot;].keys()]):r,})
     n_controls = c(${paths([regional_data[&#39;GWAS&#39;][x][regional_data[&#39;regions&#39;][_regions][0]][4] for x in regional_data[&quot;GWAS&quot;].keys()]):r,})
-    LD_data = load_LD_matrix(&quot;${ld_meta_data}&quot;, &#39;${&quot;chr%s:%s-%s&quot; % (regional_data[&#39;regions&#39;][_regions][0], regional_data[&#39;regions&#39;][_regions][1], regional_data[&#39;regions&#39;][_regions][2])}&#39;)
-    run_rss_pipeline &lt;- function(sumstat_path, column_file_path, LD_data, n_sample, n_case, n_control, skip_region) {
-      rss_input = get_rss_input(sumstat_path = sumstat_path, column_file_path = column_file_path, n_sample = n_sample, n_case = n_case, n_control = n_control)
-        sumstats = rss_input$sumstats
-        n = rss_input$n
-        var_y = rss_input$var_y 
-        input_processed = rss_input_preprocess(sumstats = sumstats, LD_data = LD_data, skip_region = skip_region)
-        
-
-        L = ${L} 
-        final_result = susie_rss_pipeline(input_processed, R = LD_data$combined_LD_matrix, ref_panel = LD_data$ref_panel, n = n, L = L,
-            var_y = var_y, QC = ${&quot;TRUE&quot; if QC else &quot;FALSE&quot;},
-            impute = ${&quot;TRUE&quot; if impute else &quot;FALSE&quot;},
-            bayesian_conditional_analysis = ${&quot;TRUE&quot; if bayesian_conditional_analysis else &quot;FALSE&quot;}, 
-            rcond = ${rcond}, R2_threshold = ${R2_threshold}, minimum_ld = ${minimum_ld}, max_L = ${max_L}, l_step = ${l_step},
-            coverage = ${coverage[0]}, secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), pip_cutoff_to_skip = ${skip_analysis_pip_cutoff}, signal_cutoff = ${pip_cutoff})
-        final_result$sumstats_allele_qc_only = input_processed
-        return(final_result)
-    }
-  
+    LD_data = load_LD_matrix(&quot;${ld_meta_data}&quot;, &#39;${&quot;chr%s:%s-%s&quot; % (regional_data[&#39;regions&#39;][_regions][0], regional_data[&#39;regions&#39;][_regions][1], regional_data[&#39;regions&#39;][_regions][2])}&#39;) 
     res = setNames(replicate(length(studies), list(), simplify = FALSE), studies)
     for (r in 1:length(res)) {
         tryCatch({
-        res[[r]] = run_rss_pipeline(sumstat_path = sumstat_paths[r], column_file_path = column_file_paths[r], 
+        res[[r]] = rss_analysis_pipeline(sumstat_path = sumstat_paths[r], column_file_path = column_file_paths[r], 
                                         LD_data = LD_data, n_sample = as.numeric(n_samples[r]), n_case = as.numeric(n_cases[r]), 
-                                          n_control = as.numeric(n_controls[r]), skip_region = skip_region)
-        write.table(res[[r]]$sumstats_allele_qc_only, sub(&quot;studyname&quot;,studies[r],&quot;${_output:n}.studyname.sumstats_allele_QCed.tsv&quot;), sep = &quot;\t&quot;, col.names=TRUE, row.names=FALSE, quote=FALSE)
-        if(${&quot;TRUE&quot; if QC else &quot;FALSE&quot;} &amp; ${&quot;TRUE&quot; if impute else &quot;FALSE&quot;}){
-          write.table(res[[r]]$sumstats_qc_impute, sub(&quot;studyname&quot;,studies[r],&quot;${_output:n}.studyname.sumstats_QC_imputed.tsv&quot;), sep = &quot;\t&quot;, col.names=TRUE, row.names=FALSE, quote=FALSE)
-        }
+                                        n_control = as.numeric(n_controls[r]), skip_region = skip_region,
+                                        qc_method = ${&quot;NULL&quot; if len(qc_method) == 0 else &quot;&#39;%s&#39;&quot; % qc_method},
+                                        impute = ${&quot;TRUE&quot; if impute else &quot;FALSE&quot;},
+                                        impute_opts = list(rcond = ${rcond}, R2_threshold = ${R2_threshold}, minimum_ld = ${minimum_ld}, lamb=${lamb}),
+                                        finemapping_method = ${&quot;NULL&quot; if len(finemapping_method) == 0 else &quot;&#39;%s&#39;&quot; % finemapping_method}, 
+                                        finemapping_opts = list(init_L = ${L}, max_L = ${max_L}, l_step = ${l_step}, coverage = c(${&quot;,&quot;.join([str(x) for x in coverage])}), signal_cutoff = ${pip_cutoff}),
+                                        pip_cutoff_to_skip = ${skip_analysis_pip_cutoff}, 
+                                        )
+        fwrite(res[[r]]$sumstats, file = paste0(&quot;${_output:nn}.&quot;, studies[r], &quot;sumstats.tsv.gz&quot;), sep = &quot;\t&quot;, col.names = TRUE, row.names = FALSE, quote = FALSE, compress = &quot;gzip&quot;)
       }, error = function(e) {
         res[[r]] = NULL
-        cat(paste(&quot;Error processing file &quot;, studies[r], &quot;: &quot;, conditionMessage(e), &quot;\n&quot;))}
+        cat(paste(&quot;Error processing file &quot;, studies[r], &quot;: &quot;, conditionMessage(e), &quot;\n&quot;))
+      }
       )  
     }
     saveRDS(res, file = &quot;${_output}&quot;)
@@ -848,7 +839,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[SuSiE_RSS_2]
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[univariate_plot]
 output: pip_plot = f&quot;{cwd}/{_input:bn}.png&quot;
 task: trunk_workers = 1, trunk_size = job_size, walltime = &#39;12h&#39;, mem = &#39;20G&#39;, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R: container=container, expand = &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint = entrypoint
@@ -930,7 +921,7 @@ R: container=container, expand = &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mwe">MWE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal working example</a></li>
 </ul>
   </nav></div>
 

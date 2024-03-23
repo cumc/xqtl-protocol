@@ -256,7 +256,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
@@ -769,7 +769,12 @@ parameter: per_chunk = 100
 parameter: fine_mapping_meta = path
 parameter: coverage = &quot;cs_coverage_0.7&quot;
 # first 3 col are chr start end, 4th column is region ID, 5th col are file names, 6 col is all the condition names comma split
-meta_data = [(&quot;c(&quot; + &quot;,&quot;.join(f&quot;&#39;{y}&#39;&quot; for y in x.strip().split()) + &quot;)&quot;) for x in open(fine_mapping_meta).readlines()[1:]]
+import pandas as pd
+df = pd.read_csv(fine_mapping_meta, sep=&#39;\t&#39;, na_filter=False)
+meta_data = [
+    &quot;c(&quot; + &quot;,&quot;.join(f&quot;&#39;NA&#39;&quot; if y == &#39;&#39; else f&quot;&#39;{y}&#39;&quot; for y in row) + &quot;)&quot;
+    for index, row in df.iterrows()
+]
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in range(0, len(seq), size))  
 # Desired group size

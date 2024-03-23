@@ -253,7 +253,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
@@ -1793,7 +1793,7 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
 
     get_pip_withname &lt;- function(susie_obj){
       pip = susie_obj$susie_result_trimmed$pip 
-      names(pip) = susie_obj$variant_names
+      if(!(is.null(pip)))  names(pip) = susie_obj$variant_names
       return(pip)
     }
   
@@ -1853,7 +1853,7 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
   
             for(condition in conditions) {
                 dat_con &lt;- dat_study[[condition]]${[[&#39;fsusie_summary&#39;]] if fsusie else &#39;&#39;}
-                dat_susie &lt;- dat_con$susie_result_trimme
+                dat_susie &lt;- dat_con$susie_result_trimmed
 
   
                 if(${&quot;TRUE&quot; if condition_meta.is_file() else &quot;FALSE&quot;}){
@@ -1875,6 +1875,9 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
                     # fsusie saved preset results in different layer
                     if (${&quot;TRUE&quot; if fsusie else &quot;FALSE&quot;}){
                           res[[gene]][[s]][[qtl_con]][[&#39;top_loci&#39;]] = annotate_susie(dat_study[[condition]], res[[gene]][[s]][[qtl_con]][[&#39;top_loci&#39;]])
+                          if (dat_study[[condition]]$preset_variants_result$top_loci) {
+                            res[[gene]][[s]][[qtl_con]][[&#39;preset_top_loci&#39;]] = process_top_loci(dat_susie, dat_study[[condition]]$preset_variants_result$top_loci) %&gt;% annotate_susie(dat_study[[condition]], .)
+                          } else { res[[gene]][[s]][[qtl_con]][[&#39;preset_top_loci&#39;]] = NULL }                                              
                           res[[gene]][[s]][[qtl_con]][[&#39;preset_top_loci&#39;]] = process_top_loci(dat_susie, dat_study[[condition]]$preset_variants_result$top_loci) %&gt;% annotate_susie(dat_study[[condition]], .)
                           res[[gene]][[s]][[qtl_con]][[&#39;preset_pip&#39;]] = get_pip_withname(dat_study[[condition]]$preset_variants_result)
                     } else {
@@ -1904,10 +1907,14 @@ R: expand = &quot;${ }&quot;,stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&
     combine_data_sumstats = paste0(&quot;${_output:add}&quot;,&quot;/&quot;,&quot;${name}&quot;, &quot;.&quot;, gene, &quot;.cis_results_db.export_sumstats.rds&quot;)
   
     if (${&quot;TRUE&quot; if exported_file.is_file() else &quot;FALSE&quot;}){
-        res_exp &lt;- readRDS(combine_data)
-        res[[gene]] &lt;- c(res[[gene]], res_exp[[gene]])
-        res_sum_exp &lt;- readRDS(combine_data_sumstats)
-        res_sum[[gene]] &lt;- c(res_sum[[gene]], res_sum_exp[[gene]])
+        if (file.exists(combine_data)) {
+          res_exp &lt;- readRDS(combine_data)
+          res[[gene]] &lt;- c(res[[gene]], res_exp[[gene]])
+        }
+        if (file.exists(combine_data_sumstats)) {
+          res_sum_exp &lt;- readRDS(combine_data_sumstats)
+          res_sum[[gene]] &lt;- c(res_sum[[gene]], res_sum_exp[[gene]])
+        }
     }
     saveRDS(res, combine_data)
     saveRDS(res_sum, combine_data_sumstats)
@@ -1957,9 +1964,9 @@ R: expand = &quot;${ }&quot;, container = container, stderr = f&#39;{_output:n}.
         meta &lt;- read_delim(paste0(${_output:anr},&quot;.temp&quot;), delim = &#39;\t&#39;)
 
         if (${&quot;TRUE&quot; if exported_file.is_file() else &quot;FALSE&quot;}){
-          exp_meta &lt;- read_delim(${_output:r}, delim = &#39;\t&#39;)
+          exp_meta &lt;- read_delim(${exported_file:r}, delim = &#39;\t&#39;)
           meta &lt;- bind_rows(meta, exp_meta) %&gt;%
-              group_by(region_id) %&gt;%
+              group_by(`#chr`, start, end, region_id, TSS) %&gt;%
               summarise(across(c(original_data, combined_data, combined_data_sumstats, conditions, conditions_top_loci), 
                                ~paste(unique(.), collapse = &quot;,&quot;)),
                         .groups = &#39;drop&#39;)

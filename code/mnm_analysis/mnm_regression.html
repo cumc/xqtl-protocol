@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rss_analysis.html">High-dimensional regression with summary statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
@@ -802,6 +802,9 @@ document.write(`
 <span class="kn">parameter:</span> <span class="n">indel</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="kn">parameter:</span> <span class="n">pip_cutoff</span> <span class="o">=</span> <span class="mf">0.025</span>
 <span class="kn">parameter:</span> <span class="n">coverage</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span>
+<span class="c1"># If this value is greater than 0, an initial single effect analysis will be performed </span>
+<span class="c1"># to determine if follow up analysis will be continued or to simply return NULL</span>
+<span class="kn">parameter:</span> <span class="n">skip_analysis_pip_cutoff</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="c1"># Perform Fine-mapping</span>
 <span class="kn">parameter:</span> <span class="n">fine_mapping</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="c1"># Compute TWAS weights as well</span>
@@ -812,7 +815,9 @@ document.write(`
 <span class="kn">parameter:</span> <span class="n">twas_cv_threads</span> <span class="o">=</span> <span class="n">twas_cv_folds</span>
 <span class="c1"># maximum number of variants to consider for CV</span>
 <span class="c1"># We will randomly pick a subset of it for CV purpose</span>
-<span class="kn">parameter:</span> <span class="n">max_cv_variants</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="c1"># We can set it to eg 5000 to save computational burden althought may risk overfitting for methods comparison purpose</span>
+<span class="c1"># When set to -1 we don&#39;t use this feature</span>
+<span class="kn">parameter:</span> <span class="n">max_cv_variants</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="c1"># Further limit CV to only using common variants</span>
 <span class="kn">parameter:</span> <span class="n">min_cv_maf</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="kn">parameter:</span> <span class="n">ld_reference_meta_file</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
@@ -828,6 +833,13 @@ document.write(`
 <span class="kn">parameter:</span> <span class="kp">mem</span> <span class="o">=</span> <span class="s2">&quot;20G&quot;</span>
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">skip_analysis_pip_cutoff</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">skip_analysis_pip_cutoff</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">skip_analysis_pip_cutoff</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">skip_analysis_pip_cutoff</span> <span class="o">=</span> <span class="n">skip_analysis_pip_cutoff</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">skip_analysis_pip_cutoff</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;``skip_analysis_pip_cutoff`` should have either length 1 or length the same as phenotype files (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">phenoFile</span><span class="p">)</span><span class="si">}</span><span class="s2"> in this case)&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">group_by_region</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">partition</span><span class="p">):</span>
     <span class="c1"># from itertools import accumulate</span>
@@ -1086,19 +1098,9 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[susie_twas_1]
-# If this value is greater than 0, an initial single effect analysis will be performed 
-# to determine if follow up analysis will be continued or to simply return NULL
-parameter: skip_analysis_pip_cutoff = []
 depends: sos_variable(&quot;regional_data&quot;)
 # Check if both &#39;data&#39; and &#39;meta_info&#39; are empty lists
 stop_if(len(regional_data[&#39;data&#39;]) == 0, f&#39;Either genotype or phenotype data are not available for region {&quot;, &quot;.join(region_name)}.&#39;)
-
-if len(skip_analysis_pip_cutoff) == 0:
-    skip_analysis_pip_cutoff = [-1.0] * len(phenoFile)
-if len(skip_analysis_pip_cutoff) == 1:
-    skip_analysis_pip_cutoff = skip_analysis_pip_cutoff * len(phenoFile)
-if len(skip_analysis_pip_cutoff) != len(phenoFile):
-    raise ValueError(f&quot;``skip_analysis_pip_cutoff`` should have either length 1 or length the same as phenotype files ({len(phenoFile)} in this case)&quot;)
 
 meta_info = regional_data[&#39;meta_info&#39;]
 input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
@@ -1138,98 +1140,75 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
     })
   
     if (${&quot;TRUE&quot; if not (fine_mapping or twas_weights) else &quot;FALSE&quot;}) {
-      # only export data
-      saveRDS(list(${_meta_info[2]} = fdat), ${_output:ar}, compress=&#39;xz&#39;)
-      quit(save=&quot;no&quot;)
+        # only export data
+        saveRDS(list(${_meta_info[2]} = fdat), ${_output:ar}, compress=&#39;xz&#39;)
+        quit(save=&quot;no&quot;)
     } else {
-      if (${&quot;TRUE&quot; if save_data else &quot;FALSE&quot;}) {
-          # save data object for debug purpose
-          saveRDS(list(${_meta_info[2]} = fdat), &quot;${_output:ann}.univariate.rds&quot;, compress=&#39;xz&#39;)
-      }
+        if (${&quot;TRUE&quot; if save_data else &quot;FALSE&quot;}) {
+            # save data object for debug purpose
+            saveRDS(list(${_meta_info[2]} = fdat), &quot;${_output:ann}.univariate.rds&quot;, compress=&#39;xz&#39;)
+        }
     }
-    # Univeriate analysis suite
-    library(susieR)
-    run_univariate_pipeline &lt;- function(X, Y, X_scalar, Y_scalar, maf, dropped_samples, pip_cutoff_to_skip = 0) {
-      if (pip_cutoff_to_skip&gt;0) {
-          # return a NULL set if the top loci model does not show any potentially significant variants
-          top_model_pip = susie(X,Y,L=1)$pip
-          if (!any(top_model_pip&gt;pip_cutoff_to_skip)) {
-              message(paste(&quot;Skipping follow-up analysis: No signals above PIP threshold&quot;, pip_cutoff_to_skip, &quot;in initial model screening.&quot;))
-              return(list())
-          } else {
-              message(paste(&quot;Follow-up on region because signals above PIP threshold&quot;, pip_cutoff_to_skip, &quot;were detected in initial model screening.&quot;))
-          }
-      }
-      st = proc.time()
-      if (${&quot;TRUE&quot; if fine_mapping else &quot;FALSE&quot;}) {
-          res = susie_wrapper(X, Y, init_L=${init_L}, max_L=${max_L}, refine=TRUE, coverage = ${coverage[0]})
-          res = susie_post_processor(res, X, Y, X_scalar, Y_scalar, maf,
-                                 secondary_coverage = c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
-                                 other_quantities = list(dropped_samples = dropped_samples))
-      }
-      else {
-          res = list()
-      }
-      if ( ${&quot;TRUE&quot; if twas_weights else &quot;FALSE&quot;} ) {
-        twas_weights_output &lt;- twas_weights_pipeline(X, Y, maf, susie_fit=res$susie_result_trimmed, 
-                                     ld_reference_meta_file = ${(&#39;&quot;%s&quot;&#39; % ld_reference_meta_file) if not ld_reference_meta_file.is_dir() else &quot;NULL&quot;},
-                                     X_scalar = X_scalar, y_scalar = Y_scalar,
-                                     cv_folds = ${twas_cv_folds}, coverage=${coverage[0]}, secondary_coverage=c(${&quot;,&quot;.join([str(x) for x in coverage[1:]])}), signal_cutoff = ${pip_cutoff},
-                                     min_cv_maf=${min_cv_maf}, max_cv_variants=${max_cv_variants}, cv_seed=${seed}, cv_threads=${twas_cv_threads})
-        # clean up the output database
-        res = c(res, twas_weights_output)
-        res$twas_weights = lapply(res$twas_weights, function(x) { rownames(x) &lt;- NULL; return(x) })
-      }
-      res$total_time_elapsed = proc.time() - st
-      if (&quot;${_meta_info[2]}&quot; != &quot;${_meta_info[3]}&quot;) {
-          region_name = c(&quot;${_meta_info[2]}&quot;, c(${&quot;,&quot;.join([(&quot;c(&#39;&quot;+x+&quot;&#39;)&quot;) if isinstance(x, str) else (&quot;c&quot;+ str(x)) for x in _meta_info[3]])}))
-      } else {
-          region_name = &quot;${_meta_info[2]}&quot;
-      }
-      res$region_info = list(region_coord=parse_region(&quot;${_meta_info[0]}&quot;), grange=parse_region(&quot;${_meta_info[1]}&quot;), region_name=region_name)
-      return (res)
+    
+    # setup univariate analysis pipeline options
+    if (&quot;${_meta_info[2]}&quot; != &quot;${_meta_info[3]}&quot;) {
+        region_name = c(&quot;${_meta_info[2]}&quot;, c(${&quot;,&quot;.join([(&quot;c(&#39;&quot;+x+&quot;&#39;)&quot;) if isinstance(x, str) else (&quot;c&quot;+ str(x)) for x in _meta_info[3]])}))
+    } else {
+        region_name = &quot;${_meta_info[2]}&quot;
     }
   
+    region_info = list(region_coord=parse_region(&quot;${_meta_info[0]}&quot;), grange=parse_region(&quot;${_meta_info[1]}&quot;), region_name=region_name)
+    finemapping_opts = list(init_L=${init_L}, max_L=${max_L}, l_step = 5, coverage=${&quot;,&quot;.join([str(x) for x in coverage])}, signal_cutoff=${pip_cutoff})
+    twas_weights_opts = list(cv_folds=${twas_cv_folds}, min_cv_maf=${min_cv_maf}, max_cv_variants=${max_cv_variants}, seed=${seed}, cv_threads=${twas_cv_threads}, 
+                              ld_reference_meta_file=${(&#39;&quot;%s&quot;&#39; % ld_reference_meta_file) if not ld_reference_meta_file.is_dir() else &quot;NULL&quot;})
+    
     fitted = list()
     condition_names = vector()
     empty_elements_cnt = 0
     r = 1
     while (r&lt;=length(fdat$residual_Y)) {
-      dropped_samples = list(X=fdat$dropped_sample$dropped_samples_X[[r]], 
+        dropped_samples = list(X=fdat$dropped_sample$dropped_samples_X[[r]], 
                              y=fdat$dropped_sample$dropped_samples_Y[[r]], 
                              covar=fdat$dropped_sample$dropped_samples_covar[[r]])
-      results &lt;- lapply(1:ncol(fdat$residual_Y[[r]]), function(i) run_univariate_pipeline(fdat$residual_X[[r]], 
+        results &lt;- lapply(1:ncol(fdat$residual_Y[[r]]), function(i) univariate_analysis_pipeline(fdat$residual_X[[r]], 
                                                                                     fdat$residual_Y[[r]][,i,drop=FALSE], 
                                                                                     fdat$residual_X_scalar[[r]], 
                                                                                     if (fdat$residual_Y_scalar[[r]] == 1) 1 else fdat$residual_Y_scalar[[r]][,i,drop=FALSE], 
-                                                                                    fdat$maf[[r]], dropped_samples, 
-                                                                                    pip_cutoff_to_skip = c(${&quot;,&quot;.join([&#39;%s&#39; % x for x in skip_analysis_pip_cutoff])})[r]))
-      # Update condition names
-      new_names = names(fdat$residual_Y)[r]
-      if (ncol(fdat$residual_Y[[r]]) &gt; 1) {
-          new_names = colnames(fdat$residual_Y[[r]])
-          if (is.null(new_names)) {
-              # column names does not exist, create generic names instead
-              new_names = 1:ncol(fdat$residual_Y[[r]])
-          }
-          new_names = paste(names(fdat$residual_Y)[r], new_names, sep=&quot;_&quot;) # DLPFC_iso1 DLPFC_iso2
-      }
-  
-      empty_elements_idx &lt;- which(sapply(results, function(x) is.list(x) &amp;&amp; length(x) == 0))
-      if (length(empty_elements_idx)&gt;0) {
+                                                                                    fdat$maf[[r]], list(dropped_samples = dropped_samples),
+                                                                                    pip_cutoff_to_skip = c(${&quot;,&quot;.join([&#39;%s&#39; % x for x in skip_analysis_pip_cutoff])})[r],
+                                                                                    finemapping = ${&quot;TRUE&quot; if fine_mapping else &quot;FALSE&quot;},
+                                                                                    twas_weights = ${&quot;TRUE&quot; if twas_weights else &quot;FALSE&quot;},
+                                                                                    finemapping_opts = finemapping_opts,
+                                                                                    twas_weights_opts = twas_weights_opts,
+                                                                                    region_info = region_info))
+        # Update condition names
+        new_names = names(fdat$residual_Y)[r]
+        ##FIXME:  residule Y lost their colname when there was only 1 column
+        # new_col_names = colnames(fdat$residual_Y[[r]])
+        new_col_names = list(${&quot;,&quot;.join([(&quot;c(&#39;&quot;+x+&quot;&#39;)&quot;) if isinstance(x, str) else (&quot;c&quot;+ str(x)) for x in _meta_info[3]])})[[r]]
+        if (is.null(new_col_names)) {
+          # column names does not exist, create generic names instead
+          new_col_names = 1:ncol(fdat$residual_Y[[r]])
+        }
+        # if the name is different as region name ie, these original ID the same as gene ID, then give the new name
+        if(!(identical(new_names, new_col_names)))
+        new_names = paste(new_names, new_col_names, sep=&quot;_&quot;) # DLPFC_iso1 DLPFC_iso2
+
+        empty_elements_idx &lt;- which(sapply(results, function(x) is.list(x) &amp;&amp; length(x) == 0))
+        if (length(empty_elements_idx)&gt;0) {
           empty_elements_cnt &lt;- empty_elements_cnt + length(empty_elements_idx)
           results &lt;- results[-empty_elements_idx]
           new_names &lt;- new_names[-empty_elements_idx]
-      }
-      fitted = c(fitted, results)
-      condition_names = c(condition_names, new_names)
-      if (length(new_names)&gt;0) {
+        }
+        fitted = c(fitted, results)
+        condition_names = c(condition_names, new_names)
+        if (length(new_names)&gt;0) {
           message(&quot;Analysis completed for: &quot;, paste(new_names, collapse=&quot;,&quot;))
-      }
-      # original data no longer relevant, set to NA to release memory
-      fdat$residual_X[[r]] &lt;- NA
-      fdat$residual_Y[[r]] &lt;- NA
-      r = r + 1
+        }
+        # original data no longer relevant, set to NA to release memory
+        fdat$residual_X[[r]] &lt;- NA
+        fdat$residual_Y[[r]] &lt;- NA
+        r = r + 1
     }
     names(fitted) &lt;- condition_names
     saveRDS(list(&quot;${_meta_info[2]}&quot; = fitted), ${_output:ar}, compress=&#39;xz&#39;)
@@ -1255,17 +1234,9 @@ parameter: prior_canonical_matrices = True
 parameter: sample_partition = path() 
 parameter: mvsusie_max_iter = 200
 parameter: mrmash_max_iter = 5000
-parameter: ld_reference_meta_file = path()
 depends: sos_variable(&quot;regional_data&quot;)
 # Check if both &#39;data&#39; and &#39;meta_info&#39; are empty lists
 stop_if(len(regional_data[&#39;data&#39;]) == 0, f&#39;Either genotype or phenotype data are not available for region {&quot;, &quot;.join(region_name)}.&#39;)
-
-if len(skip_analysis_pip_cutoff) == 0:
-    skip_analysis_pip_cutoff = [-1.0] * len(phenoFile)
-if len(skip_analysis_pip_cutoff) == 1:
-    skip_analysis_pip_cutoff = skip_analysis_pip_cutoff * len(phenoFile)
-if len(skip_analysis_pip_cutoff) != len(phenoFile):
-    raise ValueError(f&quot;``skip_analysis_pip_cutoff`` should have either length 1 or length the same as phenotype files ({len(phenoFile)} in this case)&quot;)
 
 meta_info = regional_data[&#39;meta_info&#39;]
 input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
@@ -1294,16 +1265,16 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output:n}.stdout&quot;, stderr = f
                     maf=fdat$maf,
                     max_L=${max_L},
                     ld_reference_meta_file = ${ld_reference_meta_file:r}, 
-                    mvsusie_max_iter= ${mvsusie_max_iter}, 
+                    mvsusie_max_iter = ${mvsusie_max_iter}, 
                     mrmash_max_iter = ${mrmash_max_iter},
                     max_cv_variants = ${max_cv_variants}, 
                     pip_cutoff_to_skip = c(${&quot;,&quot;.join([&#39;%s&#39; % x for x in skip_analysis_pip_cutoff])}),
                     signal_cutoff = ${signal_cutoff},
-                    data_driven_prior_matrices=dd_prior, 
-                    data_driven_prior_matrices_cv=dd_prior_cv, 
+                    data_driven_prior_matrices = dd_prior, 
+                    data_driven_prior_matrices_cv = dd_prior_cv, 
                     canonical_prior_matrices = ${&quot;TRUE&quot; if prior_canonical_matrices else &quot;FALSE&quot;} || is.null(dd_prior),
                     sample_partition = ${&quot;NULL&quot; if sample_partition==&#39;.&#39; or sample_partition==&#39;&#39; else sample_partition},  
-                    cv_folds = ${twas_cv_folds}, 
+                    cv_folds = ${twas_cv_folds},
                     cv_seed = ${seed}, 
                     cv_threads = ${twas_cv_threads},
                     prior_weights_min = ${prior_weights_min}, 

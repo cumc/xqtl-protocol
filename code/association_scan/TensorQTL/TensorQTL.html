@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Genome-wide Analysis</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">Fine-mapping with SuSiE RSS model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/polyfun.html">Fine-mapping with PolyFun</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../prototype_drafts/MRAID_QTL.html">Mendelian Randomization using MRAID</a></li>
 </ul>
@@ -507,8 +507,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#old-minimal-working-example">Old Minimal working example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-xqtl-association-testing">cis-xQTL association testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transqtl-association-testing">TransQTL association testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#association-results-processing">Association results processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trans-xqtl-association-testing">Trans-xQTL association testing</a></li>
 </ul>
             </nav>
         </div>
@@ -672,7 +671,7 @@ document.write(`
 <h2>Command Interface<a class="headerlink" href="#command-interface" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run TensorQTL.ipynb -h
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">TensorQTL</span><span class="o">.</span><span class="n">ipynb</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
 </div>
@@ -688,40 +687,44 @@ Workflows:
   trans
 
 Global Workflow Options:
-  --covariate-file VAL (as path, required)
-                        Covariate file
+  --cwd output (as path)
+                        Path to the work directory of the analysis.
+  --phenotype-file VAL (as path, required)
+                        Phenotype file, or a list of phenotype per region.
   --genotype-file VAL (as path, required)
                         A genotype file in PLINK binary format (bed/bam/fam)
-                        format, per chrom
+                        format, or a list of genotype per chrom
+  --covariate-file VAL (as path, required)
+                        Covariate file
+  --name  f&quot;{phenotype_file:bn}_{covariate_file:bn}&quot;
+
+                        Prefix for the analysis output
   --region-list . (as path)
                         An optional subset of regions of molecular features to
-                        analyze. The last column is the  gene names
+                        analyze. The last column is the gene names
+  --region-list-phenotype-column 4 (as int)
+  --keep-sample . (as path)
+                        Set list of sample to be keep
+  --interaction &#39;&#39;
+                        FIXME: please document
   --customized-cis-windows . (as path)
                         An optional list documenting the custom cis window for
                         each region to analyze, with four column, chr, start,
                         end, region ID (eg gene ID). If this list is not
                         provided, the default `window` parameter (see below)
                         will be used.
-  --cwd output (as path)
-                        Path to the work directory of the analysis.
-  --phenotype-file VAL (as path, required)
-                        Phenotype file, a list of phenotype per chrom.
-  --name  f&quot;{phenotype_file:bn}_{covariate_file:bn}&quot;
-
-                        Prefix for the analysis output
-  --MAC 0 (as int)
-                        Minor allele count cutoff
-  --region-name &#39;gene_id&#39;
-                        The name of phenotype corresponding to gene_id or
-                        gene_name in the region
   --phenotype-group . (as path)
                         The phenotype group file to group molecule_trait into
-                        molecule_trait_object This is applicable to when there
-                        are multiple molecular events in the same region, such
-                        as sQTL analysis.
+                        molecule_trait_object This applies to multiple molecular
+                        events in the same region, such as sQTL analysis.
+  --chromosome  (as list)
+                        The name of phenotype corresponding to gene_id or
+                        gene_name in the region
+  --MAC 0 (as int)
+                        Minor allele count cutoff
   --window 1000000 (as int)
                         Specify the cis window for the up and downstream radius
-                        to analyze around the region of interest, in units of bp
+                        to analyze around the region of interest in units of bp
                         This parameter will be set to zero if
                         `customized_cis_windows` is provided.
   --numThreads 8 (as int)
@@ -735,27 +738,32 @@ Global Workflow Options:
                         docker or singularity
   --entrypoint  (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
 
-  --maf-threshold  MAC/(2.0*N)
+  --maf-threshold  MAC/(2.0*N) 
 
                         Minor allele frequency cutoff. It will overwrite minor
-                        allele cutoff.
+                        allele cutoff. You may consider setting it to higher for
+                        interaction analysis if you have statistical power
+                        concerns
 
 Sections
   cis_1:
     Workflow Options:
       --[no-]skip-nominal-if-exist (default to False)
-                        skip nominal association results if the files exists
-                        already This is false by default which means to
-                        recompute everything This is only relevant when the
-                        `parquet` files for nominal results exist but not the
-                        other files and you want to avoid computing the nominal
-                        results again
+                        parse input file lists skip nominal association results
+                        if the files exists already This is false by default
+                        which means to recompute everything This is only
+                        relevant when the `parquet` files for nominal results
+                        exist but not the other files and you want to avoid
+                        computing the nominal results again
+      --[no-]permutation (default to True)
+  cis_2:
   trans_1:
     Workflow Options:
       --batch-size 50000 (as int)
       --pval-threshold 1.0 (as float)
-  cis_2:
-  trans_2:
+      --[no-]permutation (default to False)
+                        Permutation testing is incorrect when the analysis is
+                        done by chrom
 </pre></div>
 </div>
 </div>
@@ -811,37 +819,40 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="k">global</span><span class="p">]</span>
+<span class="c1"># Path to the work directory of the analysis.</span>
+<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
+<span class="c1"># Phenotype file, or a list of phenotype per region.</span>
+<span class="kn">parameter:</span> <span class="n">phenotype_file</span> <span class="o">=</span> <span class="n">path</span>
+<span class="c1"># A genotype file in PLINK binary format (bed/bam/fam) format, or a list of genotype per chrom</span>
+<span class="kn">parameter:</span> <span class="n">genotype_file</span> <span class="o">=</span> <span class="n">path</span>
 <span class="c1"># Covariate file</span>
 <span class="kn">parameter:</span> <span class="n">covariate_file</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># A genotype file in PLINK binary format (bed/bam/fam) format, per chrom</span>
-<span class="kn">parameter:</span> <span class="n">genotype_file</span> <span class="o">=</span> <span class="n">path</span>
-<span class="c1"># An optional subset of regions of molecular features to analyze. The last column is the  gene names</span>
+<span class="c1"># Prefix for the analysis output</span>
+<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">phenotype_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">covariate_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c1"># An optional subset of regions of molecular features to analyze. The last column is the gene names</span>
 <span class="kn">parameter:</span> <span class="n">region_list</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="kn">parameter:</span> <span class="n">region_list_phenotype_column</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="c1"># Set list of sample to be keep</span>
+<span class="kn">parameter:</span> <span class="n">keep_sample</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
+<span class="c1"># FIXME: please document</span>
+<span class="kn">parameter:</span> <span class="n">interaction</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
 <span class="c1"># An optional list documenting the custom cis window for each region to analyze, with four column, chr, start, end, region ID (eg gene ID).</span>
 <span class="c1"># If this list is not provided, the default `window` parameter (see below) will be used.</span>
 <span class="kn">parameter:</span> <span class="n">customized_cis_windows</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
-<span class="c1"># Path to the work directory of the analysis.</span>
-<span class="kn">parameter:</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">path</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
-<span class="c1"># Phenotype file, a list of phenotype per region.</span>
-<span class="kn">parameter:</span> <span class="n">phenotype_file</span> <span class="o">=</span> <span class="n">path</span>
 
-<span class="c1"># Prefix for the analysis output</span>
-<span class="kn">parameter:</span> <span class="kp">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">phenotype_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">covariate_file</span><span class="si">:</span><span class="s2">bn</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="c1"># Minor allele count cutoff</span>
-<span class="kn">parameter:</span> <span class="n">MAC</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="c1"># The name of phenotype corresponding to gene_id or gene_name in the region</span>
-<span class="kn">parameter:</span> <span class="n">region_name</span> <span class="o">=</span> <span class="s2">&quot;gene_id&quot;</span>
 <span class="c1"># The phenotype group file to group molecule_trait into molecule_trait_object</span>
 <span class="c1"># This applies to multiple molecular events in the same region, such as sQTL analysis.</span>
 <span class="kn">parameter:</span> <span class="n">phenotype_group</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span> 
-<span class="kn">parameter:</span> <span class="n">region_list_phenotype_column</span> <span class="o">=</span> <span class="mi">4</span>
 
+<span class="c1"># The name of phenotype corresponding to gene_id or gene_name in the region</span>
+<span class="kn">parameter:</span> <span class="n">chromosome</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Minor allele count cutoff</span>
+<span class="kn">parameter:</span> <span class="n">MAC</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="c1"># Specify the cis window for the up and downstream radius to analyze around the region of interest in units of bp</span>
-<span class="c1"># This parameter will be zero if `customized_cis_windows` is provided.</span>
+<span class="c1"># This parameter will be set to zero if `customized_cis_windows` is provided.</span>
 <span class="kn">parameter:</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">1000000</span>
-<span class="c1"># Set number of sample to be keep</span>
-<span class="kn">parameter:</span> <span class="n">keep_sample</span> <span class="o">=</span> <span class="n">path</span><span class="p">()</span>
 
 <span class="c1"># Number of threads</span>
 <span class="kn">parameter:</span> <span class="n">numThreads</span> <span class="o">=</span> <span class="mi">8</span>
@@ -859,7 +870,74 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">covariate_file</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">nrows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
 <span class="c1"># Minor allele frequency cutoff. It will overwrite minor allele cutoff.</span>
-<span class="kn">parameter:</span> <span class="n">maf_threshold</span> <span class="o">=</span> <span class="n">MAC</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">N</span><span class="p">)</span>
+<span class="c1"># You may consider setting it to higher for interaction analysis if you have statistical power concerns</span>
+<span class="kn">parameter:</span> <span class="n">maf_threshold</span> <span class="o">=</span> <span class="n">MAC</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">N</span><span class="p">)</span> 
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">adapt_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">reference_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adapt a single file path based on its existence and a reference file&#39;s path.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">    - file_path (str): The file path to adapt.</span>
+<span class="sd">    - reference_file (str): File path to use as a reference for adaptation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - str: Adapted file path.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">    - FileNotFoundError: If no valid file path is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reference_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">reference_file</span><span class="p">)</span>
+
+    <span class="c1"># Check if the file exists</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">file_path</span>
+
+    <span class="c1"># Check file name without path</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">file_name</span>
+
+    <span class="c1"># Check file name in reference file&#39;s directory</span>
+    <span class="n">file_in_ref_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reference_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_in_ref_dir</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">file_in_ref_dir</span>
+
+    <span class="c1"># Check original file path prefixed with reference file&#39;s directory</span>
+    <span class="n">file_prefixed</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reference_path</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_prefixed</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">file_prefixed</span>
+
+    <span class="c1"># If all checks fail, raise an error</span>
+    <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No valid path found for file: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">adapt_file_path_all</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">reference_file</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">adapt_file_path</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">reference_file</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">genotype_file</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;bed&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">phenotype_file</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;bed.gz&quot;</span><span class="p">):</span>
+    <span class="n">input_files</span> <span class="o">=</span> <span class="p">[[</span><span class="n">phenotype_file</span><span class="p">,</span> <span class="n">genotype_file</span><span class="p">]]</span>
+    <span class="n">input_chroms</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="kn">else:</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="n">molecular_pheno_files</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">phenotype_file</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;#chr&quot;</span> <span class="ow">in</span> <span class="n">molecular_pheno_files</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">molecular_pheno_files</span> <span class="o">=</span> <span class="n">molecular_pheno_files</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;#chr&#39;</span><span class="p">,</span> <span class="s1">&#39;#dir&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="kp">name</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;#chr&quot;</span><span class="p">:</span><span class="s2">&quot;#id&quot;</span><span class="p">})</span>
+    <span class="n">genotype_files</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genotype_file</span><span class="p">,</span><span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">genotype_files</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">genotype_files</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)]</span> <span class="c1"># e.g. remove chr1 to 1</span>
+    <span class="n">genotype_files</span><span class="p">[</span><span class="s2">&quot;#path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">genotype_files</span><span class="p">[</span><span class="s2">&quot;#path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">adapt_file_path</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">genotype_file</span><span class="p">))</span>
+    <span class="n">molecular_pheno_files</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;chr&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">molecular_pheno_files</span><span class="p">[</span><span class="s2">&quot;#id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)]</span>
+    <span class="n">input_files</span> <span class="o">=</span> <span class="n">molecular_pheno_files</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">genotype_files</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s2">&quot;#id&quot;</span><span class="p">)</span>
+    <span class="c1"># Only keep chromosome specified in --chromosome</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chromosome</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">input_files</span> <span class="o">=</span> <span class="n">input_files</span><span class="p">[</span><span class="n">input_files</span><span class="p">[</span><span class="s1">&#39;#id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">chromosome</span><span class="p">)]</span>
+    <span class="n">input_files</span> <span class="o">=</span> <span class="n">input_files</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">input_chroms</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_files</span><span class="p">]</span>
+    <span class="n">input_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">input_files</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -871,43 +949,42 @@ The singularity image (sif) for running this MWE is uploaded to <a class="refere
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[cis_1]
 # parse input file lists
-import pandas as pd
-molecular_pheno_files = pd.read_csv(phenotype_file, sep = &quot;\t&quot;)
-if &quot;#chr&quot; in molecular_pheno_files.columns:
-    molecular_pheno_files = molecular_pheno_files.groupby([&#39;#chr&#39;, &#39;#dir&#39;]).size().reset_index(name=&#39;count&#39;).drop(&quot;count&quot;,axis = 1).rename(columns = {&quot;#chr&quot;:&quot;#id&quot;})
-genotype_files = pd.read_csv(genotype_file,sep = &quot;\t&quot;)
-genotype_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in genotype_files[&quot;#id&quot;].astype(str)]
-molecular_pheno_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in molecular_pheno_files[&quot;#id&quot;].astype(str)]
-
-input_files = molecular_pheno_files.merge(genotype_files, on = &quot;#id&quot;)
-input_files = input_files.values.tolist()
-input_chroms = [x[0] for x in input_files]
-input_files = [x[1:] for x in input_files]
-
 # skip nominal association results if the files exists already
 # This is false by default which means to recompute everything
 # This is only relevant when the `parquet` files for nominal results exist but not the other files
 # and you want to avoid computing the nominal results again
 parameter: skip_nominal_if_exist = False
-input: input_files, group_by = len(input_files[0]), group_with = &quot;input_chroms&quot; 
-output: parquet = f&#39;{cwd:a}/{_input[0]:bnn}.cis_qtl_pairs.{_input_chroms}.parquet&#39;, # This convention is necessary to match the pattern of map_norminal output
-        regional = f&#39;{cwd:a}/{_input[0]:bnn}.cis_qtl_regional.gz&#39;,
-        nominal = f&#39;{cwd:a}/{_input[0]:bnn}.cis_qtl_nominal.gz&#39;
+parameter: permutation = True
 
+# Extract interaction name
+var_interaction = interaction
+if os.path.isfile(interaction):
+    interaction_s = pd.read_csv(interaction, sep=&#39;\t&#39;, index_col=0)
+    var_interaction = interaction_s.columns[0] # interaction name
+test_regional_association = permutation and len(var_interaction) == 0
 
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
-python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39; , container = container, entrypoint = entrypoint
+input: input_files, group_by = len(input_files[0]), group_with = &quot;input_chroms&quot;
+output_files = dict([(&quot;parquet&quot;, f&#39;{cwd:a}/{_input[0]:bnn}{&quot;&quot; if input_chroms[_index] == 0 else &quot;_chr%s&quot; % input_chroms[_index]}{&quot;_%s&quot; % var_interaction if interaction else &quot;&quot;}.cis_qtl.pairs.parquet&#39;), # This convention is necessary to match the pattern of map_norminal output
+                     (&quot;nominal&quot;, f&#39;{cwd:a}/{_input[0]:bnn}{&quot;&quot; if input_chroms[_index] == 0 else &quot;_chr%s&quot; % input_chroms[_index]}{&quot;_%s&quot; % var_interaction if interaction else &quot;&quot;}.cis_qtl.pairs.tsv.gz&#39;)])
+if test_regional_association:
+    output_files[&quot;regional&quot;] = f&#39;{cwd:a}/{_input[0]:bnn}{&quot;&quot; if input_chroms[_index] == 0 else &quot;_chr%s&quot; % input_chroms[_index]}{&quot;_%s&quot; % var_interaction if interaction else &quot;&quot;}.cis_qtl.regional.tsv.gz&#39;
+output: output_files
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[&quot;nominal&quot;]:bnnn}&#39;
+python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[&quot;nominal&quot;]:nnn}.stderr&#39;, stdout = f&#39;{_output[&quot;nominal&quot;]:nnn}.stdout&#39; , container = container, entrypoint = entrypoint
     import pandas as pd
     import numpy as np
+    import os
     import tensorqtl
-    from tensorqtl import genotypeio, cis, trans
+    from tensorqtl import genotypeio, cis
     from scipy.stats import chi2
+    from qvalue import qvalue  
         
     ## Define paths
     plink_prefix_path = $[_input[1]:nar]
     expression_bed = $[_input[0]:ar]
     covariates_file = &quot;$[covariate_file:a]&quot;
     window = $[window]
+    interaction = &quot;$[interaction]&quot;
     ## Load Data
     phenotype_df, phenotype_pos_df = tensorqtl.read_phenotype_bed(expression_bed)
     phenotype_id = phenotype_pos_df.index.name
@@ -929,11 +1006,36 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
         sample_list = pd.read_csv(&quot;$[keep_sample:a]&quot;, comment=&quot;#&quot;, header=None, names=[&quot;sample_id&quot;], sep=&quot;\t&quot;)
         covariates_df.loc[sample_list.sample_id]
 
+    # Read interaction files or extract from covariates file.
+    var_interaction = interaction
+    interaction_s = []
+    if os.path.isfile(interaction):
+        # update var_interaction and interaction_s
+        interaction_s = pd.read_csv(interaction, sep=&#39;\t&#39;, index_col=0)
+        interaction_s = interaction_s[interaction_s.index.isin(covariates_df.index)] 
+        var_interaction = interaction_s.columns[0] # interaction name
+    # check if the interaction term in interaction table is in covariates file, if yes and interaction_s not yet loaded then, extract it out from covariates file
+    if var_interaction in covariates_df.columns:
+        # only load from covariate if it has not been loaded yet
+        if len(interaction_s) == 0:
+            interaction_s = covariates_df[var_interaction]
+        covariates_df = covariates_df.drop(columns=[var_interaction])
+    if len(interaction) and len(interaction_s) == 0:
+        raise ValueError(f&quot;Cannot find interaction variable or file {interaction}&quot;)
+
+    # drop samples that with missing value in iteraction
+    interaction_s = interaction_s.dropna() 
+
     ## Retaining only common samples
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, covariates_df.index)]
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, genotype_df.columns)]
+    if len(interaction_s):
+        phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, interaction_s.index)]
+        interaction_s = interaction_s[interaction_s.index.isin(phenotype_df.columns)]    
+        interaction_s = interaction_s.loc[phenotype_df.columns]
+
     covariates_df = covariates_df.transpose()[np.intersect1d(phenotype_df.columns, covariates_df.index)].transpose()
-    
+      
     ## To simplify things, there should really not be &quot;chr&quot; prefix
     phenotype_pos_df.chr = phenotype_pos_df.chr.astype(str).str.replace(&quot;chr&quot;, &quot;&quot;)
     variant_df.chrom =  variant_df.chrom.astype(&quot;str&quot;).str.replace(&quot;chr&quot;, &quot;&quot;) 
@@ -956,99 +1058,172 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
         group_s = None
 
     ## cis-QTL mapping: nominal associations for all variant-phenotype pairs
-    if not ($[skip_nominal_if_exist] and $[_output[0].is_file()]):
-        cis.map_nominal(genotype_df, variant_df,
+    if not ($[skip_nominal_if_exist] and $[_output[&quot;parquet&quot;].is_file()]):
+        if len(interaction_s):
+            cis.map_nominal(genotype_df, variant_df, 
+                    phenotype_df, 
+                    phenotype_pos_df, 
+                    $[_output[&quot;parquet&quot;]:nnnr],
+                    covariates_df=covariates_df,
+                    interaction_df=interaction_s, 
+                    maf_threshold_interaction=$[maf_threshold],
+                    window=window,
+                    group_s=group_s,
+                    run_eigenmt=True, write_top=True, write_stats=True)
+        else:
+            cis.map_nominal(genotype_df, variant_df,
                 phenotype_df,
                 phenotype_pos_df,
-                &quot;$[_output[0]:nnn]&quot;, 
+                $[_output[&quot;parquet&quot;]:nnnr],
                 covariates_df=covariates_df, 
                 window=window, 
                 maf_threshold = $[maf_threshold],
                 group_s=group_s)
 
     ## Load the parquet and save it as txt
-    pairs_df = pd.read_parquet(&quot;$[_output[0]]&quot;)
+    pairs_df = pd.read_parquet($[_output[&quot;parquet&quot;]:r])
+    # print general information of parquet
+    print(&#39;Output Information:&#39;)
+    print(&quot;This is the file containing the immediate output of TensorQTL&#39;s map_nominal function &quot;)
+    print(os.path.getsize($[_output[&quot;parquet&quot;]:r]))
+
     ## Adds the group columns to pairs_df, if there is group_s use group_s, else use phenotype_id
     if group_s is not None:
         pairs_df = pairs_df.merge(pd.DataFrame( {&quot;molecular_trait_object_id&quot;: group_s}),left_on = &quot;phenotype_id&quot;, right_index = True)
     else:
         pairs_df[&quot;molecular_trait_object_id&quot;] = pairs_df.phenotype_id
 
-    # genomic inflation factor lambda
-    lambda_col = pairs_df.groupby(&quot;molecular_trait_object_id&quot;).apply( lambda x:  chi2.ppf(1. - np.median(x.pval_nominal), 1)/chi2.ppf(0.5,1))
+    # rename columns
     pairs_df.columns.values[0]  = &quot;molecular_trait_id&quot;
     pairs_df.columns.values[7]  = &quot;pvalue&quot;
     pairs_df.columns.values[8]  = &quot;beta&quot;
     pairs_df.columns.values[9]  = &quot;se&quot;
-    # pairs_df = pairs_df.assign(maf = lambda dataframe: dataframe[&#39;af&#39;].map(lambda af:af if af &lt; 0.5 else 1-af) )#.drop(&quot;af&quot;,axis =  1)
-    pairs_df[&quot;n&quot;] = len(phenotype_df.columns.values)
-    pairs_df = pairs_df.merge(variant_df,left_on = &quot;variant_id&quot;, right_index=True)
-
-    pairs_df.to_csv(&quot;$[_output[2]]&quot;, sep=&#39;\t&#39;,index = None, compression=&#39;gzip&#39;)
-    cis_df = cis.map_cis(genotype_df, 
-                        variant_df, 
-                        phenotype_df,
-                        phenotype_pos_df,
-                        covariates_df=covariates_df, 
-                        seed=999, 
-                        window=window, 
-                        maf_threshold = $[maf_threshold],
-                        group_s=group_s)
+    pairs_df.rename(columns={&#39;TSS_D&#39;: &#39;tss_distance&#39;}, inplace=True)
+    # calculate qvalue for main variant effect
+    qvalue_g = pairs_df.groupby(&#39;molecular_trait_object_id&#39;).apply(lambda x: qvalue.estimate(x.pvalue)).values.tolist()
+    pairs_df[&#39;qvalue_main&#39;] = [x for n in qvalue_g for x in n]
+    if len(interaction_s):
+        # calculate genomic inflation factor lambda on interaction 
+        # lambda_col_interaction = pairs_df.groupby(&quot;molecular_trait_object_id&quot;).apply(lambda x: chi2.ppf(1. - np.median(x.pval_gi), 1)/chi2.ppf(0.5,1))
+        # calculate qvalue for interaction effect
+        qvalue_gi = pairs_df.groupby(&#39;molecular_trait_object_id&#39;).apply(lambda x: qvalue.estimate(x.pval_gi)).values.tolist()
+        pairs_df[&#39;qvalue_interaction&#39;] = [x for n in qvalue_gi for x in n]
+        pairs_df.columns.values[10]  = &quot;pvalue&quot; + &#39;_&#39; + var_interaction
+        pairs_df.columns.values[11]  = &quot;beta&quot; + &#39;_&#39; + var_interaction
+        pairs_df.columns.values[12]  = &quot;se&quot; + &#39;_&#39; + var_interaction
+        pairs_df.columns.values[13]  = &quot;pvalue&quot; + &#39;_&#39; + var_interaction + &#39;_&#39; + &#39;interaction&#39;
+        pairs_df.columns.values[14]  = &quot;beta&quot; + &#39;_&#39; + var_interaction + &#39;_&#39; + &#39;interaction&#39;
+        pairs_df.columns.values[15]  = &quot;se&quot; + &#39;_&#39; + var_interaction + &#39;_&#39; + &#39;interaction&#39; 
     
-    cis_df.index.name = &quot;molecular_trait_id&quot;
-    ## Add groups columns for eQTL analysis
-    if &quot;group_id&quot; not in cis_df.columns:
-        cis_df[&quot;group_id&quot;] = cis_df.index
-        cis_df[&quot;group_size&quot;] = 1
-    cis_df = cis_df.rename({&quot;group_id&quot;:&quot;molecular_trait_object_id&quot;,&quot;group_size&quot;:&quot;n_traits&quot;,&quot;num_var&quot; : &quot;n_variants&quot;,&quot;variant_id&quot;:&quot;variant&quot;,&quot;pval_perm&quot;:&quot;p_perm&quot;, &quot;pval_beta&quot;:&quot;p_beta&quot; },axis = 1)
-    cis_df = cis_df.assign(genomic_inflation = lambda dataframe : dataframe[&quot;molecular_trait_object_id&quot;].map(lambda molecular_trait_object_id:lambda_col[molecular_trait_object_id]))
-    cis_df.to_csv(&quot;$[_output[1]]&quot;, sep=&#39;\t&#39;, compression=&#39;gzip&#39;)
+    pairs_df[&quot;n&quot;] = len(phenotype_df.columns.values)
+    pairs_df = variant_df.merge(pairs_df, right_on=&#39;variant_id&#39;, left_index=True)
+    pairs_df.rename(columns={&#39;a1&#39;: &#39;a2&#39;, &#39;a0&#39;: &#39;a1&#39;}, inplace=True)
+    # sort the table if chrom and pos is not in ascending order
+    if not all(pairs_df[&#39;pos&#39;].iloc[i] &lt;= pairs_df[&#39;pos&#39;].iloc[i+1] for i in range(len(pairs_df)-1)):
+        pairs_df = pairs_df.sort_values(by=[&#39;chrom&#39;, &#39;pos&#39;])
+    # save file
+    pairs_df.to_csv($[_output[&quot;nominal&quot;]:nr], sep=&#39;\t&#39;, index = None)
+    # print general information of pairs_df
+    print(&#39;Output Information:&#39;)
+    print(&quot;Output Rows:&quot;, len(pairs_df))
+    print(&quot;Output Columns:&quot;, pairs_df.columns.tolist())
+    print(&quot;Output Preview:&quot;, pairs_df.iloc[1:5, 1:10])
 
-bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
-        for i in $[_output[0]] ; do 
-        echo &quot;output_info: $i &quot;
-        echo &quot;This is the file containing the immediate output of TensorQTL&#39;s map_nominal function &quot;
-        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;` 
-        done
-        for i in $[_output[1]] ; do 
-        echo &quot;output_info: $i &quot; 
-        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;` 
-        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;` 
-        echo &quot;output_headerow:&quot; `zcat $i | grep &quot;##&quot; | wc -l ` 
-        echo &quot;output_column:&quot; `zcat $i | grep -V &quot;##&quot; | head -1 | wc -w `
-        echo &quot;output_preview:&quot;
-        zcat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10  ; done
-        for i in $[_output[2]] ; do 
-        echo &quot;output_info: $i &quot;
-        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;` 
-        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;` 
-        echo &quot;output_headerow:&quot; `zcat $i | grep &quot;##&quot; | wc -l `
-        echo &quot;output_column:&quot; `zcat $i | grep -V &quot;##&quot; | head -1 | wc -w `
-        echo &quot;output_preview:&quot; 
-        zcat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10 ; done
+    if $[test_regional_association]:
+        # calculate genomic inflation factor lambda for main variant effect 
+        lambda_col = pairs_df.groupby(&quot;molecular_trait_object_id&quot;).apply(lambda x: chi2.ppf(1. - np.median(x.pvalue), 1)/chi2.ppf(0.5,1))
+        cis_df = cis.map_cis(genotype_df, 
+                            variant_df, 
+                            phenotype_df,
+                            phenotype_pos_df,
+                            covariates_df=covariates_df, 
+                            seed=999, 
+                            window=window, 
+                            maf_threshold = $[maf_threshold],
+                            group_s=group_s)
+        cis_df.index.name = &quot;molecular_trait_id&quot;
+        ## Add groups columns for eQTL analysis
+        if &quot;group_id&quot; not in cis_df.columns:
+            cis_df[&quot;group_id&quot;] = cis_df.index
+            cis_df[&quot;group_size&quot;] = 1
+        cis_df = cis_df.rename({&quot;group_id&quot;:&quot;molecular_trait_object_id&quot;,&quot;group_size&quot;:&quot;n_traits&quot;,&quot;num_var&quot; : &quot;n_variants&quot;,&quot;variant_id&quot;:&quot;variant&quot;,&quot;pval_perm&quot;:&quot;p_perm&quot;, &quot;pval_beta&quot;:&quot;p_beta&quot; },axis = 1)
+        cis_df = cis_df.assign(genomic_inflation = lambda dataframe : dataframe[&quot;molecular_trait_object_id&quot;].map(lambda molecular_trait_object_id:lambda_col[molecular_trait_object_id]))
+        # merge cis_df with variant_df
+        cis_df = variant_df.merge(cis_df, right_on=&#39;variant_id&#39;, left_index=True)
+        cis_df.rename(columns={&#39;a1&#39;: &#39;a2&#39;, &#39;a0&#39;: &#39;a1&#39;}, inplace=True)
+        # sort the table if chrom and pos is not in ascending order
+        if not all(cis_df[&#39;pos&#39;].iloc[i] &lt;= cis_df[&#39;pos&#39;].iloc[i+1] for i in range(len(cis_df)-1)):
+            cis_df = cis_df.sort_values(by=[&#39;chrom&#39;, &#39;pos&#39;])
+        # print general information of cis_df
+        print(&#39;Output Information:&#39;)
+        print(&quot;Output Rows:&quot;, len(cis_df))
+        print(&quot;Output Columns:&quot;, cis_df.columns.tolist())
+        print(&quot;Output Preview:&quot;, cis_df.iloc[0:5, 0:10])
+
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[&quot;nominal&quot;]:nnn}.stderr&#39;, stdout = f&#39;{_output[&quot;nominal&quot;]:nnn}.stdout&#39;, container = container, entrypoint = entrypoint
+        bgzip --compress-level 9 $[_output[&quot;nominal&quot;]:n] 
+        tabix -p bed -s 1 -b 2 -e 2 $[_output[&quot;nominal&quot;]]
+
+done_if(test_regional_association)
+
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[&quot;nominal&quot;]:nnn}.stderr&#39;, stdout = f&#39;{_output[&quot;nominal&quot;]:nnn}.stdout&#39;, container = container, entrypoint = entrypoint
+        bgzip --compress-level 9 $[_output[&quot;nominal&quot;]:nnnr].regional.tsv
+        tabix -p bed -s 1 -b 2 -e 2 $[_output[&quot;nominal&quot;]:nnnr].regional.tsv.gz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[cis_2]
+done_if([&quot;regional&quot; not in _input.labels])
+input: group_by = &quot;all&quot;
+output: f&#39;{cwd}/{genotype_file}.cis_qtl_regional.fdr.gz&#39;,
+        f&#39;{cwd}/{genotype_file}.cis_qtl_regional.summary.txt&#39;
+input_files = [str(x).replace(&quot;pairs.parquet&quot;, &quot;regional.tsv.gz&quot;) for x in _input[&quot;parquet&quot;]]
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;,container = container, entrypoint = entrypoint
+    import pandas as pd
+    from statsmodels.stats.multitest import multipletests
+    from qvalue import qvalue
+    # Read and concatenate the data from multiple files into a single DataFrame
+    emprical_pd = pd.concat([pd.read_csv(file_path, sep=&#39;\t&#39;) for file_path in [$[paths(input_files):,r]]], ignore_index=True)
+    # Calculate q-values for p_beta and p_perm columns
+    emprical_pd[&#39;q_beta&#39;] = qvalue.estimate(emprical_pd[&#39;p_beta&#39;])
+    #emprical_pd[&#39;q_beta&#39;] = qvalue.estimate(emprical_pd[&#39;p_beta&#39;], pi0=1)
+    emprical_pd[&#39;q_perm&#39;] = qvalue.estimate(emprical_pd[&#39;p_perm&#39;])
+    #emprical_pd[&#39;q_perm&#39;] = qvalue.estimate(emprical_pd[&#39;p_perm&#39;], pi0=1)
+    # calculate FDR for p_beta and p_perm columns
+    emprical_pd[&#39;fdr_beta&#39;] = multipletests(emprical_pd[&#39;p_beta&#39;], method=&#39;fdr_bh&#39;)[1]
+    emprical_pd[&#39;fdr_perm&#39;] = multipletests(emprical_pd[&#39;p_perm&#39;], method=&#39;fdr_bh&#39;)[1]
+    # Calculate summary statistics
+    summary = pd.DataFrame({
+        &#39;fdr_perm_0.05&#39;: [sum(emprical_pd[&#39;fdr_perm&#39;] &lt; 0.05)],
+        &#39;fdr_beta_0.05&#39;: [sum(emprical_pd[&#39;fdr_beta&#39;] &lt; 0.05)],
+        &#39;q_perm_0.05&#39;: [sum(emprical_pd[&#39;q_perm&#39;] &lt; 0.05)],
+        &#39;q_beta_0.05&#39;: [sum(emprical_pd[&#39;q_beta&#39;] &lt; 0.05)],
+        &#39;q_perm_0.01&#39;: [sum(emprical_pd[&#39;q_perm&#39;] &lt; 0.01)],
+        &#39;q_beta_0.01&#39;: [sum(emprical_pd[&#39;q_beta&#39;] &lt; 0.01)]
+    })
+
+    # Write DataFrames to output files
+    emprical_pd.to_csv(&#39;$[_output[0]]&#39;, sep=&#39;\t&#39;, index=False, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
+    summary.to_csv(&#39;$[_output[1]]&#39;, sep=&#39;\t&#39;, index=False)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="transqtl-association-testing">
-<h2>TransQTL association testing<a class="headerlink" href="#transqtl-association-testing" title="Permalink to this heading">#</a></h2>
-<p>For transQTL analysis, it is suggested to provide the largest memory and CPU threads available on a compute node. eg 250G and &gt;32 threads.</p>
+<section id="trans-xqtl-association-testing">
+<h2>Trans-xQTL association testing<a class="headerlink" href="#trans-xqtl-association-testing" title="Permalink to this heading">#</a></h2>
+<p>For transQTL analysis, if you output all the p-values for many genes (default setting) it is suggested to provide the largest memory and CPU threads available on a compute node. eg 250G and &gt;32 threads.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[trans_1]
-
-# parse input file lists
-import pandas as pd
-genotype_files = pd.read_csv(genotype_file,sep = &quot;\t&quot;)
-genotype_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in genotype_files[&quot;#id&quot;].astype(str)]
-genotype_files = genotype_files.assign(phenotype_path=phenotype_file).values.tolist()
-input_chroms = [x[0] for x in genotype_files]
-input_files = [x[1:] for x in genotype_files]
 input: input_files, group_by = len(input_files[0]), group_with = &quot;input_chroms&quot;
-output: nominal = f&#39;{cwd:a}/{_input[1]:bnn}_{input_chroms[_index]}_trans_qtl_nominal.gz&#39;
+output: nominal = f&#39;{cwd:a}/{_input[0]:bnn}{&quot;&quot; if input_chroms[_index] == 0 else &quot;_%s&quot; % input_chroms[_index]}.trans_qtl.pairs.tsv.gz&#39;
 
-parameter: batch_size = 50000
+parameter: batch_size = 10000
 parameter: pval_threshold = 1.0
 # Permutation testing is incorrect when the analysis is done by chrom
 parameter: permutation = False
@@ -1058,16 +1233,17 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     import pandas as pd
     import numpy as np
     import tensorqtl
-    from tensorqtl import genotypeio, cis, trans
+    from tensorqtl import genotypeio, trans
+    from scipy.stats import chi2
+
     ## Define paths
-    plink_prefix_path = $[_input[0]:nar]
-    expression_bed = $[phenotype_file:ar]
+    plink_prefix_path = $[_input[1]:nar]
+    expression_bed = $[_input[0]:ar]
     covariates_file = &quot;$[covariate_file:a]&quot;
     window = $[window]
     ## Loading Data
     phenotype_df, phenotype_pos_df = tensorqtl.read_phenotype_bed(expression_bed)
     phenotype_id = phenotype_pos_df.index.name
-
 
     ## Analyze only the regions listed
     if $[region_list.is_file()]:
@@ -1086,6 +1262,9 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
             raise ValueError(&quot;cannot uniquely match all the phentoype data in the input to the customized cis windows provided&quot;)
         phenotype_pos_df = phenotype_pos_df.set_index(phenotype_id)[[&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;]] # The final phenotype_pos_df will have three columns(chr, start, end) and index is the phenotype ID
         window = 0 # In the updated tensorQTL, by default if there is a customized cis window, the actual cis window will be start - window &amp; end + window, so it is necessary to change the window parameter to 0
+        ## Retaining only traits in cis_list
+        if phenotype_pos_df_reset[~phenotype_pos_df_reset[phenotype_id].isin(cis_list[phenotype_id])].shape[0] != 0:
+            phenotype_df = phenotype_df.loc[phenotype_df.index.isin(cis_list[phenotype_id])]
 
     covariates_df = pd.read_csv(covariates_file, sep=&#39;\t&#39;, index_col=0).T
     ## use custom sample list to subset the covariates data
@@ -1096,16 +1275,10 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     genotype_df = pr.load_genotypes()
     variant_df = pr.bim.set_index(&#39;snp&#39;)[[&#39;chrom&#39;, &#39;pos&#39;,&#39;a0&#39;,&#39;a1&#39;]]
 
-    ## Retaining only traits in cis_list
-    if phenotype_pos_df_reset[~phenotype_pos_df_reset[phenotype_id].isin(cis_list[phenotype_id])].shape[0] != 0:
-        phenotype_df = phenotype_df.loc[phenotype_df.index.isin(cis_list[phenotype_id])]
-
     ## Retaining only common samples
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, covariates_df.index)]
     phenotype_df = phenotype_df[np.intersect1d(phenotype_df.columns, genotype_df.columns)]
     covariates_df = covariates_df.transpose()[np.intersect1d(phenotype_df.columns, covariates_df.index)].transpose()
-
-
 
     ## To simplify things, there should really not be &quot;chr&quot; prefix
     phenotype_pos_df.chr = [x.replace(&quot;chr&quot;,&quot;&quot;) for x in phenotype_pos_df.chr]
@@ -1117,7 +1290,7 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
                             covariates_df, 
                             batch_size=$[batch_size],
                             return_sparse=True, 
-                            return_r2 = True, 
+                            return_r2 = True,
                             pval_threshold=$[pval_threshold], 
                             maf_threshold=$[maf_threshold])
 
@@ -1125,149 +1298,47 @@ python: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdou
     trans_df = trans.filter_cis(trans_df, phenotype_pos_df, variant_df, window=window)   
 
     ## Permutation
-
     if $[&#39;True&#39; if permutation else &#39;False&#39;]:
         perm_df = trans.map_permutations(genotype_df, covariates_df, batch_size=$[batch_size],
                              maf_threshold=$[maf_threshold])
-        perm_output = trans.apply_permutations(perm_df,trans_df)
-        perm_output.to_csv(&quot;$[_output:nn].transqtl_permutation.gz&quot;, sep=&#39;\t&#39;,index = None, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
+        trans.apply_permutations(perm_df,trans_df)
 
     ## Output
     trans_df.columns.values[1]  = &quot;molecular_trait_id&quot;
     trans_df.columns.values[2]  = &quot;pvalue&quot;
     trans_df.columns.values[3]  = &quot;beta&quot;
     trans_df.columns.values[4]  = &quot;se&quot;
-    trans_df = trans_df.merge(variant_df,left_on = &quot;variant_id&quot;, right_index=True)
-    trans_df.to_csv(&quot;$[_output]&quot;, sep=&#39;\t&#39;,index = None, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
+    trans_df[&quot;n&quot;] = len(phenotype_df.columns.values)
+    trans_df = variant_df.merge(trans_df, right_on=&#39;variant_id&#39;, left_index=True)
+    trans_df.rename(columns={&#39;a1&#39;: &#39;a2&#39;, &#39;a0&#39;: &#39;a1&#39;}, inplace=True)
+    # genomic inflation factor
+    lambda_col = trans_df.groupby(&quot;molecular_trait_id&quot;).apply(lambda x: chi2.ppf(1. - np.median(x.pvalue), 1)/chi2.ppf(0.5,1))
+    # Convert the Series to a DataFrame
+    lambda_col = lambda_col.reset_index()
+    lambda_col.columns = [&#39;molecular_trait_id&#39;, &#39;genomic_inflation_lambda&#39;]
+    lambda_col.to_csv(&quot;$[_output:nnn].genomic_inflation.tsv.gz&quot;, sep=&#39;\t&#39;, index = None, compression={&#39;method&#39;: &#39;gzip&#39;, &#39;compresslevel&#39;: 9})
+    # calculate qvalue if no permutation
+    if  $[&#39;False&#39; if permutation and pval_threshold &lt; 1.0 else &#39;True&#39;]:
+        from qvalue import qvalue
+        qvalue_g = trans_df.groupby(&#39;molecular_trait_id&#39;).apply(lambda x: qvalue.estimate(x.pvalue)).values.tolist()
+        trans_df[&#39;qvalue&#39;] = [x for n in qvalue_g for x in n]
 
+    # sort the table if chrom and pos is not in ascending order
+    if not all(trans_df[&#39;pos&#39;].iloc[i] &lt;= trans_df[&#39;pos&#39;].iloc[i+1] for i in range(len(trans_df)-1)):
+        trans_df = trans_df.sort_values(by=[&#39;chrom&#39;, &#39;pos&#39;])
+ 
+    # print general information of trans_df
+    print(&#39;Output Information:&#39;)
+    print(&quot;Output Rows:&quot;, len(trans_df))
+    print(&quot;Output Columns:&quot;, trans_df.columns.tolist())
+    print(&quot;Output Preview:&quot;, trans_df.iloc[0:5, 0:10])
+    
+    # save output
+    trans_df.to_csv($[_output[&quot;nominal&quot;]:nr], sep=&#39;\t&#39;, index = None)
 
-bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
-        for i in $[_output] ; do 
-        echo &quot;output_info: $i &quot;
-        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;` 
-        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;`
-        echo &quot;output_headerow:&quot; `zcat $i | grep &quot;##&quot; | wc -l ` 
-        echo &quot;output_column:&quot; `zcat $i | grep -V &quot;##&quot; | head -1 | wc -w ` 
-        echo &quot;output_preview:&quot; 
-        zcat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10; done
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="association-results-processing">
-<h2>Association results processing<a class="headerlink" href="#association-results-processing" title="Permalink to this heading">#</a></h2>
-<p>For both cis and trans: Generate the recipe for yml processing
-For cis: Also process the consolidates emprical data.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[cis_2]
-input:  group_by = &quot;all&quot;
-output: f&#39;{_input[&quot;nominal&quot;][0]:nnn}.cis_qtl.meta_info&#39;,
-        f&#39;{_input[&quot;nominal&quot;][0]:nnn}.cis_qtl.column_info&#39;,
-        f&#39;{_input[&quot;regional&quot;][0]:nnn}.fdr.gz&#39;,
-        f&#39;{_input[&quot;regional&quot;][0]:nnn}.summary.txt&#39;   
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
-python: expand = &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;,container = container, entrypoint = entrypoint
-    import pandas as pd
-
-    data_temp = pd.DataFrame({
-    &quot;sumstat_dir&quot; : [$[_input[&quot;regional&quot;]:r,]],
-    &quot;column_info&quot; : $[_output[1]:r]
-    })
-    column_info_df = pd.DataFrame( pd.Series( {&quot;ID&quot;: &quot;molecular_trait_id,chromosome,position,ref,alt&quot;,
-      &quot;chromosome&quot;: &quot;chrom&quot;,
-      &quot;position&quot;: &quot;pos&quot;,
-      &quot;variant&quot;: &quot;variant_id&quot;,
-      &quot;ref&quot;: &quot;ref&quot;,
-      &quot;alt&quot;: &quot;alt&quot;,
-      &quot;beta&quot;: &quot;beta&quot;,
-      &quot;se&quot;: &quot;se&quot;,
-      &quot;pvalue&quot;: &quot;pvalue&quot;,
-      &quot;TSS_D&quot;: &quot;tss_distance&quot;,
-      &quot;af&quot;: &quot;af&quot;,
-      &quot;n&quot; : &quot;n&quot; ,
-      &quot;ma_samples&quot;: &quot;ma_samples&quot;,
-      &quot;ac&quot;: &quot;ma_count&quot;,
-      &quot;molecular_trait_id&quot;: &quot;molecular_trait_id&quot;, 
-      &quot;molecular_trait_object_id&quot;: &quot;molecular_trait_object_id&quot;}), columns = [&quot;TensorQTL&quot;] )
-
-    data_temp[&quot;#chr&quot;] = [x.split(&quot;.&quot;)[-3].replace(&quot;chr&quot;,&quot;&quot;) for x in  [$[_input[&quot;nominal&quot;]:r,]]]
-    data_temp = data_temp[[&#39;#chr&#39;, &#39;sumstat_dir&#39;, &#39;column_info&#39;]]
-    data_temp.to_csv(&quot;$[_output[0]]&quot;,index = False,sep = &quot;\t&quot; )
-    column_info_df.to_csv(&quot;$[_output[1]]&quot;,index = True,sep = &quot;\t&quot; )
-
-R: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;,container =container, entrypoint = entrypoint 
-    library(&quot;purrr&quot;)
-    library(&quot;tidyr&quot;)
-    library(&quot;dplyr&quot;)
-    library(&quot;readr&quot;)
-    library(&quot;qvalue&quot;)
-    emprical_pd = tibble(map(c($[_input[&quot;regional&quot;]:r,]), ~read_delim(.x,&quot;\t&quot;)))%&gt;%unnest()
-    emprical_pd[&quot;q_beta&quot;] = tryCatch(qvalue(emprical_pd$p_beta)$qvalue, error = function(e){print(&quot;Too few pvalue to calculate qvalue, fall back to BH&quot;) 
-                                                                                              qvalue(emprical_pd$p_beta,pi0 = 1 )$qvalue})  
-
-    emprical_pd[&quot;q_perm&quot;] = tryCatch(qvalue(emprical_pd$p_perm)$qvalue, error = function(e){print(&quot;Too few pvalue to calculate qvalue, fall back to BH&quot;) 
-                                                                                              qvalue(emprical_pd$p_perm,pi0 = 1 )$qvalue})
-    emprical_pd[&quot;fdr_beta&quot;] = p.adjust(emprical_pd$p_beta,&quot;fdr&quot;)    
-    emprical_pd[&quot;fdr_perm&quot;] = p.adjust(emprical_pd$p_perm,&quot;fdr&quot;)    
-    summary = tibble(&quot;fdr_perm_0.05&quot; =  sum(emprical_pd[&quot;fdr_perm&quot;] &lt; 0.05) , 
-                      &quot;fdr_beta_0.05&quot; = sum(emprical_pd[&quot;fdr_beta&quot;] &lt; 0.05),
-                      &quot;q_perm_0.05&quot; = sum(emprical_pd[&quot;q_perm&quot;] &lt; 0.05) ,
-                      &quot;q_beta_0.05&quot; = sum(emprical_pd[&quot;q_beta&quot;] &lt; 0.05) ,
-                       &quot;q_perm_0.01&quot; = sum(emprical_pd[&quot;q_perm&quot;] &lt; 0.01) ,
-                      &quot;q_beta_0.01&quot; = sum(emprical_pd[&quot;q_beta&quot;] &lt; 0.01)  )
-    emprical_pd%&gt;%write_delim(&quot;$[_output[2]]&quot;,&quot;\t&quot;)
-    summary%&gt;%write_delim(&quot;$[_output[3]]&quot;,&quot;\t&quot;)
-bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
-        for i in $[_output] ; do 
-        echo &quot;output_info: $i &quot;
-        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;` 
-        echo &quot;output_rows:&quot; `cat $i | wc -l  | cut -f 1 -d &quot; &quot;`
-        echo &quot;output_headerow:&quot; `cat $i | grep &quot;##&quot; | wc -l `
-        echo &quot;output_column:&quot; `cat $i | grep -V &quot;##&quot; | head -1 | wc -w `
-        echo &quot;output_preview:&quot;
-        cat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10 ; done
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[trans_2]
-input:  group_by = &quot;all&quot;
-output: f&#39;{_input[&quot;nominal&quot;][0]:nnn}.trans_qtl.meta_info&#39;,
-        f&#39;{_input[&quot;nominal&quot;][0]:nnn}.trans_qtl.column_info&#39;
-task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
-python: expand = &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
-    import pandas as pd 
-    data_temp = pd.DataFrame({
-    &quot;sumstat_dir&quot; : [$[_input[&quot;nominal&quot;]:r,]],
-    &quot;column_info&quot; : $[_output[1]:r]
-    })
-    column_info_df = pd.DataFrame( pd.Series( {&quot;ID&quot;: &quot;molecular_trait_id,chromosome,position,ref,alt&quot;,
-      &quot;chromosome&quot;: &quot;chrom&quot;,
-      &quot;position&quot;: &quot;pos&quot;,
-      &quot;ref&quot;: &quot;ref&quot;,
-      &quot;alt&quot;: &quot;alt&quot;,
-      &quot;variant&quot;: &quot;variant_id&quot;,
-      &quot;beta&quot;: &quot;beta&quot;,
-      &quot;se&quot;: &quot;se&quot;,
-      &quot;pvalue&quot;: &quot;pval&quot;,
-      &quot;af&quot;: &quot;af&quot;,
-      &quot;molecular_trait_id&quot;: &quot;gene_ID&quot;}), columns = [&quot;TensorQTL&quot;] )
-    data_temp.to_csv(&quot;$[_output[0]]&quot;,index = False,sep = &quot;\t&quot; )
-    column_info_df.to_csv(&quot;$[_output[1]]&quot;,index = True,sep = &quot;\t&quot; )
-
-bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
-        for i in $[_output] ; do 
-        echo &quot;output_info: $i &quot;
-        echo &quot;output_size:&quot; `ls -lh $i | cut -f 5  -d  &quot; &quot;` 
-        echo &quot;output_rows:&quot; `zcat $i | wc -l  | cut -f 1 -d &quot; &quot;` 
-        echo &quot;output_headerow:&quot; `zcat $i | grep &quot;##&quot; | wc -l ` 
-        echo &quot;output_column:&quot; `zcat $i | grep -V &quot;##&quot; | head -1 | wc -w ` 
-        echo &quot;output_preview:&quot; 
-        zcat $i  | grep -v &quot;##&quot; | head  | cut -f 1,2,3,4,5,6,7,8,9,10 ; done
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[&quot;nominal&quot;]:nnn}.stderr&#39;, stdout = f&#39;{_output[&quot;nominal&quot;]:nnn}.stdout&#39;, container = container, entrypoint = entrypoint
+        bgzip --compress-level 9 $[_output[&quot;nominal&quot;]:n] 
+        tabix -p bed -s 1 -b 2 -e 2 $[_output[&quot;nominal&quot;]]
 </pre></div>
 </div>
 </div>
@@ -1354,8 +1425,7 @@ bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#old-minimal-working-example">Old Minimal working example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cis-xqtl-association-testing">cis-xQTL association testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transqtl-association-testing">TransQTL association testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#association-results-processing">Association results processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#trans-xqtl-association-testing">Trans-xQTL association testing</a></li>
 </ul>
   </nav></div>
 

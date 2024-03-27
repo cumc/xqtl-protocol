@@ -313,7 +313,7 @@ sos run phenotype_imputation.ipynb EBMF \
 
 
 ```
-sos run xqtl-pipeline/pipeline/phenotype_imputation.ipynb gEBMF \
+sos run xqtl-protocol/pipeline/phenotype_imputation.ipynb gEBMF \
     --container containers/factor_analysis.sif \
 
 ```
@@ -374,7 +374,7 @@ sos run pipeline/TensorQTL.ipynb cis \
 
 
 ```
-sos run xqtl-pipeline/pipeline/TensorQTL.ipynb trans \
+sos run xqtl-protocol/pipeline/TensorQTL.ipynb trans \
     --container containers/TensorQTL.sif 
 ```
 

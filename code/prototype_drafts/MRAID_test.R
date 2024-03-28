@@ -51,7 +51,7 @@ GetRSID<-function(chr_coords){
 #analysis####
 #toy dataset####
 #Summary data with 100 candidate correlated SNPs, n1=30000, n2=30000, 
-data_path<-"xqtl-pipeline/code/mendelian_randomization/MRAID/example/" #clone the github repository of MRAID (https://github.com/yuanzhongshang/MRAID)
+data_path<-"xqtl-protocol/code/mendelian_randomization/MRAID/example/" #clone the github repository of MRAID (https://github.com/yuanzhongshang/MRAID)
 
 #load the Zscore vector for the exposure
 x<-fread(file.path(data_path,"Zscore_1.txt"))
@@ -409,11 +409,11 @@ res_chr2[pvalue<10^(-6)&hgnc_symbol=="NCK2"]
 
 #test causality on list of candidates genes on Microglia pseudobulk####
 #genes from ADSP: https://adsp.niagads.org/gvc-top-hits-list/ 
-cand_genes_adsp<-fread("xqtl-pipeline/data/candidates_causal_genes_adsp.csv")
+cand_genes_adsp<-fread("xqtl-protocol/data/candidates_causal_genes_adsp.csv")
   
 #genes from "Integration of Alzheimer’s disease genetics and myeloid genomics identifies disease risk regulatory elements and genes"
 #Novikova et al, Nat comm., 2021 : https://www.nature.com/articles/s41467-021-21823-y/tables/1 
-cand_genes_myelo<-fread("xqtl-pipeline/data/candidates_causal_genes_myeloid.csv")
+cand_genes_myelo<-fread("xqtl-protocol/data/candidates_causal_genes_myeloid.csv")
 
 #get LD matrix for every SNPs associated to it
 cand_genes<-union(cand_genes_adsp$Gene,cand_genes_myelo$gene)

@@ -2,7 +2,7 @@
 
 Developed for reproducible & reusable molecular QTL analyses for the NIH/NIA Alzheimer's Disease Sequencing Project (ADSP) Functional Genomics xQTL (FunGen-xQTL) Project.
 
-![QTL Diagram](code/images/xQTL_Protocol_June_2023.png)
+![QTL Diagram](code/images/xQTL_Protocol_Feb_2024.png)
 
 
 ## Overview of the protocol

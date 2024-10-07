@@ -121,6 +121,37 @@ We provide two different procedures for hidden factor analysis from omics data i
 
 We perform QTL association testing using TensorQTL [[cf. Taylor-Weiner et al (2019)](https://doi.org/10.1186/s13059-019-1836-7)]. An additional protocol was added to test for quantile QTL associations.
 #### Advanced cis-QTL Analysis (Step 5)
+##### A.  Univariate Fine-Mapping and TWAS with SuSiE
+
+
+Our pipeline is capable of performing univariate fine-mapping with SuSiE with TWAS weights. The TWAS portion makes use of TWAS weights, linkage disequilibrium data and GWAS summary statistics. Preset variants used are taken from the linkage disequilibrium data and used only for TWAS. TWAS cross validation tell us which of the four methods (enet, lasso, mrash, SuSiE) are best to use. By default, we limit to under 5000 variants for cross validation. In cross validation, the data is split into five parts. Training is done on four parts, and prediction is done on the fifth. Linear regression is used to assess the results and get r squared and pvalues. 
+
+
+
+Fine mapping with SuSiE follows the formulat y=xb+e where x has many highly correlated variables due to linkage disequilibrium. Therefore, true effects (b), are very sparse. The SuSiE wrapper looks for five independent signals in each region to increase convergence speed. However, if five signals are found, then the the upper limit is increased. SuSiE does not allow for the inclusion of covariates. Therefore, covariates are regressed in.
+##### B.  Multivariate Fine-Mapping for multiple genes
+
+
+Our pipeline allows for multi gene fine-mapping and TWAS. This considers multiple genes jointly within specific TAD windows.
+
+
+
+This step is similar to the multivariate fine-mapping with two main differences. 1) TAD windows with multiple genes need to be defined. The `--pheno_id_map_file` parameter is used for this. 2) To speed things up, the genes are filtered out if they don't have a univariate fine mapped region. Genes may also be filtered out if they do have a univariate fine-mapped signal, but the signal is nowhere close to that of other genes.  The `--skip-analysis-pip-cutoff` parameter is used for this.
+
+
+
+##### C.  Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE
+
+
+Our pipeline also allows for the use of univariate fine-mapping for functional (epigenomic) data with fSuSiE. This is similar to the normal univariate fine-mapping, with the main difference being the use of epigonmic data. 
+
+##### D.  Multivariate Fine-Mapping with mvSuSiE and mr.mash
+
+##### E.  Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE
+
+
+Our pipeline includes options to conduct fine-mapping with SuSiE Regression with Summary Statistics (RSS) model and TWAS.
+
 
 ### Expertise needed to implement the protocol
 
@@ -165,7 +196,7 @@ Timing <4 min
 
 !sos run RNA_calling.ipynb fastqc \
     --cwd ../../output_test \
-    --samples ../../PCC_sample_list_subset \
+    --sample-list ../../PCC_sample_list_subset \
     --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
     -c ../csg.yml  -q neurology
@@ -178,12 +209,12 @@ Timing ~10 min
 ```
 !sos run RNA_calling.ipynb fastp_trim_adaptor \
     --cwd ../../output_test \
-    --samples ../../PCC_sample_list_subset \
+    --sample-list ../../PCC_sample_list_subset \
     --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
     --STAR-index ../../reference_data/STAR_Index/ \
     --gtf ../../reference_data/reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
-    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformated.ERCC.gtf.ref.flat \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
     --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
     -c ../csg.yml  -q neurology
 ```
@@ -191,6 +222,22 @@ Timing ~10 min
 
 ##### iii. Read alignment via STAR and QC via Picard
 Timing <2 hours
+
+```
+!sos run RNA_calling.ipynb STAR_align \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+
+```
+
+
+
+```
+!sos run RNA_calling.ipynb STAR_align \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+
+```
+
+
 
 ```
 !sos run RNA_calling.ipynb STAR_align \
@@ -454,6 +501,57 @@ sos run xqtl-protocol/pipeline/TensorQTL.ipynb trans \
 
 
 ### 5. Advanced cis-QTL Analysis
+#### A.  Univariate Fine-Mapping and TWAS with SuSiE
+
+##### i. Run the Fine-Mapping and TWAS with SuSiE
+
+```
+sos run $PATH/protocol/pipeline/mnm_regression.ipynb susie_twas \
+
+```
+
+
+#### B.  Multivariate Fine-Mapping for multiple genes
+
+##### i. Run the Fine-Mapping with mvSuSiE
+
+```
+sos run $PATH/protocol/pipeline/mnm_regression.ipynb mnm_genes \
+
+```
+
+
+#### C.  Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE
+
+##### i. Run the Fine-Mapping with fSuSiE
+
+```
+sos run $PATH/mnm_regression.ipynb fsusie \
+    --container oras://ghcr.io/cumc/pecotmr_apptainer:latest \
+
+```
+
+
+#### D.  Multivariate Fine-Mapping with mvSuSiE and mr.mash
+
+##### i. Run the Fine-Mapping with mvSuSiE
+
+```
+sos run $PATH/protocol/pipeline/mnm_regression.ipynb mnm \
+
+```
+
+
+#### E.  Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE
+
+##### i. Run the Summary Statistics Fine-Mapping 
+
+```
+sos run $PATH/rss_analysis.ipynb univariate_rss \
+
+```
+
+
 
 ## Timing
 
@@ -491,9 +589,8 @@ The final output contained QCed and normalized expression data in a bed.gz file.
 The final output contains the QCed and normalized splicing data from leafcutter and psichomics.
 ####  Genotype data preprocessing
 
+Genotype preprocessing will produce cleaned genotype files, and genetic principal components. 
 ####  Phenotype data preprocessing
-
-# Phenotype data preprocessing
 
 Phenotype preprocessing should result in a phenotype file formatted and ready for use in TensorQTL.
 ####  Covariate Data Preprocessing
@@ -502,6 +599,21 @@ Processed covariate data includes a file with covariates and hidden factors for 
 ####  QTL Association Analysis
 
 TensorQTL will produce empirical and standardized cis/trans results.
+####  Univariate Fine-Mapping and TWAS with SuSiE
+
+Univariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie. 
+####  Multivariate Fine-Mapping for multiple genes
+
+For each gene and region, multivariate multigene finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie.
+####  Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE
+
+Univariate finemapping for functional data will produce a file containing results for the top hits and a file containing residuals from SuSiE.
+####  Multivariate Fine-Mapping with mvSuSiE and mr.mash
+
+For each gene, multivariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie.
+####  Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE
+
+Summary statistics fine-mapping produces a results file for each region and gwas of interest.
 
 ## Figures
 

@@ -120,8 +120,8 @@ We provide two different procedures for hidden factor analysis from omics data i
 
 
 We perform QTL association testing using TensorQTL [[cf. Taylor-Weiner et al (2019)](https://doi.org/10.1186/s13059-019-1836-7)]. An additional protocol was added to test for quantile QTL associations.
-#### Advanced cis-QTL Analysis (Step 5)
-##### A.  Univariate Fine-Mapping and TWAS with SuSiE
+#### Fine-Mapping Analysis (Step 5)
+##### A.  Fine-Mapping
 
 
 Our pipeline is capable of performing univariate fine-mapping with SuSiE with TWAS weights. The TWAS portion makes use of TWAS weights, linkage disequilibrium data and GWAS summary statistics. Preset variants used are taken from the linkage disequilibrium data and used only for TWAS. TWAS cross validation tell us which of the four methods (enet, lasso, mrash, SuSiE) are best to use. By default, we limit to under 5000 variants for cross validation. In cross validation, the data is split into five parts. Training is done on four parts, and prediction is done on the fifth. Linear regression is used to assess the results and get r squared and pvalues. 
@@ -129,10 +129,8 @@ Our pipeline is capable of performing univariate fine-mapping with SuSiE with TW
 
 
 Fine mapping with SuSiE follows the formulat y=xb+e where x has many highly correlated variables due to linkage disequilibrium. Therefore, true effects (b), are very sparse. The SuSiE wrapper looks for five independent signals in each region to increase convergence speed. However, if five signals are found, then the the upper limit is increased. SuSiE does not allow for the inclusion of covariates. Therefore, covariates are regressed in.
-##### B.  Multivariate Fine-Mapping for multiple genes
 
-
-Our pipeline allows for multi gene fine-mapping and TWAS. This considers multiple genes jointly within specific TAD windows.
+Multi gene fine-mapping and TWAS may also be conducted with our pipeline. This considers multiple genes jointly within specific TAD windows.
 
 
 
@@ -140,17 +138,14 @@ This step is similar to the multivariate fine-mapping with two main differences.
 
 
 
-##### C.  Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE
+
+Univariate fine-mapping for functional (epigenomic) data is conducted with fSuSiE. This is similar to the normal univariate fine-mapping, with the main difference being the use of epigonmic data. 
 
 
-Our pipeline also allows for the use of univariate fine-mapping for functional (epigenomic) data with fSuSiE. This is similar to the normal univariate fine-mapping, with the main difference being the use of epigonmic data. 
+Last, we include an option to conduct fine-mapping with SuSiE Regression using Summary Statistics (RSS) model and TWAS.
 
-##### D.  Multivariate Fine-Mapping with mvSuSiE and mr.mash
-
-##### E.  Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE
-
-
-Our pipeline includes options to conduct fine-mapping with SuSiE Regression with Summary Statistics (RSS) model and TWAS.
+#### Mixture Multivariate Distribution Estimate (Step 6)
+##### A.   Mixture Multivariate Distribution Estimate
 
 
 ### Expertise needed to implement the protocol
@@ -500,8 +495,8 @@ sos run xqtl-protocol/pipeline/TensorQTL.ipynb trans \
 ```
 
 
-### 5. Advanced cis-QTL Analysis
-#### A.  Univariate Fine-Mapping and TWAS with SuSiE
+### 5. Fine-Mapping Analysis
+#### A.  Fine-Mapping
 
 ##### i. Run the Fine-Mapping and TWAS with SuSiE
 
@@ -511,9 +506,7 @@ sos run $PATH/protocol/pipeline/mnm_regression.ipynb susie_twas \
 ```
 
 
-#### B.  Multivariate Fine-Mapping for multiple genes
-
-##### i. Run the Fine-Mapping with mvSuSiE
+##### ii. Run the Fine-Mapping with mvSuSiE
 
 ```
 sos run $PATH/protocol/pipeline/mnm_regression.ipynb mnm_genes \
@@ -521,9 +514,7 @@ sos run $PATH/protocol/pipeline/mnm_regression.ipynb mnm_genes \
 ```
 
 
-#### C.  Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE
-
-##### i. Run the Fine-Mapping with fSuSiE
+##### iii. Run the Fine-Mapping with fSuSiE
 
 ```
 sos run $PATH/mnm_regression.ipynb fsusie \
@@ -532,9 +523,7 @@ sos run $PATH/mnm_regression.ipynb fsusie \
 ```
 
 
-#### D.  Multivariate Fine-Mapping with mvSuSiE and mr.mash
-
-##### i. Run the Fine-Mapping with mvSuSiE
+##### iv. Run the Fine-Mapping with mvSuSiE
 
 ```
 sos run $PATH/protocol/pipeline/mnm_regression.ipynb mnm \
@@ -542,14 +531,16 @@ sos run $PATH/protocol/pipeline/mnm_regression.ipynb mnm \
 ```
 
 
-#### E.  Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE
-
-##### i. Run the Summary Statistics Fine-Mapping 
+##### v. Run the Summary Statistics Fine-Mapping 
 
 ```
 sos run $PATH/rss_analysis.ipynb univariate_rss \
 
 ```
+
+
+### 6. Mixture Multivariate Distribution Estimate
+#### A.   Mixture Multivariate Distribution Estimate
 
 
 
@@ -567,6 +558,7 @@ sos run $PATH/rss_analysis.ipynb univariate_rss \
 | | Phenotype data preprocessing| < 12 minutes|
 | | Covariate Data Preprocessing| < 3 minutes|
 |QTL Association Testing| QTL Association Analysis| < X minutes|
+|Fine-Mapping Analysis| Fine-Mapping| < X minutes|
 
 ## Troubleshooting
 
@@ -599,21 +591,13 @@ Processed covariate data includes a file with covariates and hidden factors for 
 ####  QTL Association Analysis
 
 TensorQTL will produce empirical and standardized cis/trans results.
-####  Univariate Fine-Mapping and TWAS with SuSiE
+####  Fine-Mapping
 
-Univariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie. 
-####  Multivariate Fine-Mapping for multiple genes
+Univariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie. Multigene finemapping with mvSuSiE will produce a file for each gene and region containing results for the top hits and a file containing twas weights produced by susie. Univariate finemapping for functional data with fSuSiE will produce a file containing results for the top hits and a file containing residuals from SuSiE. Multivariate finemapping will produce a file containing results for the top hits for each gene and a file containing twas weights produced by susie. Summary statistics fine-mapping produces a results file for each region and gwas of interest.
+####   Mixture Multivariate Distribution Estimate
 
-For each gene and region, multivariate multigene finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie.
-####  Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE
+i. Compute MASH prior  
 
-Univariate finemapping for functional data will produce a file containing results for the top hits and a file containing residuals from SuSiE.
-####  Multivariate Fine-Mapping with mvSuSiE and mr.mash
-
-For each gene, multivariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie.
-####  Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE
-
-Summary statistics fine-mapping produces a results file for each region and gwas of interest.
 
 ## Figures
 

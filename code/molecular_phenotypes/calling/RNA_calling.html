@@ -1,0 +1,2675 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quantifying expression from RNA-seq data &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/molecular_phenotypes/calling/RNA_calling';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Sample level RNA-seq quality control" href="../QC/bulk_expression_QC.html" />
+    <link rel="prev" title="RNA-seq expression" href="../bulk_expression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../reference_data/reference_data.html">Reference Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../bulk_expression.html">RNA-seq expression</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../apa.html">Alternative polyadenylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="apa_calling.html">APA Calling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../methylation.html">Methylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../splicing.html">Alternative splicing from RNA-seq data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/genotype/genotype_formatting.html">Genotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/qtl_association_testing.html">QTL Association Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/APEX/APEX.html">APEX QTL association testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Mixture Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate_genome/multivariate_mixture_vignette.html">Mixture Multivariate Distribution Estimate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Fine-mapping and Prediction Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../mnm_analysis/fine_mapping_miniprotocol.html">Fine-Mapping</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/univariate_fine_mapping_twas_vignette.html">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/multivariate_multigene_fine_mapping_vignette.html">Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/univariate_fine_mapping_fsusie_vignette.html">Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/multivariate_fine_mapping_vignette.html">Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/summary_stats_finemapping_vignette.html">Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/mnm_methods/mnm_regression.html">Advanced regression models for association analysis with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/mnm_methods/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multi-context causal TWAS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../pecotmr_integration/twas.html">TWAS, cTWAS and MR</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Colocalization</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../pecotmr_integration/SuSiE_enloc.html">xQTL-GWAS pairwise enrichment and colocalization</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/molecular_phenotypes/calling/RNA_calling.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/molecular_phenotypes/calling/RNA_calling.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/code/molecular_phenotypes/calling/RNA_calling.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quantifying expression from RNA-seq data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-perform-data-quality-summary-via-fastqc">i. Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-cut-adaptor-optional">ii. Cut adaptor (Optional)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iii-read-alignment-via-star-and-qc-via-picard">iii. Read alignment via STAR and QC via Picard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-call-gene-level-rna-expression-via-rnaseqc">iv. Call gene-level RNA expression via rnaseqc</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v-call-transcript-level-rna-expression-via-rsem">v. Call transcript level RNA expression via RSEM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-0-convert-bam-back-to-fastq-if-necessary">Step 0: Convert BAM back to fastq if necessary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-qc-before-alignment">Step 1: QC before alignment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-inputs">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-outputs">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-remove-adaptor-through-fastp">Step 2: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">fastp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Step Outputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-options">Step options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-alternative-remove-adaptor-through-trimmomatic">Step 2 Alternative: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-alignment-through-star">Step 3: Alignment through <code class="docutils literal notranslate"><span class="pre">STAR</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-mark-duplicates-reads-qc-through-picard">Step 4: Mark duplicates reads &amp; QC through <code class="docutils literal notranslate"><span class="pre">Picard</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Step Inputs:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Step Outputs:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-post-aligment-qc-through-rna-seqc">Step 5: Post aligment QC through <code class="docutils literal notranslate"><span class="pre">RNA-SeQC</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-quantify-expression-through-rsem">Step 6: Quantify expression through <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-input">Step Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-summarize-with-multiqc">Step 7: summarize with MultiQC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-filter-reads-with-wasp">Step 8: Filter Reads with WASP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Step Inputs:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Step Outputs:</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quantifying-expression-from-rna-seq-data">
+<h1>Quantifying expression from RNA-seq data<a class="headerlink" href="#quantifying-expression-from-rna-seq-data" title="Link to this heading">#</a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>Our pipeline follows the GTEx pipeline from the <a class="reference external" href="https://gtexportal.org/home/aboutGTEx#staticTextAnalysisMethods">GTEx</a>/<a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/TOPMed_RNAseq_pipeline.md">TOPMed</a> project for the quantification of expression from RNA-seq data. Either paired end or single end fastq.gz files may be used as the initial input. Different read <a class="reference external" href="https://rnabio.org/module-09-appendix/0009/12/01/StrandSettings/">strandedness options</a> are possible, including rf, fr, unstranded or strand_missing, based on library types from Signal et al [<a class="reference external" href="https://doi.org/10.1186/s12859-022-04572-7">cf. Signal et al (2022)</a>]. Strand detection steps are included in this pipeline to automaticaly detect the strand of the input fastq file by levradging the gene count table ouptut from <a class="reference external" href="https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf">STAR</a>. Read length data is required and is set to a default value of 100 for reads of zero length.</p>
+<p>We recommend using fastqc to quality control reads, followed by the removal of adaptors with fastp if necessary. After quality control has been conducted, STAR may be used to align reads to the reference genome. We combine this mapping step with an additionaly quality control step using Picard to mark duplicate reads and collect other metrics.</p>
+<p>Gene-level RNA expression is called with RNA-SeQC v2.4.2 using a reference gtf that has been collapsed to contain genes instead of gene transcripts [<a class="reference external" href="https://doi.org/10.1093/bioinformatics/bts196">cf. DeLuca et al., Bioinformatics, 2012</a>]. Reads are only included if they are uniquely mapped (mapping quality of 255 for STAR BAMs), if they are aligned in proper pairs, if the read alignment distance was less than or equal to six (i.e. alignments must not contain more than six non-reference bases), and if they are fully contained within exon boundaries. Reads overlapping introns are not included. Exon level read counts are also called by RNA-SeQC. If a read overlaps multiple exons, then a fractional value equal to the portion of the read contained within the exon is allotted. We call transcript-level RNA expression using RSEM v1.3.0 with a transcript reference gtf.</p>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Link to this heading">#</a></h2>
+<p>A tab delimited file containing sample read information with one line per sample. This file should include a header for the following columns:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ID</span></code> - sample ID (required)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fq1</span></code> - name of the fastq file (required)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fq2</span></code> - name of the second fastq file of the sample if using paired end data (required only if using paired end data)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strand</span></code> - the strandedness of the sample (optional)<br />
+<a class="reference external" href="https://rnabio.org/module-09-appendix/0009/12/01/StrandSettings/">Options include</a> rf, fr, unstranded or strand_missing, based on library types from Signal et al [<a class="reference external" href="https://doi.org/10.1186/s12859-022-04572-7">cf. Signal et al. 2022</a>]. Strand detection steps are included in this pipeline to automaticaly detect the strand of the input fastq file by leveraging the gene count table ouptut from STAR.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_length</span></code> - the read length of the sample’s reads (optional)<br />
+If this is unknown, enter 0 and the pipeline will use a default read length of 100. This default can be changed using the <code class="docutils literal notranslate"><span class="pre">--sjdbOverhang</span></code> parameter. If none of the samples have read length information then please leave out the read_length column so that the pipeline uses the default length for each sample.</p></li>
+</ol>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h2>
+<p>Gene and transcript expression matrices in addition to other intermediate files (see <code class="docutils literal notranslate"><span class="pre">Command</span> <span class="pre">interface</span></code> steps below)</p>
+</section>
+<section id="minimal-working-example-steps">
+<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Link to this heading">#</a></h2>
+<section id="i-perform-data-quality-summary-via-fastqc">
+<h3>i. Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code><a class="headerlink" href="#i-perform-data-quality-summary-via-fastqc" title="Link to this heading">#</a></h3>
+<p>Timing: &lt;4 min</p>
+<p>Generate fastqc report.</p>
+<p>FIXME</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>
+!sos run RNA_calling.ipynb fastqc \
+    --cwd ../../output_test \
+    --sample-list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    -c ../csg.yml  -q neurology
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Input samples are paired-end sequences.
+INFO: Running <span class=" -Color -Color-Green">fastqc</span>: 
+INFO: t6c9b3702399ca271 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473763 (&quot;job_t6c9b3702399ca271&quot;) has been submitted
+INFO: t4e4ffcdfae79f275 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473764 (&quot;job_t4e4ffcdfae79f275&quot;) has been submitted
+INFO: t002fa5ea2fc74efe <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473765 (&quot;job_t002fa5ea2fc74efe&quot;) has been submitted
+INFO: tf93ce24f1580b2b3 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473766 (&quot;job_tf93ce24f1580b2b3&quot;) has been submitted
+INFO: t386bb7e2e8436820 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473767 (&quot;job_t386bb7e2e8436820&quot;) has been submitted
+INFO: t54ae889b31a122b1 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473768 (&quot;job_t54ae889b31a122b1&quot;) has been submitted
+INFO: t3f1ff409f6f0c26c <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473769 (&quot;job_t3f1ff409f6f0c26c&quot;) has been submitted
+INFO: t7750753938a38086 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473770 (&quot;job_t7750753938a38086&quot;) has been submitted
+INFO: t1a1d8d75185936a3 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473771 (&quot;job_t1a1d8d75185936a3&quot;) has been submitted
+INFO: t7d74fb9d4370b2f8 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473772 (&quot;job_t7d74fb9d4370b2f8&quot;) has been submitted
+INFO: tf25a5c96c0afea02 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473773 (&quot;job_tf25a5c96c0afea02&quot;) has been submitted
+INFO: t50f350a2d0a9b770 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473774 (&quot;job_t50f350a2d0a9b770&quot;) has been submitted
+INFO: tcc8278b405e89bca <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473775 (&quot;job_tcc8278b405e89bca&quot;) has been submitted
+INFO: t62c5fa6ee2f7c7dc <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473776 (&quot;job_t62c5fa6ee2f7c7dc&quot;) has been submitted
+INFO: t8ad9981a328c22ce <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473777 (&quot;job_t8ad9981a328c22ce&quot;) has been submitted
+INFO: t365ddb198dd08add <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473778 (&quot;job_t365ddb198dd08add&quot;) has been submitted
+INFO: t1d88d659d66b24f7 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473779 (&quot;job_t1d88d659d66b24f7&quot;) has been submitted
+INFO: t2d89152690c6fdd0 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473780 (&quot;job_t2d89152690c6fdd0&quot;) has been submitted
+INFO: t03056c7c071f8774 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473781 (&quot;job_t03056c7c071f8774&quot;) has been submitted
+INFO: t3be3c3d82d746be4 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473782 (&quot;job_t3be3c3d82d746be4&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">20</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+ERROR: [fastqc]: [fastqc]: Output target /restricted/projectnb/xqtl/xqtl_protocol/output_test/1000-PCC.bam.1.fq_fastqc.html does not exist after the completion of step fastqc
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ii-cut-adaptor-optional">
+<h3>ii. Cut adaptor (Optional)<a class="headerlink" href="#ii-cut-adaptor-optional" title="Link to this heading">#</a></h3>
+<p>Timing: ~10 min</p>
+<p>Trim adaptors with fastp. A new sample list will be generated witht the trimmed fastq files.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run RNA_calling.ipynb fastp_trim_adaptor \
+    --cwd ../../output_test \
+    --sample-list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    -c ../csg.yml  -q neurology
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Input samples are paired-end sequences.
+INFO: Running <span class=" -Color -Color-Green">fastp_trim_adaptor_1</span>: 
+INFO: tf7f9ca7a0415220a <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473815 (&quot;job_tf7f9ca7a0415220a&quot;) has been submitted
+INFO: t3a0f6bb6054347f9 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473816 (&quot;job_t3a0f6bb6054347f9&quot;) has been submitted
+INFO: t11993d4365affa80 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473817 (&quot;job_t11993d4365affa80&quot;) has been submitted
+INFO: t81717ecba3dd47ef <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473818 (&quot;job_t81717ecba3dd47ef&quot;) has been submitted
+INFO: t67c489f5d6c4c96d <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473820 (&quot;job_t67c489f5d6c4c96d&quot;) has been submitted
+INFO: tbd40a790cf6fff58 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473821 (&quot;job_tbd40a790cf6fff58&quot;) has been submitted
+INFO: t2f7a8204d07a3580 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473822 (&quot;job_t2f7a8204d07a3580&quot;) has been submitted
+INFO: t5053d7957ff62683 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473823 (&quot;job_t5053d7957ff62683&quot;) has been submitted
+INFO: t3ca261894a797116 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473824 (&quot;job_t3ca261894a797116&quot;) has been submitted
+INFO: tedb41e7f30829651 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2473825 (&quot;job_tedb41e7f30829651&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">fastp_trim_adaptor_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/1000-PCC.bam.1.fq.trimmed.fq.gz /restricted/projectnb/xqtl/xqtl_protocol/output_test/1000-PCC.bam.2.fq.trimmed.fq.gz... (20 items in 10 groups)</span>
+INFO: Running <span class=" -Color -Color-Green">fastp_trim_adaptor_2</span>: 
+INFO: <span class=" -Color -Color-Green">fastp_trim_adaptor_2</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: <span class=" -Color -Color-Green">fastp_trim_adaptor_2</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/../../PCC_sample_list_subset.trimmed.txt</span>
+INFO: Workflow fastp_trim_adaptor (ID=w22250ab85e96dedb) is executed successfully with 2 completed steps, 11 completed substeps and 10 completed tasks.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="iii-read-alignment-via-star-and-qc-via-picard">
+<h3>iii. Read alignment via STAR and QC via Picard<a class="headerlink" href="#iii-read-alignment-via-star-and-qc-via-picard" title="Link to this heading">#</a></h3>
+<p>Timing &lt;2 hours</p>
+<p>Align the reads with STAR and generate the bam_list recipe for downstream molecular phenotype count matrixes. This step also checks the standedness of the data and removes duplicates with Picard. If –varVCFfile is provided, VW tags will be added to the alignments, and filtering based on these tags will be performed. The –wasp option applies WASP correction, while –unique enables unique filtering. Using both options applies both filters, while omitting them means no filtering is applied. Note that filtering is not required when quantifying expression for eQTLs.
+<strong>NB:</strong> If you just provide <code class="docutils literal notranslate"><span class="pre">varVCFfile</span></code> but not provide <code class="docutils literal notranslate"><span class="pre">--unique</span></code> or <code class="docutils literal notranslate"><span class="pre">--wasp</span></code>, filtering won’t be performed although the name of the output bam files will contain <code class="docutils literal notranslate"><span class="pre">_wasp_qc</span></code>. This is required if aligning reads to generate splicing data later in the pipeline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># STAR alignment without adding tags for filters(of course without filter): the execution speed will also be shorter than STARalignment without filter 
+!sos run RNA_calling.ipynb STAR_align \
+    --cwd ../../output_test/star_output \
+    --sample_list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --sample-name 1000-PCC.bam \
+    -s build -c ../csg.yml  -q neurology 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Input samples are paired-end sequences.
+INFO: Running <span class=" -Color -Color-Green">STAR_align_1</span>: 
+Insufficent memory for STAR, changing to 40G
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+Using read length specified in the sample list
+INFO: tff65c4e72cd9bf6b <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: t4b927e18be9c4b88 <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tff65c4e72cd9bf6b <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399515 (&quot;job_tff65c4e72cd9bf6b&quot;) has been submitted
+INFO: tcaa28c0bb65f9149 <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tfda1f7e13e034e17 <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: t4b927e18be9c4b88 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399516 (&quot;job_t4b927e18be9c4b88&quot;) has been submitted
+INFO: te8abdb425a2403aa <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tec167ba0767b70e7 <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tcaa28c0bb65f9149 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399517 (&quot;job_tcaa28c0bb65f9149&quot;) has been submitted
+INFO: te2655672abbc9b17 <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: t87915c95c4041d60 <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tfda1f7e13e034e17 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399518 (&quot;job_tfda1f7e13e034e17&quot;) has been submitted
+INFO: te07ad3a636b7b1dd <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: te8abdb425a2403aa <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399519 (&quot;job_te8abdb425a2403aa&quot;) has been submitted
+INFO: tdf4f824b17a8a5dc <span class=" -Color -Color-Green">restart</span> from status <span class=" -Color -Color-Green">submitted</span>
+INFO: tec167ba0767b70e7 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399520 (&quot;job_tec167ba0767b70e7&quot;) has been submitted
+INFO: te2655672abbc9b17 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399521 (&quot;job_te2655672abbc9b17&quot;) has been submitted
+INFO: t87915c95c4041d60 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399522 (&quot;job_t87915c95c4041d60&quot;) has been submitted
+INFO: te07ad3a636b7b1dd <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399523 (&quot;job_te07ad3a636b7b1dd&quot;) has been submitted
+INFO: tdf4f824b17a8a5dc <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399524 (&quot;job_tdf4f824b17a8a5dc&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">8</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">6</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: <span class=" -Color -Color-Green">STAR_align_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.Aligned.sortedByCoord.out.bam /restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.Aligned.toTranscriptome.out.bam... (20 items in 10 groups)</span>
+INFO: Running <span class=" -Color -Color-Green">strand_detected_1</span>: 
+for sample 1000-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9945125919850982, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=0) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1001-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9946500588593552, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=1) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1002-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9943981411103944, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=2) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1003-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.99371513806055, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=3) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1004-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9947175340513231, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=4) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1005-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9943227514543671, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=5) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1006-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9951195009722332, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=6) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1009-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9941384572915384, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=7) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1010-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.9905496531374057, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=8) is <span class=" -Color -Color-Green">completed</span>.
+for sample 1011-PCC.bam
+Counts for the 2nd read strand aligned with RNA is 0.994062350839579, &gt; 90% of aligned count
+Data is likely RF/fr-firststrand
+INFO: <span class=" -Color -Color-Green">strand_detected_1</span> (index=9) is <span class=" -Color -Color-Green">completed</span>.
+INFO: Running <span class=" -Color -Color-Green">strand_detected_2</span>: 
+Using strand specified in the input samples list [&#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;, &#39;rf&#39;], replacing strand_missing with detected strand
+INFO: <span class=" -Color -Color-Green">strand_detected_2</span> is <span class=" -Color -Color-Green">completed</span>.
+INFO: Running <span class=" -Color -Color-Green">STAR_align_2</span>: 
+INFO: t6dcd2e18a3a45ff6 <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t64cea24f76f181ec <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t6dcd2e18a3a45ff6 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399713 (&quot;job_t6dcd2e18a3a45ff6&quot;) has been submitted
+INFO: td34a8dded96d0613 <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t2b1cc10183d526af <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t64cea24f76f181ec <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399714 (&quot;job_t64cea24f76f181ec&quot;) has been submitted
+INFO: t448a4eafbcb0db0e <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: td34a8dded96d0613 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399715 (&quot;job_td34a8dded96d0613&quot;) has been submitted
+INFO: tfeedd0c0bb469db9 <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: td2521716031d133c <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t2b1cc10183d526af <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399716 (&quot;job_t2b1cc10183d526af&quot;) has been submitted
+INFO: t052b51dab89cb9f6 <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: taa6cb5680f559bc8 <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: t448a4eafbcb0db0e <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399717 (&quot;job_t448a4eafbcb0db0e&quot;) has been submitted
+INFO: tc238906499d07145 <span class=" -Color -Color-Green">re-execute completed</span>
+INFO: tfeedd0c0bb469db9 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399718 (&quot;job_tfeedd0c0bb469db9&quot;) has been submitted
+INFO: td2521716031d133c <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399719 (&quot;job_td2521716031d133c&quot;) has been submitted
+INFO: t052b51dab89cb9f6 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399720 (&quot;job_t052b51dab89cb9f6&quot;) has been submitted
+INFO: taa6cb5680f559bc8 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399721 (&quot;job_taa6cb5680f559bc8&quot;) has been submitted
+INFO: tc238906499d07145 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2399722 (&quot;job_tc238906499d07145&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">8</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">8</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">6</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">6</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">6</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">STAR_align_2</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.alignment_summary_metrics /restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.rna_metrics... (40 items in 10 groups)</span>
+INFO: Running <span class=" -Color -Color-Green">STAR_align_3</span>: 
+INFO: t4431c5c078751a48 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2400115 (&quot;job_t4431c5c078751a48&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">STAR_align_3</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/PCC_sample_list_subset_bam_list</span>
+INFO: Workflow STAR_align (ID=w9e2ac856c879aa3f) is executed successfully with 5 completed steps, 32 completed substeps and 21 completed tasks.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># STAR alignment with only WASP correction to diminish allel-specific bias:
+!sos run RNA_calling.ipynb STAR_align \
+    --cwd ../../output_test/star_output/wasp \
+    --sample_list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --varVCFfile ../../reference_data/ZOD14598_AD_GRM_WGS_2021-04-29_all.recalibrated_variants.leftnorm.filtered.AF.WASP.vcf
+    --sample-name 1000-PCC.bam \
+    --wasp yes \
+    -s build -c ../csg.yml  -q neurology 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># STAR alignment with only Unique filtering to get unique reads:
+!sos run RNA_calling.ipynb STAR_align \
+    --cwd ../../output_test/star_output/unique \
+    --sample_list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --varVCFfile ../../reference_data/ZOD14598_AD_GRM_WGS_2021-04-29_all.recalibrated_variants.leftnorm.filtered.AF.WASP.vcf
+    --sample-name 1000-PCC.bam \
+    --unique yes \
+    -s build -c ../csg.yml  -q neurology 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># STAR alignment with both WASP correction and unique filtering:
+!sos run RNA_calling.ipynb STAR_align \
+    --cwd ../../output_test/star_output/unique_wasp \
+    --sample_list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --varVCFfile ../../reference_data/ZOD14598_AD_GRM_WGS_2021-04-29_all.recalibrated_variants.leftnorm.filtered.AF.WASP.vcf
+    --sample-name 1000-PCC.bam \
+    --unique yes \
+    --wasp yes \
+    -s build -c ../csg.yml  -q neurology 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="iv-call-gene-level-rna-expression-via-rnaseqc">
+<h3>iv. Call gene-level RNA expression via rnaseqc<a class="headerlink" href="#iv-call-gene-level-rna-expression-via-rnaseqc" title="Link to this heading">#</a></h3>
+<p>Timing &lt;30 min</p>
+<p>Call gene-level RNA expression using rnaseqc and run multiqc. The gtf file must include gene-level data instead of transcript-level data. Add <code class="docutils literal notranslate"><span class="pre">--varVCFfile</span></code> if adding tags during <code class="docutils literal notranslate"><span class="pre">STAR_align</span></code>. Change your <code class="docutils literal notranslate"><span class="pre">--cwd</span></code> option for different filter choice.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run RNA_calling.ipynb rnaseqc_call \
+    --cwd ../../output_test/star_output \
+    --sample-list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.collapse_only.gene.ERCC.gtf \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --bam-list ../../output_test/star_output/PCC_sample_list_subset_bam_list \
+    -s build  -c ../csg.yml  -q neurology 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Input samples are paired-end sequences.
+INFO: Running <span class=" -Color -Color-Green">rnaseqc_call_1</span>: 
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=1) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=2) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=3) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=4) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=5) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=6) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=7) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=8) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_1</span> (index=9) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: <span class=" -Color -Color-Green">rnaseqc_call_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.rnaseqc.gene_tpm.gct.gz /restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.rnaseqc.gene_reads.gct.gz... (40 items in 10 groups)</span>
+INFO: Running <span class=" -Color -Color-Green">rnaseqc_call_2</span>: 
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_2</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_2</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: <span class=" -Color -Color-Green">rnaseqc_call_2</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/PCC_sample_list_subset.rnaseqc.gene_tpm.gct.gz /restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/PCC_sample_list_subset.rnaseqc.gene_readsCount.gct.gz... (4 items)</span>
+INFO: Running <span class=" -Color -Color-Green">rnaseqc_call_3</span>: 
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_3</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: Step <span class=" -Color -Color-Green">rnaseqc_call_3</span> (index=0) is <span class=" -Color -Color-Green">ignored</span> with signature constructed
+INFO: <span class=" -Color -Color-Green">rnaseqc_call_3</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/PCC_sample_list_subset.multiqc_report.html</span>
+INFO: Running <span class=" -Color -Color-Green">rnaseqc_call_4</span>: 
+INFO: t1555865b4d80b5cd <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474362 (&quot;job_t1555865b4d80b5cd&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">rnaseqc_call_4</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/PCC_sample_list_subset.picard.aggregated_quality.metrics.tsv</span>
+INFO: Workflow rnaseqc_call (ID=w79a27a4da28c0267) is executed successfully with 1 completed step, 3 ignored steps, 12 ignored substeps and 11 completed tasks.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="v-call-transcript-level-rna-expression-via-rsem">
+<h3>v. Call transcript level RNA expression via RSEM<a class="headerlink" href="#v-call-transcript-level-rna-expression-via-rsem" title="Link to this heading">#</a></h3>
+<p>Timing &lt;X hours</p>
+<p>Call transcript level RNA expression using RSEM and run multiqc. The gtf file used as input should match the one used to generate the RSEM index and therefore contain transcript-level, not gene-level, information. Add <code class="docutils literal notranslate"><span class="pre">--varVCFfile</span></code> if adding tags during <code class="docutils literal notranslate"><span class="pre">STAR_align</span></code>. Change your <code class="docutils literal notranslate"><span class="pre">--cwd</span></code> option for different filter choice.</p>
+<p>FIXME</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run RNA_calling.ipynb rsem_call \
+    --cwd ../../output_test/star_output \
+    --sample-list ../../PCC_sample_list_subset \
+    --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
+    --STAR-index ../../reference_data/STAR_Index/ \
+    --gtf ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
+    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
+    --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
+    --bam-list ../../output_test/star_output/PCC_sample_list_subset_bam_list \
+    --RSEM-index ../../reference_data/RSEM_Index \
+    -s build  -c ../csg.yml  -q neurology 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Input samples are paired-end sequences.
+INFO: Running <span class=" -Color -Color-Green">rsem_call_1</span>: 
+INFO: t17683f24f8513b9f <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474418 (&quot;job_t17683f24f8513b9f&quot;) has been submitted
+INFO: tfd9bbafcf2595672 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474419 (&quot;job_tfd9bbafcf2595672&quot;) has been submitted
+INFO: t660ceef6ffd66beb <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474420 (&quot;job_t660ceef6ffd66beb&quot;) has been submitted
+INFO: t86853a6bef66a16f <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474421 (&quot;job_t86853a6bef66a16f&quot;) has been submitted
+INFO: t964856c7b9681030 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474422 (&quot;job_t964856c7b9681030&quot;) has been submitted
+INFO: t2445a0809b0320b4 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474423 (&quot;job_t2445a0809b0320b4&quot;) has been submitted
+INFO: td531b7f2ccc37b56 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474424 (&quot;job_td531b7f2ccc37b56&quot;) has been submitted
+INFO: t5826bd542c40b4aa <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474425 (&quot;job_t5826bd542c40b4aa&quot;) has been submitted
+INFO: t5a87f52c0ac43d60 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474426 (&quot;job_t5a87f52c0ac43d60&quot;) has been submitted
+INFO: t1c886f27aef992cb <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474427 (&quot;job_t1c886f27aef992cb&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">10</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">9</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">8</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">8</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">8</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">7</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">6</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">6</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">5</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">4</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">3</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">2</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">2</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">2</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">2</span> tasks.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: <span class=" -Color -Color-Green">rsem_call_1</span> output:   <span class=" -Color -Color-Green">/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.rsem.isoforms.results /restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/1000-PCC.bam.rsem.genes.results... (30 items in 10 groups)</span>
+INFO: Running <span class=" -Color -Color-Green">rsem_call_2</span>: 
+INFO: t8726dc727d5bd7b2 <span class=" -Color -Color-Green">submitted</span> to neurology with job id Your job 2474550 (&quot;job_t8726dc727d5bd7b2&quot;) has been submitted
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+INFO: Waiting for the completion of <span class=" -Color -Color-Green">1</span> task.
+ERROR: [rsem_call_2]: [t8726dc727d5bd7b2]: Executing script in Singularity returns an error (exitcode=1, stderr=/restricted/projectnb/xqtl/xqtl_protocol/output_test/star_output/PCC_sample_list_subset.rsem.aggregated_quality.metrics.stderr).
+The script has been saved to /usr3/graduate/fgrennjr/.sos/bcd8530c53fd4b87//usr3/graduate/fgrennjr/.sos/bcd8530c53fd4b87.To reproduce the error please run:
+<span class=" -Color -Color-Green">singularity exec  /usr3/graduate/fgrennjr/.sos/singularity/library/ghcr.io-cumc-rna_quantification_apptainer-latest.sif micromamba run -a &quot;&quot; -n rna_quantification Rscript /usr3/graduate/fgrennjr/.sos/bcd8530c53fd4b87/singularity_run_768303.R</span>
+[rsem_call]: Exits with 2 pending steps (rsem_call_3, rsem_call_4)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Substep</p></th>
+<th class="head"><p>Problem</p></th>
+<th class="head"><p>Possible Reason</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>!sos run RNA_calling.ipynb -h
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run RNA_calling.ipynb [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  bam_to_fastq
+  fastqc
+  fastp_trim_adaptor
+  trimmomatic_trim_adaptor
+  STAR_align
+  strand_detected
+  picard_qc
+  rnaseqc_call
+  rsem_call
+  filter_reads
+
+Global Workflow Options:
+  --cwd output (as path)
+                        The output directory for generated files.
+  --sample-list VAL (as path, required)
+                        Sample meta data list
+  --sample-name  (as list)
+                        Sample names to analyze
+  --data-dir  path(f&quot;{sample_list:d}&quot;)
+
+                        Raw data directory, default to the same directory as
+                        sample list
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 16G
+                        Memory expected
+  --java-mem 6G
+                        Memory for Java virtual mechine (`picard`)
+  --numThreads 8 (as int)
+                        Number of threads
+  --container &#39;&#39;
+                        Software container option
+  --varVCFfile &#39;&#39;
+                        VarVCFfile for data preparation for wasp_filtering
+  --entrypoint  (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
+
+  --[no-]uncompressed (default to False)
+                        Whether the fasta/fastq file is compressed or not.
+
+Sections
+  bam_to_fastq:
+  fastqc:
+  fastp_trim_adaptor_1:
+    Workflow Options:
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 20 (as int)
+                        the mean quality requirement option for cut_front
+      --trailing 20 (as int)
+                        the mean quality requirement option for cut_tail
+      --min-len 15 (as int)
+                        reads shorter than length_required will be discarded
+      --fasta-with-adapters-etc . (as path)
+                        Path to the reference adaptors
+  fastp_trim_adaptor_2:
+  trimmomatic_trim_adaptor:
+    Workflow Options:
+      --fasta-with-adapters-etc . (as path)
+                        Illumina clip setting Path to the reference adaptors
+      --seed-mismatches 2 (as int)
+      --palindrome-clip-threshold 30 (as int)
+      --simple-clip-threshold 10 (as int)
+      --window-size 4 (as int)
+                        sliding window setting
+      --required-quality 20 (as int)
+      --leading 3 (as int)
+                        Other settings
+      --trailing 3 (as int)
+      --min-len 50 (as int)
+  STAR_align_1:
+    Workflow Options:
+      --gtf VAL (as path, required)
+                        Reference gene model
+      --STAR-index VAL (as path, required)
+                        STAR indexing file
+      --outFilterMultimapNmax 20 (as int)
+      --alignSJoverhangMin 8 (as int)
+      --alignSJDBoverhangMin 1 (as int)
+      --outFilterMismatchNmax 999 (as int)
+      --outFilterMismatchNoverLmax 0.1 (as float)
+      --alignIntronMin 20 (as int)
+      --alignIntronMax 1000000 (as int)
+      --alignMatesGapMax 1000000 (as int)
+      --outFilterType BySJout
+      --outFilterScoreMinOverLread 0.33 (as float)
+      --outFilterMatchNminOverLread 0.33 (as float)
+      --limitSjdbInsertNsj 1200000 (as int)
+      --outSAMstrandField intronMotif
+      --outFilterIntronMotifs None
+      --alignSoftClipAtReferenceEnds Yes
+      --quantMode TranscriptomeSAM GeneCounts (as list)
+      --outSAMattrRGline ID:rg1 SM:sm1 (as list)
+      --outSAMattributes NH HI AS nM NM ch (as list)
+      --chimSegmentMin 15 (as int)
+      --chimJunctionOverhangMin 15 (as int)
+      --chimOutType Junctions WithinBAM SoftClip (as list)
+      --chimMainSegmentMultNmax 1 (as int)
+      --sjdbOverhang 100 (as int)
+      --mapping-quality 255 (as int)
+  strand_detected_1:
+  strand_detected_2:
+    Workflow Options:
+      --strand &#39;&#39;
+  picard_qc, STAR_align_2:
+    Workflow Options:
+      --gtf VAL (as path, required)
+                        Reference gene model
+      --ref-flat VAL (as path, required)
+                        Path to flat reference file, for computing QC metric
+      --reference-fasta VAL (as path, required)
+                        The fasta reference file used to generate star index
+      --optical-distance 100 (as int)
+                        For the patterned flowcell models (HiSeq X), change to
+                        2500
+      --[no-]zap-raw-bam (default to False)
+  STAR_align_3:
+  rnaseqc_call_1:
+    Workflow Options:
+      --bam-list VAL (as path, required)
+      --gtf VAL (as path, required)
+                        Reference gene model
+      --detection-threshold 5 (as int)
+      --mapping-quality 255 (as int)
+  rnaseqc_call_2:
+    Workflow Options:
+      --bam-list VAL (as path, required)
+  rsem_call_1:
+    Workflow Options:
+      --bam-list VAL (as path, required)
+      --RSEM-index VAL (as path, required)
+      --max-frag-len 1000 (as int)
+      --[no-]estimate-rspd (default to True)
+  rsem_call_2:
+    Workflow Options:
+      --bam-list VAL (as path, required)
+  rsem_call_3, rnaseqc_call_3:
+  rsem_call_4, rnaseqc_call_4:
+  filter_reads:
+    Workflow Options:
+      --unique &#39;&#39;
+      --wasp &#39;&#39;
+      --mapping-quality 255 (as int)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="setup-and-global-parameters">
+<h2>Setup and global parameters<a class="headerlink" href="#setup-and-global-parameters" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[global]
+# The output directory for generated files.
+parameter: cwd = path(&quot;output&quot;)
+# Sample meta data list
+parameter: sample_list = path
+# Sample names to analyze
+parameter: sample_name = list() #input should be --sample_name sample1 sample2, if multiple samples
+# Raw data directory, default to the same directory as sample list
+parameter: data_dir = path(f&quot;{sample_list:d}&quot;)
+# For cluster jobs, number commands to run per job
+parameter: job_size = 1
+# Wall clock time expected
+parameter: walltime = &quot;5h&quot;
+# Memory expected
+parameter: mem = &quot;16G&quot;
+# Memory for Java virtual mechine (`picard`)
+parameter: java_mem = &quot;6G&quot;
+# Number of threads
+parameter: numThreads = 8
+# Software container option
+parameter: container = &quot;&quot;
+# VarVCFfile for data preparation for wasp_filtering
+parameter: varVCFfile = &quot;&quot;
+import re
+parameter: entrypoint= (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
+from sos.utils import expand_size
+cwd = path(f&#39;{cwd:a}&#39;)
+## Whether the fasta/fastq file is compressed or not.
+parameter: uncompressed = False
+import os
+import pandas as pd
+## FIX: The way to get sample needs to be revamped to 1. Accomodate rf/fr as column 2. accomodate single end read (Only 2 fq/samples)
+sample_inv = pd.read_csv(sample_list,sep = &quot;\t&quot;)
+
+# Align specific sample, to ensure correct grouping in subsequent steps, perform this step prior to extracting strand, read_length, and sample_id information
+if len(sample_name)&gt;0:
+    print(&quot;Align sample&quot;,sample_specific, &#39;only...&#39;)
+    sample_inv = sample_inv[sample_inv[&#39;ID&#39;].isin(sample_name)] 
+    
+## Extract strand information if user have specified the strand
+strand_inv = []
+
+if &quot;strand&quot; in sample_inv.columns:
+    strand_inv = sample_inv.strand.values.tolist()
+    sample_inv = sample_inv.drop(&quot;strand&quot; , axis = 1)
+    stop_if(not all([x in [&quot;fr&quot;, &quot;rf&quot;, &quot;unstranded&quot;,&quot;strand_missing&quot;] for x in strand_inv ]), msg = &quot;strand columns should only include ``fr``, ``rf``, ``strand_missing`` or ``unstranded``&quot;)
+            
+## Extract read_length if user have specified read_length
+read_length = [0] * len(sample_inv.index)
+if &quot;read_length&quot; in sample_inv.columns:
+    read_length = sample_inv.read_length.values.tolist()
+    sample_inv = sample_inv.drop(&quot;read_length&quot; , axis = 1)
+    
+
+## Extract sample_id
+sample_inv_list = sample_inv.values.tolist()
+sample_id = [x[0] for x in sample_inv_list]
+
+    
+## Get the file name for single/paired end data
+file_inv = [x[1:] for x in sample_inv_list]
+file_inv = [item for sublist in file_inv for item in sublist]
+
+raw_reads = [f&#39;{data_dir}/{x}&#39; for x in file_inv]
+
+
+for y in raw_reads:
+        if not os.path.isfile(y):
+            raise ValueError(f&quot;File {y} does not exist&quot;)
+
+if len(raw_reads) != len(set(raw_reads)):
+        raise ValueError(&quot;Duplicated files are found (but should not be allowed) in sample file list&quot;)
+
+# Is the RNA-seq data pair-end
+is_paired_end = 0 if len(raw_reads) == len(sample_id) else 1 
+from sos.utils import env
+env.logger.info(f&#39;Input samples are {&quot;paired-end&quot; if is_paired_end else &quot;single-end&quot;} sequences.&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-0-convert-bam-back-to-fastq-if-necessary">
+<h2>Step 0: Convert BAM back to fastq if necessary<a class="headerlink" href="#step-0-convert-bam-back-to-fastq-if-necessary" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[bam_to_fastq]
+input: raw_reads, group_by = 1
+output: f&#39;{cwd}/{_input:bn}.1.fastq&#39;,f&#39;{cwd}/{_input:bn}.2.fastq&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    samtools sort -n ${_input} -o ${_output[0]:nn}.sorted.bam
+    bedtools bamtofastq -i ${_output[0]:nn}.sorted.bam -fq ${_output[0]} -fq2 ${_output[1]}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-1-qc-before-alignment">
+<h2>Step 1: QC before alignment<a class="headerlink" href="#step-1-qc-before-alignment" title="Link to this heading">#</a></h2>
+<p>This step utilize <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> and will generate two QC report in <code class="docutils literal notranslate"><span class="pre">html</span></code> format. It should be noted that the <a class="reference external" href="https://www.biostars.org/p/190584/">paired_end reads will also be qc separately</a></p>
+<section id="step-inputs">
+<h3>Step Inputs<a class="headerlink" href="#step-inputs" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fastq1</span></code> and <code class="docutils literal notranslate"><span class="pre">fastq2</span></code>: paths to original <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file.</p></li>
+</ul>
+</section>
+<section id="step-outputs">
+<h3>Step Outputs<a class="headerlink" href="#step-outputs" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Two <code class="docutils literal notranslate"><span class="pre">html</span></code> file for QC report</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[fastqc]
+input: raw_reads, group_by =  1
+output: f&#39;{cwd}/{_input:bn}_fastqc.html&#39;,f&#39;{cwd}/{_input:bn}_fastqc.zip&#39; 
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container=container, entrypoint=entrypoint
+    fastqc ${_input} -o ${_output[0]:d}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-2-remove-adaptor-through-fastp">
+<h2>Step 2: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">fastp</span></code><a class="headerlink" href="#step-2-remove-adaptor-through-fastp" title="Link to this heading">#</a></h2>
+<p>Documentation: <a class="reference external" href="https://github.com/OpenGene/fastp">fastp</a></p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">fastp</span></code> in place of the <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code> for fastp’s ability to detect adapter from the reads. It was a c++ command line tool published in <a class="reference external" href="https://academic.oup.com/bioinformatics/article/34/17/i884/5093234">Sept 2018</a>. It  will use the following algorithm to detect the adaptors:</p>
+<blockquote>
+<div><p>The adapter-sequence detection algorithm is based on two assumptions: the first is that only one adapter exists in the data; the second is that adapter sequences exist only in the read tails. These two assumptions are valid for major next-generation sequencers like Illumina HiSeq series, NextSeq series and NovaSeq series. We compute the k-mer (k = 10) of first N reads (N = 1 M). From this k-mer, the sequences with high occurrence frequencies (&gt;0.0001) are considered as adapter seeds. Low-complexity sequences are removed because they are usually caused by sequencing artifacts. The adapter seeds are sorted by its occurrence frequencies. A tree-based algorithm is applied to extend the adapter seeds to find the real complete adapter</p>
+</div></blockquote>
+<p>It was demostrated that fastp can remove all the adaptor automatically and completely faster than Trimmomatic and cutadapt</p>
+<section id="id1">
+<h3>Step Inputs<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fastq</span></code>: 1 set of fq.gz file for each sample. (2 files if paired end, 1 file if single end )</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Step Outputs<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>1 set of  <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file for alignment. (2 files if paired end, 1 file if single end )</p></li>
+<li><p>The unpaired reads (i.e.where a read survived, but the partner read did not.) will be discarded by default as those were not used in the following steps. This feature can be added were it was needed.</p></li>
+<li><p>1 set of html documenting the quality of input reads(1 html file and 1 json file)</p></li>
+</ul>
+</section>
+<section id="step-options">
+<h3>Step options<a class="headerlink" href="#step-options" title="Link to this heading">#</a></h3>
+<p>A few options were selected to be customizable so that fastp step can have the same level of flexiblity as the Trimmomatic step had. They are:</p>
+<ul class="simple">
+<li><p>min_len: length_required, reads shorter than this will be discarded, default is 15. (int [=15])</p></li>
+<li><p>window_size: cut_window_size, the window size option shared by cut_front, cut_tail or cut_sliding. Range: 1~1000, default: 4 (int [=4])</p></li>
+<li><p>leading/trailing : cut_front_mean_quality/cut_tail_mean_quality, the mean quality requirement option for cut_front/cut_tail, which move a sliding window from front/tail, drop the bases in the window if its mean quality &lt; threshold. <strong>Notice the choice of quality score in <code class="docutils literal notranslate"><span class="pre">fastp</span></code> (N=20) is a lot higher than that of <code class="docutils literal notranslate"><span class="pre">trimmomatic</span></code> (N=3)</strong>. Default <code class="docutils literal notranslate"><span class="pre">fastp</span></code> setting is in line with that of <a class="reference external" href="https://cutadapt.readthedocs.io/en/stable/guide.html"><code class="docutils literal notranslate"><span class="pre">cutadapt</span></code></a>.</p></li>
+</ul>
+<p>The default value are set to be the same as the default value of the <code class="docutils literal notranslate"><span class="pre">fastp</span></code> software.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[fastp_trim_adaptor_1]
+# sliding window setting
+parameter: window_size = 4
+parameter: required_quality = 20
+# the mean quality requirement option for cut_front
+parameter: leading = 20
+# the mean quality requirement option for cut_tail
+parameter: trailing = 20
+# reads shorter than length_required will be discarded
+parameter: min_len = 15
+# Path to the reference adaptors
+parameter: fasta_with_adapters_etc = path(&quot;.&quot;)
+warn_if(fasta_with_adapters_etc.is_file(),msg = &quot;Use input fasta and adaptor detection of paired-end read was disabled&quot; )
+
+input: raw_reads, group_by = is_paired_end + 1 , group_with = &quot;sample_id&quot;
+output: [f&#39;{cwd}/{path(x):bn}.trimmed.fq.gz&#39; for x in _input]
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash:  container=container,expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+        fastp -i ${f&#39;{_input[0]} -I {_input[1]}&#39; if is_paired_end else _input} -o ${ f&#39;{_output[0]} -O {_output[1]}&#39; if is_paired_end else _output } \
+            ${f&#39;--adapter_fasta {fasta_with_adapters_etc}&#39; if fasta_with_adapters_etc.is_file() else &quot;--detect_adapter_for_pe&quot;}  -V -h ${_output[0]:n}.html -j ${_output[0]:n}.json -w ${numThreads} \
+            --length_required ${min_len}  -W ${window_size} -M ${required_quality} -5 -3 --cut_front_mean_quality ${leading} --cut_tail_mean_quality ${leading}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[fastp_trim_adaptor_2]
+input: group_by = &quot;all&quot;
+output: f&#39;{cwd}/{sample_list:n}.trimmed.txt&#39;
+sample_inv_tmp = pd.read_csv(sample_list,sep = &quot;\t&quot;)
+import csv
+if is_paired_end:
+    sample_inv_tmp.fq1 = [f&#39;{x:r}&#39;.replace(&quot;&#39;&quot;,&quot;&quot;) for x in _input][::2]
+    sample_inv_tmp.fq2 = [f&#39;{x:r}&#39;.replace(&quot;&#39;&quot;,&quot;&quot;) for x in _input][1::2]
+else:
+    sample_inv_tmp.fq1 = [f&#39;{x:r}&#39;.replace(&quot;&#39;&quot;,&quot;&quot;) for x in _input]
+sample_inv_tmp.to_csv(_output,sep = &quot;\t&quot;,index = 0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-2-alternative-remove-adaptor-through-trimmomatic">
+<h2>Step 2 Alternative: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code><a class="headerlink" href="#step-2-alternative-remove-adaptor-through-trimmomatic" title="Link to this heading">#</a></h2>
+<p>Documentation: <a class="reference external" href="http://www.usadellab.org/cms/?page=trimmomatic">Trimmomatic</a></p>
+<p>We have replaced this with <code class="docutils literal notranslate"><span class="pre">fastp</span></code>, see above, which performs better than <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code> in terms of removing adaptors that <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code> cannot detect. <code class="docutils literal notranslate"><span class="pre">fastp</span></code> can also automatically guess the adapter sequences from data and by default no adapter sequence is required for input to <code class="docutils literal notranslate"><span class="pre">fastp</span></code>.</p>
+<section id="id3">
+<h3>Step Inputs<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">software_dir</span></code>: directory for the software</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fasta_with_adapters_etc</span></code>: <strong>filename</strong> for the adapter reference file. According to <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code> documention,</p></li>
+</ul>
+<blockquote>
+<div><p>As a rule of thumb newer libraries will use <code class="docutils literal notranslate"><span class="pre">TruSeq3</span></code>, but this really depends on your service provider. If you use FASTQC, the “Overrepresented Sequences” report can help indicate which adapter file is best suited for your data. “Illumina Single End” or “Illumina Paired End” sequences indicate single-end or paired-end <code class="docutils literal notranslate"><span class="pre">TruSeq2</span></code> libraries, and the appropriate adapter files are <code class="docutils literal notranslate"><span class="pre">TruSeq2-SE.fa</span></code> and <code class="docutils literal notranslate"><span class="pre">TruSeq2-PE.fa</span></code> respectively. “TruSeq Universal Adapter” or “TruSeq Adapter, Index …” indicates <code class="docutils literal notranslate"><span class="pre">TruSeq-3</span></code> libraries, and the appropriate adapter files are <code class="docutils literal notranslate"><span class="pre">TruSeq3-SE.fa</span></code> or <code class="docutils literal notranslate"><span class="pre">TruSeq3-PE.fa</span></code>, for single-end and paired-end data respectively. Adapter sequences for <code class="docutils literal notranslate"><span class="pre">TruSeq2</span></code> multiplexed libraries, indicated by “Illumina Multiplexing
+…”, and the various RNA library preparations are not currently included.</p>
+</div></blockquote>
+<p>We have <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> workflow previously defined and executed. Users should decide what fasta adapter reference to use based on <code class="docutils literal notranslate"><span class="pre">fastqc</span></code> results (or their own knowledge).</p>
+</section>
+<section id="id4">
+<h3>Step Outputs<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Two paired <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file for alignment</p></li>
+<li><p>Two unpaired <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code></p></li>
+</ul>
+<blockquote>
+<div><p>For single-ended data, one input and one output file are specified, plus the processing steps. For paired-end data, two input files are specified, and 4 output files, 2 for the ‘paired’ output where both reads survived the processing, and 2 for corresponding ‘unpaired’ output where a read survived, but the partner read did not.</p>
+</div></blockquote>
+<p><strong>You need to figure out from fastqc results what adapter reference sequence to use.</strong>, eg <code class="docutils literal notranslate"><span class="pre">--fasta_with_adapters_etc</span> <span class="pre">TruSeq3-PE.fa</span></code>. These files can be downloaded from <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code> github repo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[trimmomatic_trim_adaptor]
+# Illumina clip setting
+# Path to the reference adaptors
+parameter: fasta_with_adapters_etc = path(&quot;.&quot;)
+parameter: seed_mismatches = 2
+parameter: palindrome_clip_threshold = 30
+parameter: simple_clip_threshold = 10
+# sliding window setting
+parameter: window_size = 4
+parameter: required_quality = 20
+# Other settings
+parameter: leading = 3
+parameter: trailing = 3
+parameter: min_len = 50
+input: raw_reads, group_by = is_paired_end + 1 , group_with = &quot;sample_id&quot;
+output: ([ f&#39;{cwd}/{_sample_id}_paired_{_input[0]:bn}.gz&#39;, f&#39;{cwd}/{_sample_id}_unpaired_{_input[0]:bn}.gz&#39;,  f&#39;{cwd}/{_sample_id}_paired_{_input[1]:bn}.gz&#39;,f&#39;{cwd}/{_sample_id}_unpaired_{_input[1]:bn}.gz&#39; ] if is_paired_end else f&#39;{cwd}/{_sample_id}_trimmed_{_input:bn}.gz&#39;)
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    trimmomatic -Xmx${java_mem} ${&quot;PE&quot; if is_paired_end else &quot;SE&quot;}  -threads ${numThreads} \
+        ${_input:r}  ${_output:r} \
+        ILLUMINACLIP:${fasta_with_adapters_etc}:${seed_mismatches}:${palindrome_clip_threshold}:${simple_clip_threshold} \
+        LEADING:${leading} TRAILING:${trailing} SLIDINGWINDOW:${window_size}:${required_quality} MINLEN:${min_len}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-3-alignment-through-star">
+<h2>Step 3: Alignment through <code class="docutils literal notranslate"><span class="pre">STAR</span></code><a class="headerlink" href="#step-3-alignment-through-star" title="Link to this heading">#</a></h2>
+<p>Documentation : <a class="reference external" href="https://github.com/alexdobin/STAR">STAR</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_STAR.py">Script in docker</a></p>
+<p>This step is the main step for <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment.</p>
+<p>Originally, the STAR alignment is implemented using the run_STAR.py command from gtex. However, in order to <a class="reference external" href="https://github.com/cumc/xqtl-protocol/issues/318">accomodate different read length among samples</a>, We reimplement what was included in the wrapper, including the re-alignment of STAR unsorted bam using samtools to avoid high mem consumption.</p>
+<section id="id5">
+<h3>Step Inputs<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>paths to trimmed <code class="docutils literal notranslate"><span class="pre">fastq.gz</span></code> file from Step 1 as documented in the new sample list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STAR_index</span></code>: directory for the STAR aligment index</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Step Outputs<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>bam file output <code class="docutils literal notranslate"><span class="pre">${cwd}/{sample_id}.Aligned.sortedByCoord.bam</span></code>, will be used in step 3 and 4</p></li>
+<li><p>bam file output <code class="docutils literal notranslate"><span class="pre">${cwd}/{sample_id}.Aligned.toTranscriptome.bam</span></code>, will be used in step 5</p></li>
+</ul>
+<p><strong>NB:</strong> “<span class="math notranslate nohighlight">\({}&quot; and &quot;\)</span>[]” are exchangeable as expension, just to keep them consistent throught the bash block.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[STAR_align_1]
+# Reference gene model
+parameter: gtf = path
+# STAR indexing file
+parameter: STAR_index = path
+parameter: outFilterMultimapNmax = 20 
+parameter: alignSJoverhangMin = 8 
+parameter: alignSJDBoverhangMin = 1 
+parameter: outFilterMismatchNmax = 999 
+parameter: outFilterMismatchNoverLmax = 0.1 #larger than Yang&#39;s group (outFilterMismatchNoverReadLmax 0.04)
+parameter: alignIntronMin = 20 
+parameter: alignIntronMax = 1000000 
+parameter: alignMatesGapMax = 1000000 
+parameter: outFilterType =  &quot;BySJout&quot; 
+parameter: outFilterScoreMinOverLread = 0.33 
+parameter: outFilterMatchNminOverLread = 0.33 
+parameter: limitSjdbInsertNsj = 1200000 
+parameter: outSAMstrandField = &quot;intronMotif&quot; 
+parameter: outFilterIntronMotifs = &quot;None&quot; 
+parameter: alignSoftClipAtReferenceEnds = &quot;Yes&quot; 
+parameter: quantMode = [&quot;TranscriptomeSAM&quot;, &quot;GeneCounts&quot;]
+parameter: outSAMattrRGline = [&quot;ID:rg1&quot;, &quot;SM:sm1&quot;]
+parameter: outSAMattributes = [&quot;NH&quot;, &quot;HI&quot;, &quot;AS&quot;, &quot;nM&quot;, &quot;NM&quot;, &quot;ch&quot;] #(Yang&#39;s group: outSAMattributes NH HI AS nM XS vW). vW added is varVCFfile is set
+parameter: chimSegmentMin = 15 
+parameter: chimJunctionOverhangMin = 15 
+parameter: chimOutType = [&quot;Junctions&quot;, &quot;WithinBAM&quot;, &quot;SoftClip&quot;]
+parameter: chimMainSegmentMultNmax = 1 
+parameter: sjdbOverhang = 100
+parameter: mapping_quality = 255
+if int(mem.replace(&quot;G&quot;,&quot;&quot;)) &lt;  40:
+    print(&quot;Insufficent memory for STAR, changing to 40G&quot;)
+    star_mem = &#39;40G&#39;
+else:
+    star_mem = mem
+if varVCFfile:
+    if not path(varVCFfile).is_file():
+        raise FileNotFoundError(f&quot;Cannot find varVCFfile ``{varVCFfile}``&quot;)
+    print(&quot;Adding wasp filter in STAR alignment&quot;)
+# This option is commented out because it will force the downstream analysis to use 40G, which significantlly slow down the process.
+input: raw_reads, group_by = is_paired_end + 1, group_with = {&quot;sample_id&quot;,&quot;read_length&quot;}
+output: cord_bam = f&#39;{cwd}/{_sample_id}.Aligned.sortedByCoord.out.bam&#39;,
+        trans_bam = f&#39;{cwd}/{_sample_id}.Aligned.toTranscriptome.out.bam&#39;
+if _read_length == 0:
+    print(&quot;Using specified --sjdbOverhang as read length&quot;)
+else:
+    print(&quot;Using read length specified in the sample list&quot;)
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = star_mem, cores = numThreads
+bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    
+    # Remove previous output files
+    rm -rf $[cwd]/$[_sample_id].*.out.*.gz
+    rm -rf $[cwd]/$[_sample_id]._STARpass1
+
+    set -e
+
+    # Record start timestamp for alignment
+    align_start_time=$(date +%s)
+
+    # Run STAR alignment
+    star --runMode alignReads \
+         --runThreadN $[numThreads] \
+         --genomeDir $[STAR_index] \
+         --readFilesIn $[_input:r] \
+         --readFilesCommand $[&quot;cat&quot; if uncompressed else &quot;zcat&quot;] \
+         --outFileNamePrefix $[_output[0]:nnnn]. \
+         --outSAMstrandField $[outSAMstrandField] \
+         --twopassMode Basic \
+         --outFilterMultimapNmax $[outFilterMultimapNmax] \
+         --alignSJoverhangMin $[alignSJoverhangMin] \
+         --alignSJDBoverhangMin $[alignSJDBoverhangMin] \
+         --outFilterMismatchNmax $[outFilterMismatchNmax] \
+         --outFilterMismatchNoverLmax $[outFilterMismatchNoverLmax] \
+         --alignIntronMin $[alignIntronMin] \
+         --alignIntronMax $[alignIntronMax] \
+         --alignMatesGapMax $[alignMatesGapMax] \
+         --outFilterType $[outFilterType] \
+         --outFilterScoreMinOverLread $[outFilterScoreMinOverLread] \
+         --outFilterMatchNminOverLread $[outFilterMatchNminOverLread] \
+         --limitSjdbInsertNsj $[limitSjdbInsertNsj] \
+         --outFilterIntronMotifs $[outFilterIntronMotifs] \
+         --alignSoftClipAtReferenceEnds $[alignSoftClipAtReferenceEnds] \
+         --quantMode $[&quot; &quot;.join(quantMode)] \
+         --outSAMtype BAM Unsorted \
+         --outSAMunmapped Within \
+         --genomeLoad NoSharedMemory \
+         --chimSegmentMin $[chimSegmentMin] \
+         --chimJunctionOverhangMin $[chimJunctionOverhangMin] \
+         --chimOutType $[&quot; &quot;.join(chimOutType)] \
+         --chimMainSegmentMultNmax $[chimMainSegmentMultNmax] \
+         --chimOutJunctionFormat 0 \
+         --outSAMattributes $[&quot; &quot;.join(outSAMattributes)] $[&quot;vW&quot; if varVCFfile else &quot;&quot;] \
+         --outSAMattrRGline $[&quot; &quot;.join(outSAMattrRGline)] \
+         --sjdbOverhang $[sjdbOverhang if _read_length == 0 else _read_length ] \
+         --sjdbGTFfile $[gtf] $[(&quot;--varVCFfile %s --waspOutputMode SAMtag&quot; % varVCFfile) if varVCFfile else &quot;&quot;]
+
+    # Record end timestamp for alignment and calculate runtime
+    align_end_time=$(date +%s)
+    align_runtime=$((align_end_time - align_start_time))
+
+    # Remove temporary files
+    rm -r $[_output[0]:nnnn]._STARgenome
+    $[ f&#39;rm -rf [_output[0]:nnnn]._STARtmp&#39; if is_paired_end else &quot;&quot;]
+
+    # Record start timestamp for sorting
+    sort_start_time=$(date +%s)
+
+    # Sort the aligned BAM file
+    samtools sort --threads $[numThreads] -o $[_output[0]:nnnn].Aligned.sortedByCoord.out.bam $[_output[0]:nnnn].Aligned.out.bam
+    rm $[_output[0]:nnnn].Aligned.out.bam
+
+    # Record end timestamp for sorting and calculate runtime
+    sort_end_time=$(date +%s)
+    sort_runtime=$((sort_end_time - sort_start_time))
+
+    # Index the final BAM file
+    samtools index $[_output[0]]
+
+    # Print runtime information
+    echo &quot;STAR alignment started at: $(date -d @$align_start_time)&quot;
+    echo &quot;STAR alignment ended at: $(date -d @$align_end_time)&quot;
+    echo &quot;STAR alignment runtime: $align_runtime seconds&quot;
+    echo &quot;&quot;
+    echo &quot;Sorting started at: $(date -d @$sort_start_time)&quot;
+    echo &quot;Sorting ended at: $(date -d @$sort_end_time)&quot;
+    echo &quot;Sorting runtime: $sort_runtime seconds&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[strand_detected_1: shared=&quot;step_strand_detected&quot;]
+input: output_from(&quot;STAR_align_1&quot;)[&quot;trans_bam&quot;], group_with = &quot;sample_id&quot;
+import pandas as pd
+ReadsPerGene = pd.read_csv(f&#39;{cwd}/{_sample_id}.ReadsPerGene.out.tab&#39; , sep = &quot;\t&quot; , header = None )
+ReadsPerGene_list = ReadsPerGene.loc[3::,].sum(axis = 0, numeric_only = True).values.tolist()
+strand_percentage = [x/ReadsPerGene_list[0] for x in ReadsPerGene_list]
+print(f&#39;for sample {_sample_id}&#39;)
+if strand_percentage[1] &gt; 0.9:
+    print(f&#39;Counts for the 1st read strand aligned with RNA is {strand_percentage[1]}, &gt; 90% of aligned count&#39;)
+    print(&#39;Data is likely FR/fr-secondstrand&#39;)
+    strand_detected = &quot;fr&quot;
+elif  strand_percentage[2] &gt; 0.9:
+    print(f&#39;Counts for the 2nd read strand aligned with RNA is {strand_percentage[2]}, &gt; 90% of aligned count&#39;)
+    print(&#39;Data is likely RF/fr-firststrand&#39;)
+    strand_detected = &quot;rf&quot;
+elif max( strand_percentage[1],  strand_percentage[2]) &lt; 0.6:
+    print(f&#39;Both {strand_percentage[1]} and  {strand_percentage[2]} are under 60% of reads explained by one direction&#39;)
+    print(&#39;Data is likely unstranded&#39;)
+    strand_detected = &quot;unstranded&quot;
+else:
+    strand_detected = &#39;strand_missing&#39; 
+    print(f&#39;Data does not fall into a likely stranded (max percent explained {max( strand_percentage[1],  strand_percentage[2])} &gt; 0.9) or unstranded layout (max percent explained {max( strand_percentage[1],  strand_percentage[2])} &lt; 0.6), please check your data and manually specified the ``--strand`` option as ``fr``, ``rf`` or ``unstranded``&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[strand_detected_2: shared=&quot;strand&quot;]
+input: group_by = &quot;all&quot;
+parameter: strand = &quot;&quot;
+import pandas as pd
+if not strand:
+    if len(strand_inv) &gt; 0:
+        strand = strand_inv
+        for i in range(0,len(strand)):
+            if strand[i] == &quot;strand_missing&quot;:
+                strand[i] = step_strand_detected[i]
+        print(f&#39;Using strand specified in the input samples list {strand}, replacing strand_missing with detected strand&#39;)
+    else:
+        warn_if(not all(x is step_strand_detected[0] for x in step_strand_detected), msg = &quot;strands detected are different among samples, please check your protocol, we will use the detected strand for each samples&quot;)    
+        strand = step_strand_detected
+        print(f&#39;Using detected strand for each samples {strand}&#39;)
+else:
+    stop_if(strand not in [&quot;fr&quot;, &quot;rf&quot;, &quot;unstranded&quot;], msg = &quot;``--strand`` option should be ``fr``, ``rf`` or ``unstranded``&quot;)
+    print(f&#39;Using ``--strand`` overwrite option for all the samples {strand[0]}&#39;) 
+    strand = [strand] * len(step_strand_detected)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-4-mark-duplicates-reads-qc-through-picard">
+<h2>Step 4: Mark duplicates reads &amp; QC through <code class="docutils literal notranslate"><span class="pre">Picard</span></code><a class="headerlink" href="#step-4-mark-duplicates-reads-qc-through-picard" title="Link to this heading">#</a></h2>
+<p>This step is the first QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment. This step will performed QC to collect multipe metrics regarding the RNASeq using Picard. Then it will also generate a new <code class="docutils literal notranslate"><span class="pre">.bam</span></code> file with duplication marked with the hexadecimal value of <code class="docutils literal notranslate"><span class="pre">0x0400</span></code>, which corresponds to a decimal value of 1024</p>
+<section id="id7">
+<h3>Step Inputs:<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STAR_bam</span></code>: path to the output in Step 2.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reference_fasta</span></code>:  The fasta reference file used to generate star index, it is critical that the this fasta is <em>exactly</em> the same as those that generate the STAR Index, else this error will occurs: <a class="github reference external" href="https://github.com/cumc/xqtl-protocol/issues/357">cumc/xqtl-protocol#357</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RefFlat</span> <span class="pre">file</span></code></p></li>
+</ul>
+<p>This file is needed for picard CollectRnaSeqMetrics module, which in turn</p>
+<blockquote>
+<div><p>produces metrics describing the distribution of the bases within the transcripts. It calculates the total numbers and the fractions of nucleotides within specific genomic regions including untranslated regions (UTRs), introns, intergenic sequences (between discrete genes), and peptide-coding sequences (exons). This tool also determines the numbers of bases that pass quality filters that are specific to Illumina data (PF_BASES).</p>
+</div></blockquote>
+<p>The refFlat file can be generated by the reference_data module, RefFlat_generation step.</p>
+</section>
+<section id="id8">
+<h3>Step Outputs:<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A collection of metrics file for each of the samples</p></li>
+<li><p>A new <code class="docutils literal notranslate"><span class="pre">.bam</span></code> file with duplication marked with the hexadecimal value of <code class="docutils literal notranslate"><span class="pre">0x0400</span></code>, which corresponds to a decimal value of 1024</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[picard_qc, STAR_align_2]
+# Reference gene model
+parameter: gtf = path
+depends: sos_variable(&#39;strand&#39;)
+# Path to flat reference file, for computing QC metric
+parameter: ref_flat = path
+# The fasta reference file used to generate star index
+parameter: reference_fasta = path
+# For the patterned flowcell models (HiSeq X), change to 2500
+parameter: optical_distance = 100
+parameter: zap_raw_bam = False
+picard_strand_dict = {&quot;rf&quot;:&quot;SECOND_READ_TRANSCRIPTION_STRAND&quot;,&quot;fr&quot;: &quot;FIRST_READ_TRANSCRIPTION_STRAND&quot;,&quot;unstranded&quot;:&quot;NONE&quot; }
+input: output_from(&#39;filter_reads&#39;), group_by = 2, group_with = {&quot;sample_id&quot;,&quot;strand&quot;}
+output: picard_metrics = f&#39;{cwd}/{_sample_id}.alignment_summary_metrics&#39;,
+        picard_rna_metrics = f&#39;{cwd}/{_sample_id}.rna_metrics&#39;,
+        md_bam = f&#39;{_input[0]:n}.md.bam&#39;,
+        md_metrics = f&#39;{_input[0]:n}.md.metrics&#39;,
+        bigwig = f&#39;{_input[0]:n}.md.bw&#39;,
+        output_summary = f&#39;{cwd}/{_sample_id}.bam_file_meta&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    # Record start timestamp for CollectMultipleMetrics
+    start_time=$(date +%s)
+    echo &quot;CollectMultipleMetrics started at: $(date)&quot;
+    set -e
+    picard -Xmx${java_mem} CollectMultipleMetrics \
+        -REFERENCE_SEQUENCE ${reference_fasta} \
+        -PROGRAM CollectAlignmentSummaryMetrics \
+        -PROGRAM CollectInsertSizeMetrics \
+        -PROGRAM QualityScoreDistribution \
+        -PROGRAM MeanQualityByCycle \
+        -PROGRAM CollectBaseDistributionByCycle \
+        -PROGRAM CollectGcBiasMetrics \
+        -VALIDATION_STRINGENCY STRICT \
+        -INPUT  ${_input[&quot;cord_bam_wasp_qc&quot;]} \
+        -OUTPUT  ${_output[0]:n}
+    
+    # Record end timestamp and calculate runtime for CollectMultipleMetrics
+    end_time=$(date +%s)
+    runtime=$((end_time - start_time))
+    echo &quot;CollectMultipleMetrics ended at: $(date)&quot;
+    echo &quot;CollectMultipleMetrics runtime: $runtime seconds&quot;
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[-1]:n}.stderr&#39;, stdout = f&#39;{_output[-1]:n}.stdout&#39;, entrypoint=entrypoint
+    start_time=$(date +%s)
+    echo &quot;MarkDuplicates started at: $(date)&quot;
+    set -e
+    picard -Xmx${java_mem}  MarkDuplicates \
+        -I ${_input[&quot;cord_bam_wasp_qc&quot;]}  \
+        -O ${_output[2]} \
+        -PROGRAM_RECORD_ID null \
+        -M ${_output[3]} \
+        -TMP_DIR ${cwd}\
+        -MAX_RECORDS_IN_RAM 500000 -SORTING_COLLECTION_SIZE_RATIO 0.25 \
+        -ASSUME_SORT_ORDER coordinate \
+        -TAGGING_POLICY DontTag \
+        -OPTICAL_DUPLICATE_PIXEL_DISTANCE ${optical_distance} \
+        -CREATE_INDEX true \
+        -CREATE_MD5_FILE true \
+        -VALIDATION_STRINGENCY STRICT \
+        -REMOVE_SEQUENCING_DUPLICATES false \
+        -REMOVE_DUPLICATES false
+    samtools index ${_output[2]}
+    # Record end timestamp and calculate runtime for MarkDuplicates
+    end_time=$(date +%s)
+    runtime=$((end_time - start_time))
+    echo &quot;MarkDuplicates ended at: $(date)&quot;
+    echo &quot;MarkDuplicates runtime: $runtime seconds&quot;
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, stdout = f&#39;{_output[0]:n}.rna_metrics.stdout&#39;, entrypoint=entrypoint
+    set -e
+    # Get only lines with rRNA and transcript_id from the GTF file
+    cat ${gtf} | grep rRNA | grep transcript_id &gt; ${cwd}/$(basename ${gtf}).tmp.${_input[&quot;cord_bam_wasp_qc&quot;]:bnnnn}  # To avoid data racing problem, modification was made here to change the output location to the output path
+    
+    # Extract header from the BAM file
+    samtools view -H ${_input[&quot;cord_bam_wasp_qc&quot;]}  &gt; ${_input[&quot;cord_bam_wasp_qc&quot;]}.RI
+
+python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, stdout = f&#39;{_output[0]:n}.rna_metrics.stdout&#39;, entrypoint=entrypoint
+        import os
+        import pandas as pd
+        from collections import defaultdict
+        chrom = []
+        start = []
+        end = []
+        strand = []
+        tag = []
+        filename = os.path.basename(&quot;${gtf}.tmp.${_input[&quot;cord_bam_wasp_qc&quot;]:bnnnn}&quot;)
+        annotation_gtf = os.path.join(&quot;${cwd}&quot;,filename) # also change the path to read the file only with rRNA and transcript_id from the GTF file
+
+        with open(annotation_gtf, &#39;r&#39;) as gtf:
+            for row in gtf:
+                row = row.strip().split(&#39;\t&#39;)
+                if row[0][0]==&#39;#&#39; or row[2]!=&quot;transcript&quot;: continue # skip header
+                chrom.append(row[0])
+                start.append(row[3])
+                end.append(row[4])
+                strand.append(row[6])
+                attributes = defaultdict()
+                for a in row[8].replace(&#39;&quot;&#39;, &#39;&#39;).split(&#39;;&#39;)[:-1]:
+                    kv = a.strip().split(&#39; &#39;)
+                    if kv[0]!=&#39;tag&#39;:
+                        attributes[kv[0]] = kv[1]
+                    else:
+                        attributes.setdefault(&#39;tags&#39;, []).append(kv[1])
+                tag.append(attributes)
+        transcript_id = [x[&quot;transcript_id&quot;] for x in tag]
+        RI = pd.DataFrame(data={&#39;chr&#39;:chrom, &#39;start&#39;:start, &#39;end&#39;:end, &#39;strand&#39;:strand,&#39;transcript_id&#39; : transcript_id })
+        RI.to_csv(&quot;${_input[&quot;cord_bam_wasp_qc&quot;]}.RI&quot;, index = 0, header = 0, mode = &quot;a&quot;,sep = &quot;\t&quot; )
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.rna_metrics.stderr&#39;, stdout = f&#39;{_output[0]:n}.rna_metrics.stdout&#39;, entrypoint=entrypoint
+    # Record start timestamp for CollectRnaSeqMetrics
+    start_time=$(date +%s)
+    echo &quot;CollectRnaSeqMetrics started at: $(date)&quot;
+    set -e
+    picard -Xmx${java_mem} CollectRnaSeqMetrics \
+        -REF_FLAT ${ref_flat} \
+        -RIBOSOMAL_INTERVALS ${_input[&quot;cord_bam_wasp_qc&quot;]}.RI \
+        -STRAND_SPECIFICITY ${picard_strand_dict[_strand]} \
+        -CHART_OUTPUT ${_output[0]:n}.rna_metrics.pdf \
+        -VALIDATION_STRINGENCY STRICT \
+        -INPUT ${_input[&quot;cord_bam_wasp_qc&quot;]}  \
+        -OUTPUT  ${_output[0]:n}.rna_metrics
+    
+    rm ${cwd}/$(basename ${gtf}).tmp.${_input[&quot;cord_bam_wasp_qc&quot;]:bnnnn} # remove the path of the corresponding file with only rRNA and transcript_id from the GTF file
+    
+    # Record end timestamp and calculate runtime for CollectRnaSeqMetrics
+    end_time=$(date +%s)
+    runtime=$((end_time - start_time))
+    echo &quot;CollectRnaSeqMetrics ended at: $(date)&quot;
+    echo &quot;CollectRnaSeqMetrics runtime: $runtime seconds&quot;
+
+bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.bw.stderr&#39;, stdout = f&#39;{_output[0]:n}.bw.stdout&#39;, entrypoint=entrypoint
+    generate_bigwig() {
+        # Check if enough arguments are provided
+        if [[ $# -ne 1 ]]; then
+            echo &quot;Usage: generate_bigwig &lt;file.bam&gt;&quot;
+            return 1
+        fi
+
+        local input_file=&quot;$1&quot;
+        
+        # Derive file.bw from file.bam
+        local bigwig_file=&quot;${input_file%.*}.bw&quot;
+
+        # Execute the commands
+        samtools index &quot;$input_file&quot;
+        bamcoverage -b &quot;$input_file&quot; -o &quot;$bigwig_file&quot;
+    }
+
+    export -f generate_bigwig  # To make it available in subshells, if needed.
+    generate_bigwig $[_output[&quot;md_bam&quot;]]
+
+import pandas as pd
+out = pd.DataFrame({
+    &quot;sample_id&quot;: _sample_id,
+    &quot;strand&quot;: _strand,
+    &quot;coord_bam_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:b}&#39;,
+    &quot;BW_list&quot;: f&#39;{_output[&quot;bigwig&quot;]:b}&#39;,
+    &quot;SJ_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnnn}.SJ.out.tab&#39;,
+    &quot;trans_bam_list&quot;: f&#39;{_output[&quot;md_bam&quot;]:bnnnn}.toTranscriptome.out{&quot;_wasp_qc&quot; if varVCFfile else &quot;&quot;}.bam&#39;},
+    index=[0])
+out.to_csv(_output[&quot;output_summary&quot;], sep=&quot;\t&quot;, index=False)
+
+if zap_raw_bam:
+    _input[&quot;cord_bam_wasp_qc&quot;].zap()
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[STAR_align_3]
+input: group_by = &quot;all&quot;
+depends: sos_variable(&quot;strand&quot;)
+output: f&#39;{cwd}/{sample_list:bn}.bam_file_list&#39;
+task: trunk_workers = 1, trunk_size = 1, walltime = walltime, mem = mem, cores = 1
+python: container=container, expand= &quot;${ }&quot;, entrypoint=entrypoint
+
+    import pandas as pd
+
+    coord_bam_list = [${_input:br,}][2::6]
+    sorted_bigwig_list = [${_input:br,}][4::6]
+    SJ_list = [f&#39;{x}.SJ.out.tab&#39; for x in [${_input:bnnnnnr,}][2::6]]
+    trans_bam_list = [f&#39;{x}.toTranscriptome.out{&quot;_wasp_qc&quot; if &quot;${varVCFfile}&quot; else &quot;&quot;}.bam&#39; for x in [${_input:bnnnnr,}][2::6]]
+
+    out = pd.DataFrame({
+        &quot;sample_id&quot;: ${sample_id},
+        &quot;strand&quot;: ${strand},
+        &quot;coord_bam_list&quot;: coord_bam_list,
+        &quot;BW_list&quot;: sorted_bigwig_list,
+        &quot;SJ_list&quot;: SJ_list,
+        &quot;trans_bam_list&quot;: trans_bam_list
+    })
+
+    out.to_csv(&quot;${_output}&quot;, sep=&quot;\t&quot;, index=False)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-5-post-aligment-qc-through-rna-seqc">
+<h2>Step 5: Post aligment QC through <code class="docutils literal notranslate"><span class="pre">RNA-SeQC</span></code><a class="headerlink" href="#step-5-post-aligment-qc-through-rna-seqc" title="Link to this heading">#</a></h2>
+<p>Documentation : <a class="reference external" href="https://github.com/getzlab/rnaseqc">RNA-SeQC</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_rnaseqc.py">Script in docker</a></p>
+<p>This step is second QC step after <code class="docutils literal notranslate"><span class="pre">STAR</span></code> alignment. It will perform RNA-seq quantification as well.</p>
+<section id="id9">
+<h3>Step Inputs<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bam_list</span></code>: path to the output of STAR_output, which outlined the strands and bam file used for each samples.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gtf</span></code>: reference genome <code class="docutils literal notranslate"><span class="pre">.gtf</span></code> file, this gtf file need to have the same chr name format as the index used to generate the bam file and must be on collapsed gene gtf</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Step Outputs<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>The following output files are generated in the output directory you provide:</p>
+<ul class="simple">
+<li><p>{sample}.metrics.tsv : A tab-delimited list of (Statistic, Value) pairs of all statistics and metrics recorded.</p></li>
+<li><p>{sample}.exon_reads.gct : A tab-delimited GCT file with (Exon ID, Gene Name, coverage) tuples for all exons which had at least part of one read mapped.</p></li>
+<li><p>{sample}.gene_reads.gct : A tab-delimited GCT file with (Gene ID, Gene Name, coverage) tuples for all genes which had at least one read map to at least one of its exons</p></li>
+<li><p>{sample}.gene_tpm.gct : A tab-delimited GCT file with (Gene ID, Gene Name, TPM) tuples for all genes reported in the gene_reads.gct file. Note: this file is renamed to .gene_rpkm.gct if the –rpkm flag is present.</p></li>
+<li><p>{sample}.fragmentSizes.txt : A list of fragment sizes recorded, if a BED file was provided</p></li>
+<li><p>{sample}.coverage.tsv : A tab-delimited list of (Gene ID, Transcript ID, Mean Coverage, Coverage Std, Coverage CV) tuples for all transcripts encountered in the GTF.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rnaseqc_call_1]
+import os
+import pandas as pd
+parameter: bam_list = path
+# Reference gene model
+parameter: gtf = path
+sample_inv = pd.read_csv(bam_list,sep = &quot;\t&quot;)
+parameter: detection_threshold = 5
+parameter: mapping_quality = 255
+## Extract strand information if user have specified the strand
+strand_list = sample_inv.strand.values.tolist()
+stop_if(not all([x in [&quot;fr&quot;, &quot;rf&quot;, &quot;unstranded&quot;] for x in strand_list ]), msg = &quot;strand columns should only include ``fr``, ``rf`` or ``unstranded``, please check the bam_list&quot;)     
+## Extract sample_id
+sample_id = sample_inv.sample_id.values.tolist()
+    
+## Get the file name for cood_bam data
+coord_bam_list_inv = sample_inv.coord_bam_list.values.tolist()
+coord_bam_list = [f&#39;{cwd}/{x}&#39; for x in coord_bam_list_inv ]
+input:  coord_bam_list, group_by = 1, group_with = {&quot;sample_id&quot;,&quot;strand_list&quot;}
+output: f&#39;{cwd}/{_sample_id}.rnaseqc.gene_tpm.gct.gz&#39;,
+        f&#39;{cwd}/{_sample_id}.rnaseqc.gene_reads.gct.gz&#39;,
+        f&#39;{cwd}/{_sample_id}.rnaseqc.exon_reads.gct.gz&#39;,
+        f&#39;{cwd}/{_sample_id}.rnaseqc.metrics.tsv&#39;
+
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    cd ${cwd} &amp;&amp; \
+    rnaseqc \
+        ${gtf:a} \
+        ${_input:a} \
+        ${_output[0]:d}  \
+        ${(&quot;--stranded &quot; + _strand_list) if _strand_list != &quot;unstranded&quot; else &quot;&quot;} \
+        ${f&#39;--detection-threshold {detection_threshold}&#39;} ${f&#39;--mapping-quality {mapping_quality}&#39;} ${ &#39;&#39; if is_paired_end else &#39;-u&#39;}
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    mv ${_output[0]:d}/${_input:b}.gene_tpm.gct ${_output[0]:n}
+    mv ${_output[0]:d}/${_input:b}.gene_reads.gct ${_output[1]:n}
+    mv ${_output[0]:d}/${_input:b}.exon_reads.gct ${_output[2]:n}
+    mv ${_output[0]:d}/${_input:b}.metrics.tsv ${_output[3]}
+    gzip ${_output[0]:n} ${_output[1]:n} ${_output[2]:n}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The RNASEQC results were merged in the following step,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rnaseqc_call_2]
+parameter: bam_list = path
+input: group_by = &quot;all&quot;
+output: f&#39;{cwd}/{bam_list:bn}.rnaseqc.gene_tpm.gct.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rnaseqc.gene_readsCount.gct.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rnaseqc.exon_readsCount.gct.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rnaseqc.metrics.tsv&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    import pandas as pd
+    import os
+    def make_gct(gct_path):
+        # sample_name
+        sample_name = &quot;.&quot;.join(os.path.basename(gct_path).split(&quot;.&quot;)[:-4])
+        # read_input
+        pre_gct = pd.read_csv(gct_path,sep = &quot;\t&quot;,
+                              skiprows= 2,index_col=&quot;Name&quot;).drop(&quot;Description&quot;,axis = 1)
+        pre_gct.index.name = &quot;gene_ID&quot;
+        pre_gct.columns = [sample_name]
+        return(pre_gct)
+
+    def merge_gct(gct_path_list):
+        gct = pd.DataFrame()
+        for gct_path in gct_path_list:
+            #check duplicated indels and remove them.
+            gct_col = make_gct(gct_path)
+            gct = gct.merge(gct_col,right_index=True,left_index = True,how = &quot;outer&quot;)
+        return gct
+
+    input_list = [${_input:r,}]
+    tpm_list = input_list[0::4]
+    gc_list = input_list[1::4]
+    ec_list = input_list[2::4]
+    gct_path_list_list = [tpm_list,gc_list,ec_list]
+    output_path = [${_output:r,}][0:3]
+    for i in range(0,len(output_path)):
+        output = merge_gct(gct_path_list_list[i])
+        output.to_csv(output_path[i], sep = &quot;\t&quot;)
+    metrics_list = input_list[3::4]
+    with open(&quot;${cwd}/${bam_list:bn}.rnaseqc.metrics_output_list&quot;, &quot;w&quot;) as f:
+        f.write(&#39;\n&#39;.join(metrics_list))
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    aggregate_rnaseqc_metrics  ${_output[3]:n}_output_list ${_output[3]:nn}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-6-quantify-expression-through-rsem">
+<h2>Step 6: Quantify expression through <code class="docutils literal notranslate"><span class="pre">RSEM</span></code><a class="headerlink" href="#step-6-quantify-expression-through-rsem" title="Link to this heading">#</a></h2>
+<p>Documentation : <a class="reference external" href="https://deweylab.github.io/RSEM/rsem-calculate-expression.html">RSEM</a> and <a class="reference external" href="https://github.com/broadinstitute/gtex-pipeline/blob/master/rnaseq/src/run_RSEM.py">Script in docker</a></p>
+<p>This step generate the expression matrix from STAR output. Estimate gene and isoform expression from RNA-Seq data are generated.</p>
+<section id="step-input">
+<h3>Step Input<a class="headerlink" href="#step-input" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bam_list</span></code>: path to the output of STAR_output, which outlined the strands and bam file used for each samples.</p></li>
+<li><p>transcript-level BAM file: path to the output of Step 3.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSEM_index</span></code>: path to RSEM index</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>Step Outputs<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>Please see the output section of <a class="reference external" href="https://deweylab.github.io/RSEM/rsem-calculate-expression.html">https://deweylab.github.io/RSEM/rsem-calculate-expression.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_1]
+parameter: bam_list = path
+parameter: RSEM_index = path
+parameter: max_frag_len = 1000
+parameter: estimate_rspd = True
+
+sample_inv = pd.read_csv(bam_list,sep = &quot;\t&quot;)
+
+## Extract strand information if user have specified the strand
+strand_list = sample_inv.strand.values.tolist()
+stop_if(not all([x in [&quot;fr&quot;, &quot;rf&quot;, &quot;unstranded&quot;] for x in strand_list ]), msg = &quot;strand columns should only include ``fr``, ``rf`` or ``unstranded``, please check the bam_list&quot;)     
+## Extract sample_id
+sample_id = sample_inv.sample_id.values.tolist()
+    
+## Get the file name for trans_bam_list data
+trans_bam_list_inv = sample_inv.trans_bam_list.values.tolist()
+trans_bam_list = [f&#39;{cwd}/{x}&#39; for x in trans_bam_list_inv]
+input: trans_bam_list, group_by = 1, group_with = {&quot;sample_id&quot;, &quot;strand_list&quot;} 
+output: f&#39;{cwd}/{_sample_id}.rsem.isoforms.results&#39;, f&#39;{cwd}/{_sample_id}.rsem.genes.results&#39;,f&#39;{cwd}/{_sample_id}.rsem.stat/{_sample_id}.rsem.cnt&#39;
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    run_rsem ${RSEM_index:a} ${_input:a} ${_sample_id} \
+        -o ${_output[0]:d} \
+        --max_frag_len ${max_frag_len} \
+        --estimate_rspd ${&#39;true&#39; if estimate_rspd else &#39;false&#39;} \
+        --paired_end ${&quot;true&quot; if is_paired_end else &quot;false&quot;} \
+        --is_stranded ${&quot;true&quot; if _strand_list != &quot;unstranded&quot; else &quot;false&quot;} \
+        --threads ${numThreads}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The RSEM results were merged in the following steps, seven files (four for each columns in the isoform output and 3 for each of the genes output) will be generated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_2]
+parameter: bam_list = path
+input: group_by = &quot;all&quot;
+output: f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_expected_count.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_tpm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_fpkm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_transcripts_isopct.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_genes_expected_count.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_genes_tpm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem_genes_fpkm.txt.gz&#39;,
+        f&#39;{cwd}/{bam_list:bn}.rsem.aggregated_quality.metrics.tsv&#39;
+
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
+python: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+    input_list = [${_input:r,}]
+    with open(&#39;${cwd}/${bam_list:bn}.rsem.isoforms_output_list&#39;, &quot;w&quot;) as f:
+        f.write(&#39;\n&#39;.join(input_list[0::3]))
+    with open(&#39;${cwd}/${bam_list:bn}.rsem.genes_output_list&#39;, &quot;w&quot;) as f:
+        f.write(&#39;\n&#39;.join(input_list[1::3]))
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+         aggregate_rsem_results ${cwd}/${bam_list:bn}.rsem.isoforms_output_list {expected_count,TPM,FPKM,IsoPct} ${_output[0]:nnn} -o ${cwd}
+         aggregate_rsem_results ${cwd}/${bam_list:bn}.rsem.genes_output_list {expected_count,TPM,FPKM} ${_output[1]:nnn} -o ${cwd}
+# -o to specify the output-dir(writable);the defualt is cwd of the sos command-/home/username/data(read-only)
+
+R:  container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output[-1]:n}.stderr&#39;, stdout = f&#39;{_output[-1]:n}.stdout&#39;, entrypoint=entrypoint
+     readRSEM.cnt &lt;- function (source) {
+            # RSEM .cnt files gives statistics about the (transcriptome) alignment passed to RSEM:
+            # Row 1: N0 (# unalignable reads);
+            #        N1 (# alignable reads);
+            #        N2 (# filtered reads due to too many alignments);
+            #        N_tot (N0+N1+N2)
+            # Row 2: nUnique (# reads aligned uniquely to a gene);
+            #        nMulti (# reads aligned to multiple genes);
+            #        nUncertain (# reads aligned to multiple locations in the given reference sequences, which include isoform-level multi-mapping reads)
+            # Row 3: nHits (# total alignments);
+            #        read_type (0: single-end read, no quality; 1: single-end read, with quality score; 2: paired-end read, no quality score; 3: paired-end read, with quality score)
+            # Source: https://groups.google.com/forum/#!topic/rsem-users/usmPKgsC5LU
+            # Note: N1 = nUnique + nMulti
+
+            stopifnot(file.exists(source[1]))
+            isDir &lt;- file.info(source)$isdir
+            if (isDir) {
+                files &lt;- system(paste(&quot;find&quot;, source, &quot;-name \&quot;*.rsem.cnt\&quot;&quot;), intern=TRUE)
+                stopifnot(length(files) &gt; 0)
+                samples &lt;- gsub(&quot;_rsem.cnt&quot;, &quot;&quot;, basename(files), fixed=TRUE)
+            } else {
+                files &lt;- source
+                samples &lt;- gsub(&quot;.rsem.cnt&quot;, &quot;&quot;, basename(files), fixed=TRUE)
+            }
+            metrics &lt;- list()
+            for (i in 1:length(files)) {
+                m &lt;- read.table(files[i], header=FALSE, sep=&quot; &quot;, comment.char=&quot;#&quot;, stringsAsFactors=FALSE, nrows=3, fill=TRUE)
+                metrics[[i]] &lt;- data.frame(Sample=samples[i],
+                File=files[i],
+                TotalReads=m[1, 4],
+                AlignedReads=m[1, 2],
+                UniquelyAlignedReads=m[2, 1],
+                stringsAsFactors=FALSE)
+            }
+            metrics &lt;- do.call(rbind, metrics)
+            row.names(metrics) &lt;- metrics$Sample
+
+            return(metrics)
+        }
+        sourceRSEM = c(${_input:r,})
+        sourceRSEM = sourceRSEM[seq(3,length(sourceRSEM),3)]
+        metrics.RSEM = readRSEM.cnt(sourceRSEM)
+        write.table(metrics.RSEM, file=&quot;${_output[-1]}&quot;,col.names=TRUE, row.names=FALSE, quote=FALSE)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="step-7-summarize-with-multiqc">
+<h2>Step 7: summarize with MultiQC<a class="headerlink" href="#step-7-summarize-with-multiqc" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://multiqc.info/docs/#using-multiqc">MultiQC</a></p>
+<blockquote>
+<div><p>MultiQC is a reporting tool that parses summary statistics from results and log files generated by other bioinformatics tools. MultiQC doesn’t run other tools for you - it’s designed to be placed at the end of analysis pipelines or to be run manually when you’ve finished running your tools. When you launch MultiQC, it recursively searches through any provided file paths and finds files that it recognises. It parses relevant information from these and generates a single stand-alone HTML report file. It also saves a directory of data files with all parsed data for further downstream use.</p>
+</div></blockquote>
+<p>MultiQC will automatically generate QC report for anything embedded within the given directory. Therefore providing the directory containing all the output will surfice.</p>
+<p>The output of MultiQC is a multi-module report each corresponding to the quality report of each step of analysis previously performed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_3,rnaseqc_call_3]
+output: f&#39;{_input[0]:nnn}.multiqc_report.html&#39;
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
+report: output = f&quot;{_output:n}.multiqc_config.yml&quot;
+  extra_fn_clean_exts:
+      - &#39;_rsem&#39;
+  fn_ignore_dirs:
+      - &#39;*_STARpass1&#39;
+bash:  container=container,expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    multiqc ${_input:d} -v -n ${_output:b} -o ${_output:d} -c ${_output:n}.multiqc_config.yml
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[rsem_call_4, rnaseqc_call_4]
+# Path to flat reference file, for computing QC metric
+output: f&#39;{_input[0]:nn}.picard.aggregated_quality.metrics.tsv&#39;# it will be outputed in a very &#39;deep&#39; directory with {cwd}/
+task: trunk_workers = 1, walltime = walltime, mem = mem, cores = numThreads, trunk_size = job_size
+R: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    ## Define Function
+    readPicard.alignment_summary_metrics &lt;- function (source) {
+      stopifnot(length(source) == 1)
+      stopifnot(file.exists(source))
+      isDir &lt;- file.info(source)$isdir
+      if (isDir) {
+        files &lt;- system(paste(&quot;find -L&quot;, source, &quot;-name \&quot;*.alignment_summary_metrics\&quot;&quot;), intern=TRUE)
+        stopifnot(length(files) &gt; 0)
+        samples &lt;- gsub(&quot;.alignment_summary_metrics&quot;, &quot;&quot;, basename(files), fixed=TRUE)
+      } else {
+        files &lt;- source
+        samples &lt;- gsub(&quot;.alignment_summary_metrics&quot;, &quot;&quot;, basename(files), fixed=TRUE)
+      }
+    
+      metrics &lt;- list()
+      for (i in 1:length(files)) {
+        m &lt;- read.table(files[i], header=TRUE, sep=&quot;\t&quot;, comment.char=&quot;#&quot;, stringsAsFactors=FALSE, nrows=${is_paired_end}+1)
+        metrics[[i]] &lt;- data.frame(Sample=samples[i],
+                                   File=files[i],
+                                   PF_READS=sum(m$PF_READS[1:2]),
+                                   PF_READS_ALIGNED=sum(m$PF_READS_ALIGNED[1:2]),
+                                   PCT_PF_READS_ALIGNED=sum(m$PF_READS_ALIGNED[1:2])/sum(m$PF_READS[1:2]),
+                                   stringsAsFactors=FALSE)
+      }
+      metrics &lt;- do.call(rbind, metrics)
+      row.names(metrics) &lt;- metrics$Sample
+    
+      return(metrics)
+    }
+
+    readPicard.rna_metrics &lt;- function(source) {
+
+      stopifnot(length(source) == 1)
+      stopifnot(file.exists(source))
+      isDir &lt;- file.info(source)$isdir
+      if (isDir) {
+        files &lt;- system(paste(&quot;find -L&quot;, source, &quot;-name \&quot;*.rna_metrics\&quot;&quot;), intern=TRUE)
+        stopifnot(length(files) &gt; 0)
+        samples &lt;- gsub(&quot;.rna_metrics&quot;, &quot;&quot;, basename(files), fixed=TRUE)
+      } else {
+        files &lt;- source
+        samples &lt;- gsub(&quot;.rna_metrics&quot;, &quot;&quot;, basename(files), fixed=TRUE)
+      }
+
+      metrics &lt;- list()
+      for (i in 1:length(files)) {
+        m &lt;- read.table(files[i], header=TRUE, sep=&quot;\t&quot;, comment.char=&quot;#&quot;, stringsAsFactors=FALSE, nrows=1)
+        metrics[[i]] &lt;- data.frame(Sample=samples[i],
+                                   File=files[i],
+                                   PCT_RIBOSOMAL_BASES=m$PCT_RIBOSOMAL_BASES,
+                                   PCT_CODING_BASES=m$PCT_CODING_BASES,
+                                   PCT_UTR_BASES=m$PCT_UTR_BASES,
+                                   PCT_INTRONIC_BASES=m$PCT_INTRONIC_BASES,
+                                   PCT_INTERGENIC_BASES=m$PCT_INTERGENIC_BASES,
+                                   PCT_MRNA_BASES=m$PCT_MRNA_BASES,
+                                   PCT_USABLE_BASES=m$PCT_USABLE_BASES,
+                                   MEDIAN_CV_COVERAGE=m$MEDIAN_CV_COVERAGE,
+                                   MEDIAN_5PRIME_BIAS=m$MEDIAN_5PRIME_BIAS,
+                                   MEDIAN_3PRIME_BIAS=m$MEDIAN_3PRIME_BIAS,
+                                   MEDIAN_5PRIME_TO_3PRIME_BIAS=m$MEDIAN_5PRIME_TO_3PRIME_BIAS,
+                                   stringsAsFactors=FALSE)
+      }
+      metrics &lt;- do.call(rbind, metrics)
+      row.names(metrics) &lt;- metrics$Sample
+    
+      return(metrics)
+    }
+
+
+    readPicard.duplicate_metrics &lt;- function(source) {
+
+      stopifnot(length(source) == 1)
+      stopifnot(file.exists(source))
+      pattern_suffix &lt;- ifelse(&quot;${varVCFfile}&quot;!=&quot;&quot;,&quot;_wasp_qc&quot;,&quot;&quot;)
+      pattern &lt;- paste0(&#39;*.Aligned.sortedByCoord.out&#39;,pattern_suffix,&#39;.md.metrics&#39;)
+      substitute &lt;- paste0(&#39;.Aligned.sortedByCoord.out&#39;,pattern_suffix,&#39;.md.metrics&#39;)
+      isDir &lt;- file.info(source)$isdir
+      if (isDir) {
+        files &lt;- system(paste(&quot;find -L&quot;, source, &quot;-name&quot;,pattern), intern=TRUE)
+        stopifnot(length(files) &gt; 0)
+        samples &lt;- gsub(substitute, &quot;&quot;, basename(files), fixed=TRUE)
+      } else {
+        files &lt;- source
+        samples &lt;- gsub(substitute, &quot;&quot;, basename(files), fixed=TRUE)
+      }
+
+      metrics &lt;- list()
+      for (i in 1:length(files)) {
+        m &lt;- read.table(files[i], header=TRUE, sep=&quot;\t&quot;, comment.char=&quot;#&quot;, stringsAsFactors=FALSE, nrows=1)
+        metrics[[i]] &lt;- data.frame(Sample=samples[i],
+                                   File=files[i],
+                                   PERCENT_DUPLICATION=m$PERCENT_DUPLICATION,
+                                   ESTIMATED_LIBRARY_SIZE=m$ESTIMATED_LIBRARY_SIZE,
+                                   stringsAsFactors=FALSE)
+      }
+      metrics &lt;- do.call(rbind, metrics)
+      row.names(metrics) &lt;- metrics$Sample
+    
+      return(metrics)
+    }
+
+
+    readPicard &lt;- function(source) {
+      metrics.aln &lt;- readPicard.alignment_summary_metrics(source)
+      metrics.rna &lt;- readPicard.rna_metrics(source)
+      metrics.dup &lt;- readPicard.duplicate_metrics(source)
+
+      stopifnot(all(row.names(metrics.aln) %in% row.names(metrics.rna)) &amp;
+                all(row.names(metrics.rna) %in% row.names(metrics.dup)) &amp;
+                all(row.names(metrics.dup) %in% row.names(metrics.aln)))
+
+      metrics.aln$File &lt;- NULL
+      metrics.rna$File &lt;- NULL
+      metrics.dup$File &lt;- NULL
+      metrics.rna$Sample &lt;- NULL
+      metrics.dup$Sample &lt;- NULL
+
+      metrics &lt;- cbind(metrics.aln, metrics.rna[row.names(metrics.aln), ])
+      metrics &lt;- cbind(metrics, metrics.dup[row.names(metrics.aln), ])
+
+      return(metrics)
+    }
+
+    ## Execution  
+    sourcePicard = ${_input[-1]:dr}
+
+    Picard_qualityMetrics &lt;- readPicard(sourcePicard)
+    write.table(Picard_qualityMetrics, file=&quot;${_output}&quot;,col.names=TRUE, row.names=FALSE, quote=FALSE)
+
+
+# Need to considering .checkpoint directory(hidden) when there&#39;s interruption caused by previous error in [STAR_lign] on interactive sessions. It might cause inconsistent length of metrics of metrics.aln.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="step-8-filter-reads-with-wasp">
+<h2>Step 8: Filter Reads with WASP<a class="headerlink" href="#step-8-filter-reads-with-wasp" title="Link to this heading">#</a></h2>
+<p>This optional step in the STAR alignment process offers filtration based on WASP correction and unique read identification. WASP correction mitigates reference allele bias in RNA-seq data by eliminating reads with specific WASP flags. Unique read filtering retains only uniquely mapped reads, identified by a mapping quality (MAPQ) value of 255, as per GTEx Consortium standards. These filters can be applied individually or in combination to enhance alignment quality and prepare BAM files for different analysis.</p>
+<section id="id12">
+<h3>Step Inputs:<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>No input needed to specify manually. All files are from the output from <code class="docutils literal notranslate"><span class="pre">STAR_align_1</span></code></p></li>
+</ul>
+</section>
+<section id="id13">
+<h3>Step Outputs:<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A collection of filtered(or not) <code class="docutils literal notranslate"><span class="pre">.bam</span></code> files</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[filter_reads]
+parameter: unique=&quot;&quot;
+parameter: wasp=&quot;&quot;
+parameter: mapping_quality = 255
+depends: sos_variable(&#39;strand&#39;)
+input: output_from(&quot;STAR_align_1&quot;), group_by = 2, group_with = {&quot;sample_id&quot;,&quot;strand&quot;}
+output: cord_bam_wasp_qc = f&#39;{cwd}/{_sample_id}.Aligned.sortedByCoord.out_wasp_qc.bam&#39;,
+        trans_bam_wasp_qc = f&#39;{cwd}/{_sample_id}.Aligned.toTranscriptome.out_wasp_qc.bam&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+bash: container=container, expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, entrypoint=entrypoint
+
+    # WASP-based QC filtering function
+    wasp_filter() {
+        # Check if an argument is provided
+        if [[ -z &quot;$1&quot; ]]; then
+            echo &quot;Usage: wasp_filter &lt;file.something.ext&gt;&quot;
+            return 1
+        fi
+        local input_file=&quot;$1&quot;
+        local base_name=&quot;${input_file%.*}&quot;  # Removes the last extension
+        local derived_file=&quot;${base_name%.*}.int.bam&quot;  # Removes the second to last extension and adds .ext     
+
+        if [ $[unique] ]; then # pay attention to the spcae around the variable in [[]].
+            # wasp_filtering &amp; unique_filtering
+            if [ $[wasp] ]; then
+                echo &quot;Applying unique_WASP filtering&quot;
+                samtools view -h -q $[mapping_quality] &quot;$input_file&quot; | grep -v &quot;vW:i:[2-7]&quot; | samtools view -b &gt; &quot;$derived_file&quot;
+            # unique_filtering
+            else
+                echo &quot;Applying unique filtering&quot;
+                samtools view -h -q $[mapping_quality] &quot;$input_file&quot; | samtools view -b &gt; &quot;$derived_file&quot; # remember to convert SAM files back to BAM files
+            fi
+        else
+            # only wasp_filtering: Potential Allele-Specific Alignment Bias
+            if [ $[wasp] ]; then
+                echo &quot;Applying WASP filtering&quot;
+                samtools view -h &quot;$input_file&quot; | grep -v &quot;vW:i:[2-7]&quot; | samtools view -b &gt; &quot;$derived_file&quot;
+            # no filter
+            else
+                echo &quot;Applying no filtering&quot;
+                cp &quot;$input_file&quot; &quot;$derived_file&quot;
+            fi
+        fi
+        return 0
+    }
+
+    # I tried using the filtered bam file to replace the original bam file, but I got &quot;Exec format error&quot;. Don&#39;t do that! It&#39;s risky for the file being overwritten and being read simultaneously.
+
+    export -f wasp_filter  # Make it available in subshells, if needed
+
+    # Perform WASP-based QC filtering
+    if [ $[varVCFfile] ]; then
+        wasp_filter $[_input[0]]
+        wasp_filter $[_input[1]] 
+        mv $[_output[0]:nnnn].Aligned.sortedByCoord.int.bam  $[_output[0]]
+        mv $[_output[1]:nnnn].Aligned.toTranscriptome.int.bam  $[_output[1]]
+    fi
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/molecular_phenotypes/calling"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../bulk_expression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">RNA-seq expression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../QC/bulk_expression_QC.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sample level RNA-seq quality control</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-perform-data-quality-summary-via-fastqc">i. Perform data quality summary via <code class="docutils literal notranslate"><span class="pre">fastqc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-cut-adaptor-optional">ii. Cut adaptor (Optional)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iii-read-alignment-via-star-and-qc-via-picard">iii. Read alignment via STAR and QC via Picard</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-call-gene-level-rna-expression-via-rnaseqc">iv. Call gene-level RNA expression via rnaseqc</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v-call-transcript-level-rna-expression-via-rsem">v. Call transcript level RNA expression via RSEM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-global-parameters">Setup and global parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-0-convert-bam-back-to-fastq-if-necessary">Step 0: Convert BAM back to fastq if necessary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-qc-before-alignment">Step 1: QC before alignment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-inputs">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-outputs">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-remove-adaptor-through-fastp">Step 2: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">fastp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Step Outputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-options">Step options</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-alternative-remove-adaptor-through-trimmomatic">Step 2 Alternative: Remove adaptor through <code class="docutils literal notranslate"><span class="pre">Trimmomatic</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-alignment-through-star">Step 3: Alignment through <code class="docutils literal notranslate"><span class="pre">STAR</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-mark-duplicates-reads-qc-through-picard">Step 4: Mark duplicates reads &amp; QC through <code class="docutils literal notranslate"><span class="pre">Picard</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Step Inputs:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Step Outputs:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-post-aligment-qc-through-rna-seqc">Step 5: Post aligment QC through <code class="docutils literal notranslate"><span class="pre">RNA-SeQC</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Step Inputs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-quantify-expression-through-rsem">Step 6: Quantify expression through <code class="docutils literal notranslate"><span class="pre">RSEM</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-input">Step Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Step Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-summarize-with-multiqc">Step 7: summarize with MultiQC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-filter-reads-with-wasp">Step 8: Filter Reads with WASP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Step Inputs:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Step Outputs:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

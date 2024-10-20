@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -1099,9 +1099,9 @@ if skip_fine_mapping and skip_twas_weights:
     save_data = True
     output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.univariate_data.rds&#39;]
 elif not skip_fine_mapping and skip_twas_weights:
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.univariate_bvrs.rds&#39;]
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.univariate_bvsr.rds&#39;]
 else:
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.univariate_bvrs.rds&#39;,
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.univariate_bvsr.rds&#39;,
     f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.univariate_twas_weights.rds&#39;]
 output: output_files
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bnn}&#39;
@@ -1274,7 +1274,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.susie_twas.stdout&qu
           r = r + 1
       }
       # Reorganize outputs
-      # The BVRS model in this case contain different versions of SuSiE fits
+      # The BVSR model in this case contain different versions of SuSiE fits
       # preset_variants_result
       # Clean up TWAS weights output
       twas_output &lt;- list()
@@ -1302,7 +1302,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.susie_twas.stdout&qu
               finemapping_output[[r]]$preset_variants_result &lt;- preset_variants_result[[r]]
           }
       }
-      saveRDS(list(&quot;${_meta_info[2]}&quot; = finemapping_output), &quot;${_output[0]:ann}.univariate_bvrs.rds&quot;, compress=&#39;xz&#39;)
+      saveRDS(list(&quot;${_meta_info[2]}&quot; = finemapping_output), &quot;${_output[0]:ann}.univariate_bvsr.rds&quot;, compress=&#39;xz&#39;)
       
       if (length(twas_output) &gt; 0) saveRDS(list(&quot;${_meta_info[2]}&quot; = twas_output), &quot;${_output[0]:ann}.univariate_twas_weights.rds&quot;, compress=&#39;xz&#39;)
       if (empty_elements_cnt&gt;0) {
@@ -1337,12 +1337,12 @@ meta_info = regional_data[&#39;meta_info&#39;]
 input: regional_data[&quot;data&quot;], group_by = lambda x: group_by_region(x, regional_data[&quot;data&quot;]), group_with = &quot;meta_info&quot;
 if skip_fine_mapping and skip_twas_weights:
     save_data = True
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multivariate_data.rds&#39;]
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_data.rds&#39;]
 elif not skip_fine_mapping and skip_twas_weights:
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multivariate_bvrs.rds&#39;]
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_bvsr.rds&#39;]
 else:
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multivariate_bvrs.rds&#39;,
-    f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multivariate_twas_weights.rds&#39;] 
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_bvsr.rds&#39;,
+    f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_twas_weights.rds&#39;] 
 output: output_files
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, stderr = f&quot;{_output[0]:nn}.mnm.stderr&quot;, container = container, entrypoint = entrypoint
@@ -1360,7 +1360,9 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, st
       keep_samples = unlist(strsplit(readLines(${keep_samples:ar}), &quot;\\s+&quot;))
       message(paste(length(keep_samples), &quot;samples are selected to be loaded for analysis&quot;))
     }
-  
+    
+    # Load regional association data
+    tryCatch({
     fdat = load_regional_multivariate_data(genotype = ${_input[0]:anr},
                                           phenotype = phenotype_files,
                                           covariate = covariate_files,
@@ -1376,8 +1378,13 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, st
                                           phenotype_header = ${&quot;4&quot; if int(_meta_info[0].split(&#39;-&#39;)[-1])&gt;0 else &quot;1&quot;},
                                           region_name_col = ${&quot;4&quot; if int(_meta_info[0].split(&#39;-&#39;)[-1])&gt;0 else &quot;1&quot;},
                                           scale_residuals = FALSE)
+        }, NoSNPsError = function(e) {
+        message(&quot;Error: &quot;, paste(e$message, &quot;${_meta_info[2] + &#39;@&#39; + _meta_info[1]}&quot;))
+        saveRDS(list(${_meta_info[2]} = e$message), &quot;${_output[0]:ann}.multicontext_data.rds&quot;, compress=&#39;xz&#39;)
+        quit(save=&quot;no&quot;)
+    })
     if (${&quot;TRUE&quot; if save_data else &quot;FALSE&quot;}) {
-        saveRDS(fdat, &quot;${_output[0]:ann}.multivariate_data.rds&quot;, compress=&#39;xz&#39;)
+        saveRDS(fdat, &quot;${_output[0]:ann}.multicontext_data.rds&quot;, compress=&#39;xz&#39;)
     }
     if (${&quot;FALSE&quot; if skip_fine_mapping and skip_twas_weights else &quot;TRUE&quot;}) {
       if (&quot;${_meta_info[2]}&quot; != &quot;${_meta_info[3]}&quot;) {
@@ -1429,12 +1436,12 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, st
               result$twas_weights_result[[r]]$region_info &lt;- region_info
           }
           names(result$twas_weights_result) &lt;- paste0(names(result$twas_weights_result), &quot;_${_meta_info[2]}&quot;)
-          saveRDS(list(&quot;${_meta_info[2]}&quot; = result$twas_weights_result), &quot;${_output[0]:ann}.multivariate_twas_weights.rds&quot;)
+          saveRDS(list(&quot;${_meta_info[2]}&quot; = result$twas_weights_result), &quot;${_output[0]:ann}.multicontext_twas_weights.rds&quot;, compress=&#39;xz&#39;)
           result$twas_weights_result &lt;- NULL
       } else if (${&quot;TRUE&quot; if not skip_twas_weights else &quot;FALSE&quot;}){
-        saveRDS(list(&quot;${_meta_info[2]}&quot; = NULL), &quot;${_output[0]:ann}.multivariate_twas_weights.rds&quot;)
+        saveRDS(list(&quot;${_meta_info[2]}&quot; = NULL), &quot;${_output[0]:ann}.multicontext_twas_weights.rds&quot;, compress=&#39;xz&#39;)
       }
-      saveRDS(list(&quot;${_meta_info[2]}&quot; = result), &quot;${_output[0]:ann}.multivariate_bvrs.rds&quot;)
+      saveRDS(list(&quot;${_meta_info[2]}&quot; = result), &quot;${_output[0]:ann}.multicontext_bvsr.rds&quot;, compress=&#39;xz&#39;)
     }
 </pre></div>
 </div>
@@ -1490,9 +1497,9 @@ if skip_fine_mapping and skip_twas_weights:
     save_data = True
     output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_data.rds&#39;]
 elif not skip_fine_mapping and skip_twas_weights:
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_bvrs.rds&#39;]
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_bvsr.rds&#39;]
 else:
-    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_bvrs.rds&#39;,f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_twas_weights.rds&#39;]
+    output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_bvsr.rds&#39;,f&#39;{cwd:a}/{step_name}/{name}.{_meta_info[2]}.multigene_twas_weights.rds&#39;]
 
 output: output_files
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
@@ -1722,10 +1729,10 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm_genes.stdout&quo
               for (r in names(result$twas_weights_result)) {
                   result$twas_weights_result[[r]]$region_info &lt;- region_info
               }
-              saveRDS(list(&quot;${_meta_info[2]}&quot; = result$twas_weights_result), &quot;${_output[0]:ann}.multigene_twas_weights.rds&quot;)
+              saveRDS(list(&quot;${_meta_info[2]}&quot; = result$twas_weights_result), &quot;${_output[0]:ann}.multigene_twas_weights.rds&quot;, compress=&#39;xz&#39;)
               result$twas_weights_result &lt;- NULL
           }
-          saveRDS(list(&quot;${_meta_info[2]}&quot; = result), &quot;${_output[0]:ann}.multigene_bvrs.rds&quot;)        
+          saveRDS(list(&quot;${_meta_info[2]}&quot; = result), &quot;${_output[0]:ann}.multigene_bvsr.rds&quot;, compress=&#39;xz&#39;)        
         } else {
           for (f in c(${_output:ar,})) {
             saveRDS(NULL, f)

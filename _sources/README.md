@@ -79,6 +79,7 @@ This repository is developed by the Analysis Working Group of the NIA FunGen-xQT
 | Liucheng Shi     | Department of Biostatistics, Columbia University                  |
 | Haochen Sun      | Department of Biostatistics, Columbia University                  |
 | Zining Qi        | Department of Biostatistics, Columbia University                  |
+| Yifei Wang       | Department of Neurology, Columbia University                      |
 | Ru Feng          | Department of Neurology, Columbia University                      |
 | Alexandre Pelletier| Department of Medicine, Boston University                        |
 | Travyse Edwards  | Mount Sinai & University of Pennsylvania                           |

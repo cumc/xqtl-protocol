@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Univariate Fine-Mapping and TWAS with SuSiE &#8212; FunGen-xQTL Consortium</title>
+    <title>Integrative Analysis with High-Dimensional Regression &#8212; FunGen-xQTL Consortium</title>
   
   
   
@@ -57,11 +57,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'code/mnm_analysis/univariate_fine_mapping_twas_vignette';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/mnm_analysis/mnm_miniprotocol';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Multivariate Fine-Mapping for multiple genes" href="multivariate_multigene_fine_mapping_vignette.html" />
-    <link rel="prev" title="Integrative Analysis with High-Dimensional Regression" href="mnm_miniprotocol.html" />
+    <link rel="next" title="Univariate Fine-Mapping and TWAS with SuSiE" href="univariate_fine_mapping_twas_vignette.html" />
+    <link rel="prev" title="MASH analysis pipeline with data-driven prior matrices" href="../multivariate_genome/MASH/mash_fit.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -262,8 +262,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Multiomics Regression Models</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="mnm_miniprotocol.html">Integrative Analysis with High-Dimensional Regression</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Integrative Analysis with High-Dimensional Regression</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="univariate_fine_mapping_twas_vignette.html">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multivariate_multigene_fine_mapping_vignette.html">Multivariate Fine-Mapping for multiple genes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="univariate_fine_mapping_fsusie_vignette.html">Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="multivariate_fine_mapping_vignette.html">Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
@@ -339,7 +339,7 @@
       
       
       
-      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/mnm_analysis/univariate_fine_mapping_twas_vignette.ipynb" target="_blank"
+      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/mnm_analysis/mnm_miniprotocol.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -356,7 +356,7 @@
       
       
       
-      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/mnm_analysis/univariate_fine_mapping_twas_vignette.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/mnm_analysis/mnm_miniprotocol.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -386,7 +386,7 @@
       
       
       
-      <li><a href="../../_sources/code/mnm_analysis/univariate_fine_mapping_twas_vignette.ipynb" target="_blank"
+      <li><a href="../../_sources/code/mnm_analysis/mnm_miniprotocol.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -470,7 +470,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Univariate Fine-Mapping and TWAS with SuSiE</h1>
+    <h1>Integrative Analysis with High-Dimensional Regression</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -480,10 +480,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-run-the-fine-mapping-and-twas-with-susie">i. Run the Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miniprotocol-timing">Miniprotocol Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-univariate-fine-mapping-and-twas-with-susie">i. Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-multivariate-fine-mapping-for-multiple-genes">ii. Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iii-univariate-fine-mapping-of-functional-epigenomic-data-with-fsusie">iii. Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-multivariate-fine-mapping-with-mvsusie-and-mr-mash">iv. Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v-regression-with-summary-statistics-rss-fine-mapping-and-twas-with-susie">v. Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anticipated-results">Anticipated Results</a></li>
@@ -498,43 +502,29 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="univariate-fine-mapping-and-twas-with-susie">
-<h1>Univariate Fine-Mapping and TWAS with SuSiE<a class="headerlink" href="#univariate-fine-mapping-and-twas-with-susie" title="Link to this heading">#</a></h1>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Our pipeline is capable of performing univariate fine-mapping with SuSiE with TWAS weights. The TWAS portion makes use of TWAS weights, linkage disequilibrium data and GWAS summary statistics. Preset variants used are taken from the linkage disequilibrium data and used only for TWAS. TWAS cross validation tell us which of the four methods (enet, lasso, mrash, SuSiE) are best to use. By default, we limit to under 5000 variants for cross validation. In cross validation, the data is split into five parts. Training is done on four parts, and prediction is done on the fifth. Linear regression is used to assess the results and get r squared and pvalues.</p>
-<p>Fine mapping with SuSiE follows the formulat y=xb+e where x has many highly correlated variables due to linkage disequilibrium. Therefore, true effects (b), are very sparse. The SuSiE wrapper looks for five independent signals in each region to increase convergence speed. However, if five signals are found, then the the upper limit is increased. SuSiE does not allow for the inclusion of covariates. Therefore, covariates are regressed in.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="integrative-analysis-with-high-dimensional-regression">
+<h1>Integrative Analysis with High-Dimensional Regression<a class="headerlink" href="#integrative-analysis-with-high-dimensional-regression" title="Link to this heading">#</a></h1>
+<p>This notebook shows the various fine-mapping, prediction, multivariate analysis and colocalization methods available in our pipeline.</p>
+<section id="miniprotocol-timing">
+<h2>Miniprotocol Timing<a class="headerlink" href="#miniprotocol-timing" title="Link to this heading">#</a></h2>
+<p>This represents the total duration for all miniprotocol phases. While module-specific timings are provided separately on their respective pages, they are also included in this overall estimate.</p>
+<p>Timing &lt; X minutes</p>
 </section>
-<section id="input">
-<h2>Input:<a class="headerlink" href="#input" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">--genoFile</span></code>: path to a plink bed file containing genotypes.<br />
-<code class="docutils literal notranslate"><span class="pre">--phenoFile</span></code>: at least one tab delimited file containing chr, start, end, ID and path for the regions. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#chr    start   end     ID      path
-chr12   389272  389273  ENSG00000120647 $PATH/Ast.log2cpm.bed.gz
-chr12   389319  389320  ENSG00000073614 $PATH/Ast.log2cpm.bed.gz
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">--covFile</span></code>: at least one tab delimited file containing covariates in the rows and samples in the columns.<br />
-<code class="docutils literal notranslate"><span class="pre">--customized-association-windows</span></code>: a tab delimited file containing chr, start, end, and gene_id. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#chr    start   end     gene_id</span>
-<span class="n">chr1</span>    <span class="mi">0</span>       <span class="mi">6480000</span> <span class="n">ENSG00000008128</span>
-<span class="n">chr1</span>    <span class="mi">0</span>       <span class="mi">6480000</span> <span class="n">ENSG00000008130</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">----phenotype-names</span></code>: the names of the phenotypes if multiple are included. There should be one for each phenotype file you include.<br />
-<code class="docutils literal notranslate"><span class="pre">--max-cv-variants</span></code>: maximum number of variants for cross-validation.<br />
-<code class="docutils literal notranslate"><span class="pre">--ld_reference_meta_file</span></code>: path to file containing chrom, start, end and path for linkage disequilibrium region information. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#chrom  start   end     path
-chr1    101384274       104443097       $PATH/chr1_101384274_104443097.cor.xz.bim
-chr1    104443097       106225286       $PATH/chr1_104443097_106225286.cor.xz.bim
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">--region-name</span></code>: if you only wish to analyze one region, then include the gene_id of a region found in the <code class="docutils literal notranslate"><span class="pre">customized-association-windows</span></code> file</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Each of these parts are independent of one another.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mnm_regression.ipynb</span> <span class="pre">susie_twas</span></code>: Univariate Fine-Mapping and TWAS with SuSiE</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mnm_regression.ipynb</span> <span class="pre">mnm_genes</span></code>: Multivariate Fine-Mapping for multiple genes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mnm_regression.ipynb</span> <span class="pre">fsusie</span></code>: Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mnm_regression.ipynb</span> <span class="pre">mnm</span></code>: Multivariate Fine-Mapping with mvSuSiE and mr.mash</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rss_analysis.ipynb</span> <span class="pre">univariate_rss</span></code>: Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</p></li>
+</ol>
 </section>
-<section id="minimal-working-example-steps">
-<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Link to this heading">#</a></h2>
-<section id="i-run-the-fine-mapping-and-twas-with-susie">
-<h3>i. Run the Fine-Mapping and TWAS with SuSiE<a class="headerlink" href="#i-run-the-fine-mapping-and-twas-with-susie" title="Link to this heading">#</a></h3>
+<section id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Link to this heading">#</a></h2>
+<section id="i-univariate-fine-mapping-and-twas-with-susie">
+<h3>i. Univariate Fine-Mapping and TWAS with SuSiE<a class="headerlink" href="#i-univariate-fine-mapping-and-twas-with-susie" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">mnm_regression</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">susie_twas</span> \
@@ -563,47 +553,113 @@ chr1    104443097       106225286       $PATH/chr1_104443097_106225286.cor.xz.bi
 </div>
 </div>
 </section>
+<section id="ii-multivariate-fine-mapping-for-multiple-genes">
+<h3>ii. Multivariate Fine-Mapping for multiple genes<a class="headerlink" href="#ii-multivariate-fine-mapping-for-multiple-genes" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">mnm_regression</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">mnm_genes</span> \
+    <span class="o">--</span><span class="n">name</span> <span class="n">ROSMAP_Ast_DeJager_eQTL</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="mf">.11</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Ast</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">covFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Ast</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">association</span><span class="o">-</span><span class="n">windows</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">windows</span><span class="o">/</span><span class="n">TADB_sliding_window</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">names</span> <span class="n">Ast_DeJager_eQTL</span> \
+    <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">cv</span><span class="o">-</span><span class="n">variants</span> <span class="mi">5000</span> <span class="o">--</span><span class="n">ld_reference_meta_file</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">ldref</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+    <span class="o">--</span><span class="n">independent_variant_list</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">ld_pruned_variants</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">fine_mapping_meta</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">Fungen_xQTL</span><span class="o">.</span><span class="n">cis_results_db</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">tsv</span> \
+    <span class="o">--</span><span class="n">phenoIDFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenoIDFile_cis_extended_region</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">analysis</span><span class="o">-</span><span class="n">pip</span><span class="o">-</span><span class="n">cutoff</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="n">coverage</span> <span class="mf">0.95</span> \
+    <span class="o">--</span><span class="n">maf</span> <span class="mf">0.01</span> \
+    <span class="o">--</span><span class="n">pheno_id_map_file</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">pheno_id_map_file</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">prior</span><span class="o">-</span><span class="n">canonical</span><span class="o">-</span><span class="n">matrices</span> \
+    <span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">data</span> \
+    <span class="o">--</span><span class="n">twas</span><span class="o">-</span><span class="n">cv</span><span class="o">-</span><span class="n">folds</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="n">trans</span><span class="o">-</span><span class="n">analysis</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="n">name</span> <span class="n">chr11_77324757_86627922</span> \ 
+    <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">output</span><span class="o">/</span> <span class="o">-</span><span class="n">s</span> <span class="n">force</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="iii-univariate-fine-mapping-of-functional-epigenomic-data-with-fsusie">
+<h3>iii. Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE<a class="headerlink" href="#iii-univariate-fine-mapping-of-functional-epigenomic-data-with-fsusie" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">mnm_regression</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">fsusie</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">fsusie_test</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">name</span> <span class="n">protocol_example_methylation</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">mwe_data</span><span class="o">/</span><span class="n">protocol_data</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">genotype_by_chrom</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">genotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">fsusie_test</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">ha</span><span class="o">.</span><span class="n">phenotype_by_region_files</span><span class="o">.</span><span class="n">corrected</span><span class="o">.</span><span class="n">reformat</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">covFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">mwe_data</span><span class="o">/</span><span class="n">protocol_data</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">covariate</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">protein</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">pQTL</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">prune</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">container</span> <span class="n">oras</span><span class="p">:</span><span class="o">//</span><span class="n">ghcr</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">cumc</span><span class="o">/</span><span class="n">pecotmr_apptainer</span><span class="p">:</span><span class="n">latest</span> \
+    <span class="o">--</span><span class="n">walltime</span> <span class="mi">2</span><span class="n">h</span> \
+    <span class="o">--</span><span class="n">numThreads</span> <span class="mi">8</span> \
+    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">association</span><span class="o">-</span><span class="n">windows</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">fsusie_test</span><span class="o">/</span><span class="n">regions</span><span class="o">.</span><span class="n">reformat</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">-</span><span class="n">c</span> <span class="o">../</span><span class="n">scripts</span><span class="o">/</span><span class="n">csg</span><span class="o">.</span><span class="n">yml</span> <span class="o">-</span><span class="n">q</span> <span class="n">neurology</span> \
+    <span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">data</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="n">name</span> <span class="n">TADB_1298</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="iv-multivariate-fine-mapping-with-mvsusie-and-mr-mash">
+<h3>iv. Multivariate Fine-Mapping with mvSuSiE and mr.mash<a class="headerlink" href="#iv-multivariate-fine-mapping-with-mvsusie-and-mr-mash" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">pipeline</span><span class="o">/</span><span class="n">mnm_regression</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">mnm</span> \
+    <span class="o">--</span><span class="n">name</span> <span class="n">ROSMAP_mega_eQTL</span> <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">output</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">genoFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">genofile</span><span class="o">/</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="mf">.11</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">phenoFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Mic</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">phenotype_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Mic</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+                <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">phenotype_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Ast</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+                <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Oli</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">phenotype_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Oli</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+                <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">OPC</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">phenotype_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">OPC</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+                <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Exc</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">phenotype_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Exc</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+                <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Inh</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">phenotype_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Inh</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">region_list</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">covFile</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Mic</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">covariate_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Mic</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+              <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Ast</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">covariate_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Ast</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+              <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Oli</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">covariate_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Oli</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+              <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">OPC</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">covariate_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">OPC</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+              <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Exc</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">covariate_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Exc</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+              <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">phenofile</span><span class="o">/</span><span class="n">Inh</span><span class="o">/</span><span class="n">analysis_ready</span><span class="o">/</span><span class="n">covariate_preprocessing</span><span class="o">/</span><span class="n">snuc_pseudo_bulk</span><span class="o">.</span><span class="n">Inh</span><span class="o">.</span><span class="n">mega</span><span class="o">.</span><span class="n">normalized</span><span class="o">.</span><span class="n">log2cpm</span><span class="o">.</span><span class="n">rosmap_cov</span><span class="o">.</span><span class="n">ROSMAP_NIA_WGS</span><span class="o">.</span><span class="n">leftnorm</span><span class="o">.</span><span class="n">bcftools_qc</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">snuc_pseudo_bulk_mega</span><span class="o">.</span><span class="n">related</span><span class="o">.</span><span class="n">plink_qc</span><span class="o">.</span><span class="n">extracted</span><span class="o">.</span><span class="n">pca</span><span class="o">.</span><span class="n">projected</span><span class="o">.</span><span class="n">Marchenko_PC</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">customized</span><span class="o">-</span><span class="n">association</span><span class="o">-</span><span class="n">windows</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">windows</span><span class="o">/</span><span class="n">TADB_enhanced_cis</span><span class="o">.</span><span class="n">coding</span><span class="o">.</span><span class="n">bed</span> \
+    <span class="o">--</span><span class="n">region</span><span class="o">-</span><span class="n">name</span> <span class="n">ENSG00000073921</span> <span class="o">--</span><span class="n">save_data</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">skip</span><span class="o">-</span><span class="n">twas</span><span class="o">-</span><span class="n">weights</span> \
+    <span class="o">--</span><span class="n">phenotype</span><span class="o">-</span><span class="n">names</span> <span class="n">Mic_mega_eQTL</span> <span class="n">Ast_mega_eQTL</span> <span class="n">Oli_mega_eQTL</span> <span class="n">OPC_mega_eQTL</span> <span class="n">Exc_mega_eQTL</span> <span class="n">Inh_mega_eQTL</span> \
+    <span class="o">--</span><span class="n">mixture_prior</span> <span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">analysis_result</span><span class="o">/</span><span class="n">mash</span><span class="o">/</span><span class="n">mixture_prior</span><span class="o">.</span><span class="n">EZ</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">rds</span> \
+    <span class="o">--</span><span class="n">max_cv_variants</span> <span class="mi">5000</span> \
+	<span class="o">--</span><span class="n">ld_reference_meta_file</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">ldref</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="v-regression-with-summary-statistics-rss-fine-mapping-and-twas-with-susie">
+<h3>v. Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE<a class="headerlink" href="#v-regression-with-summary-statistics-rss-fine-mapping-and-twas-with-susie" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">rss_analysis</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">univariate_rss</span> \
+<span class="o">--</span><span class="n">ld</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">ldref</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+    <span class="o">--</span><span class="n">gwas</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">data</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">GWAS_sumstat_meta_cloud_Apr_9</span><span class="o">.</span><span class="n">tsv</span> \
+    <span class="o">--</span><span class="n">qc_method</span> <span class="s2">&quot;rss_qc&quot;</span> <span class="o">--</span><span class="n">impute</span> \
+    <span class="o">--</span><span class="n">finemapping_method</span> <span class="s2">&quot;susie_rss&quot;</span> \
+    <span class="o">--</span><span class="n">cwd</span> <span class="err">$</span><span class="n">PATH</span><span class="o">/</span><span class="n">output</span><span class="o">/</span> \
+    <span class="o">--</span><span class="n">skip_analysis_pip_cutoff</span> <span class="mi">0</span> \
+    <span class="o">--</span><span class="n">skip_regions</span> <span class="mi">6</span><span class="p">:</span><span class="mi">25000000</span><span class="o">-</span><span class="mi">35000000</span> \
+    <span class="o">--</span><span class="n">region_name</span> <span class="mi">22</span><span class="p">:</span><span class="mi">49355984</span><span class="o">-</span><span class="mi">50799822</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="anticipated-results">
 <h2>Anticipated Results<a class="headerlink" href="#anticipated-results" title="Link to this heading">#</a></h2>
-<p>Univariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie.</p>
-<p><code class="docutils literal notranslate"><span class="pre">ROSMAP_mega_eQTL.chr11_ENSG00000073921.univariate_bvrs.rds</span></code>:</p>
-<ul class="simple">
-<li><p>For each gene of interest and phenotype, this file contains:</p>
-<ol class="arabic simple">
-<li><p>susie_fitted</p></li>
-<li><p>variant_names</p></li>
-<li><p>analysis_script</p></li>
-<li><p>other quantities - information on dropped samples, if any</p></li>
-<li><p>summary statistics (beta and se) for each variant</p></li>
-<li><p>sample names</p></li>
-<li><p>summary statistics for top loci</p></li>
-<li><p>susie results trimmed - includes pip, sets, cs_corr, sets_secondary, alpha, lbf_variable, V, niter, X_column_scale_factors, mu, mu2</p></li>
-<li><p>total time elapsed</p></li>
-<li><p>region info</p></li>
-<li><p>preset_variants_results</p></li>
-</ol>
-</li>
-</ul>
-<p><code class="docutils literal notranslate"><span class="pre">ROSMAP_mega_eQTL.chr11_ENSG00000073921.univariate_data.rds</span></code> (from the –save-data argument):</p>
-<ul class="simple">
-<li><p>For each gene of interest, contains residuals for each sample and phenotype</p></li>
-<li><p>see <a class="reference external" href="https://github.com/cumc/pecotmr/blob/68d87ca1d0a059022bf4e55339621cbddc8993cc/R/file_utils.R#L461">pecotmr code</a> for description at <code class="docutils literal notranslate"><span class="pre">load_regional_association_data</span></code> function</p></li>
-</ul>
-<p><code class="docutils literal notranslate"><span class="pre">ROSMAP_mega_eQTL.chr11_ENSG00000073921.univariate_twas_weights.rds</span></code>:</p>
-<ul class="simple">
-<li><p>For each gene of interest and phenotype, this file contains:</p>
-<ol class="arabic simple">
-<li><p>twas_weights - weights for enet, lasso, bayes r, mrash and susie methods</p></li>
-<li><p>twas_predictions - twas predictions for enet, lasso, bayes r, mrash and susie methods</p></li>
-<li><p>twas_cv_result</p></li>
-<li><p>total_time_elapsed</p></li>
-<li><p>variant_names</p></li>
-<li><p>region_info</p></li>
-</ol>
-</li>
-</ul>
+<p>Univariate finemapping will produce a file containing results for the top hits and a file containing twas weights produced by susie. Multigene finemapping with mvSuSiE will produce a file for each gene and region containing results for the top hits and a file containing twas weights produced by susie. Univariate finemapping for functional data with fSuSiE will produce a file containing results for the top hits and a file containing residuals from SuSiE. Multivariate finemapping will produce a file containing results for the top hits for each gene and a file containing twas weights produced by susie. Summary statistics fine-mapping produces a results file for each region and gwas of interest.</p>
 </section>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -637,20 +693,20 @@ chr1    104443097       106225286       $PATH/chr1_104443097_106225286.cor.xz.bi
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="mnm_miniprotocol.html"
+       href="../multivariate_genome/MASH/mash_fit.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Integrative Analysis with High-Dimensional Regression</p>
+        <p class="prev-next-title">MASH analysis pipeline with data-driven prior matrices</p>
       </div>
     </a>
     <a class="right-next"
-       href="multivariate_multigene_fine_mapping_vignette.html"
+       href="univariate_fine_mapping_twas_vignette.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Multivariate Fine-Mapping for multiple genes</p>
+        <p class="prev-next-title">Univariate Fine-Mapping and TWAS with SuSiE</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -670,10 +726,14 @@ chr1    104443097       106225286       $PATH/chr1_104443097_106225286.cor.xz.bi
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input:</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-run-the-fine-mapping-and-twas-with-susie">i. Run the Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miniprotocol-timing">Miniprotocol Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i-univariate-fine-mapping-and-twas-with-susie">i. Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-multivariate-fine-mapping-for-multiple-genes">ii. Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iii-univariate-fine-mapping-of-functional-epigenomic-data-with-fsusie">iii. Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-multivariate-fine-mapping-with-mvsusie-and-mr-mash">iv. Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#v-regression-with-summary-statistics-rss-fine-mapping-and-twas-with-susie">v. Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anticipated-results">Anticipated Results</a></li>

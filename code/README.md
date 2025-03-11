@@ -14,7 +14,7 @@
 4. `pecotmr_integration`: pair-wise enrichment, colocalization, TWAS and MR using the pecotmr framework; cTWAS and other analysis that uses wrappers from `pecotmr` library
 5. `rare_xqtl`: watershed pipeline
 6. `quantile_qtl`: an experimental workflow of applying quantile regression to xQTL studies
-7. `prototype_drafts`: unpolished and unused drafts including polyfun, MRAID, CAFEH, COLOC, fastenloc that we once tried but decided to not adopt in this project because of more suitable alternatives.
+7. `prototype_obsolete`: either obsolete pipelines, or unpolished and unused drafts including polyfun, MRAID, CAFEH, COLOC, fastenloc that we once tried but decided to not adopt in this project because of more suitable alternatives.
 
 ## Utilities
 
@@ -25,4 +25,4 @@
 
 \textbf{Currently, what's completely missing are:}
 
-- ColocBoost related workflows (XC&HS).
+- Rare xQTL related

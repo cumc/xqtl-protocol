@@ -1,0 +1,1567 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>TWAS, cTWAS and MR &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/pecotmr_integration/twas_ctwas';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Multi-trait colocalization using ColocBoost" href="../mnm_analysis/mnm_methods/colocboost.html" />
+    <link rel="prev" title="xQTL-GWAS pairwise enrichment and colocalization" href="SuSiE_enloc.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_data/reference_data.html">Reference Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/apa.html">Alternative polyadenylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/methylation.html">Methylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">Genotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../association_scan/qtl_association_testing.html">QTL Association Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/quantile_models/qr_and_twas.html">Quantile regression for QTL association testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Mixture Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/multivariate_mixture_vignette.html">Mixture Multivariate Distribution Estimate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multiomics Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mnm_analysis/fine_mapping_miniprotocol.html">Fine-Mapping</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/univariate_fine_mapping_twas_vignette.html">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/multivariate_multigene_fine_mapping_vignette.html">Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/univariate_fine_mapping_fsusie_vignette.html">Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/multivariate_fine_mapping_vignette.html">Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/summary_stats_finemapping_vignette.html">Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/mnm_methods/mnm_regression.html">Advanced regression models for association analysis with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/mnm_methods/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GWAS Integration</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="SuSiE_enloc.html">xQTL-GWAS pairwise enrichment and colocalization</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">TWAS, cTWAS and MR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mnm_methods/colocboost.html">Multi-trait colocalization using ColocBoost</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment and Validation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/eoo_enrichment.html">Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/gsea.html">Pathway Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/gregor.html">GREGOR enrichment analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrichment/sldsc_enrichment.html">Stratified LD Score Regression</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/pecotmr_integration/twas_ctwas.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/pecotmr_integration/twas_ctwas.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/code/pecotmr_integration/twas_ctwas.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>TWAS, cTWAS and MR</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-twas">Step 1: TWAS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-variant-selection-for-imputable-genes-via-the-best-prediction-methods">Step 2: Variant Selection for Imputable Genes via the Best Prediction Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-ctwas-analysis">Step 3: cTWAS analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-mr-for-candidate-genes">Step 4: MR for candidate genes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-quantile-twas-analysis">Step 5: Quantile TWAS analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwas-data-input-interface-similar-to-susie-rss">GWAS Data Input Interface (Similar to <code class="docutils literal notranslate"><span class="pre">susie_rss</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-of-fine-mapping-twas-pipeline">Output of Fine-Mapping &amp; TWAS Pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twas-region-information">TWAS region information</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="twas-ctwas-and-mr">
+<h1>TWAS, cTWAS and MR<a class="headerlink" href="#twas-ctwas-and-mr" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This module provides software implementations for transcriptome-wide association analysis (TWAS), Quantile TWAS and performs variant selection for providing sparse signals for cTWAS (causal TWAS) analysis as described in Qian et al (2024+) the multi-group cTWAS method. It will additionally perform Mendelian Randomization using fine-mapping instrumental variables (IV) as described in Zhang et al 2020 for “causal” effects estimation and model validation, with the unit of analysis being a single gene-trait pair.</p>
+<p>This procedure is a continuation of the SuSiE-TWAS workflow — it assumes that xQTL fine-mapping has been performed and moleuclar traits prediction weights pre-computed (to be used for TWAS). Cross validation for TWAS weights is optional but highly recommended.</p>
+<p>Quantile TWAS extends traditional TWAS by testing genetic effects at different quantiles of the trait distribution, which provides insights into genetic associations that vary across the distribution rather than just at the mean.</p>
+<p>GWAS data required are GWAS summary statistics and LD matrix for the region of interest.</p>
+<section id="step-1-twas">
+<h3>Step 1: TWAS<a class="headerlink" href="#step-1-twas" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Extract GWAS z-score for region of interest and corresponding LD matrix.</p></li>
+<li><p>(Optional) perform allele matching QC for the LD matrix with summary stats.</p></li>
+<li><p>Process weights: for a number of methods such as LASSO, Elastic Net and mr.ash we have to take the weights as is for QTL variants overlapping with GWAS variants. For SuSiE weights it can be adjusted to exactly match GWAS variants.</p></li>
+<li><p>Perofrm TWAS test for multiple sets of weights.</p></li>
+<li><p>For each gene, filter TWAS results by keeping the best model selected by CV. Drop the genes that don’t show good evidence of TWAS prediction weights.</p></li>
+</ol>
+</section>
+<section id="step-2-variant-selection-for-imputable-genes-via-the-best-prediction-methods">
+<h3>Step 2: Variant Selection for Imputable Genes via the Best Prediction Methods<a class="headerlink" href="#step-2-variant-selection-for-imputable-genes-via-the-best-prediction-methods" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Determine if the gene is imputable at each context based on the twas_cv performance by adjusted <span class="math notranslate nohighlight">\(r^2\)</span> (&gt;=0.01) and p-values (&lt;0.05).</p></li>
+<li><p>The imputable gene-context pair will go through variant selection step. Maximum 10 variants with top pip selected from either <code class="docutils literal notranslate"><span class="pre">top_loci</span></code> table or SuSiE CS set.</p></li>
+<li><p>Harmonize weights against LD reference and udpate SuSiE weight.</p></li>
+<li><p>Extract weights by best model for the context then by the variant names were selected from the previous step</p></li>
+</ol>
+</section>
+<section id="step-3-ctwas-analysis">
+<h3>Step 3: cTWAS analysis<a class="headerlink" href="#step-3-ctwas-analysis" title="Link to this heading">#</a></h3>
+<p><strong>FIXME: add more documentation here</strong></p>
+</section>
+<section id="step-4-mr-for-candidate-genes">
+<h3>Step 4: MR for candidate genes<a class="headerlink" href="#step-4-mr-for-candidate-genes" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Limit MR only to those showing some evidence of cTWAS significance AND have strong instrumental variable (fine-mapping PIP or CS).</p></li>
+<li><p>Use fine-mapped xQTL with GWAS data to perform MR.</p></li>
+<li><p>For multiple IV, aggregate individual IV estimates using a fixed-effect meta-analysis procedure.</p></li>
+<li><p>Identify and exclude results with severe violations of the exclusion restriction (ER) assumption.</p></li>
+</ol>
+</section>
+<section id="step-5-quantile-twas-analysis">
+<h3>Step 5: Quantile TWAS analysis<a class="headerlink" href="#step-5-quantile-twas-analysis" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use pre-computed TWAS weights (beta for now) for quantile-specific testing.</p></li>
+<li><p>For each quantile level, cluster and integrate by fixed and dynamic region groups, and extract relevant GWAS z-scores and LD matrix for the region of interest.</p></li>
+<li><p>Perform quantile region-specific association tests, identifying genetic variants with effects that vary across different quantile regions of the phenotype distribution.</p></li>
+</ul>
+</section>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Link to this heading">#</a></h2>
+<section id="gwas-data-input-interface-similar-to-susie-rss">
+<h3>GWAS Data Input Interface (Similar to <code class="docutils literal notranslate"><span class="pre">susie_rss</span></code>)<a class="headerlink" href="#gwas-data-input-interface-similar-to-susie-rss" title="Link to this heading">#</a></h3>
+<p>I. <strong>GWAS Summary Statistics Files</strong></p>
+<ul class="simple">
+<li><p><strong>Input</strong>: Vector of files for one or more GWAS studies.</p></li>
+<li><p><strong>Format</strong>:</p>
+<ul>
+<li><p>Tab-delimited files that is tabix-indexed by the first <code class="docutils literal notranslate"><span class="pre">chrom</span></code>(or <code class="docutils literal notranslate"><span class="pre">#chrom</span></code>) and second <code class="docutils literal notranslate"><span class="pre">pos</span></code> column.</p></li>
+<li><p>First 4 columns: <code class="docutils literal notranslate"><span class="pre">chrom</span></code> or <code class="docutils literal notranslate"><span class="pre">#chrom</span></code>, <code class="docutils literal notranslate"><span class="pre">pos</span></code>, <code class="docutils literal notranslate"><span class="pre">A1</span></code>, <code class="docutils literal notranslate"><span class="pre">A2</span></code></p></li>
+<li><p>Additional columns can be loaded using column mapping file see below</p></li>
+</ul>
+</li>
+<li><p><strong>Column Mapping files (optional)</strong>:</p>
+<ul>
+<li><p>Optional YAML file for custom column mapping.</p></li>
+<li><p>Required columns: <code class="docutils literal notranslate"><span class="pre">chrom</span></code>, <code class="docutils literal notranslate"><span class="pre">pos</span></code>, <code class="docutils literal notranslate"><span class="pre">A1</span></code>, <code class="docutils literal notranslate"><span class="pre">A2</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code> or (<code class="docutils literal notranslate"><span class="pre">betahat</span></code> and <code class="docutils literal notranslate"><span class="pre">sebetahat</span></code>).</p></li>
+<li><p>Optional columns: <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">var_y</span></code> (relevant to fine-mapping).</p></li>
+</ul>
+</li>
+</ul>
+<p>II. <strong>GWAS Summary Statistics Meta-File</strong>: this is optional and helpful when there are lots of GWAS data to process via the same command</p>
+<ul class="simple">
+<li><p><strong>Columns</strong>: <code class="docutils literal notranslate"><span class="pre">study_id</span></code>, chromosome number, path to summary statistics file, optional path to column mapping file.</p></li>
+<li><p><strong>Note</strong>: Chromosome number <code class="docutils literal notranslate"><span class="pre">0</span></code> indicates a genome-wide file.</p></li>
+</ul>
+<p>eg: <code class="docutils literal notranslate"><span class="pre">gwas_meta.tsv</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">study_id</span>    <span class="n">chrom</span>    <span class="n">file_path</span>                 <span class="n">column_mapping_file</span>
+<span class="n">study1</span>      <span class="mi">1</span>        <span class="n">gwas1</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span>         <span class="n">column_mapping</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">study1</span>      <span class="mi">2</span>        <span class="n">gwas2</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span>         <span class="n">column_mapping</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">study2</span>      <span class="mi">0</span>        <span class="n">gwas3</span><span class="o">.</span><span class="n">tsv</span><span class="o">.</span><span class="n">gz</span>         <span class="n">column_mapping</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>If both summary stats file (I) and meta data file (II) are specified we will take the union of the two.</p>
+<p>III. <strong>LD Reference Metadata File</strong></p>
+<ul class="simple">
+<li><p><strong>Format</strong>: Single TSV file.</p></li>
+<li><p><strong>Contents</strong>:</p>
+<ul>
+<li><p>Columns: <code class="docutils literal notranslate"><span class="pre">#chrom</span></code>, <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, path to the LD matrix, genomic build.</p></li>
+<li><p>LD matrix path format: comma-separated, first entry is the LD matrix, second is the bim file.</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong>: Refer to <a class="reference external" href="https://cumc.github.io/xqtl-protocol/code/reference_data/ld_reference_generation.html">our LD reference preparation document</a> for detailed information.</p></li>
+</ul>
+</section>
+<section id="output-of-fine-mapping-twas-pipeline">
+<h3>Output of Fine-Mapping &amp; TWAS Pipeline<a class="headerlink" href="#output-of-fine-mapping-twas-pipeline" title="Link to this heading">#</a></h3>
+<p><strong>xQTL Weight Database Metadata File</strong>:</p>
+<ul class="simple">
+<li><p><strong>Essential columns</strong>: <code class="docutils literal notranslate"><span class="pre">#chr</span></code>, <code class="docutils literal notranslate"><span class="pre">start</span></code>, <code class="docutils literal notranslate"><span class="pre">end</span></code>, <code class="docutils literal notranslate"><span class="pre">TSS</span></code>, <code class="docutils literal notranslate"><span class="pre">region_id</span></code>, <code class="docutils literal notranslate"><span class="pre">original_data</span></code></p></li>
+<li><p><strong>Structure of the weight database</strong>:</p>
+<ul>
+<li><p>RDS format.</p></li>
+<li><p>Organized hierarchically: region → context → weight matrix.</p></li>
+<li><p>Each column represents a different method.</p></li>
+</ul>
+</li>
+</ul>
+<p>eg: <code class="docutils literal notranslate"><span class="pre">xqtl_meta.tsv</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#chr start end region_id TSS original_data combined_data combined_data_sumstats contexts contexts_top_loci</span>
+<span class="n">chr1</span> <span class="mi">0</span> <span class="mi">6480000</span> <span class="n">ENSG00000008128</span> <span class="mi">1724356</span> <span class="s2">&quot;KNIGHT_pQTL.ENSG00000008128.univariate_susie_twas_weights.rds, MiGA_eQTL.ENSG00000008128.univariate_susie_twas_weights.rds, MSBB_eQTL.ENSG00000008128.univariate_susie_twas_weights.rds, ROSMAP_Bennett_Klein_pQTL.ENSG00000008128.univariate_susie_twas_weights.rds, ROSMAP_DeJager_eQTL.ENSG00000008128.univariate_susie_twas_weights.rds, ROSMAP_Kellis_eQTL.ENSG00000008128.univariate_susie_twas_weights.rds, ROSMAP_mega_eQTL.ENSG00000008128.univariate_susie_twas_weights.rds, STARNET_eQTL.ENSG00000008128.univariate_susie_twas_weights.rds&quot;</span> <span class="n">Fungen_xQTL</span><span class="o">.</span><span class="n">ENSG00000008128</span><span class="o">.</span><span class="n">cis_results_db</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">rds</span> <span class="n">Fungen_xQTL</span><span class="o">.</span><span class="n">ENSG00000008128</span><span class="o">.</span><span class="n">cis_results_db</span><span class="o">.</span><span class="n">export_sumstats</span><span class="o">.</span><span class="n">rds</span> <span class="n">Knight_eQTL_brain</span><span class="p">,</span><span class="n">MiGA_GFM_eQTL</span><span class="p">,</span><span class="n">MiGA_GTS_eQTL</span><span class="p">,</span><span class="n">MiGA_SVZ_eQTL</span><span class="p">,</span><span class="n">MiGA_THA_eQTL</span><span class="p">,</span><span class="n">BM_10_MSBB_eQTL</span><span class="p">,</span><span class="n">BM_22_MSBB_eQTL</span><span class="p">,</span><span class="n">BM_36_MSBB_eQTL</span><span class="p">,</span><span class="n">BM_44_MSBB_eQTL</span><span class="p">,</span><span class="n">monocyte_ROSMAP_eQTL</span><span class="p">,</span><span class="n">Mic_DeJager_eQTL</span><span class="p">,</span><span class="n">Ast_DeJager_eQTL</span><span class="p">,</span><span class="n">Oli_DeJager_eQTL</span><span class="p">,</span><span class="n">Exc_DeJager_eQTL</span><span class="p">,</span><span class="n">Inh_DeJager_eQTL</span><span class="p">,</span><span class="n">DLPFC_DeJager_eQTL</span><span class="p">,</span><span class="n">PCC_DeJager_eQTL</span><span class="p">,</span><span class="n">AC_DeJager_eQTL</span><span class="p">,</span><span class="n">Mic_Kellis_eQTL</span><span class="p">,</span><span class="n">Ast_Kellis_eQTL</span><span class="p">,</span><span class="n">Oli_Kellis_eQTL</span><span class="p">,</span><span class="n">OPC_Kellis_eQTL</span><span class="p">,</span><span class="n">Exc_Kellis_eQTL</span><span class="p">,</span><span class="n">Inh_Kellis_eQTL</span><span class="p">,</span><span class="n">Ast_mega_eQTL</span><span class="p">,</span><span class="n">Exc_mega_eQTL</span><span class="p">,</span><span class="n">Inh_mega_eQTL</span><span class="p">,</span><span class="n">Oli_mega_eQTL</span><span class="p">,</span><span class="n">STARNET_eQTL_Mac</span> <span class="n">Knight_eQTL_brain</span><span class="p">,</span><span class="n">MiGA_GFM_eQTL</span><span class="p">,</span><span class="n">MiGA_GTS_eQTL</span><span class="p">,</span><span class="n">MiGA_SVZ_eQTL</span><span class="p">,</span><span class="n">MiGA_THA_eQTL</span><span class="p">,</span><span class="n">BM_10_MSBB_eQTL</span><span class="p">,</span><span class="n">BM_22_MSBB_eQTL</span><span class="p">,</span><span class="n">BM_36_MSBB_eQTL</span><span class="p">,</span><span class="n">BM_44_MSBB_eQTL</span><span class="p">,</span><span class="n">monocyte_ROSMAP_eQTL</span><span class="p">,</span><span class="n">Mic_DeJager_eQTL</span><span class="p">,</span><span class="n">Ast_DeJager_eQTL</span><span class="p">,</span><span class="n">Oli_DeJager_eQTL</span><span class="p">,</span><span class="n">Exc_DeJager_eQTL</span><span class="p">,</span><span class="n">Inh_DeJager_eQTL</span><span class="p">,</span><span class="n">DLPFC_DeJager_eQTL</span><span class="p">,</span><span class="n">PCC_DeJager_eQTL</span><span class="p">,</span><span class="n">AC_DeJager_eQTL</span><span class="p">,</span><span class="n">Mic_Kellis_eQTL</span><span class="p">,</span><span class="n">Ast_Kellis_eQTL</span><span class="p">,</span><span class="n">Oli_Kellis_eQTL</span><span class="p">,</span><span class="n">OPC_Kellis_eQTL</span><span class="p">,</span><span class="n">Exc_Kellis_eQTL</span><span class="p">,</span><span class="n">Inh_Kellis_eQTL</span><span class="p">,</span><span class="n">Ast_mega_eQTL</span><span class="p">,</span><span class="n">Exc_mega_eQTL</span><span class="p">,</span><span class="n">Inh_mega_eQTL</span><span class="p">,</span><span class="n">Oli_mega_eQTL</span><span class="p">,</span><span class="n">STARNET_eQTL_Mac</span>
+</pre></div>
+</div>
+<p>This file is automatically generated as part of the FunGen-xQTL protocol, although only the essential columns are relevant to our application here.</p>
+</section>
+<section id="twas-region-information">
+<h3>TWAS region information<a class="headerlink" href="#twas-region-information" title="Link to this heading">#</a></h3>
+<p>This is required for cTWAS analysis, where multiple TWAS and SNP data within each region are combined for joint inference to select the variables, either genes or SNPs, to figure out which variables are likely to be directly associated with the phenotype of interest, rather than being associated through correlations with true causal variables.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chrom</span>    <span class="n">start</span>    <span class="n">end</span>    <span class="n">block_id</span>  
+<span class="mi">1</span>        <span class="mi">1000</span>     <span class="mi">5000</span>   <span class="n">block1</span>    
+<span class="mi">2</span>        <span class="mi">2000</span>     <span class="mi">6000</span>   <span class="n">block2</span>
+<span class="mi">3</span>        <span class="mi">3000</span>     <span class="mi">7000</span>   <span class="n">block3</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h2>
+<p>I. A table with the following contents</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gwas_study</span><span class="p">,</span> <span class="n">chrom</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">TSS</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">is_imputable</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">is_selected_method</span><span class="p">,</span> <span class="n">rsq_adj_cv</span><span class="p">,</span> <span class="n">pval_cv</span><span class="p">,</span> <span class="n">twas_z</span><span class="p">,</span> <span class="n">twas_pval</span>
+</pre></div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><p>if <code class="docutils literal notranslate"><span class="pre">twas_z</span></code> is <code class="docutils literal notranslate"><span class="pre">NA</span></code> it means the context is not imputable for the method of choice</p></li>
+</ul>
+<p>II. a list of  <code class="docutils literal notranslate"><span class="pre">refined_twas_weights_data</span></code> per block, in RDS format, of this structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ region_id
+   $ gene 
+      $ context
+        $ selected_model
+        $ is_imputable 
+        $ selected_top_variants
+        $ selected_model_weights
+
+</pre></div>
+</div>
+<p>This will only contain imputatable genes. It should come with a meta-data file like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chrom</span>    <span class="n">start</span>    <span class="n">end</span>    <span class="n">block_id</span>  <span class="n">refined_twas_db</span>
+<span class="mi">1</span>        <span class="mi">1000</span>     <span class="mi">5000</span>   <span class="n">block1</span>    <span class="n">block1</span><span class="o">.</span><span class="n">rds</span>
+<span class="mi">2</span>        <span class="mi">2000</span>     <span class="mi">6000</span>   <span class="n">block2</span>    <span class="n">block2</span><span class="o">.</span><span class="n">rds</span>
+<span class="mi">3</span>        <span class="mi">3000</span>     <span class="mi">7000</span>   <span class="n">block3</span>    <span class="n">block3</span><span class="o">.</span><span class="n">rds</span>
+</pre></div>
+</div>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">twas</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">twas</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">output</span><span class="o">/</span> <span class="o">--</span><span class="n">name</span> <span class="n">test</span> \
+   <span class="o">--</span><span class="n">gwas_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">GWAS</span><span class="o">/</span><span class="n">gwas_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">ld_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">data_public</span><span class="o">/</span><span class="mi">20240409</span><span class="n">_ADSP_LD_matrix</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">regions</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">pipeline_data</span><span class="o">/</span><span class="n">picalm_EUR_LD_blocks</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">xqtl_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">pipeline_data</span><span class="o">/</span><span class="n">test_data</span><span class="o">/</span><span class="n">twas_test_xqtl_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">xqtl_type_table</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">pipeline_data</span><span class="o">/</span><span class="n">data_type_table</span><span class="o">.</span><span class="n">txt</span> \
+   <span class="o">--</span><span class="n">rsq_pval_cutoff</span> <span class="mf">0.05</span> <span class="o">--</span><span class="n">rsq_cutoff</span> <span class="mf">0.01</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">twas</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">ctwas</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">output</span><span class="o">/</span> <span class="o">--</span><span class="n">name</span> <span class="n">test</span> \
+   <span class="o">--</span><span class="n">gwas_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">GWAS</span><span class="o">/</span><span class="n">gwas_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">ld_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">data_public</span><span class="o">/</span><span class="mi">20240409</span><span class="n">_ADSP_LD_matrix</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">regions</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">pipeline_data</span><span class="o">/</span><span class="n">picalm_EUR_LD_blocks</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">xqtl_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">pipeline_data</span><span class="o">/</span><span class="n">test_data</span><span class="o">/</span><span class="n">twas_test_xqtl_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">twas_weight_cutoff</span> <span class="mi">0</span> \
+   <span class="o">--</span><span class="n">region_name</span> <span class="n">chr10_80126158_82231647</span> <span class="n">chr11_84267999_86714492</span> 
+</pre></div>
+</div>
+<p>Here using <code class="docutils literal notranslate"><span class="pre">--region-name</span></code> we focus the analysis on 2 blocks: format as <code class="docutils literal notranslate"><span class="pre">chr_start_stop</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">twas</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">quantile_twas</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">output</span><span class="o">/</span> <span class="o">--</span><span class="n">name</span> <span class="n">test</span> \
+   <span class="o">--</span><span class="n">gwas_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">GWAS</span><span class="o">/</span><span class="n">gwas_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">ld_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">data_public</span><span class="o">/</span><span class="mi">20240409</span><span class="n">_ADSP_LD_matrix</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">region_name</span> <span class="n">chr11_84267999_86714492</span> <span class="n">chr7_54681006_57314931</span> \
+   <span class="o">--</span><span class="n">xqtl_meta_data</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">al4225</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">quantile_twas</span><span class="o">/</span><span class="n">quantile_twas_analysis</span><span class="o">/</span><span class="n">test_data</span><span class="o">/</span><span class="n">small_region_gene_meta_data_test</span><span class="o">.</span><span class="n">tsv</span>
+</pre></div>
+</div>
+<p>It is also possible to analyze a selected list of regions using option <code class="docutils literal notranslate"><span class="pre">--regions</span></code>. The 3 columns(chr, start, stop) of this file will be used for the block list to analyze. Here for example use the same list of regions as we used for LD block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sos</span> <span class="n">run</span> <span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">code</span><span class="o">/</span><span class="n">pecotmr_integration</span><span class="o">/</span><span class="n">twas</span><span class="o">.</span><span class="n">ipynb</span> <span class="n">quantile_twas</span> \
+   <span class="o">--</span><span class="n">cwd</span> <span class="o">/</span><span class="n">output</span><span class="o">/</span> <span class="o">--</span><span class="n">name</span> <span class="n">test</span> \
+   <span class="o">--</span><span class="n">gwas_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">GWAS</span><span class="o">/</span><span class="n">gwas_meta</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">ld_meta_data</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">data_public</span><span class="o">/</span><span class="mi">20240409</span><span class="n">_ADSP_LD_matrix</span><span class="o">/</span><span class="n">ld_meta_file</span><span class="o">.</span><span class="n">tsv</span> \
+   <span class="o">--</span><span class="n">regions</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">cl4215</span><span class="o">/</span><span class="n">mrmash</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">pipeline_data</span><span class="o">/</span><span class="n">EUR_LD_blocks</span><span class="o">.</span><span class="n">bed</span> \
+   <span class="o">--</span><span class="n">xqtl_meta_data</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">al4225</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">quantile_twas</span><span class="o">/</span><span class="n">quantile_twas_analysis</span><span class="o">/</span><span class="n">test_data</span><span class="o">/</span><span class="n">small_region_gene_meta_data_test</span><span class="o">.</span><span class="n">tsv</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[global]
+parameter: cwd = path(&quot;output/&quot;)
+parameter: gwas_meta_data = path()
+parameter: xqtl_meta_data = path()
+parameter: ld_meta_data = path()
+parameter: xqtl_type_table = &#39;&#39;
+parameter: gwas_name = []
+parameter: gwas_data = []
+parameter: column_mapping = []
+parameter: regions = path()
+# Optional: if a region name is provided 
+# the analysis would be focused on the union of provides region list and region names
+parameter: region_name = []
+parameter: name = f&quot;{xqtl_meta_data:bn}.{gwas_meta_data:bn}&quot;
+parameter: container = &#39;&#39;
+import re
+parameter: entrypoint= (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
+parameter: job_size = 100
+parameter: walltime = &quot;5m&quot;
+parameter: mem = &quot;8G&quot;
+parameter: numThreads = 1
+
+import os
+import pandas as pd
+
+def adapt_file_path(file_path, reference_file):
+    &quot;&quot;&quot;
+    Adapt a single file path based on its existence and a reference file&#39;s path.
+
+    Args:
+    - file_path (str): The file path to adapt.
+    - reference_file (str): File path to use as a reference for adaptation.
+
+    Returns:
+    - str: Adapted file path.
+
+    Raises:
+    - FileNotFoundError: If no valid file path is found.
+    &quot;&quot;&quot;
+    reference_path = os.path.dirname(reference_file)
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        return file_path
+
+    # Check file name without path
+    file_name = os.path.basename(file_path)
+    if os.path.isfile(file_name):
+        return file_name
+
+    # Check file name in reference file&#39;s directory
+    file_in_ref_dir = os.path.join(reference_path, file_name)
+    if os.path.isfile(file_in_ref_dir):
+        return file_in_ref_dir
+
+    # Check original file path prefixed with reference file&#39;s directory
+    file_prefixed = os.path.join(reference_path, file_path)
+    if os.path.isfile(file_prefixed):
+        return file_prefixed
+
+    # If all checks fail, raise an error
+    raise FileNotFoundError(f&quot;No valid path found for file: {file_path}&quot;)
+
+def group_by_region(lst, partition):
+    # from itertools import accumulate
+    # partition = [len(x) for x in partition]
+    # Compute the cumulative sums once
+    # cumsum_vector = list(accumulate(partition))
+    # Use slicing based on the cumulative sums
+    # return [lst[(cumsum_vector[i-1] if i &gt; 0 else 0):cumsum_vector[i]] for i in range(len(partition))]
+    return partition
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[get_analysis_regions: shared = [&quot;filtered_region_info&quot;, &quot;filtered_regional_xqtl_files&quot;, &quot;regional_data&quot;]]
+from collections import OrderedDict
+
+def check_required_columns(df, required_columns):
+    &quot;&quot;&quot;Check if the required columns are present in the dataframe.&quot;&quot;&quot;
+    missing_columns = [col for col in required_columns if col not in list(df.columns)]
+    if missing_columns:
+        raise ValueError(f&quot;Missing required columns: {&#39;, &#39;.join(missing_columns)}&quot;)
+
+def extract_regional_data(gwas_meta_data, xqtl_meta_data, regions, region_name, gwas_name, gwas_data, column_mapping):
+    &quot;&quot;&quot;
+    Extracts data from GWAS and xQTL metadata files and additional GWAS data provided. 
+
+    Args:
+    - gwas_meta_data (str): File path to the GWAS metadata file.
+    - xqtl_meta_data (str): File path to the xQTL weight metadata file.
+    - gwas_name (list): vector of GWAS study names.
+    - gwas_data (list): vector of GWAS data.
+    - column_mapping (list, optional): vector of column mapping files.
+
+    Returns:
+    - Tuple of two dictionaries:
+        - GWAS Dictionary: Maps study IDs to a list containing chromosome number, 
+          GWAS file path, and optional column mapping file path.
+        - xQTL Dictionary: Nested dictionary with region IDs as keys.
+
+    Raises:
+    - FileNotFoundError: If any specified file path does not exist.
+    - ValueError: If required columns are missing in the input files or vector lengths mismatch.
+    &quot;&quot;&quot;
+    # Check vector lengths
+    if len(gwas_name) != len(gwas_data):
+        raise ValueError(&quot;gwas_name and gwas_data must be of equal length&quot;)
+    
+    if len(column_mapping)&gt;0 and len(column_mapping) != len(gwas_name):
+        raise ValueError(&quot;If column_mapping is provided, it must be of the same length as gwas_name and gwas_data&quot;)
+
+    # Required columns for each file type
+    required_gwas_columns = [&#39;study_id&#39;, &#39;chrom&#39;, &#39;file_path&#39;]
+    required_xqtl_columns = [&#39;region_id&#39;, &#39;#chr&#39;, &#39;start&#39;, &#39;end&#39;, &quot;TSS&quot;, &#39;original_data&#39;] #region_id here is gene name
+    required_ld_columns = [&#39;chr&#39;, &#39;start&#39;, &#39;stop&#39;]
+    
+    # Reading the GWAS metadata file
+    gwas_df = pd.read_csv(gwas_meta_data, sep=&quot;\t&quot;)
+    check_required_columns(gwas_df, required_gwas_columns)
+    gwas_dict = OrderedDict()
+    
+    # Reading LD regions info
+    # Initialize empty DataFrame for regions
+    regions_df = pd.DataFrame(columns=[&#39;chr&#39;, &#39;start&#39;, &#39;stop&#39;])
+
+    # Check if regions file exists and read it
+    if os.path.isfile(regions):
+        file_regions_df = pd.read_csv(regions, sep=&quot;\t&quot;, skipinitialspace=True)
+        file_regions_df.columns = [col.strip() for col in file_regions_df.columns]  # Strip spaces from column names
+        file_regions_df[&#39;chr&#39;] = file_regions_df[&#39;chr&#39;].str.strip()
+        check_required_columns(file_regions_df, required_ld_columns)
+        regions_df = pd.concat([regions_df, file_regions_df])
+    # Process region_name if provided: 
+    # fomat: region_name = [&quot;chr1_16103_2888443&quot;, &quot;chr1_4320284_5853833&quot;]
+    if len(region_name) &gt; 0:
+        # Split region_name entries into chr, start, and stop columns
+        extra_regions = [name.split(&quot;_&quot;) for name in region_name]
+        extra_regions_df = pd.DataFrame(extra_regions, columns=[&#39;chr&#39;, &#39;start&#39;, &#39;stop&#39;])
+        extra_regions_df[&#39;start&#39;] = extra_regions_df[&#39;start&#39;].astype(int)
+        extra_regions_df[&#39;stop&#39;] = extra_regions_df[&#39;stop&#39;].astype(int)
+        # Add extra regions to regions_df
+        regions_df = pd.concat([regions_df, extra_regions_df])
+    # Remove duplicates and reset index
+    regions_df = regions_df.drop_duplicates().reset_index(drop=True)
+    regions_dict = OrderedDict()
+
+    # Reading the xQTL weight metadata file
+    xqtl_df = pd.read_csv(xqtl_meta_data, sep=&quot; &quot;)
+    check_required_columns(xqtl_df, required_xqtl_columns)
+    xqtl_dict = OrderedDict()
+
+    # Process additional GWAS data from R vectors
+    for name, data, mapping in zip(gwas_name, gwas_data, column_mapping or [None]*len(gwas_name)):
+        gwas_dict[name] = {0: [data, mapping]}
+
+    for _, row in gwas_df.iterrows():
+        file_path = row[&#39;file_path&#39;]
+        mapping_file = row.get(&#39;column_mapping_file&#39;)
+        
+        # Adjust paths if necessary
+        file_path = adapt_file_path(file_path, gwas_meta_data)
+        if mapping_file:
+            mapping_file = adapt_file_path(mapping_file,  gwas_meta_data)
+
+       # Create or update the entry for the study_id
+        if row[&#39;study_id&#39;] not in gwas_dict:
+            gwas_dict[row[&#39;study_id&#39;]] = {}
+
+        # Expand chrom 0 to chrom 1-22 or use the specified chrom
+        chrom_range = range(1, 23) if row[&#39;chrom&#39;] == 0 else [row[&#39;chrom&#39;]]
+        for chrom in chrom_range:
+            if chrom in gwas_dict[row[&#39;study_id&#39;]]:
+                existing_entry = gwas_dict[row[&#39;study_id&#39;]][f&#39;chr{chrom}&#39;]
+                raise ValueError(f&quot;Duplicate chromosome specification for study_id {row[&#39;study_id&#39;]}, chrom {chrom}. &quot;
+                                 f&quot;Conflicting entries: {existing_entry} and {[file_path, mapping_file]}&quot;)
+            gwas_dict[row[&#39;study_id&#39;]][f&#39;chr{chrom}&#39;] = [file_path, mapping_file]
+            
+    for _, row in regions_df.iterrows():
+        LD_region_id = f&quot;{row[&#39;chr&#39;]}_{row[&#39;start&#39;]}_{row[&#39;stop&#39;]}&quot;
+        overlapping_xqtls = xqtl_df[(xqtl_df[&#39;#chr&#39;] == row[&#39;chr&#39;]) &amp; 
+                                     (xqtl_df[&#39;TSS&#39;] &lt;= row[&#39;stop&#39;]) &amp; 
+                                     (xqtl_df[&#39;TSS&#39;] &gt;= (row[&#39;start&#39;]))]
+        file_paths = []
+        mapped_genes = []
+        # Collect file paths for xQTLs overlapping this region
+        for _, xqtl_row in overlapping_xqtls.iterrows():
+            original_data = xqtl_row[&#39;original_data&#39;]
+            file_list = original_data.split(&#39;,&#39;) if &#39;,&#39; in original_data else [original_data]
+            file_paths.extend([adapt_file_path(fp.strip(), xqtl_meta_data) for fp in file_list])
+            mapped_genes.extend([xqtl_row[&#39;region_id&#39;]] * len(file_list))
+
+        # Store metadata and files in the dictionary
+        regions_dict[LD_region_id] = {
+            &quot;meta_info&quot;: [row[&#39;chr&#39;], row[&#39;start&#39;], row[&#39;stop&#39;], LD_region_id, mapped_genes],
+            &quot;files&quot;: file_paths
+        }
+        
+    for _, row in xqtl_df.iterrows():
+        file_paths = [adapt_file_path(fp.strip(), xqtl_meta_data) for fp in row[&#39;original_data&#39;].split(&#39;,&#39;)]  # Splitting and stripping file paths
+        xqtl_dict[row[&#39;region_id&#39;]] = {&quot;meta_info&quot;: [row[&#39;#chr&#39;], row[&#39;start&#39;], row[&#39;end&#39;], row[&#39;region_id&#39;], row[&#39;contexts&#39;]],
+                                       &quot;files&quot;: file_paths}
+    return gwas_dict, xqtl_dict, regions_dict
+
+
+gwas_dict, xqtl_dict, regions_dict = extract_regional_data(gwas_meta_data, xqtl_meta_data,regions,region_name,gwas_name, gwas_data, column_mapping)
+regional_data = dict([(&quot;GWAS&quot;, gwas_dict), (&quot;xQTL&quot;, xqtl_dict), (&quot;Regions&quot;, regions_dict)])
+
+
+# get regions data 
+region_info = [x[&quot;meta_info&quot;] for x in regional_data[&#39;Regions&#39;].values()]
+regional_xqtl_files = [x[&quot;files&quot;] for x in regional_data[&#39;Regions&#39;].values()]
+
+# Filter out empty xQTL file paths
+filtered_region_info = []
+filtered_regional_xqtl_files = []
+skipped_regions =[]
+
+for region, files in zip(region_info, regional_xqtl_files):
+    if files:
+        filtered_region_info.append(region)
+        filtered_regional_xqtl_files.append(files)
+    else:
+        skipped_regions.append(region)
+print(f&quot;Skipping {len(skipped_regions)} out of {len(regional_xqtl_files)} regions, no overlapping xQTL weights found. &quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[twas]
+depends: sos_variable(&quot;filtered_regional_xqtl_files&quot;)
+parameter: coverage = &quot;cs_coverage_0.95&quot;
+# Threashold for rsq and pvalue for imputability determination for a model 
+parameter: rsq_cutoff = 0.01
+parameter: rsq_pval_cutoff = 0.05
+parameter: mr_pval_cutoff = 0.05
+parameter: save_ctwas_data = True
+parameter: save_mr_result = True
+parameter: rsq_option=&quot;rsq&quot;
+parameter: rsq_pval_option=[&quot;adj_rsq_pval&quot;, &quot;pval&quot;]
+
+input: filtered_regional_xqtl_files, group_by = lambda x: group_by_region(x, filtered_regional_xqtl_files), group_with = &quot;filtered_region_info&quot;
+output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_filtered_region_info[3]}.twas.tsv.gz&#39;]
+if save_ctwas_data:
+    output_files.append(f&#39;{cwd:a}/{step_name}/{name}.{_filtered_region_info[3]}.twas_data.rds&#39;)
+if save_mr_result:
+    output_files.append(f&#39;{cwd:a}/{step_name}/{name}.{_filtered_region_info[3]}.mr_result.tsv.gz&#39;)
+output: output_files
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:n}.stdout&quot;, stderr = f&quot;{_output[0]:n}.stderr&quot;, container = container, entrypoint = entrypoint
+
+    library(dplyr)
+    library(data.table)
+    library(pecotmr)
+    library(readr)
+
+    # get xQTL weight information 
+    xqtl_meta_df &lt;- fread(&quot;${xqtl_meta_data}&quot;, data.table=FALSE) # Get related gene information from the xqtl_meta data table
+    xqtl_type_table &lt;- if (isTRUE(file.exists(&quot;${xqtl_type_table}&quot;))) fread(&quot;${xqtl_type_table}&quot;) else NULL
+    gwas_studies = c(${paths(regional_data[&quot;GWAS&quot;].keys()):r,})
+    gwas_files = c(${paths([v[_filtered_region_info[0]] for k, v in regional_data[&quot;GWAS&quot;].items()]):r,})
+    gene_list &lt;- c(${&#39;, &#39;.join([f&quot;&#39;{gene}&#39;&quot; for gene in _filtered_region_info[4]])})
+
+    # Process weights 
+    twas_weights_results &lt;- list()
+    weight_db_list &lt;- c(${_input:r,})
+    names(weight_db_list) &lt;- gene_list
+    weight_db_list &lt;- split(weight_db_list, names(weight_db_list), c)
+    # remove weight db files that only contain messages: &quot;No SNPs found in the specified region ...&quot;
+    weight_db_list_update &lt;- Filter(Negate(is.null), lapply(weight_db_list, function(file_list){do.call(c,lapply(file_list, function(file) if (file.size(file) &gt; 200) file))}))
+    if(length(weight_db_list_update) &lt;= 0) stop(paste0(&quot;No weight information available from &quot;, paste0(weight_db_list, collapse=&quot;,&quot;), &quot;. &quot;))
+    
+    # Step 1: Load TWAS weights and generate twas weight db, output export_twas_weights_db 
+    for (gene_db in names(weight_db_list_update)) {
+        weight_dbs &lt;- weight_db_list_update[[gene_db]]
+        twas_weights_results[[gene_db]] = load_twas_weights(weight_dbs, variable_name_obj=&quot;variant_names&quot;, 
+                                                           susie_obj=&quot;susie_weights_intermediate&quot;,
+                                                           twas_weights_table = &quot;twas_weights&quot;)
+        if (length(twas_weights_results[[gene_db]]) &gt; 1) {
+          twas_weights_results[[gene_db]]$data_type &lt;- setNames(lapply(names(twas_weights_results[[gene_db]]$weights), function(context) xqtl_type_table$type[sapply(xqtl_type_table$context,
+                                                                function(x) grepl(x, context))]), names(twas_weights_results[[gene_db]]$weights))      
+        } else {
+          twas_weights_results[[gene_db]] &lt;- NULL
+        }                   
+    }
+    rm(weight_db_list, weight_db_list_update, xqtl_type_table, gwas_files, gene_list)
+
+    # Step 2: twas analysis for imputable genes across contexts
+    twas_results_db &lt;- twas_pipeline(twas_weights_results, 
+                                     &quot;${ld_meta_data}&quot;, 
+                                     &quot;${gwas_meta_data}&quot;,  
+                                     region_block=&quot;${_filtered_region_info[3]}&quot;,
+                                     rsq_cutoff = ${rsq_cutoff}, 
+                                     rsq_option = &quot;${rsq_option}&quot;, 
+                                     rsq_pval_cutoff = ${rsq_pval_cutoff}, 
+                                     rsq_pval_option=c(${&quot;, &quot;.join([f&#39;&quot;{x}&quot;&#39; for x in rsq_pval_option])}), 
+                                     mr_pval_cutoff = ${mr_pval_cutoff},
+                                     mr_coverage_column = &quot;${coverage}&quot;, 
+                                     output_twas_data = ${&quot;TRUE&quot; if save_ctwas_data else &quot;FALSE&quot;})
+    if(!is.null(twas_results_db)){
+        twas_results_db$twas_result &lt;- merge( twas_results_db$twas_result, xqtl_meta_df[, c(&quot;region_id&quot;,&quot;TSS&quot;,&quot;start&quot;,&quot;end&quot;)], by.x=&quot;molecular_id&quot;, by.y=&quot;region_id&quot;)
+        fwrite(twas_results_db$twas_result[, c(2,1,14:16,3:13)], file = ${_output[0]:r}, sep = &quot;\t&quot;, compress = &quot;gzip&quot;)
+    } else {
+        fwrite(data.frame(), file = ${_output[0]:r}, sep = &quot;\t&quot;, compress = &quot;gzip&quot;)
+    }
+    # Step 3: reformat for follow up cTWAS analysis
+    if (${&quot;TRUE&quot; if save_ctwas_data else &quot;FALSE&quot;}) {
+        saveRDS(twas_results_db$twas_data, &quot;${_output[0]:nnn}.twas_data.rds&quot;, compress=&#39;xz&#39;)
+    }
+    if (${&quot;TRUE&quot; if save_mr_result else &quot;FALSE&quot;}) {
+        if(!is.null(twas_results_db)) {
+            fwrite(twas_results_db$mr_result, file = &quot;${_output[0]:nnn}.mr_result.tsv.gz&quot;, sep = &quot;\t&quot;, compress = &quot;gzip&quot;)
+        } else {
+            fwrite(data.frame(), file = &quot;${_output[0]:nnn}.mr_result.tsv.gz&quot;, sep = &quot;\t&quot;, compress = &quot;gzip&quot;)
+        }
+    }
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ctwas_1]
+depends: sos_variable(&quot;filtered_region_info&quot;)
+# twas weight cutoff for ctwas variant selection
+parameter: twas_weight_cutoff = 0
+# cs_min_cor cutoff in susie finemapping result for variant selection
+parameter: cs_min_cor = 0
+# minimum pip cutoff in susie finemapping result for variant selection
+parameter: min_pip_cutoff =0 
+# A scalar in (0,1]. The proportion of SNPs, reduce runtime at the cost of accuracy 
+parameter: thin = 0.1
+# Maximum number of SNPs in a region.
+parameter: maxSNP = 20000
+# A list of regions to be subset for screening and fine-mapping, for example: &quot;10_80126158_82231647&quot;
+parameter: region_name = []
+# skip this step if True
+parameter: skip_assembly = False
+skip_if(skip_assembly == True, &quot; Skip [ctwas_1] assemble regions. &quot; )
+
+if region_name:
+    filtered_region_info = [region_info for region_info in filtered_region_info if region_info[3] in region_name]
+
+twas_output_files = {}
+region_blocks_per_chrom = []
+chromosome_list = []
+
+for region_info in filtered_region_info:
+    chrom = region_info[0]
+    file_path = f&quot;{cwd}/twas/{name}.{region_info[3]}.twas_data.rds&quot;
+    if chrom not in twas_output_files:
+        twas_output_files[chrom] = [[], []]  # Structure: {&quot;chrX&quot;: [[files], [region_names]]}
+        chromosome_list.append(chrom)
+    twas_output_files[chrom][0].append(file_path)  # File paths
+    twas_output_files[chrom][1].append(region_info[3])  # Region names
+twas_files=[twas_output_files[chr][0] for chr in chromosome_list]
+region_blocks_per_chrom = [twas_output_files[chr][1] for chr in chromosome_list]
+region_blocks_per_chrom = [f&quot;&quot;&quot;c(&quot;{&#39;&quot;, &quot;&#39;.join(regions)}&quot;)&quot;&quot;&quot; for regions in region_blocks_per_chrom]
+if not os.path.exists(step_name.split(&#39;_&#39;)[0]):
+    os.makedirs(step_name.split(&#39;_&#39;)[0])
+input: twas_files, group_by = lambda x: group_by_region(x, twas_files),  group_with=dict(region_names=region_blocks_per_chrom)
+chrom =region_names.split(&#39;&quot;&#39;)[1].split(&quot;_&quot;)[0]
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+R: expand = &#39;${ }&#39;, stdout = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/ctwas_assemb_{chrom}_{name}.stdout&quot;, 
+stderr = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/ctwas_assemb_{chrom}_{name}.stderr&quot;, container = container, entrypoint = entrypoint
+    
+    library(data.table)
+    library(ctwas) # multigroup_ctwas # documentation for ctwas multigroup version 
+    library(pecotmr)
+
+    outputdir = &quot;${cwd:a}/ctwas/&quot;
+    
+    # load genome-wide data across all regions
+    gwas_studies &lt;- unique(fread(&quot;${gwas_meta_data}&quot;,data.table=FALSE, select = &quot;study_id&quot;))[,1]
+
+    merge_context_names &lt;- function(ctwas_dat_file){
+        ctwas_dat&lt;- readRDS(ctwas_dat_file)
+        idxs &lt;- which(grepl(&quot;_chr[0-9XY]+_[^_]+&quot;, names(ctwas_dat$weights)))
+        if (length(idxs)&gt;0) {
+            names(ctwas_dat$weights) &lt;- gsub(&quot;_chr[0-9XY]+_[A-Za-z0-9]+&quot;, &quot;&quot;, names(ctwas_dat$weights))
+            for (idx in idxs) {
+                for (study in names(ctwas_dat$weights[[idx]])){
+                    ctwas_dat$weights[[idx]][[study]]$weight_name &lt;- gsub(&quot;_chr[0-9XY]+_[A-Za-z0-9]+&quot;, &quot;&quot;, ctwas_dat$weights[[idx]][[study]]$weight_name)
+                    ctwas_dat$weights[[idx]][[study]]$context &lt;- gsub(&quot;_chr[0-9XY]+_[A-Za-z0-9]+&quot;, &quot;&quot;, ctwas_dat$weights[[idx]][[study]]$context)
+                }
+            }
+            for (study in names(ctwas_dat$z_gene)){
+                ctwas_dat$z_gene[[study]]$id &lt;- gsub(&quot;_chr[0-9XY]+_[A-Za-z0-9]+&quot;, &quot;&quot;, ctwas_dat$z_gene[[study]]$id)
+                ctwas_dat$z_gene[[study]]$context &lt;- gsub(&quot;_chr[0-9XY]+_[A-Za-z0-9]+&quot;, &quot;&quot;, ctwas_dat$z_gene[[study]]$context)
+                ctwas_dat$z_gene[[study]]$group &lt;- gsub(&quot;_chr[0-9XY]+_[A-Za-z0-9]+&quot;, &quot;&quot;, ctwas_dat$z_gene[[study]]$group)
+            }
+            for (gene in names(ctwas_dat$susie_weights_intermediate_qced)){
+                names(ctwas_dat$susie_weights_intermediate_qced[[gene]]) &lt;-  gsub(&quot;_chr[0-9XY]+_[^_]+&quot;, &quot;&quot;, names(ctwas_dat$susie_weights_intermediate_qced[[gene]]))
+            }
+        }
+        idxs &lt;- which(grepl(&quot;monocyte&quot;, names(ctwas_dat$weights)))
+        if (length(idxs)&gt;0) {
+            names(ctwas_dat$weights) &lt;- gsub(&quot;monocyte_eQTL&quot;, &quot;eQTL&quot;, names(ctwas_dat$weights))
+            for (idx in idxs) {
+                for (study in names(ctwas_dat$weights[[idx]])){
+                    ctwas_dat$weights[[idx]][[study]]$weight_name &lt;- gsub(&quot;monocyte_eQTL&quot;, &quot;eQTL&quot;, ctwas_dat$weights[[idx]][[study]]$weight_name)
+                    ctwas_dat$weights[[idx]][[study]]$type &lt;- &quot;eQTL&quot;
+                }
+            }
+            for (study in names(ctwas_dat$z_gene)){
+                ctwas_dat$z_gene[[study]]$id &lt;- gsub(&quot;monocyte_eQTL&quot;, &quot;eQTL&quot;, ctwas_dat$z_gene[[study]]$id)
+                ctwas_dat$z_gene[[study]]$type &lt;- gsub(&quot;monocyte_&quot;, &quot;&quot;, ctwas_dat$z_gene[[study]]$type)
+                ctwas_dat$z_gene[[study]]$group &lt;- gsub(&quot;monocyte_eQTL&quot;, &quot;eQTL&quot;, ctwas_dat$z_gene[[study]]$group)
+            }
+        }
+        return(ctwas_dat)
+    }
+    
+    data &lt;- lapply(c(${_input:r,}), merge_context_names)
+    names(data) &lt;- ${region_names}
+    data &lt;- Filter(Negate(is.null), data)
+    weights &lt;- do.call(c, lapply(names(data), function(region_block){
+        trim_ctwas_variants(data[[region_block]], twas_weight_cutoff=${twas_weight_cutoff}, cs_min_cor=${cs_min_cor},
+                            min_pip_cutoff=${min_pip_cutoff}, max_num_variants=Inf)
+    }))
+    weight_list &lt;- setNames(lapply(unique(names(weights)), function(study) {
+        do.call(c, unname(weights[names(weights) %in% study]))
+    }),unique(names(weights)))
+    rm(weights)
+    
+    # compile z_snp, z_gene, and snp_info across multiple regions
+    snp_info &lt;- do.call(c, lapply(unname(data), function(x) x$snp_info))
+    snp_map &lt;- snp_info[!duplicated(names(snp_info))]
+    z_gene_dat &lt;- do.call(c, lapply(unname(data), function(x)x$z_gene))
+    z_snp_dat &lt;-  do.call(c, lapply(unname(data), function(x)x$z_snp))
+    z_gene &lt;- setNames(lapply(gwas_studies, function(study)  do.call(rbind, z_gene_dat[names(z_gene_dat) == study])), gwas_studies)
+    z_gene &lt;- Filter(Negate(is.null), z_gene)
+    z_gene &lt;- lapply(z_gene, function(x) x[!is.na(x$z) &amp; !is.infinite(x$z) &amp; x$id %in% names(weight_list[[na.omit(unique(x$gwas_study))]]),])
+    z_snp &lt;- setNames(lapply(gwas_studies, function(study) {
+        df &lt;- do.call(rbind, z_snp_dat[names(z_snp_dat) == study])
+        df[!duplicated(df$id) &amp;  !is.infinite(df$z) &amp; !is.na(df$z), ] 
+    }), gwas_studies)
+    rm(data, z_gene_dat, z_snp_dat) 
+    
+    regions_data &lt;- get_ctwas_meta_data(&quot;${ld_meta_data}&quot;, names(snp_map))
+    region_info &lt;- regions_data$region_info
+    LD_map &lt;- regions_data$LD_info
+    saveRDS(weight_list, file.path(outputdir, &quot;${name}_${chrom}_ctwas_weights.rds&quot;), compress=&#39;xz&#39;)
+    saveRDS(LD_map, file.path(outputdir, &quot;${name}_${chrom}_LD_map.rds&quot;), compress=&#39;xz&#39;)
+    saveRDS(list(z_snp=z_snp, snp_map=snp_map), file.path(outputdir, &quot;${name}_${chrom}_z_snp_map.rds&quot;), compress=&#39;xz&#39;)
+    rm(regions_data, snp_info, LD_map)
+                      
+    for (study in names(weight_list)){
+      outname = paste0(&quot;${name}&quot;, &quot;_&quot;, &quot;${chrom}&quot;,&quot;_&quot;, study)
+      if ( is.null(z_snp[[study]]) || is.null(z_gene[[study]])) next
+      # assemble regions
+      region_data_file &lt;- file.path(outputdir, paste0(outname, &quot;.ctwas_region_data.thin&quot;, ${thin}, &quot;.rds&quot;))
+      boundary_gene_file &lt;- file.path(outputdir, paste0(outname, &quot;.ctwas_boundary_genes.thin&quot;, ${thin}, &quot;.rds&quot;))
+
+      res &lt;- assemble_region_data(region_info,
+                                z_snp[[study]],
+                                z_gene[[study]],
+                                weight_list[[study]],
+                                snp_map,
+                                thin = ${thin},
+                                maxSNP = ${maxSNP},
+                                min_group_size = 1,
+                                ncore = ${numThreads})
+      region_data &lt;- res$region_data
+      boundary_genes &lt;- res$boundary_genes
+      saveRDS(region_data, region_data_file, compress=&#39;xz&#39;)
+      saveRDS(boundary_genes, boundary_gene_file, compress=&#39;xz&#39;)
+    }
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ctwas_2]
+parameter: run_param_est = False
+parameter: skip_assembly = False
+parameter: thin=0.1
+parameter: prior_var_structure = &quot;shared_all&quot;
+thin=int(thin) if thin == 1.0 else thin
+skip_if(run_param_est == False, &quot; Skip [ctwas_2] parameter estimation. &quot; )
+
+input: f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}*.ctwas_region_data.thin{thin}.rds&quot;, group_by=&quot;all&quot;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+R: expand = &#39;${ }&#39;, stdout = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_{prior_var_structure}_param_est_thin{thin}.stdout&quot;, 
+stderr = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_{prior_var_structure}_param_est_thin{thin}.stderr&quot;, container = container, entrypoint = entrypoint
+    
+    library(ctwas)
+    outputdir = &quot;${cwd:a}/ctwas/&quot;
+
+    region_data_files &lt;- c(${_input:r,})
+    names(region_data_files) &lt;- gsub(&#39;^.*${name}_\\s*|\\s*.ctwas_region_data.thin.*$&#39;, &#39;&#39;, region_data_files)
+    names(region_data_files) &lt;- gsub(&#39;^chr[0-9]+_&#39;, &#39;&#39;, names(region_data_files))
+    region_data &lt;- setNames(lapply(region_data_files, readRDS), names(region_data_files))
+    region_data &lt;- lapply(split(region_data, names(region_data)), function(x) do.call(c, unname(x)))
+    saveRDS(region_data, paste0(outputdir, &quot;${name}_region_data_thin${thin}.rds&quot;), compress=&#39;xz&#39;)
+
+    # assess global parameters
+    for (study in names(region_data)){
+        group_prior_file &lt;- file.path(outputdir, paste0(&quot;${name}_ctwas_param_${prior_var_structure}_&quot;, study, &quot;_thin${thin}.rds&quot;))
+
+        message(&quot;Start global parameter estimation for &quot;, study, &quot;. &quot;)
+        param &lt;- est_param(region_data[[study]],
+                  init_group_prior = NULL,
+                  init_group_prior_var = NULL,
+                  group_prior_var_structure = &quot;${prior_var_structure}&quot;, 
+                  niter_prefit = 3,
+                  niter = 30,
+                  min_var = 2,
+                  min_gene = 1,
+                  min_group_size = 1,
+                  min_p_single_effect = 0.8,
+                  ncore = ${numThreads},
+                  verbose = TRUE)
+        saveRDS(param, group_prior_file, compress=&#39;xz&#39;)
+        region_data[[study]] &lt;- NULL
+    }
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ctwas_3]
+parameter: thin=0.1
+parameter: maxSNP = 20000
+parameter: max_iter = 0
+parameter: run_finemapping = False
+parameter: prior_var_structure = &quot;shared_all&quot;
+parameter: region_name= []
+skip_if(run_finemapping == False, &quot; Skip [ctwas_3] fine-mapping. &quot; )
+thin=int(thin) if thin == 1.0 else thin
+region_data_file = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_region_data_thin{thin}.rds&quot;
+region_name = [f&quot;{region}&quot; for region in region_name]
+
+depends: region_data_file, f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_ctwas_param_{prior_var_structure}_*_thin{thin}.rds&quot; 
+
+input: f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_ctwas_param_{prior_var_structure}_*_thin{thin}.rds&quot;, for_each=&#39;region_name&#39;
+chrom=_region_name.split(&quot;_&quot;)[0]
+weight_file=f&quot;{cwd}/{step_name.split(&#39;_&#39;)[0]}/{name}_{chrom}_ctwas_weights.rds&quot;
+LD_map_file=f&quot;{cwd}/{step_name.split(&#39;_&#39;)[0]}/{name}_{chrom}_LD_map.rds&quot;
+z_snp_file=f&quot;{cwd}/{step_name.split(&#39;_&#39;)[0]}/{name}_{chrom}_z_snp_map.rds&quot;
+fail_if(not os.path.exists(weight_file) or not os.path.exists(LD_map_file) or not os.path.exists(z_snp_file), 
+        f&#39;{weight_file} or {LD_map_file} or {z_snp_file} is not present&#39;)
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+R: expand = &#39;${ }&#39;, stdout = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_{prior_var_structure}_{_region_name}.ctwas_finemap_res.thin{thin}.stdout&quot;, 
+stderr = f&quot;{cwd:a}/{step_name.split(&#39;_&#39;)[0]}/{name}_{prior_var_structure}_{_region_name}.ctwas_finemap_res.thin{thin}.stderr&quot;, container = container, entrypoint = entrypoint
+
+    library(ctwas)
+    library(pecotmr)
+    outputdir = &quot;${cwd:a}/ctwas/&quot;
+
+    param_study_files &lt;- c(${_input:r,})
+    names(param_study_files) &lt;- gsub(&#39;^.*_ctwas_param_${prior_var_structure}_\\s*|\\s*_thin${thin}.*$&#39;, &#39;&#39;, param_study_files)
+    region_data &lt;- readRDS(&quot;${region_data_file}&quot;)
+    weights &lt;- readRDS(&quot;${weight_file}&quot;)
+    param &lt;- setNames(lapply(unname(param_study_files), readRDS), names(param_study_files))
+    LD_map &lt;- readRDS(&quot;${LD_map_file}&quot;)
+    z_snp_list &lt;- readRDS(&quot;${z_snp_file}&quot;)
+    z_snp &lt;- z_snp_list[[&quot;z_snp&quot;]]
+    snp_map &lt;- z_snp_list[[&quot;snp_map&quot;]]
+    rm(z_snp_list)
+
+    for (study in names(param_study_files)){
+        group_prior &lt;- param[[study]]$group_prior
+        group_prior_var &lt;- param[[study]]$group_prior_var 
+        finemap_res_file &lt;- file.path(outputdir, paste0(&quot;${name}_ctwas_finemap_res_${prior_var_structure}_${_region_name}_&quot;, study, &quot;_thin${thin}.rds&quot;))
+        susie_alpha_file &lt;- file.path(outputdir, paste0(&quot;${name}_ctwas_susie_alpha_res${prior_var_structure}_${_region_name}_&quot;, study, &quot;_thin${thin}.rds&quot;))
+        if (nrow(region_data[[study]][[gsub(&quot;chr&quot;, &quot;&quot;, &quot;${_region_name}&quot;)]]$z_gene)==0) {
+            message(&quot;No z_gene data available for &quot;, study, &quot; in ${_region_name}. &quot;)
+            saveRDS(data.frame(), finemap_res_file, compress=&#39;xz&#39;)
+            next
+        }
+        screen_res &lt;- screen_regions_noLD(region_data[[study]][gsub(&quot;chr&quot;, &quot;&quot;, &quot;${_region_name}&quot;)],
+                                       group_prior = group_prior,group_prior_var = group_prior_var, min_var = 2,min_gene = 1,min_nonSNP_PIP = 0.5,
+                                       ncore = ${numThreads},verbose = FALSE, logfile = file.path(outputdir, 
+                                       paste0(&quot;${name}_screen_regions_${prior_var_structure}_${_region_name}_thin${thin}.log&quot;)))
+        screened_region_data &lt;- screen_res$screened_region_data
+        if (length(screened_region_data)==0) {
+            message(&quot;No region selected for &quot;, study, &quot; in ${_region_name}. &quot;)
+            saveRDS(data.frame(), finemap_res_file, compress=&#39;xz&#39;)
+            next
+        }
+        screen_summary &lt;- screen_res$screen_summary
+        screened_region_data &lt;- expand_region_data(screened_region_data, snp_map, z_snp[[study]],maxSNP = ${maxSNP}, ncore = ${numThreads})
+        message(&quot;Screening region completed for &quot;, study, &quot;. &quot;)
+
+        if (as.logical(${max_iter})){
+            finemap_res_file &lt;- gsub(study, paste0(study,&quot;_max_iter${max_iter}&quot;),finemap_res_file)
+            susie_alpha_file &lt;- gsub(study, paste0(study,&quot;_max_iter${max_iter}&quot;),susie_alpha_file)
+            res &lt;- finemap_regions(screened_region_data, LD_map = LD_map, weights = weights[[study]], group_prior = group_prior, max_iter=${max_iter},
+                                  group_prior_var = group_prior_var, L = 5, ncore = ${numThreads}, save_cor = FALSE, LD_format = &quot;custom&quot;, 
+                                  LD_loader_fun = ctwas_ld_loader, snpinfo_loader_fun = ctwas_bimfile_loader, verbose = TRUE, logfile = file.path(outputdir, 
+                                  paste0(&quot;${name}_finemap_regions_${prior_var_structure}_${_region_name}_&quot;, study, &quot;_thin${thin}.log&quot;)))
+        } else {
+            res &lt;- finemap_regions(screened_region_data, LD_map = LD_map, weights = weights[[study]], group_prior = group_prior, 
+                                  group_prior_var = group_prior_var, L = 5, ncore = ${numThreads}, save_cor = FALSE, LD_format = &quot;custom&quot;, 
+                                  LD_loader_fun = ctwas_ld_loader, snpinfo_loader_fun = ctwas_bimfile_loader, verbose = TRUE, logfile = file.path(outputdir, 
+                                  paste0(&quot;${name}_finemap_regions_${prior_var_structure}_${_region_name}_&quot;, study, &quot;_thin${thin}.log&quot;)))
+        }
+        weights[[study]] &lt;- NULL
+        finemap_res &lt;- res$finemap_res
+        finemap_res$pval &lt;- z2p(finemap_res$z)
+        susie_alpha_res &lt;- res$susie_alpha_res
+        saveRDS(finemap_res, finemap_res_file, compress=&#39;xz&#39;)
+        saveRDS(susie_alpha_res, susie_alpha_file, compress=&#39;xz&#39;)
+        message(&quot;Fine-mapping completed for &quot;, study, &quot;. &quot;)
+    }
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[quantile_twas]
+depends: sos_variable(&quot;filtered_regional_xqtl_files&quot;)
+parameter: save_ctwas_data = True
+parameter: save_mr_result = False
+input: filtered_regional_xqtl_files, group_by = lambda x: group_by_region(x, filtered_regional_xqtl_files), group_with = &quot;filtered_region_info&quot;
+output_files = [f&#39;{cwd:a}/{step_name}/{name}.{_filtered_region_info[3]}.quantile_twas.tsv.gz&#39;]
+if save_ctwas_data:
+    output_files.append(f&#39;{cwd:a}/{step_name}/{name}.{_filtered_region_info[3]}.quantile_twas_data.rds&#39;)
+if save_mr_result:
+    output_files.append(f&#39;{cwd:a}/{step_name}/{name}.{_filtered_region_info[3]}.quantile_mr_result.tsv.gz&#39;)
+output: output_files
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:n}.stdout&quot;, stderr = f&quot;{_output[0]:n}.stderr&quot;, container = container, entrypoint = entrypoint
+
+    library(dplyr)
+    library(data.table)
+    library(pecotmr)
+    library(readr)
+
+    # get xQTL weight information
+    xqtl_meta_df &lt;- fread(&quot;${xqtl_meta_data}&quot;) # Get related gene information from the xqtl_meta data table
+    xqtl_type_table &lt;- if (isTRUE(file.exists(&quot;${xqtl_type_table}&quot;))) fread(&quot;${xqtl_type_table}&quot;) else NULL
+    gwas_studies = c(${paths(regional_data[&quot;GWAS&quot;].keys()):r,})
+    gwas_files = c(${paths([v[_filtered_region_info[0]] for k, v in regional_data[&quot;GWAS&quot;].items()]):r,})
+    gene_list &lt;- c(${&#39;, &#39;.join([f&quot;&#39;{gene}&#39;&quot; for gene in _filtered_region_info[4]])})
+
+    # Initialize export_twas_weights_db
+    export_twas_weights_db &lt;- list()
+    export_twas_weights_db[[&quot;${_filtered_region_info[3]}&quot;]] &lt;- list()
+
+    # Initialize twas_weights_results
+    twas_weights_results &lt;- list()
+
+    # Create initial weight_db_list
+    weight_db_list &lt;- c(${_input:r,})
+    names(weight_db_list) &lt;- gene_list
+
+    # Split weight_db_list
+    weight_db_list &lt;- split(weight_db_list, names(weight_db_list))
+
+    # Update weight_db_list
+    weight_db_list_update &lt;- lapply(weight_db_list, function(file_list){
+        do.call(c, lapply(file_list, function(file) if (file.size(file) &gt; 200) file))
+    })
+
+    # Check if weight_db_list_update is empty
+    if(length(weight_db_list_update) &lt;= 0) {
+        stop(paste0(&quot;No weight information available from &quot;, paste0(weight_db_list, collapse=&quot;,&quot;), &quot;. &quot;))
+    }
+
+    # Define tau_values
+    tau_values &lt;- seq(0.01, 0.99, 0.01)
+
+    # Main processing loop
+    for (gene_db in names(weight_db_list_update)) {
+        weight_dbs &lt;- weight_db_list_update[[gene_db]]
+        
+        twas_weights_results[[gene_db]] &lt;- load_quantile_twas_weights(
+            weight_db_files = weight_dbs,
+            tau_values = tau_values,
+            between_cluster = 0.8,
+            num_intervals = 3
+        )
+        
+        if (!is.null(twas_weights_results[[gene_db]]) &amp;&amp; !is.null(twas_weights_results[[gene_db]]$weights)) {
+            twas_weights_results[[gene_db]]$data_type &lt;- setNames(
+                lapply(names(twas_weights_results[[gene_db]]$weights), function(context) {
+                    xqtl_type_table$type[sapply(xqtl_type_table$context, function(x) grepl(x, context))]
+                }),
+                names(twas_weights_results[[gene_db]]$weights)
+            )
+        } else {
+            print(paste(&quot;Warning: No valid weights found for gene:&quot;, gene_db))
+        }
+    }
+
+    #Step 2: twas analysis for imputable genes across contexts
+    twas_results_db &lt;- twas_pipeline(twas_weights_data = twas_weights_results, 
+                                    ld_meta_file_path = &quot;${ld_meta_data}&quot;, 
+                                    gwas_meta_file = &quot;${gwas_meta_data}&quot;, 
+                                    region_block = &quot;${_filtered_region_info[3]}&quot;, 
+                                    quantile_twas = TRUE,  
+                                    output_twas_data = ${&quot;TRUE&quot; if save_ctwas_data else &quot;FALSE&quot;} )
+
+    # Merging with xQTL meta-data      
+    message(&quot;Merging twas_result with xqtl_meta_df...&quot;)    
+    twas_results_db$twas_result &lt;- merge(twas_results_db$twas_result, xqtl_meta_df[, c(&quot;region_id&quot;,&quot;TSS&quot;,&quot;start&quot;,&quot;end&quot;)], by.x=&quot;molecular_id&quot;, by.y=&quot;region_id&quot;)
+    twas_results_db$twas_result &lt;- unique(twas_results_db$twas_result)
+    fwrite(twas_results_db$twas_result[, c(2, 1, (ncol(twas_results_db$twas_result)-2):ncol(twas_results_db$twas_result), 3:(ncol(twas_results_db$twas_result)-3))], file = ${_output[0]:r}, sep = &quot;\t&quot;, compress = &quot;gzip&quot;)
+
+    # Step 3: reformat for follow up cTWAS analysis
+    if (${&quot;TRUE&quot; if save_ctwas_data else &quot;FALSE&quot;}) {
+        saveRDS(twas_results_db$twas_data, &quot;${_output[0]:nnn}.quantile_twas_data.rds&quot;, compress=&#39;xz&#39;)
+    }
+    if (${&quot;TRUE&quot; if save_mr_result else &quot;FALSE&quot;}) {
+        fwrite(twas_results_db$mr_result, file = &quot;${_output[0]:nnn}.quantile_mr_result.tsv.gz&quot;, sep = &quot;\t&quot;, compress = &quot;gzip&quot;)
+    }
+    message(&quot;quantile twas analysis is completed in this block.&quot;)  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/pecotmr_integration"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SuSiE_enloc.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">xQTL-GWAS pairwise enrichment and colocalization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../mnm_analysis/mnm_methods/colocboost.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Multi-trait colocalization using ColocBoost</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-twas">Step 1: TWAS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-variant-selection-for-imputable-genes-via-the-best-prediction-methods">Step 2: Variant Selection for Imputable Genes via the Best Prediction Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-ctwas-analysis">Step 3: cTWAS analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-mr-for-candidate-genes">Step 4: MR for candidate genes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-quantile-twas-analysis">Step 5: Quantile TWAS analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gwas-data-input-interface-similar-to-susie-rss">GWAS Data Input Interface (Similar to <code class="docutils literal notranslate"><span class="pre">susie_rss</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-of-fine-mapping-twas-pipeline">Output of Fine-Mapping &amp; TWAS Pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#twas-region-information">TWAS region information</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

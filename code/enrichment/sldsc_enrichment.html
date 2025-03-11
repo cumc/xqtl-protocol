@@ -1,0 +1,1932 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Stratified LD Score Regression &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/enrichment/sldsc_enrichment';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="GREGOR enrichment analysis" href="gregor.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_data/reference_data.html">Reference Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/apa.html">Alternative polyadenylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/methylation.html">Methylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">Genotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../association_scan/qtl_association_testing.html">QTL Association Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/quantile_models/qr_and_twas.html">Quantile regression for QTL association testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Mixture Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/multivariate_mixture_vignette.html">Mixture Multivariate Distribution Estimate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multiomics Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mnm_analysis/fine_mapping_miniprotocol.html">Fine-Mapping</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/univariate_fine_mapping_twas_vignette.html">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/multivariate_multigene_fine_mapping_vignette.html">Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/univariate_fine_mapping_fsusie_vignette.html">Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/multivariate_fine_mapping_vignette.html">Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/summary_stats_finemapping_vignette.html">Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/mnm_methods/mnm_regression.html">Advanced regression models for association analysis with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/mnm_methods/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GWAS Integration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../pecotmr_integration/SuSiE_enloc.html">xQTL-GWAS pairwise enrichment and colocalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pecotmr_integration/twas_ctwas.html">TWAS, cTWAS and MR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mnm_methods/colocboost.html">Multi-trait colocalization using ColocBoost</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment and Validation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="eoo_enrichment.html">Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gsea.html">Pathway Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gregor.html">GREGOR enrichment analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Stratified LD Score Regression</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/enrichment/sldsc_enrichment.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/enrichment/sldsc_enrichment.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/code/enrichment/sldsc_enrichment.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Stratified LD Score Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-brief-review-on-stratified-ld-score-regression">A brief review on Stratified LD score regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ldsc-model">LDSC model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stratified-ldsc">Stratified LDSC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tau-estimation-and-enrichment-analysis">Tau Estimation and Enrichment Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tau">Tau (τ):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-workflow">Statistical Workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">1. Inputs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tau-standardization">2. Tau Standardization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-calculation">3. Enrichment Calculation</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-direct-enrichment-statistics">a. Direct Enrichment Statistics</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#b-standardized-enrichment-statistics">b. Standardized Enrichment Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meta-analysis-of-partitioned-heritability">Meta-Analysis of Partitioned Heritability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose">Purpose</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-effects-meta-analysis">Random-Effects Meta-Analysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#annotation-file">1. Annotation File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-annotation-file">2. Reference Annotation File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genome-reference-file">3. Genome Reference File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#snp-list">4. SNP List</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-group-files">5. ALL Group Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-steps">Workflow Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-annotation-file-processing">Step 1: Annotation File Processing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-munge-summary-statistics">Step 2: Munge Summary Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-heritability-analysis">Step 3: Heritability Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-initial-processed-statistics">Step 4: Initial Processed Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-meta-analysis">Step 5: Meta Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mwe">MWE:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-annotation-files-ldscore">1. make_annotation_files_ldscore</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-tau-analysis-with-one-annotation-as-a-input">1.1 single tau analysis, with one annotation as a input</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-tau">1.2 joint tau</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#get-heritability">2. get_heritability</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#processed-stats">3. processed_stats</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.1 single tau analysis, with one annotation as a input</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.2 joint tau</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-annotation-file">Make Annotation File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#munge-summary-statistics-option-1-no-signed-summary-statistic">Munge Summary Statistics (Option 1: No Signed Summary Statistic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#munge-summary-statistics-option-2-no-signed-summary-statistic">Munge Summary Statistics (Option 2: No Signed Summary Statistic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-functional-enrichment-using-annotations">Calculate Functional Enrichment using Annotations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="stratified-ld-score-regression">
+<h1>Stratified LD Score Regression<a class="headerlink" href="#stratified-ld-score-regression" title="Link to this heading">#</a></h1>
+<p>This notebook implements the pipepline of <a class="reference external" href="https://github.com/bulik/ldsc/wiki">S-LDSC</a> for LD score and functional enrichment analysis.</p>
+<p>The purpose of this pipeline is to use LD Score Regression (LDSC) to analyze the heritability and enrichment of genome annotations across GWAS traits. By integrating genome annotation files and GWAS summary statistics, this pipeline allows single tau analysis (individual annotation contributions) and joint tau analysis (independent contributions of multiple annotations after removing shared effects).</p>
+<p>The pipeline is developed to integrate GWAS summary statistics data, annotation data, and LD reference panel data to compute functional enrichment for each of the epigenomic annotations that the user provides using the S-LDSC model. We will first start off with an introduction, instructions to set up, and the minimal working examples. Then the workflow code that can be run using SoS on any data will be at the end.</p>
+<section id="a-brief-review-on-stratified-ld-score-regression">
+<h2>A brief review on Stratified LD score regression<a class="headerlink" href="#a-brief-review-on-stratified-ld-score-regression" title="Link to this heading">#</a></h2>
+<p>Here I briefly review LD Score Regression and what it is used for. For more in depth information on LD Score Regression please read the following three papers:</p>
+<ol class="arabic simple">
+<li><p>“LD Score regression distinguishes confounding from polygenicity in genome-wide association studies” by Sullivan et al (2015)</p></li>
+<li><p>“Partitioning heritability by functional annotation using genome-wide association summary statistics” by Finucane et al (2015)</p></li>
+<li><p>“Linkage disequilibrium–dependent architecture of human complex traits shows action of negative selection” by Gazal et al (2017)</p></li>
+</ol>
+<p>As stated in Sullivan et al 2015, confounding factors and polygenic effects can cause inflated test statistics and other methods cannot distinguish between inflation from confounding bias and a true signal. LD Score Regression (LDSC) is a technique that aims to identify the impact of confounding factors and polygenic effects using information from GWAS summary statistics.</p>
+<p>This approach involves using regression to mesaure the relationship between Linkage Disequilibrium (LD) scores and test statistics of SNPs from the GWAS summary statistics. Variants in LD with a “causal” variant show an elevation in test statistics in association analysis proportional to their LD (measured by <span class="math notranslate nohighlight">\(r^2\)</span>) with the causal variant within a certain window size (could be 1 cM, 1kB, etc.). In contrast, inflation from confounders such as population stratification that occur purely from genetic drift will not correlate with LD. For a polygenic trait, SNPs with a high LD score will have more significant χ2 statistics on average than SNPs with a low LD score. Thus, if we regress the <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics from GWAS against LD Score, the intercept minus one is an estimator of the mean contribution of confounding bias to the inflation in the test statistics. The regression model is known as LD Score regression.</p>
+<section id="ldsc-model">
+<h3>LDSC model<a class="headerlink" href="#ldsc-model" title="Link to this heading">#</a></h3>
+<p>Under a polygenic assumption, in which effect sizes for variants are drawn independently from distributions with variance proportional to  <span class="math notranslate nohighlight">\(1/(p(1-p))\)</span> where p is the minor allele frequency (MAF), the expected <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic of variant j is:</p>
+<div class="math notranslate nohighlight">
+\[E[\chi^2|l_j] = Nh^2l_j/M + Na + 1 \quad (1)\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the sample size; <span class="math notranslate nohighlight">\(M\)</span> is the number of SNPs, such that <span class="math notranslate nohighlight">\(h^2/M\)</span> is the average heritability explained per SNP; <span class="math notranslate nohighlight">\(a\)</span> measures the contribution of confounding biases, such as cryptic relatedness and population stratification; and <span class="math notranslate nohighlight">\(l_j = \sum_k r^2_{jk}\)</span> is the LD Score of variant <span class="math notranslate nohighlight">\(j\)</span>, which measures the amount of genetic variation tagged by <span class="math notranslate nohighlight">\(j\)</span>. A full derivation of this equation is provided in the Supplementary Note of Sullivan et al (2015). An alternative derivation is provided in Supplementary Note of Zhu and Stephens (2017) AoAS.</p>
+<p>From this we can see that LD Score regression can be used to compute SNP-based heritability for a phenotype or trait, from GWAS summary statistics and does not require genotype information like other methods such as REML do.</p>
+</section>
+<section id="stratified-ldsc">
+<h3>Stratified LDSC<a class="headerlink" href="#stratified-ldsc" title="Link to this heading">#</a></h3>
+<p>Heritability is the proportion of phenotypic variation (VP) that is due to variation in genetic values (VG) and thus can tell us how much of the difference in observed phenotypes in a sample is due to difference in genetics in the sample. It can also be extended to analyze partitioned heritability for a phenotype/trait split over categories.</p>
+<p>For Partitioned Heritability or Stratified LD Score Regression (S-LDSC) more power is added to our analysis by leveraging LD Score information as well as using SNPs that haven’t reached Genome Wide Significance to partition heritability for a trait over categories which many other methods do not do.</p>
+<p>S-LDSC relies on the fact that the <span class="math notranslate nohighlight">\(\chi^2\)</span> association statistic for a given SNP includes the effects of all SNPs tagged by this SNP meaning that in a region of high LD in the genome the given SNP from the GWAS represents the effects of a group of SNPs in that region.</p>
+<p>S-LDSC determines that a category of SNPs is enriched for heritability if SNPs with high LD to that category have more significant <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics than SNPs with low LD to that category.</p>
+<p>Here, enrichment of a category is defined as the proportion of SNP heritability in the category divided by the proportion of SNPs in that category.</p>
+<p>More precisely, under a polygenic model, the expected <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic of SNP <span class="math notranslate nohighlight">\(j\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[E[\chi^2_j] = N\sum_CT_Cl(j,C) + Na + 1 \quad (2)\]</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is sample size, C indexes categories, <span class="math notranslate nohighlight">\(ℓ(j, C)\)</span> is the LD score of SNP j with respect to category <span class="math notranslate nohighlight">\(l(j,C) = \sum_{k\epsilon C} r^2_{jk}\)</span>, <span class="math notranslate nohighlight">\(a\)</span> is a term that measures the contribution of confounding biases, and if the categories are disjoint, <span class="math notranslate nohighlight">\(\tau_C\)</span> is the per-SNP heritability in category <span class="math notranslate nohighlight">\(C\)</span>; if the categories overlap, then the per-SNP heritability of SNP j is <span class="math notranslate nohighlight">\(\sum_{C:j\epsilon C} \tau_C\)</span>.  Equation 2 allows us to estimate <span class="math notranslate nohighlight">\(\tau_C\)</span> via a (computationally simple) multiple regression of <span class="math notranslate nohighlight">\(\chi^2\)</span> against <span class="math notranslate nohighlight">\(ℓ(j, C)\)</span>, for either a quantitative or case-control study.</p>
+<p>To see how these methods have been applied to real world data as well as a further discussion on methods and comparisons to other methods please read the three papers listed at the top of the document.</p>
+</section>
+<section id="tau-estimation-and-enrichment-analysis">
+<h3>Tau Estimation and Enrichment Analysis<a class="headerlink" href="#tau-estimation-and-enrichment-analysis" title="Link to this heading">#</a></h3>
+<p>To quantify the contribution of functional annotations to trait heritability and evaluate their statistical significance, while accounting for linkage disequilibrium (LD) structure and annotation-specific properties.</p>
+<section id="tau">
+<h4>Tau (τ):<a class="headerlink" href="#tau" title="Link to this heading">#</a></h4>
+<p>The standardized per-SNP heritability contribution of an annotation.</p>
+<p>In joint-annotation analysis:
+Represents the <em>independent contribution</em> of an annotation after controlling for overlapping effects of other annotations.</p>
+</section>
+</section>
+<section id="statistical-workflow">
+<h3>Statistical Workflow<a class="headerlink" href="#statistical-workflow" title="Link to this heading">#</a></h3>
+<section id="inputs">
+<h4>1. Inputs<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.annot.gz</span></code>: Annotation files defining SNP membership in functional categories.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.part_delete</span></code>: Jackknife delete-values for τ estimates (200 genomic blocks × annotations).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.results</span></code>: Regression coefficients (τ), enrichment statistics, and proportions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.log</span></code>: Total heritability (<span class="math notranslate nohighlight">\(h_g^2\)</span>) and quality control metrics.</p></li>
+</ul>
+</section>
+<section id="tau-standardization">
+<h4>2. Tau Standardization<a class="headerlink" href="#tau-standardization" title="Link to this heading">#</a></h4>
+<p>For each annotation <em>j</em>:</p>
+<div class="math notranslate nohighlight">
+\[\tau_j^{std} = \tau_j \times \frac{sd_j \cdot M_{ref}}{h_g^2}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(sd_j\)</span>: Standard deviation of annotation <em>j</em> across SNPs.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{ref} = 5,961,159\)</span>: Reference SNP count for genome-wide scaling.</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_g^2\)</span>: Total heritability (normalizes τ to per-unit contribution).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tau_j^{std}\)</span> defined as the additive change in per-SNP heritability associated to a 1 standard deviation increase in the value of the annotation, divided by the average per-SNP heritability over all SNPs for the trait.</p></li>
+</ul>
+</section>
+<section id="enrichment-calculation">
+<h4>3. Enrichment Calculation<a class="headerlink" href="#enrichment-calculation" title="Link to this heading">#</a></h4>
+<p>Enrichment is defined as the proportion of heritability explained by variants in the target annotation divided by the proportion of variants in the annotation.</p>
+<section id="a-direct-enrichment-statistics">
+<h5>a. Direct Enrichment Statistics<a class="headerlink" href="#a-direct-enrichment-statistics" title="Link to this heading">#</a></h5>
+<p>For each annotation <em>j</em>:</p>
+<div class="math notranslate nohighlight">
+\[E_j = \frac{\text{Prop.\_h2}_j}{\text{Prop.\_SNPs}_j}= \tau_j \times \frac{M_{ref}}{h_g^2}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{Prop.\_h2}_j\)</span>: Proportion of heritability explained by annotation <em>j</em></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Prop.\_SNPs}_j\)</span>: Proportion of SNPs in annotation <em>j</em></p></li>
+</ul>
+</section>
+<section id="b-standardized-enrichment-statistics">
+<h5>b. Standardized Enrichment Statistics<a class="headerlink" href="#b-standardized-enrichment-statistics" title="Link to this heading">#</a></h5>
+<p>The goal is to compute the p-value based on the assumption of a normal distribution.</p>
+<div class="math notranslate nohighlight">
+\[\text{EnrichStat}_j = \frac{h_g^2}{M_{ref}} \times \left[\frac{\text{Prop.\_h2}_j}{\text{Prop.\_SNPs}_j} - \frac{1-\text{Prop.\_h2}_j}{1-\text{Prop.\_SNPs}_j}\right]\]</div>
+<p>Standard error derivation:
+$<span class="math notranslate nohighlight">\(Z_j = \Phi^{-1}(\text{Enrichment\_p}_j/2)\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(SE_{\text{EnrichStat}_j} = \frac{\text{EnrichStat}_j}{Z_j}\)</span>$</p>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Phi^{-1}\)</span>: Inverse normal cumulative distribution function</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Enrichment\_p}_j\)</span>: Enrichment p-value from .results file</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Z_j = \frac{\text{EnrichStat}_j}{SE_{\text{EnrichStat}_j}}
+\]</div>
+</section>
+</section>
+</section>
+<section id="meta-analysis-of-partitioned-heritability">
+<h3>Meta-Analysis of Partitioned Heritability<a class="headerlink" href="#meta-analysis-of-partitioned-heritability" title="Link to this heading">#</a></h3>
+</section>
+<section id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Link to this heading">#</a></h3>
+<p>To integrate τ estimates across multiple traits or annotation groups, improving power and generalizability.</p>
+<section id="random-effects-meta-analysis">
+<h4>Random-Effects Meta-Analysis<a class="headerlink" href="#random-effects-meta-analysis" title="Link to this heading">#</a></h4>
+<p>Models heterogeneity across traits:</p>
+<div class="math notranslate nohighlight">
+\[\tau_{meta} = \frac{\sum w_i\tau_i}{\sum w_i}, \quad w_i = \frac{1}{SE_i^2 + \sigma^2}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma^2\)</span>: Between-trait variance component.</p></li>
+<li><p><span class="math notranslate nohighlight">\(SE_i\)</span>: Standard error of τ for trait <em>i</em>.</p></li>
+</ul>
+<p>For enrichment meta-analysis:</p>
+<ul class="simple">
+<li><p>Effect sizes use direct enrichment statistics <span class="math notranslate nohighlight">\((E_j, SE_{E_j})\)</span></p></li>
+<li><p>P-values derived from standardized statistics meta-analysis <span class="math notranslate nohighlight">\(({\text{EnrichStat}_j}, SE_{\text{EnrichStat}_j})\)</span></p></li>
+</ul>
+<p>Z-score:
+$<span class="math notranslate nohighlight">\(Z = \frac{\tau_{meta}}{SE_{meta}}\)</span>$</p>
+<p>P-value:
+$<span class="math notranslate nohighlight">\(p = 2 \times \Phi(-|Z|)\)</span>$</p>
+</section>
+</section>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Link to this heading">#</a></h2>
+<section id="annotation-file">
+<h3>1. Annotation File<a class="headerlink" href="#annotation-file" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Specifies genome annotation files for single or joint tau analysis.</p></li>
+<li><p><strong>Formats</strong>:</p>
+<ul>
+<li><p>Text file (<code class="docutils literal notranslate"><span class="pre">.txt</span></code>) containing paths to annotation files, annotation files can be rds/tsv/txt format.</p></li>
+<li><p>Alternatively, specific annotation files for a single chromosome can be provided directly.</p></li>
+<li><p><strong>Examples</strong>:</p>
+<ul>
+<li><p><strong>Single Annotation</strong> (<code class="docutils literal notranslate"><span class="pre">joint_tau</span> <span class="pre">=</span> <span class="pre">False</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#id   path</span>
+<span class="mi">1</span>     <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">al4225</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">quantile_twas</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="mi">157</span><span class="n">genes</span><span class="o">/</span><span class="n">step2_rq_lr_summary</span><span class="o">/</span><span class="n">enrich_info_by_context_class</span><span class="o">/</span><span class="n">AC_DeJager_eQTL</span><span class="o">.</span><span class="n">unique_qr</span><span class="o">.</span><span class="n">rds</span>
+<span class="mi">22</span>    <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">al4225</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">quantile_twas</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="mi">157</span><span class="n">genes</span><span class="o">/</span><span class="n">step2_rq_lr_summary</span><span class="o">/</span><span class="n">enrich_info_by_context_class</span><span class="o">/</span><span class="n">AC_DeJager_eQTL</span><span class="o">.</span><span class="n">unique_qr</span><span class="o">.</span><span class="n">rds</span>
+
+</pre></div>
+</div>
+</li>
+<li><p><strong>Joint Annotation</strong> (<code class="docutils literal notranslate"><span class="pre">joint_tau</span> <span class="pre">=</span> <span class="pre">True</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#id   path1                     path2</span>
+<span class="mi">1</span>     <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">annotation1</span><span class="o">.</span><span class="n">rds</span>   <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">annotation2</span><span class="o">.</span><span class="n">rds</span>
+<span class="mi">22</span>    <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">annotation1</span><span class="o">.</span><span class="n">rds</span>   <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">annotation2</span><span class="o">.</span><span class="n">rds</span>
+
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Example Files</strong>:</p></li>
+<li><p><strong>Format</strong> (the score column is optional, if this column doen’t exit, add score as 1):</p>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>is_range = False</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="nb">chr</span>   <span class="n">pos</span>   <span class="n">score</span>
+    <span class="mi">1</span>    <span class="mi">10001</span>   <span class="mi">1</span>
+    <span class="mi">1</span>    <span class="mi">10002</span>   <span class="mi">1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><ol class="arabic simple" start="2">
+<li><p>is_range = True</p></li>
+</ol>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="nb">chr</span>   <span class="n">start</span>   <span class="n">end</span>   <span class="n">score</span>
+    <span class="mi">1</span>    <span class="mi">10001</span>   <span class="mi">20001</span>  <span class="mi">1</span>
+    <span class="mi">1</span>    <span class="mi">30001</span>   <span class="mi">40001</span>  <span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="reference-annotation-file">
+<h3>2. Reference Annotation File<a class="headerlink" href="#reference-annotation-file" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Provides reference annotation files in <code class="docutils literal notranslate"><span class="pre">.annot.gz</span></code> format for each chromosome.</p></li>
+<li><p><strong>Formats</strong>:</p>
+<ul>
+<li><p>Text file listing annotation files for all chromosomes.</p></li>
+<li><p>Alternatively, files for specific chromosomes can be provided directly.</p></li>
+<li><p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">/home/al4225/project/quantile_twas/analysis/SLDSC/data/reference_annotation.txt</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#id   path</span>
+<span class="mi">1</span>     <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">xc2270</span><span class="o">/</span><span class="n">colocboost</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="n">SLDSC</span><span class="o">/</span><span class="n">example_anno</span><span class="o">/</span><span class="n">ABC_Road_GI_BRN</span><span class="mf">.1</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">gz</span>
+<span class="mi">22</span>    <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">xc2270</span><span class="o">/</span><span class="n">colocboost</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="n">SLDSC</span><span class="o">/</span><span class="n">example_anno</span><span class="o">/</span><span class="n">ABC_Road_GI_BRN</span><span class="mf">.22</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">gz</span>
+
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="genome-reference-file">
+<h3>3. Genome Reference File<a class="headerlink" href="#genome-reference-file" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Specifies genome reference <code class="docutils literal notranslate"><span class="pre">.bed</span></code> files PLINK format for each chromosome.</p></li>
+<li><p><strong>Formats</strong>:</p>
+<ul>
+<li><p>Text file listing reference files for all chromosomes.</p></li>
+<li><p>Alternatively, files for specific chromosomes can be provided directly.</p></li>
+<li><p><strong>Example</strong>: <code class="docutils literal notranslate"><span class="pre">/home/al4225/project/quantile_twas/analysis/SLDSC/data/genome_reference_bfile.txt</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#id   path</span>
+<span class="mi">1</span>     <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">xc2270</span><span class="o">/</span><span class="n">colocboost</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="n">SLDSC</span><span class="o">/</span><span class="n">plink_files</span><span class="o">/</span><span class="mi">1000</span><span class="n">G</span><span class="o">.</span><span class="n">EUR</span><span class="o">.</span><span class="n">hg38</span><span class="mf">.1</span><span class="o">.</span><span class="n">bed</span>
+<span class="mi">22</span>    <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">vast</span><span class="o">/</span><span class="n">hpc</span><span class="o">/</span><span class="n">csg</span><span class="o">/</span><span class="n">xc2270</span><span class="o">/</span><span class="n">colocboost</span><span class="o">/</span><span class="n">post</span><span class="o">/</span><span class="n">SLDSC</span><span class="o">/</span><span class="n">plink_files</span><span class="o">/</span><span class="mi">1000</span><span class="n">G</span><span class="o">.</span><span class="n">EUR</span><span class="o">.</span><span class="n">hg38</span><span class="mf">.22</span><span class="o">.</span><span class="n">bed</span>
+
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="snp-list">
+<h3>4. SNP List<a class="headerlink" href="#snp-list" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>File Path</strong>: <code class="docutils literal notranslate"><span class="pre">/mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/list.txt</span></code></p></li>
+<li><p><strong>Purpose</strong>: Specifies SNPs for LDSC analysis.</p></li>
+<li><p><strong>Format</strong>: A list of <code class="docutils literal notranslate"><span class="pre">rsid</span></code>s (e.g., 1217311 rows).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rs12345</span>
+<span class="n">rs67890</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="all-group-files">
+<h3>5. ALL Group Files<a class="headerlink" href="#all-group-files" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Purpose</strong>: GWAS summary statistics containning all sumtats.</p></li>
+<li><p><strong>Example Files</strong>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_all.txt</span></code></p>
+</li>
+<li><p><strong>Format</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CAD_META</span><span class="o">.</span><span class="n">filtered</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">UKB</span><span class="o">.</span><span class="n">Lym</span><span class="o">.</span><span class="n">BOLT</span><span class="o">.</span><span class="n">sumstats</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="workflow-steps">
+<h2>Workflow Steps<a class="headerlink" href="#workflow-steps" title="Link to this heading">#</a></h2>
+<section id="step-1-annotation-file-processing">
+<h3>Step 1: Annotation File Processing<a class="headerlink" href="#step-1-annotation-file-processing" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Generate LD score files and genome annotations for each chromosome.</p></li>
+<li><p><strong>Inputs</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">annotation_file</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reference_anno_file</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">genome_ref_file</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Key Parameters</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_tau</span> <span class="pre">=</span> <span class="pre">False</span></code>: Single annotation analysis (one column <code class="docutils literal notranslate"><span class="pre">path</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_tau</span> <span class="pre">=</span> <span class="pre">True</span></code>: Joint annotation analysis (multiple <code class="docutils literal notranslate"><span class="pre">path1</span></code>, <code class="docutils literal notranslate"><span class="pre">path2</span></code> columns starting with <code class="docutils literal notranslate"><span class="pre">path</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chromosome</span></code>: Optional, restricts processing to specific chromosomes.</p></li>
+</ul>
+</li>
+<li><p><strong>Outputs</strong>:</p>
+<ul>
+<li><p>Per chromosome:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.annot.gz</span></code>: Genome annotation scores.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.l2.ldscore.gz</span></code>: LD score file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.l2.M</span></code>: Total SNP count.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.l2.M_5_50</span></code>: SNP count in LD blocks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.log</span></code>: Processing logs.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="step-2-munge-summary-statistics">
+<h3>Step 2: Munge Summary Statistics<a class="headerlink" href="#step-2-munge-summary-statistics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Preprocess GWAS summary statistics into LDSC-compatible format.</p></li>
+<li><p><strong>Inputs</strong>:</p>
+<ul>
+<li><p>GWAS summary statistics.</p></li>
+<li><p>HapMap3 SNP list.</p></li>
+</ul>
+</li>
+<li><p><strong>Outputs</strong>:</p>
+<ul>
+<li><p>Harmonized GWAS summary statistics.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="step-3-heritability-analysis">
+<h3>Step 3: Heritability Analysis<a class="headerlink" href="#step-3-heritability-analysis" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Estimate heritability (<code class="docutils literal notranslate"><span class="pre">h²</span></code>) of traits using LDSC regression.</p></li>
+<li><p><strong>Inputs</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sumstat_dir</span></code>: GWAS summary statistics.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_anno_dir</span></code>: Annotation directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">baseline_ld_dir</span></code>: Baseline LD scores.</p></li>
+</ul>
+</li>
+<li><p><strong>Outputs</strong>:</p>
+<ul>
+<li><p>Per trait:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.results</span></code>: Heritability estimates and enrichment (<code class="docutils literal notranslate"><span class="pre">Enrichment</span></code>, <code class="docutils literal notranslate"><span class="pre">Prop_h2</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.log</span></code>: Analysis logs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.part_delete</span></code>: SNP-level contributions for annotations (target + baseline).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.delete</span></code>: Aggregate contributions across SNPs for each annotation.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="step-4-initial-processed-statistics">
+<h3>Step 4: Initial Processed Statistics<a class="headerlink" href="#step-4-initial-processed-statistics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Calculate tau statistics and prepare intermediate files for meta-analysis.</p></li>
+<li><p><strong>Inputs</strong>:</p>
+<ul>
+<li><p>All GWAS traits and their annotation scores.</p></li>
+</ul>
+</li>
+<li><p><strong>Outputs</strong>:</p>
+<ul>
+<li><p>RDS file containing:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">single_tau</span></code>: Contribution of each annotation to heritability.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enrichment</span></code>: Enrichment ratio of heritability to SNP density.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_tau</span></code>: Independent effect of each annotation after removing shared contributions.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="step-5-meta-analysis">
+<h3>Step 5: Meta Analysis<a class="headerlink" href="#step-5-meta-analysis" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Perform meta-analysis across trait groups.</p></li>
+<li><p><strong>Inputs</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">trait_group_paths</span></code>: Paths to files listing traits in each group.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trait_group_names</span></code>: Names of trait groups.</p></li>
+</ul>
+</li>
+<li><p><strong>Outputs</strong>:</p>
+<ul>
+<li><p>Results for each trait group:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">p-value</span></code>, <code class="docutils literal notranslate"><span class="pre">SE</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Includes:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">single_tau</span></code>: Single annotation effects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enrichment</span></code>: Heritability enrichment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_tau</span></code>: Independent contributions of annotations.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="mwe">
+<h2>MWE:<a class="headerlink" href="#mwe" title="Link to this heading">#</a></h2>
+<section id="make-annotation-files-ldscore">
+<h3>1. make_annotation_files_ldscore<a class="headerlink" href="#make-annotation-files-ldscore" title="Link to this heading">#</a></h3>
+<p>annotation file can be a txt file with #id, and path1 path2 …, also can be rds files seperate by ‘,’</p>
+<section id="single-tau-analysis-with-one-annotation-as-a-input">
+<h4>1.1 single tau analysis, with one annotation as a input<a class="headerlink" href="#single-tau-analysis-with-one-annotation-as-a-input" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span> # case 1: txt file as input
+ sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb make_annotation_files_ldscore \
+    --annotation_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/quantile_qtl_annotation/157genes/AC_DeJager_eQTL.shared_heter_qr.txt \
+    --reference_anno_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/reference_annotation.txt \
+    --genome_ref_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/genome_reference_bfile.txt \
+    --snp_list /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/list.txt \
+    --annotation_name AC_DeJager_eQTL.shared_heter_qr \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output --chromosome 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternatively, we can also use files with specific chromosome, instead of txt list.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># single file format
+ sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb make_annotation_files_ldscore \
+    --annotation_file /home/al4225/project/quantile_twas/analysis/output/157genes/step2_rq_lr_summary/enrich_info_by_context_class/AC_DeJager_eQTL.unique_qr.rds \
+    --reference_anno_file /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/example_anno/ABC_Road_GI_BRN.1.annot.gz \
+    --genome_ref_file /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/plink_files/1000G.EUR.hg38.1.bed \
+    --snp_list /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/list.txt \
+    --annotation_name AC_DeJager_eQTL.shared_heter_qr \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output --chromosome 1
+</pre></div>
+</div>
+</div>
+</div>
+<section id="joint-tau">
+<h5>1.2 joint tau<a class="headerlink" href="#joint-tau" title="Link to this heading">#</a></h5>
+<p>with more than one annotation as the input</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># input case1: txt file format
+ sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb make_annotation_files_ldscore \
+    --annotation_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/quantile_qtl_annotation/test/AC_DeJager_eQTL.joint_tau_example.txt \
+    --reference_anno_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/reference_annotation.txt \
+    --genome_ref_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/genome_reference_bfile.txt \
+    --snp_list /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/list.txt \
+    --annotation_name joint_test \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output --joint_tau --chromosome 1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span> # input case 2: single file format, annotation files separate by &#39;,&#39;.
+ sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb make_annotation_files_ldscore \
+    --annotation_file /home/al4225/project/quantile_twas/analysis/output/157genes/step2_rq_lr_summary/enrich_info_by_context_class/AC_DeJager_eQTL.unique_qr.rds,/home/al4225/project/quantile_twas/analysis/output/157genes/step2_rq_lr_summary/enrich_info_by_context_class/AC_DeJager_eQTL.shared_homo.rds \
+    --reference_anno_file /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/example_anno/ABC_Road_GI_BRN.1.annot.gz \
+    --genome_ref_file /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/plink_files/1000G.EUR.hg38.1.bed \
+    --snp_list /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/list.txt \
+    --annotation_name joint_test \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output/mwe/joint_tau --joint_tau --chromosome 1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="get-heritability">
+<h4>2. get_heritability<a class="headerlink" href="#get-heritability" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb get_heritability \
+    --target_anno_dir /home/al4225/project/quantile_twas/analysis/SLDSC/output/AC_DeJager_eQTL.unique_qr/ \
+    --sumstat_dir /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/sumstat \
+    --baseline_ld_dir /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/baselineLD_v2.2 \
+    --frqfile_dir /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/plink_files \
+    --weights_dir /home/al4225/project/quantile_twas/analysis/SLDSC/data/weights \
+    --annotation_name AC_DeJager_eQTL.unique_qr \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output/AC_DeJager_eQTL.unique_qr/heritability \
+    --all_traits_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_all.txt
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="processed-stats">
+<h3>3. processed_stats<a class="headerlink" href="#processed-stats" title="Link to this heading">#</a></h3>
+<section id="id1">
+<h4>3.1 single tau analysis, with one annotation as a input<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># processed stats cwd has to be the same with get_heritability
+sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb processed_stats \
+    --target_anno_dir /home/al4225/project/quantile_twas/analysis/SLDSC/output/AC_DeJager_eQTL.unique_qr/test_anno_joint/AC_DeJager_eQTL.unique_qr \
+    --baseline_ld_dir /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/baselineLD_v2.2 \
+    --annotation_name AC_DeJager_eQTL.unique_qr \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output/AC_DeJager_eQTL.unique_qr/heritability \
+    --trait_group_paths &quot;/home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_all.txt /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_brain_trait.txt /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_blood_trait.txt&quot; \
+    --trait_group_names &quot;All Brain Blood&quot; \
+    --all_traits_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_all.txt -s build
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id2">
+<h5>3.2 joint tau<a class="headerlink" href="#id2" title="Link to this heading">#</a></h5>
+<p>with more than one annotation as the input</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># processed stats cwd has to be the same with get_heritability
+sos run /home/al4225/project/quantile_twas/analysis/SLDSC/scripts/ldsc.ipynb processed_stats \
+    --target_anno_dir /home/al4225/project/quantile_twas/analysis/SLDSC/output/joint_test/ \
+    --baseline_ld_dir /mnt/vast/hpc/csg/xc2270/colocboost/post/SLDSC/1000G_EUR_Phase3_hg38/baselineLD_v2.2 \
+    --annotation_name joint_test \
+    --cwd /home/al4225/project/quantile_twas/analysis/SLDSC/output/joint_test/heritability \
+    --trait_group_paths &quot;/home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_all.txt /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_brain_trait.txt /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_blood_trait.txt&quot; \
+    --trait_group_names &quot;All Brain Blood&quot; \
+    --all_traits_file /home/al4225/project/quantile_twas/analysis/SLDSC/data/sumstats_test_all.txt -s build --joint_tau --joint_annotation_names &quot;AC.eqtl.unique_qr AC.eqtl.shared_heter&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[global]
+# Path to the work directory of the analysis.
+parameter: cwd = path(&#39;output&#39;)
+# Prefix for the analysis output
+parameter: annotation_name = str
+parameter: joint_annotation_names = [] #if joint analysis is used, pass annotation names
+parameter: joint_tau = False
+parameter: ldsc_path = path() #optional: ldsc github
+
+# for make_annotation_files_ldscore workflow:
+parameter: annotation_file = path()
+parameter: reference_anno_file = path()
+parameter: genome_ref_file = path() # with .bed 
+parameter: chromosome = []
+parameter: snp_list = path()
+parameter: ld_wind_cm = 1.0
+
+# for get_heritability workflow
+parameter: all_traits_file = path() # txt file, each row contains all GWAS summary statistics name: e.g. CAD_META.filtered.sumstats.gz
+parameter: sumstat_dir = path() # Directory containing GWAS summary statistics
+parameter: target_anno_dir = path()  # Directory containing target annotation files: output of ldscore
+parameter: baseline_ld_dir = path()  # Directory containing baseline LD score files
+parameter: frqfile_dir = path()  # Directory containing allele frequency files
+parameter: weights_dir = path()  # Directory containing LD weights
+
+# Number of threads
+parameter: numThreads = 8
+# For cluster jobs, number commands to run per job
+parameter: job_size = 1
+parameter: walltime = &#39;12h&#39;
+parameter: mem = &#39;16G&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="make-annotation-file">
+<h2>Make Annotation File<a class="headerlink" href="#make-annotation-file" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[make_annotation_files_ldscore]
+parameter: score_column = 3
+parameter: is_range = False # parameter to handle range expansion
+
+import pandas as pd
+import os
+
+def adapt_file_path(file_path, reference_file):
+    &quot;&quot;&quot;
+    Adapt a single file path based on its existence and a reference file&#39;s path.
+
+    Args:
+    - file_path (str): The file path to adapt.
+    - reference_file (str): File path to use as a reference for adaptation.
+
+    Returns:
+    - str: Adapted file path.
+
+    Raises:
+    - FileNotFoundError: If no valid file path is found.
+    &quot;&quot;&quot;
+    reference_path = os.path.dirname(reference_file)
+
+    # Check if the file exists
+    if os.path.isfile(file_path):
+        return file_path
+
+    # Check file name without path
+    file_name = os.path.basename(file_path)
+    if os.path.isfile(file_name):
+        return file_name
+
+    # Check file name in reference file&#39;s directory
+    file_in_ref_dir = os.path.join(reference_path, file_name)
+    if os.path.isfile(file_in_ref_dir):
+        return file_in_ref_dir
+
+    # Check original file path prefixed with reference file&#39;s directory
+    file_prefixed = os.path.join(reference_path, file_path)
+    if os.path.isfile(file_prefixed):
+        return file_prefixed
+
+    # If all checks fail, raise an error
+    raise FileNotFoundError(f&quot;No valid path found for file: {file_path}&quot;)
+
+
+def adapt_file_path_all(df, column_name, reference_file):
+    return df[column_name].apply(lambda x: adapt_file_path(x, reference_file))
+
+# Process input files based on file type
+if (str(annotation_file).endswith((&#39;rds&#39;, &#39;tsv&#39;, &#39;txt&#39;)) and 
+    str(reference_anno_file).endswith(&#39;annot.gz&#39;)):
+    # Case 1: Direct file paths
+    # joint tau: annotation_fills: rds/tsv/txt files separete with &quot;,&quot;    
+    if joint_tau:
+        target_files = str(annotation_file).split(&#39;,&#39;)
+        input_files = [[*target_files, reference_anno_file, genome_ref_file]]
+    else:
+        # single annotation
+        input_files = [[annotation_file, reference_anno_file, genome_ref_file]]
+    
+    if len(chromosome) &gt; 0:
+        input_chroms = [int(x) for x in chromosome]
+    else:
+        input_chroms = [0]
+else:
+    # Case 2: Files with #id and cols starting with path columns
+    target_files = pd.read_csv(annotation_file, sep=&quot;\t&quot;)
+    reference_files = pd.read_csv(reference_anno_file, sep=&quot;\t&quot;)
+    genome_ref_files = pd.read_csv(genome_ref_file, sep=&quot;\t&quot;)
+    
+    # Standardize #id 
+    target_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;, &quot;&quot;) for x in target_files[&quot;#id&quot;].astype(str)]
+    reference_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;, &quot;&quot;) for x in reference_files[&quot;#id&quot;].astype(str)]
+    genome_ref_files[&quot;#id&quot;] = [x.replace(&quot;chr&quot;, &quot;&quot;) for x in genome_ref_files[&quot;#id&quot;].astype(str)]
+    
+    # process target annotation files
+    path_columns = [col for col in target_files.columns if col.startswith(&#39;path&#39;)]
+    for col in path_columns:
+        target_files[col] = target_files[col].apply(lambda x: adapt_file_path(x, annotation_file))
+    
+    # process reference and genome files
+    reference_files[&quot;path&quot;] = reference_files[&quot;path&quot;].apply(lambda x: adapt_file_path(x, reference_anno_file))
+    genome_ref_files[&quot;path&quot;] = genome_ref_files[&quot;path&quot;].apply(lambda x: adapt_file_path(x, genome_ref_file))
+    
+    # Merge the files based on #id
+    input_files = target_files.merge(reference_files, on=&quot;#id&quot;).merge(genome_ref_files, on=&quot;#id&quot;)
+    
+    # Filter by specified chromosomes, if any
+    if len(chromosome) &gt; 0:
+        input_files = input_files[input_files[&#39;#id&#39;].isin(chromosome)]
+    
+    # Extract relevant columns as a list of file paths
+    input_files = input_files.values.tolist()
+    input_chroms = [x[0] for x in input_files]  # Chromosome IDs
+    
+    if joint_tau:
+        # joint tau, keep all path columns
+        input_files = [[*x[1:len(path_columns)+1], x[-2], x[-1]] for x in input_files]
+    else:
+        # single annotation
+        input_files = [[x[1], x[-2], x[-1]] for x in input_files]
+        
+input: input_files, group_by = len(input_files[0]), group_with = &quot;input_chroms&quot;
+output: dict([
+   (&#39;annot&#39;, f&#39;{cwd:a}/{annotation_name}/{annotation_name}.{input_chroms[_index]}.annot.gz&#39;),
+   (&#39;ldscore&#39;, f&#39;{cwd:a}/{annotation_name}/{annotation_name}.{input_chroms[_index]}.l2.ldscore.gz&#39;)
+])
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bnn}&#39;
+
+R: expand= &quot;${ }&quot;, stderr = f&#39;{_output[&quot;annot&quot;]}.stderr&#39;, stdout = f&#39;{_output[&quot;annot&quot;]}.stdout&#39;, container = container, entrypoint = entrypoint
+    library(data.table)
+
+    # Function to clean chromosome notation
+    clean_chr &lt;- function(x) {
+        as.numeric(gsub(&quot;^chr&quot;, &quot;&quot;, x))
+    }
+
+    # Function to process range data - only expands ranges for the specified chromosome
+    process_range_data &lt;- function(data, chr_value) {
+        # First filter for the specific chromosome
+        data$chr &lt;- clean_chr(data$chr)
+        data &lt;- data[data$chr == chr_value,]
+        
+        if(nrow(data) == 0) {
+            return(NULL)
+        }
+        
+        # Only expand ranges for the matched chromosome
+        expanded_rows &lt;- lapply(1:nrow(data), function(j) {
+            row &lt;- data[j,]
+            pos_seq &lt;- seq(row$start, row$end-1)
+            
+            # Create base data frame with chr and pos
+            result &lt;- data.frame(
+                chr = rep(row$chr, length(pos_seq)),
+                pos = pos_seq
+            )
+            
+            # Add additional columns if they exist
+            if(ncol(data) &gt; 3) {
+                for(col in 4:ncol(data)) {
+                    result[[names(data)[col]]] &lt;- rep(row[[col]], length(pos_seq))
+                }
+            }
+            
+            return(result)
+        })
+        result &lt;- unique(rbindlist(expanded_rows))
+        return(result)
+    }
+
+    # Main annotation processing function
+    process_annotation &lt;- function(target_anno, ref_anno, score_column_value) {
+        target_anno &lt;- as.data.frame(target_anno)
+        ref_anno &lt;- as.data.frame(ref_anno)
+        
+        # Clean chromosome notation
+        target_anno$chr &lt;- clean_chr(target_anno$chr)
+        ref_anno$CHR &lt;- clean_chr(ref_anno$CHR)
+        
+        chr_value = unique(ref_anno$CHR)
+        pos &lt;- which(target_anno$chr == chr_value)
+        anno_scores &lt;- rep(0, nrow(ref_anno))
+        
+        match_pos &lt;- match(target_anno$pos, ref_anno$BP)
+        valid_pos &lt;- as.numeric(na.omit(match_pos))
+        
+        if (score_column_value &lt;= ncol(target_anno)) {
+            anno_scores[valid_pos] &lt;- target_anno[[score_column_value]][!is.na(match_pos)]
+        } else {
+            anno_scores[valid_pos] &lt;- 1
+            print(&quot;Warning: Score column does not exist. Setting scores to 1&quot;)
+        }
+        
+        return(anno_scores)
+    }
+
+    # Read reference annotation file
+    ref_anno &lt;- fread(${_input[-2]:ar})
+    ref_anno &lt;- as.data.frame(ref_anno)
+    if(&quot;ANNOT&quot; %in% colnames(ref_anno)) {
+        ref_anno &lt;- ref_anno[,-which(colnames(ref_anno) == &quot;ANNOT&quot;)]
+    }
+    result_anno &lt;- ref_anno
+
+    score_column_value &lt;- ${score_column}  
+    is_joint &lt;- ${&quot;TRUE&quot; if joint_tau else &quot;FALSE&quot;}
+    is_range &lt;- ${&quot;TRUE&quot; if is_range else &quot;FALSE&quot;}
+
+    if(is_joint) {
+        target_files = c(${&quot;,&quot;.join([&#39;&quot;%s&quot;&#39; % x.absolute() for x in _input[:-2]])})
+        for(i in seq_along(target_files)) {
+            # Read file based on format
+            if(endsWith(target_files[i], &quot;rds&quot;)) {
+                target_anno &lt;- readRDS(target_files[i])
+            } else {  # Handle TSV/TXT files
+                target_anno &lt;- fread(target_files[i])
+                
+                # Process range data if needed
+                if(is_range) {
+                    names(target_anno)[1:3] &lt;- c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;)
+                    target_anno &lt;- process_range_data(target_anno, unique(ref_anno$CHR))
+                    if(is.null(target_anno)) {
+                        anno_scores &lt;- rep(0, nrow(ref_anno))
+                    } else {
+                        anno_scores &lt;- process_annotation(target_anno, ref_anno, score_column_value)
+                    }
+                } else {
+                    names(target_anno)[1:2] &lt;- c(&quot;chr&quot;, &quot;pos&quot;)
+                    anno_scores &lt;- process_annotation(target_anno, ref_anno, score_column_value)
+                }
+            }
+            
+            print(paste(&quot;Processing annotation file&quot;, i))
+            result_anno[[paste0(&quot;ANNOT_&quot;, i)]] &lt;- anno_scores
+        }
+    } else {
+        # Read file based on format
+        if(endsWith(${_input[0]:ar}, &quot;rds&quot;)) {
+            target_anno &lt;- readRDS(${_input[0]:ar})
+        } else {  # Handle TSV/TXT files
+            target_anno &lt;- fread(${_input[0]:ar})
+            
+            # Process range data if needed
+            if(is_range) {
+                names(target_anno)[1:3] &lt;- c(&quot;chr&quot;, &quot;start&quot;, &quot;end&quot;)
+                target_anno &lt;- process_range_data(target_anno, unique(ref_anno$CHR))
+                if(is.null(target_anno)) {
+                    anno_scores &lt;- rep(0, nrow(ref_anno))
+                } else {
+                    anno_scores &lt;- process_annotation(target_anno, ref_anno, score_column_value)
+                }
+            } else {
+                names(target_anno)[1:2] &lt;- c(&quot;chr&quot;, &quot;pos&quot;)
+                anno_scores &lt;- process_annotation(target_anno, ref_anno, score_column_value)
+            }
+        }
+        
+        result_anno$ANNOT &lt;- anno_scores
+    }
+
+    # Write results
+    fwrite(result_anno, ${_output[&quot;annot&quot;]:nr}, 
+        quote=FALSE, col.names=TRUE, row.names=FALSE, sep=&quot;\t&quot;)
+
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output[&quot;annot&quot;]:nnn}.stderr&#39;, stdout = f&#39;{_output[&quot;annot&quot;]:nnn}.stdout&#39;, container = container, entrypoint = entrypoint
+   gzip -f $[_output[&quot;annot&quot;]:n] 
+
+bash: expand=&quot;${ }&quot;, stderr = f&#39;{_output[1]}.stderr&#39;, stdout = f&#39;{_output[1]}.stdout&#39;   
+  #/home/al4225/miniconda3/envs/ldsc/bin/python2 ${ldsc_path}/ldsc.py \
+  ldsc \
+      --print-snps ${snp_list} \
+      --ld-wind-cm ${ld_wind_cm} \
+      --out ${_output[&quot;ldscore&quot;]:nnn} \
+      --bfile ${_input[-1]:nar} \
+      --yes-really \
+      --annot ${_output[0]:a} \
+      --l2                       
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="munge-summary-statistics-option-1-no-signed-summary-statistic">
+<h2>Munge Summary Statistics (Option 1: No Signed Summary Statistic)<a class="headerlink" href="#munge-summary-statistics-option-1-no-signed-summary-statistic" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>#This option is for when the summary statistic file does not contain a signed summary statistic (Z or Beta). 
+#In this case,the program will calculate Z for you based on A1 being the risk allele
+[munge_sumstats_no_sign]
+
+
+
+#path to summary statistic file
+parameter: sumst = str
+#path to Hapmap3 SNPs file, keep all columns (SNP, A1, and A2) for the munge_sumstats program
+parameter: alleles = &quot;w_hm3.snplist&quot;
+#path to output file
+parameter: output = str
+
+bash: expand = True
+    munge_sumstats.py --sumstats {sumst} --merge-alleles {alleles} --out {output} --a1-inc
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="munge-summary-statistics-option-2-no-signed-summary-statistic">
+<h2>Munge Summary Statistics (Option 2: No Signed Summary Statistic)<a class="headerlink" href="#munge-summary-statistics-option-2-no-signed-summary-statistic" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># This option is for when the summary statistic file does contain a signed summary statistic (Z or Beta)
+[munge_sumstats_sign]
+
+
+
+#path to summary statistic file
+parameter: sumst = str
+#path to Hapmap3 SNPs file, keep all columns (SNP, A1, and A2) for the munge_sumstats program
+parameter: alleles = &quot;w_hm3.snplist&quot;
+#path to output file
+parameter: output = str
+
+bash: expand = True
+    munge_sumstats.py --sumstats {sumst} --merge-alleles {alleles} --out {output}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculate-functional-enrichment-using-annotations">
+<h2>Calculate Functional Enrichment using Annotations<a class="headerlink" href="#calculate-functional-enrichment-using-annotations" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[get_heritability]
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+
+bash: expand = &quot;${ }&quot;
+    output_dir=&quot;${cwd}&quot;
+    mkdir -p $output_dir
+    while read -r trait; do
+        #/home/al4225/miniconda3/envs/ldsc/bin/python2 ${ldsc_path}/ldsc.py \
+        ldsc \
+            --h2 ${sumstat_dir}/$trait \
+            --ref-ld-chr ${target_anno_dir}/${annotation_name}.,${baseline_ld_dir}/baselineLD. \
+            --out ${cwd}/$trait \
+            --overlap-annot \
+            --frqfile-chr ${frqfile_dir}/1000G.EUR.hg38. \
+            --w-ld-chr ${weights_dir}/weights.hm3_noMHC. \
+            --print-coefficients \
+            --print-delete-vals
+    done &lt; ${all_traits_file}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[processed_stats_1]
+output: f&#39;{cwd:a}/{annotation_name}.joint_tau.initial_processed_stats.rds&#39; if joint_tau else f&#39;{cwd:a}/{annotation_name}.single_tau.initial_processed_stats.rds&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+
+R: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
+    library(data.table)
+    print(paste(&quot;Joint tau analysis:&quot;, ${str(joint_tau).upper()}))
+    is_joint &lt;- ${&quot;TRUE&quot; if joint_tau else &quot;FALSE&quot;}
+    print(paste(&quot;Is joint analysis:&quot;, is_joint))
+       
+    calculate_sd_annot &lt;- function(cell_path, annot_index = 1) {
+    ll &lt;- list.files(cell_path, pattern = &quot;\\.annot\\.gz$&quot;, full.names = TRUE)
+    num = numeric(length(annot_index))
+    den = 0
+    
+    for(m in ll) {
+        dat &lt;- fread(m, fill = TRUE)
+        if(length(annot_index) &gt; 1) {
+            cols &lt;- paste0(&quot;ANNOT_&quot;, annot_index) 
+            num &lt;- num + ((nrow(dat)-1) * sapply(dat[, ..cols], var))
+        } else {
+            if((4 + annot_index) &gt; ncol(dat)) stop(paste(&quot;Index out of range:&quot;, m))
+            num &lt;- num + ((nrow(dat)-1) * var(dat[, 4+annot_index, with=FALSE]))
+        }
+        den &lt;- den + (nrow(dat)-1)
+    }
+    sqrt(num/den)
+    }
+
+    check_file_exists &lt;- function(file_path) {
+        if (!file.exists(file_path)) {
+            warning(paste(&quot;File does not exist:&quot;, file_path))
+            return(FALSE)
+        }
+        return(TRUE)
+    }
+
+    # Process single trait
+    process_trait &lt;- function(trait, cwd) {
+    files &lt;- list(
+        result = paste0(cwd, &quot;/&quot;, trait, &quot;.results&quot;),
+        log = paste0(cwd, &quot;/&quot;, trait, &quot;.log&quot;),
+        delete = paste0(cwd, &quot;/&quot;, trait, &quot;.part_delete&quot;)
+    )
+    
+    if(!all(sapply(files, file.exists))) {
+        warning(paste(&quot;Missing files for trait:&quot;, trait))
+        return(NULL)
+    }
+
+    tryCatch({
+        results &lt;- fread(files$result)
+        h2g &lt;- as.numeric(gsub(&quot;.*h2: ([0-9.]+).*&quot;, &quot;\\1&quot;, 
+                            grep(&quot;Total Observed scale h2:&quot;, readLines(files$log), value=TRUE)))
+        delete_values &lt;- fread(files$delete)
+        
+        list(trait = trait, h2g = h2g, results = results, delete_values = delete_values)
+    }, error = function(e) {
+        warning(paste(&quot;Error processing trait:&quot;, trait, &quot;-&quot;, e$message))
+        NULL
+    })
+    }
+
+    # Process tau analysis
+    process_tau_analysis &lt;- function(trait_data, sd_annots, base_index = NULL, is_joint = FALSE) {
+    Mref &lt;- 5961159
+    
+    if(is_joint) {
+        indices &lt;- 1:(nrow(trait_data$results) - base_index)
+        sc_matrices &lt;- matrix(0, nrow=nrow(trait_data$delete_values), ncol=length(indices))
+        
+        for(i in seq_along(indices)) {
+            coef &lt;- sd_annots[i] * Mref / trait_data$h2g
+            sc_matrices[,i] &lt;- trait_data$delete_values[[indices[i]]] * coef
+        }
+        
+        list(joint_stats = list(
+            h2g = trait_data$h2g,
+            sd_annots = sd_annots,
+            sc_matrices = sc_matrices
+        ))
+    } else {
+        coef &lt;- sd_annots * Mref / trait_data$h2g
+        sc_matrix &lt;- trait_data$delete_values[[1]] * coef
+        
+        list(single_tau = list(
+            h2g = trait_data$h2g,
+            sd_annot = sd_annots,
+            sc_matrix = matrix(as.vector(trait_data$delete_values[[1]] * coef), ncol=1)
+        ))        
+    }
+    }
+
+    # Process enrichment
+    process_enrichment &lt;- function(trait_data) {
+    Mref &lt;- 5961159
+    enrichment_p &lt;- as.numeric(trait_data$results[1, &quot;Enrichment_p&quot;])
+    enrich_ratio &lt;- ((trait_data$results[1, &quot;Prop._h2&quot;] / trait_data$results[1, &quot;Prop._SNPs&quot;]) - 
+                        (1 - trait_data$results[1, &quot;Prop._h2&quot;]) / (1 - trait_data$results[1, &quot;Prop._SNPs&quot;]))
+    enrich_term &lt;- trait_data$h2g / Mref * enrich_ratio
+    
+    list(
+        enrichment_summary = data.table(
+            Enrichment = trait_data$results[1, &quot;Enrichment&quot;],
+            Enrichment_std_error = trait_data$results[1, &quot;Enrichment_std_error&quot;],
+            Prop._h2 = trait_data$results[1, &quot;Prop._h2&quot;],
+            Prop._SNPs = trait_data$results[1, &quot;Prop._SNPs&quot;],
+            Enrichment_p = enrichment_p
+        ),
+        meta_enrstat = list(
+            enrich_stat = as.numeric(enrich_term),
+            enrich_z = as.numeric(qnorm(enrichment_p / 2)),
+            enrich_sd = as.numeric(enrich_term / qnorm(enrichment_p / 2))
+        ),
+        meta_enr = list(
+            Enrichment = as.numeric(trait_data$results[1, &quot;Enrichment&quot;]),
+            Enrichment_std_error = as.numeric(trait_data$results[1, &quot;Enrichment_std_error&quot;]) 
+        )
+    )
+    }
+
+    # Main analysis
+    traits &lt;- scan(&quot;${all_traits_file}&quot;, what = &quot;character&quot;)
+    results &lt;- list()
+    problematic_traits &lt;- c()
+
+    if (is_joint) {
+    # Get baseline info and indices
+    base &lt;- fread(paste0(&quot;${baseline_ld_dir}&quot;, &quot;/baselineLD.22.annot.gz&quot;))
+    base_index &lt;- ncol(base) - 4
+    
+    tab2 &lt;- fread(paste0(&quot;${cwd}&quot;, &quot;/&quot;, traits[1], &quot;.results&quot;))
+    indices &lt;- 1:(nrow(tab2) - base_index)
+    
+    sd_annots &lt;- calculate_sd_annot(&quot;${target_anno_dir}&quot;, indices)
+    
+    for (trait in traits) {
+        if (!is.null(trait_data &lt;- process_trait(trait, &quot;${cwd}&quot;))) {
+            results[[trait]] &lt;- process_tau_analysis(trait_data, sd_annots, base_index, TRUE)
+        } else {
+            problematic_traits &lt;- c(problematic_traits, trait)
+        }
+    }
+    } else {
+    sd_annot &lt;- calculate_sd_annot(&quot;${target_anno_dir}&quot;)
+    
+    for (trait in traits) {
+        if (!is.null(trait_data &lt;- process_trait(trait, &quot;${cwd}&quot;))) {
+            results[[trait]] &lt;- c(
+                process_tau_analysis(trait_data, sd_annot, NULL, FALSE),
+                list(enrichment = process_enrichment(trait_data))
+            )
+        } else {
+            problematic_traits &lt;- c(problematic_traits, trait)
+        }
+    }
+    }
+
+    if (length(problematic_traits) &gt; 0) {
+    warning(&quot;Problematic traits:&quot;, paste(problematic_traits, collapse=&quot;, &quot;))
+    }
+
+    saveRDS(results, &quot;${_output[0]}&quot;, compress = &quot;xz&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[processed_stats_2]
+parameter: trait_group_paths = []     
+parameter: trait_group_names = []
+input: group_by = &quot;all&quot; 
+output: f&#39;{cwd:a}/{step_name}/{&quot;joint_tau&quot; if joint_tau else &quot;single_tau&quot;}.{annotation_name}.meta_processed_stats.rds&#39;
+
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads
+
+R: expand = &#39;${ }&#39;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;
+  library(data.table)
+  library(rmeta)
+
+  processed_path = ${_input:ar}
+  results_data &lt;- readRDS(processed_path)
+  is_joint &lt;- ${str(joint_tau).upper()}
+  
+  process_paths &lt;- function(input_str) {
+      cleaned &lt;- gsub(&quot;^\\[|\\]$&quot;, &quot;&quot;, input_str)
+      cleaned &lt;- gsub(&quot;&#39;&quot;, &quot;&quot;, cleaned)
+      paths &lt;- strsplit(cleaned, &quot;,\\s*|\\s+&quot;)[[1]]
+      paths &lt;- trimws(paths)
+      return(paths)
+  }
+
+  group_paths &lt;- process_paths(&quot;${trait_group_paths}&quot;)
+  group_names &lt;- process_paths(&quot;${trait_group_names}&quot;)
+  problematic_traits &lt;- list()
+  joint_names &lt;- process_paths(&quot;${joint_annotation_names}&quot;)
+  if (is_joint) {
+      joint_tau_results &lt;- list()
+      
+      for (i in 1:length(group_paths)) {
+          traits &lt;- readLines(group_paths[i])
+          group_stats &lt;- list()
+          
+          for (trait in traits) {
+              if(trait %in% names(results_data) &amp;&amp; !is.null(results_data[[trait]]$joint_stats)) {
+                  group_stats[[trait]] &lt;- results_data[[trait]]$joint_stats
+              } else {
+                  warning(paste(&quot;Invalid data for trait:&quot;, trait))
+                  problematic_traits[[trait]] &lt;- &quot;Invalid data&quot;
+              }
+          }
+          
+          if(length(group_stats) &gt; 0) {
+              n_annotations &lt;- ncol(group_stats[[1]]$sc_matrices)
+              meta_result &lt;- matrix(0, nrow = n_annotations, ncol = 3)
+              colnames(meta_result) &lt;- c(&quot;Mean&quot;, &quot;SD&quot;, &quot;P&quot;)
+              if(length(joint_names) &gt; 0) {
+                  rownames(meta_result) &lt;- joint_names  # Add row names
+              }              
+              for(j in 1:n_annotations) {
+                  df &lt;- matrix(0, nrow = length(group_stats), ncol = 2)
+                  for(k in 1:length(group_stats)) {
+                      sc_values &lt;- group_stats[[k]]$sc_matrices[,j]
+                      df[k,] &lt;- c(mean(sc_values), sqrt(199^2/200 * var(sc_values)))
+                  }
+                  
+                  meta &lt;- meta.summaries(df[,1], df[,2], method = &quot;random&quot;)
+                  meta_result[j,] &lt;- c(
+                      meta$summary, 
+                      meta$se.summary,
+                      2 * pnorm(-abs(meta$summary/meta$se.summary))
+                  )
+              }
+              joint_tau_results[[group_names[i]]] &lt;- meta_result
+          }
+      }
+      saveRDS(joint_tau_results, &#39;${_output[0]}&#39;)
+      
+  } else {
+      tau_results &lt;- list()
+      enrichment_results &lt;- list()
+      
+      for (i in 1:length(group_paths)) {
+          traits &lt;- readLines(group_paths[i])
+          
+          group_stats &lt;- Filter(function(x) {
+              !is.null(x) &amp;&amp; !is.null(x$single_tau$sc_matrix)
+          }, results_data[traits])
+          
+          if (length(group_stats) &gt; 0) {
+              sc_data &lt;- lapply(group_stats, function(x) {
+                  mean_sc &lt;- mean(x$single_tau$sc_matrix[, 1])
+                  se_sc &lt;- sqrt(199^2 / 200 * var(x$single_tau$sc_matrix[, 1]))
+                  return(c(mean_sc, se_sc))
+              })
+              sc_matrix &lt;- do.call(rbind, sc_data)
+              
+              meta_tau &lt;- meta.summaries(sc_matrix[, 1], sc_matrix[, 2], method = &quot;random&quot;)
+              tau_results[[group_names[i]]] &lt;- c(meta_tau$summary, 
+                                              meta_tau$se.summary,
+                                              2 * pnorm(-abs(meta_tau$summary / meta_tau$se.summary)))
+              
+              enr_data &lt;- lapply(group_stats, function(x) {
+                  return(c(x$enrichment$meta_enr$Enrichment,
+                          x$enrichment$meta_enr$Enrichment_std_error))
+              })
+              enr_matrix &lt;- do.call(rbind, enr_data)
+              enrstat_data &lt;- lapply(group_stats, function(x) {
+                  return(c(x$enrichment$meta_enrstat$enrich_stat, x$enrichment$meta_enrstat$enrich_sd))})
+              enrstat_matrix &lt;- do.call(rbind, enrstat_data)
+
+              meta_enr &lt;- meta.summaries(enr_matrix[, 1], enr_matrix[, 2], method = &quot;random&quot;)
+              meta_enrstat &lt;- meta.summaries(enrstat_matrix[, 1], enrstat_matrix[, 2], method = &quot;random&quot;)   
+              enrichment_results[[group_names[i]]] &lt;- c(meta_enr$summary,
+                                                      meta_enr$se.summary,
+                                                       2 * pnorm(-abs(meta_enrstat$summary / meta_enrstat$se.summary)))
+          } else {
+              warning(paste(&quot;No valid data for group:&quot;, group_names[i]))
+          }
+      }
+
+
+                
+      tau_df &lt;- do.call(rbind, tau_results)
+      enrichment_df &lt;- do.call(rbind, enrichment_results)
+      
+      colnames(tau_df) &lt;- c(&quot;Mean&quot;, &quot;SD&quot;, &quot;P&quot;)
+      colnames(enrichment_df) &lt;- c(&quot;Mean&quot;, &quot;SD&quot;, &quot;P&quot;)
+      rownames(tau_df) &lt;- group_names
+      rownames(enrichment_df) &lt;- group_names
+      
+      results &lt;- list(tau = tau_df, enrichment = enrichment_df)
+      saveRDS(results, &#39;${_output[0]}&#39;)
+  }
+
+  if (length(problematic_traits) &gt; 0) {
+      warning(&quot;The following traits had issues:&quot;)
+      print(problematic_traits)
+  }
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/enrichment"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="gregor.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">GREGOR enrichment analysis</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-brief-review-on-stratified-ld-score-regression">A brief review on Stratified LD score regression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ldsc-model">LDSC model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stratified-ldsc">Stratified LDSC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tau-estimation-and-enrichment-analysis">Tau Estimation and Enrichment Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tau">Tau (τ):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-workflow">Statistical Workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">1. Inputs</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tau-standardization">2. Tau Standardization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-calculation">3. Enrichment Calculation</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#a-direct-enrichment-statistics">a. Direct Enrichment Statistics</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#b-standardized-enrichment-statistics">b. Standardized Enrichment Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meta-analysis-of-partitioned-heritability">Meta-Analysis of Partitioned Heritability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose">Purpose</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-effects-meta-analysis">Random-Effects Meta-Analysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#annotation-file">1. Annotation File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-annotation-file">2. Reference Annotation File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#genome-reference-file">3. Genome Reference File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#snp-list">4. SNP List</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-group-files">5. ALL Group Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-steps">Workflow Steps</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-annotation-file-processing">Step 1: Annotation File Processing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-munge-summary-statistics">Step 2: Munge Summary Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-heritability-analysis">Step 3: Heritability Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-initial-processed-statistics">Step 4: Initial Processed Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-meta-analysis">Step 5: Meta Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mwe">MWE:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-annotation-files-ldscore">1. make_annotation_files_ldscore</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#single-tau-analysis-with-one-annotation-as-a-input">1.1 single tau analysis, with one annotation as a input</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-tau">1.2 joint tau</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#get-heritability">2. get_heritability</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#processed-stats">3. processed_stats</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.1 single tau analysis, with one annotation as a input</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.2 joint tau</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-annotation-file">Make Annotation File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#munge-summary-statistics-option-1-no-signed-summary-statistic">Munge Summary Statistics (Option 1: No Signed Summary Statistic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#munge-summary-statistics-option-2-no-signed-summary-statistic">Munge Summary Statistics (Option 2: No Signed Summary Statistic)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-functional-enrichment-using-annotations">Calculate Functional Enrichment using Annotations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

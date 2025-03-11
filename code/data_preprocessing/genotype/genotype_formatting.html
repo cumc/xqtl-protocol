@@ -1,0 +1,1276 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Genotype Data Formatting &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/data_preprocessing/genotype/genotype_formatting';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Phenotype data preprocessing" href="../phenotype_preprocessing.html" />
+    <link rel="prev" title="Genomic Relationship Matrices" href="GRM.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../reference_data/reference_data.html">Reference Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/apa.html">Alternative polyadenylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/methylation.html">Methylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../genotype_preprocessing.html">Genotype data preprocessing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Genotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../phenotype_preprocessing.html">Phenotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../covariate_preprocessing.html">Covariate Data Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../association_scan/qtl_association_testing.html">QTL Association Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/TensorQTL/TensorQTL.html">QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../association_scan/quantile_models/qr_and_twas.html">Quantile regression for QTL association testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Mixture Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multivariate_genome/multivariate_mixture_vignette.html">Mixture Multivariate Distribution Estimate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multiomics Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../mnm_analysis/fine_mapping_miniprotocol.html">Fine-Mapping</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/univariate_fine_mapping_twas_vignette.html">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/multivariate_multigene_fine_mapping_vignette.html">Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/univariate_fine_mapping_fsusie_vignette.html">Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/multivariate_fine_mapping_vignette.html">Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/summary_stats_finemapping_vignette.html">Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/mnm_methods/mnm_regression.html">Advanced regression models for association analysis with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mnm_analysis/mnm_methods/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GWAS Integration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../pecotmr_integration/SuSiE_enloc.html">xQTL-GWAS pairwise enrichment and colocalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pecotmr_integration/twas_ctwas.html">TWAS, cTWAS and MR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mnm_analysis/mnm_methods/colocboost.html">Multi-trait colocalization using ColocBoost</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment and Validation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../enrichment/eoo_enrichment.html">Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../enrichment/gsea.html">Pathway Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../enrichment/gregor.html">GREGOR enrichment analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../enrichment/sldsc_enrichment.html">Stratified LD Score Regression</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/data_preprocessing/genotype/genotype_formatting.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/data_preprocessing/genotype/genotype_formatting.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/code/data_preprocessing/genotype/genotype_formatting.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Genotype Data Formatting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-vcf-to-plink">ii. VCF to PLINK</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iii-merge-plink-files">iii. Merge PLINK Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-partition-genotype-data-by-chromosome">iv. Partition Genotype Data by Chromosome</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plink-to-vcf">PLINK to VCF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vcf-to-plink">VCF to PLINK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-plink-genotypes-into-specified-regions">Split PLINK genotypes into specified regions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-ld-matrices-for-given-input-region">Compute LD matrices for given input region</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plink-based-implementation">PLINK based implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ldstore2-based-implementation">ldstore2 based implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-master-file-for-ldstore2">Create <code class="docutils literal notranslate"><span class="pre">master</span></code> file for <code class="docutils literal notranslate"><span class="pre">ldstore2</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-plink-by-chromosome">Split PLINK by Chromosome</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-vcf-by-chromosome">Split VCF by Chromosome</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-plink-files">Merge PLINK files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-vcf-files">Merge VCF files</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="genotype-data-formatting">
+<h1>Genotype Data Formatting<a class="headerlink" href="#genotype-data-formatting" title="Link to this heading">#</a></h1>
+<p>This module implements a collection of workflows used to format genotype data.</p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>We include steps for the formatting of genotype files. This includes the conversion between VCF and PLINK formats, the splitting of data (by specified input, chromosomes or genes) and the merging of data (by specified input, or by chromosomes).</p>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Link to this heading">#</a></h2>
+<p>Depending on the analysis task, input files are specified in one of the following formats:</p>
+<ol class="arabic simple">
+<li><p>A single Whole genome data in VCF format, or in PLINK bim/bed/fam bundle; Or,</p></li>
+<li><p>A list of VCF or PLINK bed file</p></li>
+<li><p>A singular column file containing a list of VCF or PLINK bed file</p></li>
+<li><p>A two column file containing a list of per chromosome VCF or PLINK bed file where the first column is chrom and 2nd column is file name</p></li>
+</ol>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h2>
+<p>Genotype data in PLINK format partitioned by chromosome</p>
+</section>
+<section id="minimal-working-example">
+<h2>Minimal Working Example<a class="headerlink" href="#minimal-working-example" title="Link to this heading">#</a></h2>
+<p>The data and singularity container <code class="docutils literal notranslate"><span class="pre">bioinfo.sif</span></code> can be downloaded from <a class="reference external" href="https://www.synapse.org/#!Synapse:syn36416559/files/">Synapse</a>.</p>
+<section id="ii-vcf-to-plink">
+<h3>ii. VCF to PLINK<a class="headerlink" href="#ii-vcf-to-plink" title="Link to this heading">#</a></h3>
+<p>Timing: X min</p>
+<p><code class="docutils literal notranslate"><span class="pre">ROSMAP_sample_list.txt</span></code> is a list that includes all ROSMAP samples we need for analysis, in formatting of FID, IID. This file has been uploaded to ftp: <code class="docutils literal notranslate"><span class="pre">/ftp_fgc_xqtl/projects/WGS/ROSMAP</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb vcf_to_plink
+    --genoFile `ls vcf_qc/*.leftnorm.bcftools_qc.vcf.gz` \
+    --cwd Genotype/ \
+    --keep_samples ./ROSMAP_sample_list.txt
+    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+    -J 22 -q csg -c csg.yml --mem 120G
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="iii-merge-plink-files">
+<h3>iii. Merge PLINK Files<a class="headerlink" href="#iii-merge-plink-files" title="Link to this heading">#</a></h3>
+<p>Timing: X min</p>
+<p>This step merges all the files and may require anout 300G mem to run, because there are some variants’ ID with 80+ characters. And only plink can do the merge job, plink2 doesn’t support merge.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run xqtl-protocol/pipeline/genotype_formatting.ipynb merge_plink \
+    --genoFile `ls *.leftnorm.bcftools_qc.bed` \
+    --name ROSMAP_NIA_WGS.leftnorm.bcftools_qc  \
+    --cwd Genotype/ \
+    --container /mnt/vast/hpc/csg/containers/bioinfo.sif \
+    -J 5 -q csg -c csg.yml --mem 300G
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="iv-partition-genotype-data-by-chromosome">
+<h3>iv. Partition Genotype Data by Chromosome<a class="headerlink" href="#iv-partition-genotype-data-by-chromosome" title="Link to this heading">#</a></h3>
+<p>Timing: &lt;1 min</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run pipeline/genotype_formatting.ipynb genotype_by_chrom \
+    --genoFile input/protocol_example.genotype.chr21_22.bed \
+    --cwd output \
+    --chrom `cut -f 1 input/protocol_example.genotype.chr21_22.bim | uniq | sed &quot;s/chr//g&quot;` \
+    --container containers/bioinfo.sif 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INFO</span><span class="p">:</span> <span class="n">Running</span> <span class="n">genotype_by_chrom_1</span><span class="p">:</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">genotype_by_chrom_1</span> <span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="ow">is</span> <span class="n">completed</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">genotype_by_chrom_1</span> <span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="ow">is</span> <span class="n">completed</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">genotype_by_chrom_1</span> <span class="n">output</span><span class="p">:</span>   <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">alexmccreight</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="mf">.22</span><span class="o">.</span><span class="n">bed</span> <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">alexmccreight</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="mf">.21</span><span class="o">.</span><span class="n">bed</span> <span class="ow">in</span> <span class="mi">2</span> <span class="n">groups</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">Running</span> <span class="n">genotype_by_chrom_2</span><span class="p">:</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">genotype_by_chrom_2</span> <span class="ow">is</span> <span class="n">completed</span> <span class="p">(</span><span class="n">pending</span> <span class="n">nested</span> <span class="n">workflow</span><span class="p">)</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">Running</span> <span class="n">write_data_list</span><span class="p">:</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">write_data_list</span> <span class="ow">is</span> <span class="n">completed</span><span class="o">.</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">write_data_list</span> <span class="n">output</span><span class="p">:</span>   <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">alexmccreight</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">genotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">genotype_by_chrom_2</span> <span class="n">output</span><span class="p">:</span>   <span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">alexmccreight</span><span class="o">/</span><span class="n">xqtl</span><span class="o">-</span><span class="n">protocol</span><span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">protocol_example</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">chr21_22</span><span class="o">.</span><span class="n">genotype_by_chrom_files</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">INFO</span><span class="p">:</span> <span class="n">Workflow</span> <span class="n">genotype_by_chrom</span> <span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">w5be6d78805f1df2e</span><span class="p">)</span> <span class="ow">is</span> <span class="n">executed</span> <span class="n">successfully</span> <span class="k">with</span> <span class="mi">3</span> <span class="n">completed</span> <span class="n">steps</span> <span class="ow">and</span> <span class="mi">4</span> <span class="n">completed</span> <span class="n">substeps</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="command-interface">
+<h2>Command Interface<a class="headerlink" href="#command-interface" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run genotype_formatting.ipynb -h
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: sos run genotype_formatting.ipynb
+               [workflow_name | -t targets] [options] [workflow_options]
+  workflow_name:        Single or combined workflows defined in this script
+  targets:              One or more targets to generate
+  options:              Single-hyphen sos parameters (see &quot;sos run -h&quot; for details)
+  workflow_options:     Double-hyphen workflow-specific parameters
+
+Workflows:
+  plink_to_vcf
+  vcf_to_plink
+  plink_by_gene
+  plink_by_chrom
+  merge_plink
+  merge_vcf
+
+Global Workflow Options:
+  --cwd output (as path)
+                        Work directory &amp; output directory
+  --container &#39;&#39;
+                        The filename name for containers
+  --job-size 1 (as int)
+                        For cluster jobs, number commands to run per job
+  --walltime 5h
+                        Wall clock time expected
+  --mem 3G
+                        Memory expected
+  --numThreads 20 (as int)
+                        Number of threads
+  --genoFile  paths
+
+                        the path to a bed file or VCF file, a vector of bed
+                        files or VCF files, or a text file listing the bed files
+                        or VCF files to process
+
+Sections
+  plink_to_vcf_1:
+  vcf_to_plink:
+  plink_by_gene_1:
+    Workflow Options:
+      --window 500000 (as int)
+                        cis window size
+      --region-list VAL (as path, required)
+                        Region definition
+  plink_by_chrom_1:
+    Workflow Options:
+      --chrom VAL VAL ... (as type, required)
+  plink_by_chrom_2, plink_by_gene_2:
+  plink_to_vcf_2:
+  merge_plink:
+    Workflow Options:
+      --name VAL (as str, required)
+                        File prefix for the analysis output
+  merge_vcf:
+    Workflow Options:
+      --name VAL (as str, required)
+                        File prefix for the analysis output
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[global]
+# Work directory &amp; output directory
+parameter: cwd = path(&quot;output&quot;)
+# The filename name for containers
+parameter: container = &#39;&#39;
+import re
+parameter: entrypoint= (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
+# For cluster jobs, number commands to run per job
+parameter: job_size = 1
+# Wall clock time expected
+parameter: walltime = &quot;5h&quot;
+# Memory expected
+parameter: mem = &quot;16G&quot;
+# Number of threads
+parameter: numThreads = 20
+# the path to a bed file or VCF file, a vector of bed files or VCF files, or a text file listing the bed files or VCF files to process
+parameter: genoFile = paths
+# use this function to edit memory string for PLINK input
+from sos.utils import expand_size
+cwd = f&quot;{cwd:a}&quot;
+
+import os
+def get_genotype_file(geno_file_paths):
+    #
+    def valid_geno_file(x):
+        suffixes = path(x).suffixes
+        if suffixes[-1] == &#39;.bed&#39;:
+            return True
+        if len(suffixes)&gt;1 and &#39;&#39;.join(suffixes[-2:]) == &quot;.vcf.gz&quot;:
+            return True
+        return False
+    #
+    def complete_geno_path(x, geno_file):
+        if not valid_geno_file(x):
+            raise ValueError(f&quot;Genotype file {x} should be VCF (end with .vcf.gz) or PLINK bed file (end with .bed)&quot;)
+        if not os.path.isfile(x):
+            # relative path
+            if not os.path.isfile(f&#39;{geno_file:ad}/&#39; + x):
+                raise ValueError(f&quot;Cannot find genotype file {x}&quot;)
+            else:
+                x = f&#39;{geno_file:ad}/&#39; + x
+        return x
+    # 
+    def format_chrom(chrom):
+        if chrom.startswith(&#39;chr&#39;):
+            chrom = chrom[3:]
+        return chrom
+    # Inputs are either VCF or bed, or a vector of them 
+    if len(geno_file_paths) &gt; 1:
+        if all([valid_geno_file(x) for x in geno_file_paths]):
+            return paths(geno_file_paths)
+        else: 
+            raise ValueError(f&quot;Invalid input {geno_file_paths}&quot;)
+    # Input is one genotype file or text list of genotype files
+    geno_file = geno_file_paths[0]
+    if valid_geno_file(geno_file):
+        return paths(geno_file)
+    else: 
+        units = [x.strip().split() for x in open(geno_file).readlines() if x.strip() and not x.strip().startswith(&#39;#&#39;)]
+        if all([len(x) == 1 for x in units]):
+            return paths([complete_geno_path(x[0], geno_file) for x in units])
+        elif all([len(x) == 2 for x in units]):
+            genos = dict([(format_chrom(x[0]), path(complete_geno_path(x[1], geno_file))) for x in units])
+        else:
+            raise ValueError(f&quot;{geno_file} should contain one column of file names, or two columns of chrom number and corresponding file name&quot;)
+        return genos
+                        
+genoFile = get_genotype_file(genoFile)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plink-to-vcf">
+<h2>PLINK to VCF<a class="headerlink" href="#plink-to-vcf" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[plink_to_vcf_1]
+if isinstance(genoFile, dict):
+    genoFile = genoFile.values()
+
+input: genoFile, group_by = 1
+output: f&#39;{cwd}/{_input:bn}.vcf.gz&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime,  mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:nn}.stderr&#39;, stdout = f&#39;{_output:nn}.stdout&#39;, container = container, entrypoint=entrypoint
+    plink2 --bfile ${_input:n} \
+        --recode vcf-iid  \
+        --out ${_output:nn} \
+        --threads ${numThreads} \
+        --memory ${int(expand_size(mem) * 0.9)/1e06} --output-chr chrMT
+    bgzip -l 9 ${_output:n}
+    tabix -f -p vcf ${_output}
+
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    for i in ${_output} ; do 
+        # Capture file metadata
+        output_info=&quot;$i&quot;
+        output_size=$(ls -lh &quot;$i&quot; | awk &#39;{print $5}&#39;)
+        output_rows=$(zcat &quot;$i&quot; | wc -l)
+        output_column=$(zcat &quot;$i&quot; | grep -v &quot;##&quot; | head -1 | wc -w)
+        output_header_row=$(zcat &quot;$i&quot; | grep &quot;##&quot; | wc -l)
+        output_preview=$(zcat &quot;$i&quot; | grep -v &quot;##&quot; | head | cut -f 1-11)
+
+        # Write captured information to the stdout file
+        printf &quot;output_info: %s\noutput_size: %s\noutput_rows: %d\noutput_column: %d\noutput_header_row: %d\noutput_preview:\n%s\n&quot; \
+            &quot;$output_info&quot; &quot;$output_size&quot; &quot;$output_rows&quot; &quot;$output_column&quot; &quot;$output_header_row&quot; &quot;$output_preview&quot;
+    done
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="vcf-to-plink">
+<h2>VCF to PLINK<a class="headerlink" href="#vcf-to-plink" title="Link to this heading">#</a></h2>
+<p>Export VCF files to PLINK 1.0 format, <strong>without keeping allele orders by default</strong>. The resulting PLINK will lose ref/alt allele information but will go by major/minor allele, as conventionally used in standard PLINK format. Notice that PLINK 1.0 format does not allow for dosages. PLINK 2.0 format support it, but it is generally not supported by downstreams data analysis.</p>
+<p>In the following code block the option <code class="docutils literal notranslate"><span class="pre">--vcf-half-call</span> <span class="pre">m</span></code>  treat half-call as missing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[vcf_to_plink]
+parameter: remove_duplicates = False
+parameter: add_chr = True
+# The path to the file that contains the list of samples to remove (format FID, IID)
+parameter: remove_samples = path(&#39;.&#39;)
+# The path to the file that contains the list of samples to keep (format FID, IID)
+parameter: keep_samples = path(&#39;.&#39;)
+fail_if(not (keep_samples.is_file() or keep_samples == path(&#39;.&#39;)), msg = f&#39;Cannot find ``{keep_samples}``&#39;)
+fail_if(not (remove_samples.is_file() or remove_samples == path(&#39;.&#39;)), msg = f&#39;Cannot find ``{remove_samples}``&#39;)
+
+if isinstance(genoFile, dict):
+    genoFile = genoFile.values()
+
+input: genoFile, group_by = 1
+output: f&#39;{cwd}/{_input:bnn}.bed&#39;
+
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+bash: container = container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    plink2 --vcf ${_input} \
+        --vcf-half-call m \
+        --vcf-require-gt \
+        --allow-extra-chr \
+        ${(&#39;--keep %s&#39; % keep_samples) if keep_samples.is_file() else &quot;&quot;} \
+        ${(&#39;--remove %s&#39; % remove_samples) if remove_samples.is_file() else &quot;&quot;} \
+        --make-bed --out ${_output:n}  ${&quot;--rm-dup exclude-all&quot; if remove_duplicates else &quot;&quot; } \
+        --threads ${numThreads} \
+        --memory ${int(expand_size(mem) * 0.9)/1e06} ${&quot;--output-chr chrMT&quot; if add_chr else &quot;&quot;}  
+
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+        stdout=${_output:n}.stdout
+        for i in ${_output} ; do 
+            echo &quot;output_info: $i &quot; &gt;&gt; $stdout;
+            echo &quot;output_size: $(ls -lh &quot;$i&quot; | awk &#39;{print $5}&#39;)&quot; &gt;&gt; $stdout;
+        done
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="split-plink-genotypes-into-specified-regions">
+<h2>Split PLINK genotypes into specified regions<a class="headerlink" href="#split-plink-genotypes-into-specified-regions" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[genotype_by_region_1]
+# cis window size
+parameter: window = 0
+# Region definition
+parameter: region_list = path
+regions = [x.strip().split() for x in open(region_list).readlines() if x.strip() and not x.strip().startswith(&#39;#&#39;)]
+input: genoFile, for_each = &#39;regions&#39;
+output: f&#39;{cwd}/{region_list:bn}_genotype_by_region/{_input:bn}.{_regions[3]}.bed&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    plink2 --bfile ${_input:an} \
+        --make-bed \
+        --out ${_output[0]:n} \
+        --chr ${_regions[0]} \
+        --from-bp ${f&#39;0&#39; if (int(_regions[1]) - window) &lt; 0 else f&#39;{(int(_regions[1]) - window)}&#39;} \
+        --to-bp ${int(_regions[2]) + window} \
+        --allow-no-sex --output-chr chrMT || touch ${_output} 
+
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+        for i in ${_output} ; do 
+            echo &quot;output_info: $i &quot;
+            echo &quot;output_size: $(ls -lh &quot;$i&quot; | awk &#39;{print $5}&#39;)&quot;
+        done
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-ld-matrices-for-given-input-region">
+<h2>Compute LD matrices for given input region<a class="headerlink" href="#compute-ld-matrices-for-given-input-region" title="Link to this heading">#</a></h2>
+<section id="plink-based-implementation">
+<h3>PLINK based implementation<a class="headerlink" href="#plink-based-implementation" title="Link to this heading">#</a></h3>
+<p><strong>FIXME: Hao, I suggest including all contents for LD matrix storage type benchmarking into this repo, so we justify why we would like to save the data as square 0, float 16 and using npz format</strong>. Perhaps we should start a folder called “code/auxillary” to keep notebooks such as these? You can then remove what you have in the <code class="docutils literal notranslate"><span class="pre">brain-xqtl-analysis</span></code> repository after you migrate all the relevant contents here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ld_by_region_plink_1]
+# Region definition
+parameter: region_list = path
+parameter: float_type = 16
+regions = [x.strip().split() for x in open(region_list).readlines() if x.strip() and not x.strip().startswith(&#39;#&#39;)]
+input: genoFile, for_each = &#39;regions&#39;
+output: f&#39;{cwd}/{region_list:bn}_LD/{_input:bn}.{_regions[0]}_{_regions[1]}_{_regions[2]}.float{float_type}.npz&#39;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+bash: expand = &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, volumes = [f&#39;{region_list:ad}:{region_list:ad}&#39;], entrypoint=entrypoint
+    plink --bfile ${_input:an} \
+        --out ${_output:nn} \
+        --chr ${_regions[0]} \
+        --from-bp ${_regions[1]} \
+        --to-bp ${_regions[2]} \
+        --r square0 \
+        --make-just-bim \
+        --threads ${numThreads}
+
+python: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    import pandas as pd
+    import numpy as np
+    np_ld = np.loadtxt(&quot;${_output:nn}.ld&quot;, delimiter = &quot;\t&quot;, dtype = &quot;float${float_type}&quot;)
+    bim = pd.read_csv(&quot;${_output:nn}.bim&quot;, &quot;\t&quot;, header = None)[1].to_numpy()
+    np.savez_compressed(&quot;${_output}&quot;, np_ld, bim, allow_pickel = True)
+
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+        echo &quot;The npz file is a numpy compressed version of the .ld file described below&quot;
+        for i in $[_output:nn] ; do 
+        echo &quot;output_info: $i.ld &quot;
+        echo &quot;output_size:&quot; `ls -lh $i.ld | cut -f 5  -d  &quot; &quot;`
+        echo &quot;output_column:&quot; `head -1 $i | wc -w `
+        echo &quot;output_row:&quot; `wc -l $i `
+        done
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ldstore2-based-implementation">
+<h3>ldstore2 based implementation<a class="headerlink" href="#ldstore2-based-implementation" title="Link to this heading">#</a></h3>
+<p>This is good for larger sample sizes such as data from UK Biobank although we are not facing this challenge in the FunGen-xQTL project.</p>
+<p><strong>FIXME: we need to build ldstore2 into a container image</strong>. According to Diana it should be</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip3</span> <span class="n">install</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">files</span><span class="o">.</span><span class="n">pythonhosted</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">a8</span><span class="o">/</span><span class="n">fd</span><span class="o">/</span><span class="n">f98ab7dea176f42cb61b80450b795ef19b329e8eb715b87b0d13c2a0854d</span><span class="o">/</span><span class="n">ldstore</span><span class="o">-</span><span class="mf">0.1.9</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> 
+</pre></div>
+</div>
+<p><strong>FIXME: Diana, what’s the input for this workflow?</strong></p>
+<section id="create-master-file-for-ldstore2">
+<h4>Create <code class="docutils literal notranslate"><span class="pre">master</span></code> file for <code class="docutils literal notranslate"><span class="pre">ldstore2</span></code><a class="headerlink" href="#create-master-file-for-ldstore2" title="Link to this heading">#</a></h4>
+<p>The master file is a semicolon-separated text file and contains no space. It contains the following mandatory column names and one dataset per line:</p>
+<p><strong>FIXME: Diana, this documentation is not clearly written. I cannot understand it. What are the mandatory column names? What does it mean by one data-set per line?</strong></p>
+<ul class="simple">
+<li><p>For the Z file, the format should be <code class="docutils literal notranslate"><span class="pre">rsid:chrom:pos:a1:a2</span></code>. Formatting for chromosome should be <code class="docutils literal notranslate"><span class="pre">01,02,03</span></code> etc</p></li>
+<li><p>List of samples</p></li>
+</ul>
+<p><strong>The LDstore draft is currently availale <a class="reference external" href="https://github.com/statgenetics/UKBB_GWAS_dev/blob/master/workflow/111722_LDstore.ipynb">here</a> with the code to prepare for the genotypic input <a class="reference external" href="https://github.com/statgenetics/UKBB_GWAS_dev/blob/master/workflow/113022_bgenix_ldblocks.ipynb">here</a>. A minimal working example can be found [here]</strong></p>
+</section>
+</section>
+</section>
+<section id="split-plink-by-chromosome">
+<h2>Split PLINK by Chromosome<a class="headerlink" href="#split-plink-by-chromosome" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[genotype_by_chrom_1]
+stop_if(len(paths(genoFile))&gt;1, msg = &quot;This workflow expects one input genotype file.&quot;)
+parameter: chrom = list
+chrom = list(set(chrom))
+input: genoFile, for_each = &quot;chrom&quot;
+output: f&#39;{cwd}/{_input:bn}.{_chrom}.bed&#39;
+# look up for genotype file
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+bash: expand= &quot;$[ ]&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, volumes = [f&#39;{genoFile:ad}:{genoFile:ad}&#39;], entrypoint=entrypoint
+    ##### Get the locus genotypes for $[_chrom]
+    plink2 --bfile $[_input:an] \
+    --make-bed \
+    --out $[_output[0]:n] \
+    --chr $[_chrom] \
+    --threads $[numThreads] \
+    --memory $[int(expand_size(mem) * 0.9)/1e06] \
+    --allow-no-sex
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[genotype_by_chrom_2]
+input: group_by = &quot;all&quot;
+output: f&#39;{_input[0]:nn}.{step_name[:-2]}_files.txt&#39;
+sos_run(&quot;write_data_list&quot;, data_files = _input, out = _output, ext = &quot;bed&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[plink_to_vcf_2]
+input: group_by = &quot;all&quot;
+output: f&#39;{_input[0]:nnn}.{step_name[:-2]}_files.txt&#39;
+sos_run(&quot;write_data_list&quot;, data_files = _input, out = _output, ext = &quot;vcf.gz&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[genotype_by_region_2]
+input: group_by = &quot;all&quot;
+output: f&#39;{_input[0]:nn}.{step_name[:-2]}_files.txt&#39;
+sos_run(&quot;write_data_list&quot;, data_files = _input, out = _output, ext = &quot;bed&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[ld_by_region_*_2]
+parameter: region_list = path
+input: group_by = &quot;all&quot;
+output: f&#39;{cwd}/{region_list:bn}_LD/{genoFile:bn}.ld.list&#39;
+sos_run(&quot;write_data_list&quot;, data_files = _input, out = _output, ext = &quot;npy.gz&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[write_data_list]
+parameter: out = path
+parameter: ext = str
+parameter: data_files = paths
+input: data_files
+output: out
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+python: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    import pandas as pd
+    import os, sys
+
+    # Extracting the id list outside for better readability
+    n = len(&quot;${ext}&quot;.split(&quot;.&quot;))+1
+    id_list = [x.split(&quot;.&quot;)[-n] for x in [${_input:r,}]]
+    files = [${_input:r,}]
+
+    # check if some files are empty remove them from the id_list
+    non_empty_files = []
+    non_empty_ids = []
+
+    for file, id in zip(files, id_list):
+        try:
+            # Check if file is empty
+            if os.path.getsize(file) &gt; 0:
+                non_empty_files.append(file)
+                non_empty_ids.append(id)
+            else:
+                print(f&quot;Empty file found: {file}&quot;, file=sys.stderr)
+        except OSError as e:
+            print(f&quot;Error accessing file {file}: {e}&quot;, file=sys.stderr)
+
+    if not non_empty_files:
+        raise ValueError(&quot;No non-empty files found. Exiting.&quot;)
+    
+    data_tempt = pd.DataFrame({
+        &quot;#id&quot;: non_empty_ids,
+        &quot;#path&quot;: non_empty_files
+    })
+
+    data_tempt.to_csv(&quot;${_output}&quot;, index=False, sep=&quot;\t&quot;)
+
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    i=&quot;${_output}&quot;
+    output_size=$(ls -lh $i | cut -f 5 -d &#39; &#39;)
+    output_rows=$(cat $i | wc -l | cut -f 1 -d &#39; &#39;)
+    output_column=$(cat $i | head -1 | wc -w)
+    output_preview=$(cat $i | grep -v &quot;##&quot; | head | cut -f 1,2,3,4,5,6)
+    
+    printf &quot;output_info: %s\noutput_size: %s\noutput_rows: %s\noutput_column: %s\noutput_preview:\n%s\n&quot; \
+        &quot;$i&quot; &quot;$output_size&quot; &quot;$output_rows&quot; &quot;$output_column&quot; &quot;$output_preview&quot;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="split-vcf-by-chromosome">
+<h2>Split VCF by Chromosome<a class="headerlink" href="#split-vcf-by-chromosome" title="Link to this heading">#</a></h2>
+<p><strong>FIXME: add this as needed</strong></p>
+</section>
+<section id="merge-plink-files">
+<h2>Merge PLINK files<a class="headerlink" href="#merge-plink-files" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[merge_plink]
+skip_if(len(genoFile) == 1)
+# File prefix for the analysis output
+parameter: name = str
+# The path to the file that contains the list of samples to keep (format FID, IID)
+parameter: keep_samples = path(&#39;.&#39;)
+parameter: extra_plink_opts = []
+input: genoFile, group_by = &#39;all&#39;
+output: f&quot;{cwd}/{name}{_input[0]:x}&quot;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    echo ${_input:n} | tr &#39; &#39; &#39;\n&#39; | tail -n +2 &gt;  ${_output:n}.merge_list
+    plink${&quot;2&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot; --keep-allele-order&quot;} \
+    --${&quot;p&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot;b&quot;}file ${_input[0]:n} \
+    --${&quot;p&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot;&quot;}merge-list ${_output:n}.merge_list \
+    --make-${&quot;pgen&quot; if str(_input).endswith(&quot;pgen&quot;) else &quot;bed&quot;} \
+    --out ${_output:n} \
+    --threads ${numThreads} \
+    --memory ${int(expand_size(mem) * 0.9)/1e06} ${(&#39;--keep %s&#39; % keep_samples) if keep_samples.is_file() else &quot;&quot;} ${&quot; &quot;.join([(&quot;--%s&quot; % x) for x in extra_plink_opts])}
+    rm -f ${_output:n}.merge_list
+
+    i=&quot;${_output}&quot;
+    output_size=$(ls -lh $i | cut -f 5 -d &#39; &#39;)
+    output_rows=$(zcat $i | wc -l | cut -f 1 -d &#39; &#39;)
+    output_column=$(zcat $i | head -1 | wc -w)
+    output_preview=$(cat $i | grep -v &quot;##&quot; | head | cut -f 1,2,3,4,5,6)
+    
+    printf &quot;output_info: %s\noutput_size: %s\noutput_rows: %s\noutput_column: %s\noutput_preview:\n%s\n&quot; \
+        &quot;$i&quot; &quot;$output_size&quot; &quot;$output_rows&quot; &quot;$output_column&quot; &quot;$output_preview&quot;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="merge-vcf-files">
+<h2>Merge VCF files<a class="headerlink" href="#merge-vcf-files" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[merge_vcf]
+skip_if(len(genoFile) == 1)
+# File prefix for the analysis output
+parameter: name = str
+input: genoFile, group_by = &#39;all&#39;
+output:  f&quot;{cwd}/{name}.vcf.gz&quot;
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
+bash: container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output:n}.stderr&#39;, stdout = f&#39;{_output:n}.stdout&#39;, entrypoint=entrypoint
+    bcftools concat -Oz ${_input} &gt; ${_output}
+    tabix -p vcf ${_output}
+
+bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output[0]:n}.stderr&#39;, stdout = f&#39;{_output[0]:n}.stdout&#39;, container = container, entrypoint=entrypoint
+    for i in ${_output} ; do 
+        # Capture file metadata
+        output_info=&quot;$i&quot;
+        output_size=$(ls -lh &quot;$i&quot; | awk &#39;{print $5}&#39;)
+        output_rows=$(zcat &quot;$i&quot; | wc -l)
+        output_column=$(zcat &quot;$i&quot; | grep -v &quot;##&quot; | head -1 | wc -w)
+        output_header_row=$(zcat &quot;$i&quot; | grep &quot;##&quot; | wc -l)
+        output_preview=$(zcat &quot;$i&quot; | grep -v &quot;##&quot; | head | cut -f 1-11)
+
+        # Write captured information to the stdout file
+        printf &quot;output_info: %s\noutput_size: %s\noutput_rows: %d\noutput_column: %d\noutput_header_row: %d\noutput_preview:\n%s\n&quot; \
+            &quot;$output_info&quot; &quot;$output_size&quot; &quot;$output_rows&quot; &quot;$output_column&quot; &quot;$output_header_row&quot; &quot;$output_preview&quot; &gt;&gt; ${_output:n}.stdout
+    done
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/data_preprocessing/genotype"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="GRM.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Genomic Relationship Matrices</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../phenotype_preprocessing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Phenotype data preprocessing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input">Input</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example">Minimal Working Example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-vcf-to-plink">ii. VCF to PLINK</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iii-merge-plink-files">iii. Merge PLINK Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iv-partition-genotype-data-by-chromosome">iv. Partition Genotype Data by Chromosome</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plink-to-vcf">PLINK to VCF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vcf-to-plink">VCF to PLINK</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-plink-genotypes-into-specified-regions">Split PLINK genotypes into specified regions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-ld-matrices-for-given-input-region">Compute LD matrices for given input region</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plink-based-implementation">PLINK based implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ldstore2-based-implementation">ldstore2 based implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-master-file-for-ldstore2">Create <code class="docutils literal notranslate"><span class="pre">master</span></code> file for <code class="docutils literal notranslate"><span class="pre">ldstore2</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-plink-by-chromosome">Split PLINK by Chromosome</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-vcf-by-chromosome">Split VCF by Chromosome</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-plink-files">Merge PLINK files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merge-vcf-files">Merge VCF files</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

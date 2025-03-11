@@ -1,0 +1,1051 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife &#8212; FunGen-xQTL Consortium</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/enrichment/eoo_enrichment';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Pathway Analysis" href="gsea.html" />
+    <link rel="prev" title="Multi-trait colocalization using ColocBoost" href="../mnm_analysis/mnm_methods/colocboost.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/xqtl_wf.png" class="logo__image only-light" alt="FunGen-xQTL Consortium - Home"/>
+    <script>document.write(`<img src="../../_static/xqtl_wf.png" class="logo__image only-dark" alt="FunGen-xQTL Consortium - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    FunGen-xQTL Computational Protocol
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../xqtl_protocol_demo.html">Illustration of xQTL protocol</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Command Generator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/bulk_expression_commands.html">RNA-seq calling and QC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../commands_generator/eQTL_analysis_commands.html">Univariate xQTL Discovery</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_data/reference_data.html">Reference Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/reference_data_preparation.html">Reference Data Standardization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/generalized_TADB.html">Generation of Topologically Associated Domains and their Boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_prune_reference.html">Independent list of variants using LD clumping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference_data/ld_reference_generation.html">Generating LD Reference Panel</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Molecular Phenotypes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/bulk_expression.html">RNA-seq expression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/RNA_calling.html">Quantifying expression from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_QC.html">Sample level RNA-seq quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/bulk_expression_normalization.html">Bulk RNA-seq counts normalization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../molecular_phenotypes/scnuc_expression.html">scRNA-seq expression calling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/apa.html">Alternative polyadenylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/apa_calling.html">APA Calling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/methylation.html">Methylation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/methylation_calling.html">Quantification of methylation data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../molecular_phenotypes/splicing.html">Alternative splicing from RNA-seq data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/calling/splicing_calling.html">Quantifying alternative splicing from RNA-seq data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../molecular_phenotypes/QC/splicing_normalization.html">Normalization and phenotype table generation for splicingQTL analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Pre-processing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/genotype_preprocessing.html">Genotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/VCF_QC.html">Genotype VCF File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GWAS_QC.html">Genotype PLINK File Quality Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/PCA.html">Principal Component Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/GRM.html">Genomic Relationship Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/genotype/genotype_formatting.html">Genotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/phenotype_preprocessing.html">Phenotype data preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/gene_annotation.html">Gene Coordinate Annotation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_imputation.html">Phenotype data imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/phenotype/phenotype_formatting.html">Phenotype Data Formatting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../data_preprocessing/covariate_preprocessing.html">Covariate Data Preprocessing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_formatting.html">Covariate Data Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_preprocessing/covariate/covariate_hidden_factor.html">Hidden Factor Analysis</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">QTL Association Testing</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../association_scan/qtl_association_testing.html">QTL Association Analysis</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/TensorQTL/TensorQTL.html">QTL Association Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../association_scan/quantile_models/qr_and_twas.html">Quantile regression for QTL association testing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../association_scan/qtl_association_postprocessing.html">QTL data postprocessing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multivariate Mixture Model</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../multivariate_genome/multivariate_mixture_vignette.html">Mixture Multivariate Distribution Estimate</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mixture_prior.html">A multivariate EBNM approach for mixture multivariate distribution estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multivariate_genome/MASH/mash_fit.html">MASH analysis pipeline with data-driven prior matrices</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Multiomics Regression Models</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mnm_analysis/fine_mapping_miniprotocol.html">Fine-Mapping</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/univariate_fine_mapping_twas_vignette.html">Univariate Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/multivariate_multigene_fine_mapping_vignette.html">Multivariate Fine-Mapping for multiple genes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/univariate_fine_mapping_fsusie_vignette.html">Univariate Fine-Mapping of Functional (Epigenomic) Data with fSuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/multivariate_fine_mapping_vignette.html">Multivariate Fine-Mapping with mvSuSiE and mr.mash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/summary_stats_finemapping_vignette.html">Regression with Summary Statistics (RSS) Fine-Mapping and TWAS with SuSiE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/mnm_methods/mnm_regression.html">Advanced regression models for association analysis with individual level data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnm_analysis/mnm_methods/rss_analysis.html">High-dimensional regression with summary statistics</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">GWAS Integration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../pecotmr_integration/SuSiE_enloc.html">xQTL-GWAS pairwise enrichment and colocalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pecotmr_integration/twas_ctwas.html">TWAS, cTWAS and MR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mnm_analysis/mnm_methods/colocboost.html">Multi-trait colocalization using ColocBoost</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Enrichment and Validation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gsea.html">Pathway Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gregor.html">GREGOR enrichment analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sldsc_enrichment.html">Stratified LD Score Regression</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/edit/gh-pages/code/enrichment/eoo_enrichment.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/cumc/xqtl-protocol/issues/new?title=Issue%20on%20page%20%2Fcode/enrichment/eoo_enrichment.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/code/enrichment/eoo_enrichment.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions-and-test-statistics">Definitions and Test Statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odds-ratio-or">Odds Ratio (OR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment">Enrichment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-error-se-computation">Standard Error (SE) Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leave-one-chromosome-out-loco-jackknife">Leave-One-Chromosome-Out (LOCO) Jackknife</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#se-formula">SE Formula</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-workflow">Computational Workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-odds-ratio-and-enrichment-computation">Step 1: Odds Ratio and Enrichment Computation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-aggregation">Step 2: Aggregation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-summary-outputs">Step 3: Summary Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-format">Input Format</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#significant-variants-path">1. <code class="docutils literal notranslate"><span class="pre">significant_variants_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-anno-path">2. <code class="docutils literal notranslate"><span class="pre">baseline_anno_path</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-format">Output Format</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-results-rds">1. <code class="docutils literal notranslate"><span class="pre">enrichment_results.rds</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-implementation">Workflow implementation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chromosome-specific-enrichment-analysis-of-annotations-using-block-jackknife">
+<h1>Chromosome-Specific Enrichment Analysis of Annotations Using Block Jackknife<a class="headerlink" href="#chromosome-specific-enrichment-analysis-of-annotations-using-block-jackknife" title="Link to this heading">#</a></h1>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>This notebook performs a chromosome-specific enrichment analysis for genomic annotations using a block jackknife approach. It computes odds ratios (OR) and enrichment statistics for each annotation column by systematically leaving out one chromosome at a time and recalculating the statistics. The analysis provides insight into the overlap and significance of annotations in relation to significant variants within a genomic region.</p>
+<p>Key features:</p>
+<ul class="simple">
+<li><p>Helper function to compute odds ratios and enrichment.calculate_OR_enrichment</p></li>
+<li><p>Chromosome-level leave-one-out cross-validation.</p></li>
+<li><p>Summary statistics, including means and standard errors for OR and enrichment values.</p></li>
+</ul>
+<p>The results are saved as an RDS file for downstream analysis.</p>
+</section>
+<section id="definitions-and-test-statistics">
+<h2>Definitions and Test Statistics<a class="headerlink" href="#definitions-and-test-statistics" title="Link to this heading">#</a></h2>
+<section id="odds-ratio-or">
+<h3>Odds Ratio (OR)<a class="headerlink" href="#odds-ratio-or" title="Link to this heading">#</a></h3>
+<p>The <strong>Odds Ratio (OR)</strong> quantifies the strength of association between significant variants and a specific annotation.</p>
+<p><strong>Formula</strong>:
+$<span class="math notranslate nohighlight">\(
+OR = \frac{\left| AB \right| / \left| A \setminus B \right|}{\left| \text{noA-noB} \right| / \left| B \setminus A \right|}
+\)</span>$</p>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A\)</span>: The set of SNPs within the annotation.</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span>: The set of significant SNPs.</p></li>
+<li><p><span class="math notranslate nohighlight">\(AB\)</span>: The intersection of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> (i.e., significant SNPs in the annotation).</p></li>
+<li><p><span class="math notranslate nohighlight">\(A \setminus B\)</span>: SNPs in the annotation but not significant.</p></li>
+<li><p><span class="math notranslate nohighlight">\(B \setminus A\)</span>: Significant SNPs not in the annotation.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{noA-noB}\)</span>: SNPs that are neither in the annotation nor significant.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="enrichment">
+<h3>Enrichment<a class="headerlink" href="#enrichment" title="Link to this heading">#</a></h3>
+<p>The <strong>Enrichment</strong> evaluates whether a genomic annotation contains a higher proportion of significant SNPs than expected by chance.</p>
+<p><strong>Formula</strong>:
+$<span class="math notranslate nohighlight">\(
+\text{Enrichment} = \frac{\text{Proportion of significant SNPs in the annotation}}{\text{Proportion of all SNPs in the annotation}}
+\)</span>$</p>
+<p>Or equivalently:
+$<span class="math notranslate nohighlight">\(
+\text{Enrichment} = \frac{\frac{\left| AB \right|}{\left| B \right|}}{\frac{\left| A \right|}{\left| \text{Target Set} \right|}}
+\)</span>$</p>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\left| AB \right|\)</span>: Significant SNPs in the annotation.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left| B \right|\)</span>: Total number of significant SNPs.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left| A \right|\)</span>: Total number of SNPs in the annotation.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\left| \text{Target Set} \right|\)</span>: Total number of SNPs in the genome or study region.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="standard-error-se-computation">
+<h2>Standard Error (SE) Computation<a class="headerlink" href="#standard-error-se-computation" title="Link to this heading">#</a></h2>
+<section id="leave-one-chromosome-out-loco-jackknife">
+<h3>Leave-One-Chromosome-Out (LOCO) Jackknife<a class="headerlink" href="#leave-one-chromosome-out-loco-jackknife" title="Link to this heading">#</a></h3>
+<p>The LOCO method estimates the standard error by removing one chromosome at a time and recomputing the test statistic, capturing variability due to genomic structure.</p>
+<p><strong>Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p>For each chromosome <span class="math notranslate nohighlight">\(i\)</span>:</p>
+<ul class="simple">
+<li><p>Remove chromosome <span class="math notranslate nohighlight">\(i\)</span> from the dataset.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(OR_i\)</span> and <span class="math notranslate nohighlight">\(\text{Enrichment}_i\)</span> using the remaining chromosomes.</p></li>
+</ul>
+</li>
+<li><p>Aggregate <span class="math notranslate nohighlight">\(OR_i\)</span> and <span class="math notranslate nohighlight">\(\text{Enrichment}_i\)</span> to compute the mean and SE.</p></li>
+</ol>
+</section>
+<section id="se-formula">
+<h3>SE Formula<a class="headerlink" href="#se-formula" title="Link to this heading">#</a></h3>
+<p>Using the LOCO estimates (<span class="math notranslate nohighlight">\(\theta_i\)</span> for each chromosome <span class="math notranslate nohighlight">\(i\)</span>):
+$<span class="math notranslate nohighlight">\(
+\text{SE}(\theta) = \sqrt{\frac{\sum_{i=1}^{N} (\theta_i - \bar{\theta})^2}{N \cdot (N-1)}}
+\)</span>$</p>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta_i\)</span>: Statistic (<span class="math notranslate nohighlight">\(OR_i\)</span> or <span class="math notranslate nohighlight">\(\text{Enrichment}_i\)</span>) excluding chromosome <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{\theta}\)</span>: Mean of <span class="math notranslate nohighlight">\(\theta_i\)</span> across chromosomes.</p></li>
+<li><p><span class="math notranslate nohighlight">\(N\)</span>: Number of chromosomes (e.g., 22 for autosomes).</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="computational-workflow">
+<h2>Computational Workflow<a class="headerlink" href="#computational-workflow" title="Link to this heading">#</a></h2>
+<section id="step-1-odds-ratio-and-enrichment-computation">
+<h3>Step 1: Odds Ratio and Enrichment Computation<a class="headerlink" href="#step-1-odds-ratio-and-enrichment-computation" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Compute <span class="math notranslate nohighlight">\(OR\)</span> and <span class="math notranslate nohighlight">\(\text{Enrichment}\)</span> using the formulas above.</p></li>
+<li><p>Repeat for each chromosome using the LOCO approach.</p></li>
+</ol>
+</section>
+<section id="step-2-aggregation">
+<h3>Step 2: Aggregation<a class="headerlink" href="#step-2-aggregation" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Compute mean <span class="math notranslate nohighlight">\(OR\)</span> and <span class="math notranslate nohighlight">\(\text{Enrichment}\)</span> across chromosomes.</p></li>
+<li><p>Estimate SE using the jackknife method.</p></li>
+</ol>
+</section>
+<section id="step-3-summary-outputs">
+<h3>Step 3: Summary Outputs<a class="headerlink" href="#step-3-summary-outputs" title="Link to this heading">#</a></h3>
+<p>Generate summary statistics for each annotation, including:</p>
+<ul class="simple">
+<li><p>Mean <span class="math notranslate nohighlight">\(OR\)</span>, SE of <span class="math notranslate nohighlight">\(OR\)</span>.</p></li>
+<li><p>Mean <span class="math notranslate nohighlight">\(\text{Enrichment}\)</span>, SE of <span class="math notranslate nohighlight">\(\text{Enrichment}\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="input-format">
+<h2>Input Format<a class="headerlink" href="#input-format" title="Link to this heading">#</a></h2>
+<section id="significant-variants-path">
+<h3>1. <code class="docutils literal notranslate"><span class="pre">significant_variants_path</span></code><a class="headerlink" href="#significant-variants-path" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Format</strong>: RDS file containing significant variants.</p></li>
+<li><p><strong>Columns</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chr</span></code>: Chromosome number (integer).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pos</span></code>: Genomic position (integer).</p></li>
+</ul>
+</li>
+<li><p><strong>Example</strong>:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">chr</span><span class="w">  </span><span class="n">pos</span>
+<span class="m">1</span><span class="w">    </span><span class="m">12345</span>
+<span class="m">1</span><span class="w">    </span><span class="m">67890</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="baseline-anno-path">
+<h3>2. <code class="docutils literal notranslate"><span class="pre">baseline_anno_path</span></code><a class="headerlink" href="#baseline-anno-path" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Format</strong>: RDS file containing a tabular data frame with baseline annotations.</p></li>
+<li><p><strong>Columns</strong>:</p>
+<ul class="simple">
+<li><p><strong>CHR</strong>: Chromosome number (integer).</p></li>
+<li><p><strong>BP</strong>: Genomic base pair position (integer).</p></li>
+<li><p><strong>SNP</strong>: SNP ID (character).</p></li>
+<li><p><strong>CM</strong>: Centimorgan position (numeric).</p></li>
+<li><p><strong>base</strong>: Base-level information (integer).</p></li>
+<li><p><strong>Annotation columns</strong>: Binary columns (0/1) for various genomic annotations (e.g., <code class="docutils literal notranslate"><span class="pre">Coding_UCSC</span></code>, <code class="docutils literal notranslate"><span class="pre">Conserved_LindbladToh</span></code>, <code class="docutils literal notranslate"><span class="pre">CTCF_Hoffman</span></code>, etc.).</p></li>
+<li><p><strong>Flanking regions</strong>: Binary columns indicating the presence of annotations within 500 bp of the main region (e.g., <code class="docutils literal notranslate"><span class="pre">Coding_UCSC.flanking.500</span></code>, <code class="docutils literal notranslate"><span class="pre">Conserved_LindbladToh.flanking.500</span></code>, etc.).</p></li>
+<li><p><strong>Additional annotation metrics</strong>: Annotation statistics like species enhancer counts and promoter scores (<code class="docutils literal notranslate"><span class="pre">Human_Enhancer_Villar_Species_Enhancer_Count</span></code>, <code class="docutils literal notranslate"><span class="pre">Human_Promoter_Villar_ExAC</span></code>, etc.).</p></li>
+</ul>
+</li>
+<li><p><strong>Example</strong>:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">CHR</span><span class="w">   </span><span class="n">BP</span><span class="w">    </span><span class="n">SNP</span><span class="w">           </span><span class="n">CM</span><span class="w">   </span><span class="n">base</span><span class="w">   </span><span class="n">Coding_UCSC</span><span class="w">   </span><span class="n">Coding_UCSC.flanking.500</span><span class="w">   </span>⋯<span class="w">   </span><span class="n">Human_Enhancer_Villar</span><span class="w">   </span><span class="n">Human_Enhancer_Villar.flanking.500</span>
+<span class="m">1</span><span class="w">     </span><span class="m">11008</span><span class="w"> </span><span class="n">rs575272151</span><span class="w">   </span><span class="m">0</span><span class="w">    </span><span class="m">1</span><span class="w">      </span><span class="m">0</span><span class="w">             </span><span class="m">0</span><span class="w">                          </span>⋯<span class="w">   </span><span class="m">0</span><span class="w">                        </span><span class="m">0</span>
+<span class="m">1</span><span class="w">     </span><span class="m">11012</span><span class="w"> </span><span class="n">rs544419019</span><span class="w">   </span><span class="m">0</span><span class="w">    </span><span class="m">1</span><span class="w">      </span><span class="m">0</span><span class="w">             </span><span class="m">0</span><span class="w">                          </span>⋯<span class="w">   </span><span class="m">0</span><span class="w">                        </span><span class="m">0</span>
+<span class="m">1</span><span class="w">     </span><span class="m">13110</span><span class="w"> </span><span class="n">rs540538026</span><span class="w">   </span><span class="m">0</span><span class="w">    </span><span class="m">1</span><span class="w">      </span><span class="m">0</span><span class="w">             </span><span class="m">0</span><span class="w">                          </span>⋯<span class="w">   </span><span class="m">0</span><span class="w">                        </span><span class="m">0</span>
+<span class="m">1</span><span class="w">     </span><span class="m">13116</span><span class="w"> </span><span class="n">rs62635286</span><span class="w">    </span><span class="m">0</span><span class="w">    </span><span class="m">1</span><span class="w">      </span><span class="m">0</span><span class="w">             </span><span class="m">0</span><span class="w">                          </span>⋯<span class="w">   </span><span class="m">0</span><span class="w">                        </span><span class="m">0</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="output-format">
+<h2>Output Format<a class="headerlink" href="#output-format" title="Link to this heading">#</a></h2>
+<section id="enrichment-results-rds">
+<h3>1. <code class="docutils literal notranslate"><span class="pre">enrichment_results.rds</span></code><a class="headerlink" href="#enrichment-results-rds" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Format</strong>: RDS file containing the following components:</p>
+<ul>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">summary</span></code></strong>: A data frame summarizing the OR, OR_SE, Enrichment, and Enrichment_SE for each annotation column.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Annotation</span><span class="w">                      </span><span class="n">OR</span><span class="w">      </span><span class="n">OR_SE</span><span class="w">   </span><span class="n">Enrichment</span><span class="w">   </span><span class="n">Enrichment_SE</span>
+<span class="n">Coding_UCSC</span><span class="w">                    </span><span class="m">1.23</span><span class="w">    </span><span class="m">0.12</span><span class="w">    </span><span class="m">0.85</span><span class="w">         </span><span class="m">0.10</span>
+<span class="n">Conserved_LindbladToh</span><span class="w">          </span><span class="m">0.98</span><span class="w">    </span><span class="m">0.08</span><span class="w">    </span><span class="m">1.12</span><span class="w">         </span><span class="m">0.05</span>
+<span class="n">Human_Enhancer_Villar</span><span class="w">          </span><span class="m">1.45</span><span class="w">    </span><span class="m">0.15</span><span class="w">    </span><span class="m">1.30</span><span class="w">         </span><span class="m">0.12</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">OR_blockJacknife</span></code></strong>: A matrix (22 rows for chromosomes × annotation columns) of log2-transformed OR values.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">Coding_UCSC</span><span class="w">   </span><span class="n">Conserved_LindbladToh</span><span class="w">   </span><span class="n">Human_Enhancer_Villar</span>
+<span class="m">0.12</span><span class="w">          </span><span class="m">-0.02</span><span class="w">                  </span><span class="m">0.25</span>
+<span class="m">0.15</span><span class="w">           </span><span class="m">0.01</span><span class="w">                  </span><span class="m">0.18</span>
+⋮<span class="w">              </span>⋮<span class="w">                     </span>⋮
+</pre></div>
+</div>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Enrichment_blockJacknife</span></code></strong>: A matrix (22 rows for chromosomes × annotation columns) of enrichment values.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">OR</span></code></strong>: A numeric vector of mean log2-transformed OR values across chromosomes for each annotation column.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Enrichment</span></code></strong>: A numeric vector of mean enrichment values across chromosomes for each annotation column.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">OR_sd</span></code></strong>: A numeric vector of standard errors for OR values across chromosomes for each annotation column.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Enrichment_sd</span></code></strong>: A numeric vector of standard errors for enrichment values across chromosomes for each annotation column.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">annotations</span></code></strong>: A list of annotation column names.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="minimal-working-example-steps">
+<h2>Minimal Working Example Steps<a class="headerlink" href="#minimal-working-example-steps" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run xqtl-protocol/pipeline/functional_enrichment.ipynb enrichment\
+    --significant_variants_path /path/to/significant_variants.rds \
+    --baseline_anno_path ./Anno_Enrichment/Baseline_anno_each.rds \
+    --cwd output
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="command-interface">
+<h2>Command interface<a class="headerlink" href="#command-interface" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>sos run functional_enrichment.ipynb -h
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="workflow-implementation">
+<h2>Workflow implementation<a class="headerlink" href="#workflow-implementation" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[global]
+# Path to the work directory of the analysis.
+parameter: cwd = path(&#39;output&#39;)
+
+parameter: significant_variants_path = path
+parameter: baseline_anno_path = path
+# Number of threads
+parameter: numThreads = 8
+# For cluster jobs, number commands to run per job
+parameter: job_size = 1
+parameter: walltime = &#39;12h&#39;
+parameter: mem = &#39;16G&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-sos notranslate"><div class="highlight"><pre><span></span>[enrichment]
+parameter: annotations_start = 7
+input: significant_variants_path, baseline_anno_path
+output: enrichment = f&#39;{cwd:a}/{step_name}/{name}.enrichment_results.rds&#39;
+
+task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bnn}&#39;
+R: expand = &#39;${ }&#39;, stderr = f&#39;{_output[0]}.stderr&#39;, stdout = f&#39;{_output[0]}.stdout&#39;, container = container, entrypoint = entrypoint
+    library(tidyverse)
+
+    # Helper function for enrichment calculation
+    calculate_OR_enrichment &lt;- function(set1, set2, target_set = NULL){
+        if (is.null(target_set)){
+            target_set &lt;- unique(union(set1, set2))
+        }
+        A &lt;- intersect(set1, target_set)
+        B &lt;- intersect(set2, target_set)
+        AB &lt;- intersect(A, B)
+        AnoB &lt;- setdiff(A, AB)
+        noAB &lt;- setdiff(B, AB)
+        noAnoB &lt;- setdiff(target_set, c(A,B))
+        
+        if (length(noAB) == 0 || length(AnoB) == 0) {
+            OR &lt;- Enrichment &lt;- 1
+        } else {
+            OR &lt;- (length(AB) / length(AnoB)) * (length(noAnoB) / length(noAB))
+            Den &lt;- length(A) / length(target_set)
+            Num &lt;- length(AB) / length(B)
+            Enrichment &lt;- Num / Den
+        }
+        
+        return(list(&quot;OR&quot; = OR,
+                   &quot;Enrichment&quot; = Enrichment))
+    }
+
+    # Start timing
+    start_time &lt;- Sys.time()
+    print(paste(&quot;Job started at:&quot;, start_time))
+
+    # Load input data
+    print(&quot;Loading input data...&quot;)
+    coloc_anno &lt;- readRDS(&quot;${significant_variants_path}&quot;)
+    baseline &lt;- readRDS(&quot;${baseline_anno_path}&quot;)
+    print(&quot;Data loaded successfully!&quot;)
+
+    # Process significant variants  
+    coloc_anno &lt;- sapply(1:nrow(coloc_anno), function(i) {
+        a &lt;- coloc_anno[i,]
+        if (is.numeric(a$chr) || grepl(&quot;^[0-9]+$&quot;, a$chr)) { 
+            paste0(&quot;chr&quot;, a$chr, &quot;:&quot;, a$pos)
+        } else {
+            paste0(a$chr, &quot;:&quot;, a$pos)  
+        }
+    })    
+    print(&quot;Processed significant variants.&quot;)
+
+    # Process baseline annotation
+    baseline &lt;- baseline %&gt;%
+        mutate(chr_bp = paste0(&quot;chr&quot;, CHR, &quot;:&quot;, BP))%&gt;%
+        relocate(chr_bp, .before = 1)
+    print(&quot;Processed baseline annotation.&quot;)
+
+    # Get annotation columns
+    annotations_start = ${annotations_start}
+    annotations &lt;- colnames(baseline)[annotations_start:ncol(baseline)]
+    print(paste(&quot;Number of annotations:&quot;, length(annotations)))
+
+    # Initialize matrices for results
+    OR_blockJacknife &lt;- Enrichment_blockJacknife &lt;- matrix(NA, 
+        nrow = 22, 
+        ncol = length(annotations))
+    colnames(OR_blockJacknife) &lt;- colnames(Enrichment_blockJacknife) &lt;- annotations
+
+    # Perform leave-one-chromosome-out analysis
+    print(&quot;Starting LOCO analysis...&quot;)
+    for (i.chr in 1:22){
+        chr &lt;- i.chr
+        pp &lt;- which(baseline$CHR == chr)
+        baseline.jk &lt;- baseline[-pp,]
+        target_set &lt;- baseline.jk$chr_bp
+        
+        for (i in 1:length(annotations)){
+            anno &lt;- baseline %&gt;% select(annotations[i])
+            pos &lt;- which(anno == 1)
+            baseline.tmp &lt;- baseline$chr_bp[pos]
+            res &lt;- calculate_OR_enrichment(baseline.tmp, coloc_anno, target_set = target_set)
+            OR_blockJacknife[i.chr, i] &lt;- res$OR
+            Enrichment_blockJacknife[i.chr, i] &lt;- res$Enrichment
+        }
+        print(paste(&quot;Processed chromosome&quot;, i.chr, &quot;of 22&quot;))
+    }
+
+    # Calculate final statistics
+    print(&quot;Calculating final statistics...&quot;)
+    OR &lt;- colMeans(log2(OR_blockJacknife), na.rm = TRUE)
+    Enrichment &lt;- colMeans(Enrichment_blockJacknife, na.rm = TRUE)
+
+    OR_sd &lt;- Enrichment_sd &lt;- numeric(length(annotations))
+    for (j in 1:length(annotations)){
+        OR_sd[j] &lt;- sqrt(var(OR_blockJacknife[,j], na.rm = TRUE) * 21^2 / 22)
+        Enrichment_sd[j] &lt;- sqrt(var(Enrichment_blockJacknife[,j], na.rm = TRUE) * 21^2 / 22)
+    }
+
+    # Create summary data frame
+    summary_df &lt;- data.frame(
+        Annotation = annotations,
+        OR = exp(OR),
+        OR_SE = OR_sd,
+        Enrichment = Enrichment,
+        Enrichment_SE = Enrichment_sd
+    )
+    print(&quot;Summary data frame created.&quot;)
+
+    # Prepare results
+    results &lt;- list(
+        &quot;summary&quot; = summary_df,
+        &quot;OR_blockJacknife&quot; = OR_blockJacknife,
+        &quot;Enrichment_blockJacknife&quot; = Enrichment_blockJacknife,
+        &quot;OR&quot; = OR,
+        &quot;Enrichment&quot; = Enrichment,
+        &quot;OR_sd&quot; = OR_sd,
+        &quot;Enrichment_sd&quot; = Enrichment_sd,
+        &quot;annotations&quot; = annotations
+    )
+    print(&quot;Results prepared.&quot;)
+
+    # Save results
+    saveRDS(results, &#39;${_output[&#39;enrichment&#39;]}&#39;, compress=&#39;xz&#39;)
+    print(paste(&quot;Results saved to:&quot;, &#39;${_output[&#39;enrichment&#39;]}&#39;))
+
+    # End timing
+    end_time &lt;- Sys.time()
+    print(paste(&quot;Job ended at:&quot;, end_time))
+    print(paste(&quot;Total time elapsed:&quot;, as.numeric(difftime(end_time, start_time, units = &quot;mins&quot;)), &quot;minutes&quot;))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "sos"
+        },
+        kernelOptions: {
+            name: "sos",
+            path: "./code/enrichment"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'sos'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../mnm_analysis/mnm_methods/colocboost.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Multi-trait colocalization using ColocBoost</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gsea.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Pathway Analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions-and-test-statistics">Definitions and Test Statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odds-ratio-or">Odds Ratio (OR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment">Enrichment</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-error-se-computation">Standard Error (SE) Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leave-one-chromosome-out-loco-jackknife">Leave-One-Chromosome-Out (LOCO) Jackknife</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#se-formula">SE Formula</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-workflow">Computational Workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-odds-ratio-and-enrichment-computation">Step 1: Odds Ratio and Enrichment Computation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-aggregation">Step 2: Aggregation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-summary-outputs">Step 3: Summary Outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-format">Input Format</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#significant-variants-path">1. <code class="docutils literal notranslate"><span class="pre">significant_variants_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline-anno-path">2. <code class="docutils literal notranslate"><span class="pre">baseline_anno_path</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-format">Output Format</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enrichment-results-rds">1. <code class="docutils literal notranslate"><span class="pre">enrichment_results.rds</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-working-example-steps">Minimal Working Example Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-interface">Command interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-implementation">Workflow implementation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The NIH/NIA Alzheimer's Disease Sequencing Project Functional Genomics xQTL Consortium
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2021+, FunGen xQTL Analysis Working Group.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

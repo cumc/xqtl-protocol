@@ -474,7 +474,7 @@ Timing X min
 Timing <1 min
 
 ```
-!sos run covariate_hidden_factor.ipynb Marchenko_PC \
+!sos run covariate_hidden_factor.ipynb PCA \
     --container oras://ghcr.io/cumc/pcatools_apptainer:latest \
 
 ```
@@ -497,6 +497,21 @@ sos run pipeline/TensorQTL.ipynb cis \
 ```
 sos run xqtl-protocol/pipeline/TensorQTL.ipynb trans \
     --container containers/TensorQTL.sif 
+```
+
+
+Timing [FIXME]
+
+```
+sos run pipeline/quantile_twas.ipynb quantile_qtl_twas_weight  \
+    --container oras://ghcr.io/cumc/pecotmr_apptainer:latest
+```
+
+
+
+```
+sos run xqtl-protocol/pipeline/quantile_twas.ipynb quantile_qtl_twas_weight  \
+    --container oras://ghcr.io/cumc/pecotmr_apptainer:latest
 ```
 
 

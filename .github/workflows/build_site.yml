@@ -37,9 +37,7 @@ jobs:
           ghp-import -n -p -f _build/html
 
           # Link notebooks
-          pushd pipeline
           find code -name '*.ipynb' | grep -v "ipynb_checkpoints" | xargs -I % bash -c 'ln -s % pipeline/$(basename %)'
-          popd
 
           # Make manuscript
           cd website/nature_protocol

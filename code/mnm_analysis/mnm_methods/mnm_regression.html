@@ -1319,13 +1319,16 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.susie_twas.stdout&qu
               finemapping_output[[r]]$preset_variants_result &lt;- preset_variants_result[[r]]
           }
       }
-      saveRDS(list(&quot;${_meta_info[2]}&quot; = finemapping_output), 
+      if (${&quot;FALSE&quot; if skip_fine_mapping else &quot;TRUE&quot;}){
+        saveRDS(list(&quot;${_meta_info[2]}&quot; = finemapping_output), 
               paste0(&quot;${cwd:a}&quot;, &quot;/fine_mapping/&quot;, &quot;${_output[0]:bnn}.univariate_bvsr.rds&quot;),
               compress=&#39;xz&#39;)
-      
-      if (length(twas_output) &gt; 0) saveRDS(list(&quot;${_meta_info[2]}&quot; = twas_output), 
+      }
+      if (${&quot;FALSE&quot; if skip_twas_weights else &quot;TRUE&quot;}) {
+        if (length(twas_output) &gt; 0) saveRDS(list(&quot;${_meta_info[2]}&quot; = twas_output), 
                                            paste0(&quot;${cwd:a}&quot;, &quot;/twas_weights/&quot;, &quot;${_output[0]:bnn}.univariate_twas_weights.rds&quot;), 
                                            compress=&#39;xz&#39;)
+      }
       if (empty_elements_cnt&gt;0) {
           message(empty_elements_cnt, &quot; analysis are skipped for failing to pass initial screen for potential association signals&quot;)
       }
@@ -1417,7 +1420,7 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, st
           region_name = &quot;${_meta_info[2]}&quot;
       }
 
-      context_regions &lt;- list(${&quot;,&quot;.join([(&quot;c(&#39;&quot;+x+&quot;&#39;)&quot;) if isinstance(x, str) else (&quot;c&quot;+ str(x)) for x in _meta_info[3]])})[[r]]
+      context_regions &lt;- list(${&quot;,&quot;.join([(&quot;c(&#39;&quot;+x+&quot;&#39;)&quot;) if isinstance(x, str) else (&quot;c&quot;+ str(x)) for x in _meta_info[3]])})
       names(context_regions) &lt;- colnames(fdat$residual_Y)
       region_info = list(region_coord=parse_region(&quot;${_meta_info[0]}&quot;), grange=parse_region(&quot;${_meta_info[1]}&quot;), region_name=region_name)
 

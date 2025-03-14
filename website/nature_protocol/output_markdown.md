@@ -198,7 +198,7 @@ Timing <4 min
     --cwd ../../output_test \
     --sample-list ../../PCC_sample_list_subset \
     --data-dir /restricted/projectnb/amp-ad/ROSMAP_PCC_AC/PCC/ \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
     -c ../csg.yml  -q neurology
 ```
 
@@ -215,7 +215,7 @@ Timing ~10 min
     --gtf ../../reference_data/reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.gtf \
     --reference-fasta ../../reference_data/GRCh38_full_analysis_set_plus_decoy_hla.noALT_noHLA_noDecoy_ERCC.fasta \
     --ref-flat ../../reference_data/Homo_sapiens.GRCh38.103.chr.reformatted.ERCC.ref.flat \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
     -c ../csg.yml  -q neurology
 ```
 
@@ -225,7 +225,7 @@ Timing <2 hours
 
 ```
 !sos run RNA_calling.ipynb STAR_align \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -233,7 +233,7 @@ Timing <2 hours
 
 ```
 !sos run RNA_calling.ipynb STAR_align \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -241,7 +241,7 @@ Timing <2 hours
 
 ```
 !sos run RNA_calling.ipynb STAR_align \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -249,7 +249,7 @@ Timing <2 hours
 
 ```
 !sos run RNA_calling.ipynb STAR_align \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -259,7 +259,7 @@ Timing <30 min
 
 ```
 !sos run RNA_calling.ipynb rnaseqc_call \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -270,7 +270,7 @@ Timing <X hours
 
 ```
 !sos run RNA_calling.ipynb rsem_call \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -280,7 +280,7 @@ Timing <15min
 
 ```
 !sos run bulk_expression_QC.ipynb qc \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -290,7 +290,7 @@ Timing <10min
 
 ```
 !sos run bulk_expression_normalization.ipynb normalize \
-    --container oras://ghcr.io/cumc/rna_quantification_apptainer:latest \
+    --container oras://ghcr.io/statfungen/rna_quantification_apptainer:latest \
 
 ```
 
@@ -303,7 +303,7 @@ Timing <30min
 
 ```
 !sos run splicing_calling.ipynb leafcutter \
-    --container oras://ghcr.io/cumc/leafcutter_apptainer:latest \
+    --container oras://ghcr.io/statfungen/leafcutter_apptainer:latest \
 
 ```
 
@@ -312,7 +312,7 @@ Timing ~30min
 
 ```
 !sos run splicing_calling.ipynb psichomics \
-    --container oras://ghcr.io/cumc/psichomics_apptainer:latest \
+    --container oras://ghcr.io/statfungen/psichomics_apptainer:latest \
 
 ```
 
@@ -466,7 +466,7 @@ Timing X min
 
 ```
 !sos run covariate_hidden_factor.ipynb PEER \
-   --container oras://ghcr.io/cumc/factor_analysis_apptainer:latest \
+   --container oras://ghcr.io/statfungen/factor_analysis_apptainer:latest \
 
 ```
 
@@ -475,7 +475,7 @@ Timing <1 min
 
 ```
 !sos run covariate_hidden_factor.ipynb PCA \
-    --container oras://ghcr.io/cumc/pcatools_apptainer:latest \
+    --container oras://ghcr.io/statfungen/pcatools_apptainer:latest \
 
 ```
 

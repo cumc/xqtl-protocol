@@ -19,17 +19,17 @@ We use a set of packages from the Conda ecosystem to deploy our software.  Most 
 
 Pipelines in this repository are written in the [Script of Scripts (SoS) workflow language](https://vatlab.github.io/sos-docs/). Like most other workflow languages, SoS workflows can **distribute and execute computing jobs directly in High Performance Computing cluster**. Unlike most other workflow languages, SoS workflows are created using SoS Notebooks (based on Ipython Notebook and developed in [Jupyter](https://jupyter.org/)) which allow for both **scientific narrative and pipeline scripts in the same document**. Unlike typical Jupyter Notebooks intended for interactive data analysis, SoS workflows written in Jupyter Notebooks can be executed directly as command line scripts either on a local computer or in a HPC environment. 
 
-We provide this [toy example for running SoS pipeline on a typical HPC cluster environment](https://github.com/cumc/xqtl-protocol/blob/main/code/misc/Job_Example.ipynb). First time users are encouraged to try it out in order to help setting up the computational environment necessary to run the analysis in this protocol.
+We provide this [toy example for running SoS pipeline on a typical HPC cluster environment](https://github.com/statfungen/xqtl-protocol/blob/main/code/misc/Job_Example.ipynb). First time users are encouraged to try it out in order to help setting up the computational environment necessary to run the analysis in this protocol.
 
 ### Source code
 
-- Source code of pipelines implemented in this repository are available at https://github.com/cumc/xqtl-protocol/tree/main/code. 
+- Source code of pipelines implemented in this repository are available at https://github.com/statfungen/xqtl-protocol/tree/main/code. 
 
 ## How to use the resource
 
 ### Organization of the resource
 
-The website https://cumc.github.io/xqtl-protocol is generated from files under the `code` folder of the source code repository. The `pipeline` folder contains symbolic links automatically generated for pipeline files under `code.` The logic of the entire xQTL analysis workflow is roughly reflected on the **left sidebar**:
+The website https://statfungen.github.io/xqtl-protocol is generated from files under the `code` folder of the source code repository. The `pipeline` folder contains symbolic links automatically generated for pipeline files under `code.` The logic of the entire xQTL analysis workflow is roughly reflected on the **left sidebar**:
 
 - The **GETTING STARTED**  section serves as the main landing page or index of the xQTL protocol, guiding users through the various pipelines implemented in this repository. It's structured to mirror the logic of the xQTL analysis we've crafted. Because this page provides pointers to other sections, users can primarily focus here without having to sift through the rest of the pages pages in this repository.
 - The **COMMAND GENERATOR** section is designed as a one-stop hub for "push button" commands, enabling users to generate the full QTL analysis pipeline workflow scripts from a straightforward configuration file. Notebooks within this section are intended to be **executed as command line software** for data analysis command generation. Users can then execute these generated commands directly to conduct all preset analyses. Alternatively, they can tweak the commands to cater to particular analysis requirements. The configuration file serves a dual purpose: streamlining control and maintaining a record of executed workflows.
@@ -41,8 +41,8 @@ The website https://cumc.github.io/xqtl-protocol is generated from files under t
 - In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please see our pixi setup repository at [https://github.com/StatFunGen/pixi-setup](https://github.com/StatFunGen/pixi-setup) for instructions to install software. Native support is only provided for Linux and macOS (Intel and Apple Silicon) - Windows users will need to install Windows Subsystem For Linux (WSL) to locally install the software.
 - We have provided example data-sets in [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). For guidance on downloading the data programmatically, refer to [this documentation](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html). If you need to set up a Synapse client, once you have installed, `pixi`, use `pixi global install -c biconda -c conda-forge synapseclient`.
   - Within the `test_data` folder, datasets prefixed with **MWE** (Minimal Working Example) are provided. These are used for unit testing each module, ensuring the integrity of the code.
-  - The `protocol_data` folder houses a comprehensive set of data, illustrating the full extent of our protocol. This is showcased in [this notebook](https://cumc.github.io/xqtl-protocol/code/xqtl_protocol_demo.html), with the [source code](https://github.com/cumc/xqtl-protocol/blob/main/code/xqtl_protocol_demo.ipynb) available for reference.
-- Please clone this repository https://github.com/cumc/xqtl-protocol onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing `sos run pipeline/<pipeline_file>.ipynb`
+  - The `protocol_data` folder houses a comprehensive set of data, illustrating the full extent of our protocol. This is showcased in [this notebook](https://statfungen.github.io/xqtl-protocol/code/xqtl_protocol_demo.html), with the [source code](https://github.com/statfungen/xqtl-protocol/blob/main/code/xqtl_protocol_demo.ipynb) available for reference.
+- Please clone this repository https://github.com/statfungen/xqtl-protocol onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing `sos run pipeline/<pipeline_file>.ipynb`
 that is, executing the symbolic links directly to perform the analysis.
 
 ### See Also

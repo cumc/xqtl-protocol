@@ -616,7 +616,6 @@ document.write(`
     --name pQTL \
     --keep-samples output/sample_meta/protocol_example.protein.sample_genotypes.txt \
     --container containers/bioinfo.sif \
-    --no-maximize-unrelated \
     --mem 40G
 </pre></div>
 </div>
@@ -757,7 +756,7 @@ Global Workflow Options:
                         Number of threads
   --container &#39;&#39;
                         Software container option
-  --entrypoint (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + container.split(&#39;/&#39;)[-1][:-4]) if container.endswith(&#39;.sif&#39;) else &quot;&quot;
+  --entrypoint  (&#39;micromamba run -a &quot;&quot; -n&#39; + &#39; &#39; + re.sub(r&#39;(_apptainer:latest|_docker:latest|\.sif)$&#39;, &#39;&#39;, container.split(&#39;/&#39;)[-1])) if container else &quot;&quot;
 
 
 Sections
@@ -769,13 +768,6 @@ Sections
   king_2:               Select a list of unrelated individual with an attempt to
                         maximize the unrelated individuals selected from the
                         data
-    Workflow Options:
-      --[no-]maximize-unrelated (default to False)
-                        If set to true, the unrelated individuals in a family
-                        will be kept without being reported. Otherwise (use
-                        `--no-maximize-unrelated`) the entire family will be
-                        removed Note that attempting to maximize unrelated
-                        individuals is computationally intensive on large data.
   king_3:               Split genotype data into related and unrelated samples,
                         if related individuals are detected
   qc_no_prune, qc_1:    Filter SNPs and select individuals
@@ -911,200 +903,344 @@ bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output}.stderr&#39;, stdout = f
 <div class="cell_input docutils container">
 <div class="highlight-sos notranslate"><div class="highlight"><pre><span></span># Select a list of unrelated individual with an attempt to maximize the unrelated individuals selected from the data 
 [king_2: shared = &quot;related_id&quot; ]
-# If set to true, the unrelated individuals in a family will be kept without being reported. 
-# Otherwise (use `--no-maximize-unrelated`) the entire family will be removed
-# Note that attempting to maximize unrelated individuals is computationally intensive on large data.
-parameter: maximize_unrelated = False
 related_id = [x.strip() for x in open(_input).readlines() if not x.startswith(&quot;#&quot;)]
 output: f&#39;{_input:n}.related_id&#39;
 with open(_output, &#39;a&#39;):
-    pass   ## This should create an empty output such that both the empty relateness and unrelated samples bed will be created. So we dont need to subset the samples manually.
+    pass
 done_if(len(related_id) == 0, msg = f&quot;No related individuals detected from {_input}.&quot;)
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output:bn}&#39;
 R:  container=container, expand= &quot;${ }&quot;, stderr = f&#39;{_output}.stderr&#39;, stdout = f&#39;{_output}.stdout&#39;, entrypoint=entrypoint
-    library(dplyr)
-    library(igraph)
-    # Remove related individuals while keeping maximum number of individuals
-    # this function is simplified from: 
-    # https://rdrr.io/cran/plinkQC/src/R/utils.R
-    #&#39; @param relatedness [data.frame] containing pair-wise relatedness estimates
-    #&#39; (in column [relatednessRelatedness]) for individual 1 (in column
-    #&#39; [relatednessIID1] and individual 2 (in column [relatednessIID1]). Columns
-    #&#39; relatednessIID1, relatednessIID2 and relatednessRelatedness have to present,
-    #&#39; while additional columns such as family IDs can be present. Default column
-    #&#39; names correspond to column names in output of plink --genome
-    #&#39; (\url{https://www.cog-genomics.org/plink/1.9/ibd}). All original
-    #&#39; columns for pair-wise highIBDTh fails will be returned in fail_IBD.
-    #&#39; @param relatednessTh [double] Threshold for filtering related individuals.
-    #&#39; Individuals, whose pair-wise relatedness estimates are greater than this
-    #&#39; threshold are considered related.
-    relatednessFilter &lt;- function(relatedness, 
-                                  relatednessTh,
-                                  relatednessIID1=&quot;IID1&quot;, 
-                                  relatednessIID2=&quot;IID2&quot;,
-                                  relatednessRelatedness=&quot;KINSHIP&quot;) {
-        # format data
-        if (!(relatednessIID1 %in% names(relatedness))) {
-            stop(paste(&quot;Column&quot;, relatednessIID1, &quot;for relatedness not found!&quot;))
+
+    # By Rui Dong and Derek Lamb, Columbia Neurology
+    # This function enhances the standard plinkQC::relatednessFilter approach through:
+    #
+    # 1. Graph-based preprocessing:
+    #    - For large relatedness networks, breaks down dense clusters of related individuals
+    #    - Removes highly connected nodes (individuals with many relatives) first
+    #    - Prevents memory issues when processing large components (&gt;20 individuals)
+    #    - Reduces the input size for the more intensive plinkQC filtering
+    #
+    # 2. Additional checks:
+    #    - Verifies that all related pairs are properly handled
+    #    - Runs up to 20 iterations to ensure complete filtering
+    #    - Catches edge cases that might be missed in a single pass
+    #
+    # This implementation is particularly helpful for datasets with large family 
+    # clusters or complex relatedness structures where the standard approach
+    # might struggle.    
+
+    filter_relatedness &lt;- function(
+      relatedness,                                  # Path to the relatedness file (required)
+      relatednessTh = 0.0625,                       # Threshold for relatedness
+      analysis_type = &quot;maximize_unrelated&quot;,         # Type of analysis: &quot;maximize_unrelated&quot; or &quot;maximize_cases&quot;
+      output_prefix = &quot;output_prefix&quot;,              # Base name for output file
+      otherCriterion = NULL,                        # Optional additional criterion for filtering
+      otherCriterionTh = NULL,                      # Threshold for the additional criterion
+      otherCriterionThDirection = &quot;ge&quot;,             # Direction of the threshold
+      relatednessIID1 = &quot;IID1&quot;,                     # Column name for first individual ID
+      relatednessIID2 = &quot;IID2&quot;,                     # Column name for second individual ID
+      relatednessFID1 = NULL,                       # Column name for first family ID
+      relatednessFID2 = NULL,                       # Column name for second family ID
+      relatednessRelatedness = &quot;PI_HAT&quot;,            # Column name for relatedness value
+      pheno_file = NULL,                            # File for phenotype information
+      pheno_col = &quot;pheno&quot;,                          # Column name for phenotype
+      otherCriterionIID = &quot;IID&quot;,                    # Column name for additional criterion ID
+      otherCriterionMeasure = NULL,                 # Column name for additional criterion measure
+      verbose = FALSE                               # Whether to print verbose output
+    ) {
+      # Load required packages
+      suppressMessages({
+        library(tidyverse)
+        library(igraph)
+        library(plinkQC)
+        library(data.table)
+      })
+      
+      # Validate inputs
+      if (is.null(relatedness)) {
+        stop(&quot;Relatedness file path is required&quot;)
+      }
+      
+      if (analysis_type == &quot;maximize_cases&quot; &amp;&amp; is.null(pheno_file)) {
+        stop(&quot;Must provide phenotype file when analysis_type is &#39;maximize_cases&#39;&quot;)
+      }
+      
+      # Read the relatedness file
+      full_kin0 &lt;- fread(relatedness)
+      
+      # Initial pruning of highly related individuals
+      working_graph &lt;- full_kin0 |&gt;
+        filter(!!sym(relatednessRelatedness) &gt;= relatednessTh) |&gt;
+        select(!!sym(relatednessIID1), !!sym(relatednessIID2)) |&gt;
+        graph_from_data_frame(directed = FALSE)
+      
+      working_comp &lt;- components(working_graph)
+      
+      # Set parameters
+      graph_size_th = 20
+      reduce_fraction = 0.05
+      high_related_indiv &lt;- c()
+      
+      # Reduce components to max 20
+      while (max(working_comp$csize &gt; graph_size_th)) {
+        
+        if (verbose) {
+          print(paste0(&quot;The largest component graph has &quot;, max(working_comp$csize), 
+                       &quot; individuals. Removing the most connected &quot;, 
+                       scales::percent(reduce_fraction), &quot; of them.&quot;))
         }
-        if (!(relatednessIID2 %in% names(relatedness))) {
-            stop(paste(&quot;Column&quot;, relatednessIID1, &quot;for relatedness not found!&quot;))
+        
+        # Prepare for loop
+        large_comp_ids &lt;- which(working_comp$csize &gt; graph_size_th)
+        nodes_to_remove &lt;- c()
+        
+        for (comp_id in large_comp_ids) {
+          # Get nodes/degrees for component
+          comp_nodes &lt;- V(working_graph)[working_comp$membership == comp_id]
+          comp_degrees &lt;- degree(working_graph, v = comp_nodes)
+          
+          # Remove highly related individuals
+          num_to_remove &lt;- ceiling(length(comp_nodes) * reduce_fraction)
+          high_degree_nodes &lt;- names(sort(comp_degrees, decreasing = TRUE))[1:num_to_remove]
+          
+          # Append to removal list
+          nodes_to_remove &lt;- c(nodes_to_remove, high_degree_nodes)
         }
-        if (!(relatednessRelatedness %in% names(relatedness))) {
-            stop(paste(&quot;Column&quot;, relatednessRelatedness,
-                       &quot;for relatedness not found!&quot;))
-        }
-
-        iid1_index &lt;- which(colnames(relatedness) == relatednessIID1)
-        iid2_index &lt;- which(colnames(relatedness) == relatednessIID2)
-
-        relatedness[,iid1_index] &lt;- as.character(relatedness[,iid1_index])
-        relatedness[,iid2_index] &lt;- as.character(relatedness[,iid2_index])
-
-        relatedness_names &lt;- names(relatedness)
-        names(relatedness)[iid1_index] &lt;- &quot;IID1&quot;
-        names(relatedness)[iid2_index] &lt;- &quot;IID2&quot;
-        names(relatedness)[names(relatedness) == relatednessRelatedness] &lt;- &quot;M&quot;
-
-        # Remove symmetric IID rows
-        relatedness_original &lt;- relatedness
-        relatedness &lt;- dplyr::select_(relatedness, ~IID1, ~IID2, ~M)
-
-        sortedIDs &lt;- data.frame(t(apply(relatedness, 1, function(pair) {
-            c(sort(c(pair[1], pair[2])))
-            })), stringsAsFactors=FALSE)
-        keepIndex &lt;- which(!duplicated(sortedIDs))
-
-        relatedness_original &lt;- relatedness_original[keepIndex,]
-        relatedness &lt;- relatedness[keepIndex,]
-
-        # individuals with at least one pair-wise comparison &gt; relatednessTh
-        # return NULL to failIDs if no one fails the relatedness check
-        highRelated &lt;- dplyr::filter_(relatedness, ~M &gt; relatednessTh)
-        if (nrow(highRelated) == 0) {
-            return(list(relatednessFails=NULL, failIDs=NULL))
-        }
-
-        # all samples with related individuals
-        allRelated &lt;- c(highRelated$IID1, highRelated$IID2)
-        uniqueIIDs &lt;- unique(allRelated)
-
-        # Further selection of samples with relatives in cohort
-        multipleRelative &lt;- unique(allRelated[duplicated(allRelated)])
-        singleRelative &lt;- uniqueIIDs[!uniqueIIDs %in% multipleRelative]
-
-        highRelatedMultiple &lt;- highRelated[highRelated$IID1 %in% multipleRelative |
-                                            highRelated$IID2 %in% multipleRelative,]
-        highRelatedSingle &lt;- highRelated[highRelated$IID1 %in% singleRelative &amp;
-                                           highRelated$IID2 %in% singleRelative,]
-
-        # Only one related samples per individual
-        if(length(singleRelative) != 0) {
-          # randomly choose one to exclude
-          failIDs_single &lt;- highRelatedSingle[,1]
+        
+        # Update for next loop
+        high_related_indiv &lt;- c(high_related_indiv, nodes_to_remove)
+        working_graph &lt;- delete_vertices(working_graph, nodes_to_remove)
+        working_comp &lt;- components(working_graph)
+      }
+      
+      kin0 &lt;- full_kin0 |&gt;
+        filter(!(!!sym(relatednessIID1) %in% high_related_indiv) &amp; 
+               !(!!sym(relatednessIID2) %in% high_related_indiv))
+      
+      # Process based on analysis type
+      if (analysis_type == &quot;maximize_unrelated&quot;) {
+        # Run the plinkQC relatedness Filter
+        rel &lt;- plinkQC::relatednessFilter(
+          relatedness = kin0,
+          otherCriterion = otherCriterion,
+          relatednessTh = relatednessTh,
+          relatednessIID1 = relatednessIID1,
+          relatednessIID2 = relatednessIID2,
+          otherCriterionTh = otherCriterionTh,
+          otherCriterionThDirection = otherCriterionThDirection,
+          relatednessFID1 = relatednessFID1,
+          relatednessFID2 = relatednessFID2,
+          relatednessRelatedness = relatednessRelatedness,
+          otherCriterionIID = otherCriterionIID,
+          otherCriterionMeasure = otherCriterionMeasure,
+          verbose = verbose
+        )$failIDs
+        
+        all_exclude &lt;- rel$IID
+        
+      } else if (analysis_type == &quot;maximize_cases&quot;) {
+        # Load phenotype information
+        related_individuals &lt;- unique(c(kin0 |&gt; pull(relatednessIID1), kin0 |&gt; pull(relatednessIID2)))
+        
+        df_pheno &lt;- fread(pheno_file) |&gt;
+          drop_na(!!sym(pheno_col)) |&gt;
+          filter(IID %in% related_individuals)
+        
+        # Match kinship and phenotype information
+        related_pheno_individuals &lt;- df_pheno |&gt; 
+          pull(IID)
+        
+        related_cases &lt;- df_pheno |&gt; 
+          filter(!!sym(pheno_col) == 1) |&gt; 
+          pull(IID)
+        
+        related_controls &lt;- df_pheno |&gt; 
+          filter(!!sym(pheno_col) == 0) |&gt; 
+          pull(IID)
+        
+        kin0 &lt;- kin0 |&gt;
+          filter(!!sym(relatednessIID1) %in% related_pheno_individuals &amp; 
+                 !!sym(relatednessIID2) %in% related_pheno_individuals)
+        
+        # Optimize cases
+        df_case_kin &lt;- kin0 |&gt;
+          filter(!!sym(relatednessIID1) %in% related_cases &amp; 
+                 !!sym(relatednessIID2) %in% related_cases)
+        
+        rel_cases &lt;- plinkQC::relatednessFilter(
+          relatedness = df_case_kin,
+          otherCriterion = otherCriterion,
+          relatednessTh = relatednessTh,
+          relatednessIID1 = relatednessIID1,
+          relatednessIID2 = relatednessIID2,
+          otherCriterionTh = otherCriterionTh,
+          otherCriterionThDirection = otherCriterionThDirection,
+          relatednessFID1 = relatednessFID1,
+          relatednessFID2 = relatednessFID2,
+          relatednessRelatedness = relatednessRelatedness,
+          otherCriterionIID = otherCriterionIID,
+          otherCriterionMeasure = otherCriterionMeasure,
+          verbose = verbose
+        )$failIDs
+        
+        # Remove controls related to cases
+        related_cases_keep &lt;- setdiff(related_cases, rel_cases$IID)
+        
+        related_controls_exclude &lt;- c()
+        
+        for (i in 1:nrow(kin0)) {
+          iid1 &lt;- kin0 |&gt; pull(!!sym(relatednessIID1)) |&gt; nth(i) 
+          iid2 &lt;- kin0 |&gt; pull(!!sym(relatednessIID2)) |&gt; nth(i)
+          
+          if (iid1 %in% related_cases_keep &amp; iid2 %in% related_controls) {
+            related_controls_exclude &lt;- c(related_controls_exclude, iid2)
             
-        } else {
-          failIDs_single &lt;- NULL
+          } else if(iid2 %in% related_cases_keep &amp; iid1 %in% related_controls) {
+            related_controls_exclude &lt;- c(related_controls_exclude, iid1)
+            
+          }
         }
-  
-        # An individual has multiple relatives
-        if(length(multipleRelative) != 0) {
-            relatedPerID &lt;- lapply(multipleRelative, function(x) {
-                tmp &lt;- highRelatedMultiple[rowSums(
-                    cbind(highRelatedMultiple$IID1 %in% x,
-                          highRelatedMultiple$IID2 %in% x)) != 0,1:2]
-                rel &lt;- unique(unlist(tmp))
-                return(rel)
-            })
-            names(relatedPerID) &lt;- multipleRelative
-
-            keepIDs_multiple &lt;- lapply(relatedPerID, function(x) {
-                pairwise &lt;- t(combn(x, 2))
-                index &lt;- (highRelatedMultiple$IID1 %in% pairwise[,1] &amp;
-                              highRelatedMultiple$IID2 %in% pairwise[,2]) |
-                    (highRelatedMultiple$IID1 %in% pairwise[,2] &amp;
-                         highRelatedMultiple$IID2 %in% pairwise[,1])
-                combination &lt;- highRelatedMultiple[index,]
-                combination_graph &lt;- igraph::graph_from_data_frame(combination,
-                                                                   directed=FALSE)
-                all_iv_set &lt;- igraph::ivs(combination_graph)
-                length_iv_set &lt;- sapply(all_iv_set, function(x) length(x))
-
-                if (all(length_iv_set == 1)) {
-                    # check how often they occurr elsewhere
-                    occurrence &lt;- sapply(x, function(id) {
-                        sum(sapply(relatedPerID, function(idlist) id %in% idlist))
-                    })
-                    # if occurrence the same everywhere, pick the first, else keep
-                    # the one with minimum occurrence elsewhere
-                    if (length(unique(occurrence)) == 1) {
-                        nonRelated &lt;- sort(x)[1]
-                    } else {
-                        nonRelated &lt;- names(occurrence)[which.min(occurrence)]
-                    }
-                } else {
-                    nonRelated &lt;- all_iv_set[which.max(length_iv_set)]
-                }
-                return(nonRelated)
-            })
-            keepIDs_multiple &lt;- unique(unlist(keepIDs_multiple))
-            failIDs_multiple &lt;- c(multipleRelative[!multipleRelative %in%
-                                                       keepIDs_multiple])
-        } else {
-            failIDs_multiple &lt;- NULL
+        
+        # Subset controls to only unrelated controls
+        related_controls_keep &lt;- setdiff(related_controls, related_controls_exclude)
+        
+        df_control_kin &lt;- kin0 |&gt;
+          filter(!!sym(relatednessIID1) %in% related_controls_keep &amp; 
+                 !!sym(relatednessIID2) %in% related_controls_keep)
+        
+        rel_controls &lt;- plinkQC::relatednessFilter(
+          relatedness = df_control_kin,
+          otherCriterion = otherCriterion,
+          relatednessTh = relatednessTh,
+          relatednessIID1 = relatednessIID1,
+          relatednessIID2 = relatednessIID2,
+          otherCriterionTh = otherCriterionTh,
+          otherCriterionThDirection = otherCriterionThDirection,
+          relatednessFID1 = relatednessFID1,
+          relatednessFID2 = relatednessFID2,
+          relatednessRelatedness = relatednessRelatedness,
+          otherCriterionIID = otherCriterionIID,
+          otherCriterionMeasure = otherCriterionMeasure,
+          verbose = verbose
+        )$failIDs
+        
+        # Handle leftover individuals
+        all_exclude &lt;- c(rel_cases$IID, related_controls_exclude, rel_controls$IID)
+        
+      } else {
+        # Directly filter on kinship threshold
+        rel &lt;- kin0 %&gt;% dplyr::filter(!!sym(relatednessRelatedness) &gt;= relatednessTh)
+        
+        all_exclude &lt;- unique(c(rel |&gt; pull(relatednessIID1), rel |&gt; pull(relatednessIID2)))
+      }
+      
+      # Check for leftovers
+      df_related &lt;- kin0 |&gt;
+        filter(!(!!sym(relatednessIID1) %in% all_exclude) &amp; 
+               !(!!sym(relatednessIID2) %in% all_exclude)) |&gt;
+        filter(!!sym(relatednessRelatedness) &gt; relatednessTh)
+      
+      if (nrow(df_related) &gt; 0) {
+        if (verbose) {
+          print(paste0(&quot;Warning: After first plinkQC pass, there are still &quot;, 
+                      nrow(df_related), &quot; related subjects in dataset.&quot;))
         }
-        allFailIIDs &lt;- c(failIDs_single, failIDs_multiple)
-        relatednessFails &lt;- lapply(allFailIIDs, function(id) {
-            fail_inorder &lt;- relatedness_original$IID1 == id &amp;
-                relatedness_original$M &gt; relatednessTh
-            fail_inreverse &lt;- relatedness_original$IID2 == id &amp;
-                relatedness_original$M &gt; relatednessTh
-            if (any(fail_inreverse)) {
-                inreverse &lt;- relatedness_original[fail_inreverse, ]
-                id1 &lt;- iid1_index
-                id2 &lt;- iid2_index
-                inreverse[,c(id1, id2)] &lt;- inreverse[,c(id2, id1)]
-                names(inreverse) &lt;- relatedness_names
-            } else {
-                inreverse &lt;- NULL
-            }
-            inorder &lt;- relatedness_original[fail_inorder, ]
-            names(inorder) &lt;- relatedness_names
-            return(rbind(inorder, inreverse))
-        })
-        relatednessFails &lt;- do.call(rbind, relatednessFails)
-        if (nrow(relatednessFails) == 0) {
-            relatednessFails &lt;- NULL
-            failIDs &lt;- NULL
-        } else {
-            names(relatednessFails) &lt;- relatedness_names
-            rownames(relatednessFails) &lt;- 1:nrow(relatednessFails)
-            uniqueFails &lt;- relatednessFails[!duplicated(relatednessFails[,iid1_index]),]
-            failIDs &lt;- uniqueFails[,iid1_index]
+        
+        # Iterate until all subjects are removed
+        iter &lt;- 0
+        while (nrow(df_related) &gt; 0 &amp; iter &lt; 20) {
+          # Rerun plinkQC
+          additional_exclude &lt;- plinkQC::relatednessFilter(
+            relatedness = df_related,
+            otherCriterion = otherCriterion,
+            relatednessTh = relatednessTh,
+            relatednessIID1 = relatednessIID1,
+            relatednessIID2 = relatednessIID2,
+            otherCriterionTh = otherCriterionTh,
+            otherCriterionThDirection = otherCriterionThDirection,
+            relatednessFID1 = relatednessFID1,
+            relatednessFID2 = relatednessFID2,
+            relatednessRelatedness = relatednessRelatedness,
+            otherCriterionIID = otherCriterionIID,
+            otherCriterionMeasure = otherCriterionMeasure,
+            verbose = verbose
+          )$failIDs
+          
+          # Add to exclude list
+          all_exclude &lt;- c(all_exclude, additional_exclude$IID)
+          
+          # Update df_related and iter
+          df_related &lt;- kin0 |&gt;
+            filter(!(!!sym(relatednessIID1) %in% all_exclude) &amp; 
+                   !(!!sym(relatednessIID2) %in% all_exclude)) |&gt;
+            filter(!!sym(relatednessRelatedness) &gt; relatednessTh)
+          iter &lt;- iter + 1
         }
-        return(list(relatednessFails=relatednessFails, failIDs=failIDs))
+        
+        # Print status
+        if (verbose) {
+          if (nrow(df_related) == 0) {
+            print(paste0(&quot;All related subjects successfully removed after &quot;, iter, &quot; iterations.&quot;))
+          } else if (nrow(df_related) &gt; 0) {
+            stop(paste0(&quot;Error: After 20 plinkQC passes, there are still &quot;, 
+                       nrow(df_related), &quot; subjects in dataset.&quot;))
+          }
+        }
+      }
+      
+      # Add in high-related individuals
+      all_exclude &lt;- c(all_exclude, high_related_indiv)
+      
+      # List of all excluded subjects
+      dat &lt;- data.frame(IID = all_exclude, FID = as.character(all_exclude)) # Because IID and FID are the same
+      
+      # Output the related ids
+      output_related &lt;- paste0(output_prefix, &quot;_kinship_cutoff_&quot;, relatednessTh, &quot;.related_id&quot;)
+      write.table(dat, output_related, quote = FALSE, row.names = FALSE, col.names = FALSE)
+      
+      if (verbose) {
+        cat(&quot;\n[INFO] There are&quot;, nrow(dat), &quot;excluded individuals identified using a kinship threshold of&quot;, relatednessTh, &quot;\n&quot;)
+        cat(&quot;[OUTPUT] Excluded individual IDs have been written to the file:\n&quot;)
+        cat(&quot;      &quot;, normalizePath(output_related), &quot;\n&quot;)
+      }
+      
+      # Return the excluded IDs
+      return(dat)
     }
     
   
     # main code
-    kin0 &lt;- read.table(${_input:r}, header=F, stringsAsFactor=F)
+    suppressMessages({
+      library(tidyverse)
+      library(data.table)
+    })
+    
+    # Read input and set column names to match your original code
+    kin0 &lt;- read.table(${_input:r}, header=FALSE, stringsAsFactors=FALSE)
     colnames(kin0) &lt;- c(&quot;FID1&quot;,&quot;ID1&quot;,&quot;FID2&quot;,&quot;ID2&quot;,&quot;NSNP&quot;,&quot;HETHET&quot;,&quot;IBS0&quot;,&quot;KINSHIP&quot;)
-    if (${&quot;TRUE&quot; if maximize_unrelated else &quot;FALSE&quot;}) {
-        rel &lt;- relatednessFilter(kin0, ${kinship}, &quot;ID1&quot;, &quot;ID2&quot;, &quot;KINSHIP&quot;)$failIDs
-        tmp1 &lt;- kin0[,1:2]
-        tmp2 &lt;- kin0[,3:4]
-        colnames(tmp1) = colnames(tmp2) = c(&quot;FID&quot;, &quot;ID&quot;)
-        # Get the family ID for these rels so there are two columns FID and IID in the output
-        lookup &lt;- dplyr::distinct(rbind(tmp1,tmp2))
-        dat &lt;- lookup[which(lookup[,2] %in% rel),]
-    } else {
-        rel &lt;- kin0 %&gt;% filter(KINSHIP &gt;= ${kinship})
-        dat = rbind(rel[,c(&quot;FID1&quot;,&quot;ID1&quot;)],setNames(rel[,c(&quot;FID2&quot;,&quot;ID2&quot;)],c(&quot;FID1&quot;,&quot;ID1&quot;)))
-        dat = dat[!duplicated(dat),] ## This is to remove duplicated FID and IID caused by one sample being related to multiple samples
-       }    
-
-    cat(&quot;There are&quot;, nrow(dat),&quot;related individuals using a kinship threshold of ${kinship}\n&quot;)
-    write.table(dat,${_output:r}, quote=FALSE, row.names=FALSE, col.names=FALSE)
+    
+    # Always use the filter_relatedness function with maximize_unrelated
+    result &lt;- filter_relatedness(
+      relatedness = kin0,  
+      relatednessTh = ${kinship},
+      analysis_type = &quot;maximize_unrelated&quot;,
+      relatednessIID1 = &quot;ID1&quot;,
+      relatednessIID2 = &quot;ID2&quot;,
+      relatednessFID1 = &quot;FID1&quot;, 
+      relatednessFID2 = &quot;FID2&quot;,
+      relatednessRelatedness = &quot;KINSHIP&quot;,
+      verbose = FALSE
+    )
+    
+    # Format output to match your original code
+    tmp1 &lt;- kin0[,1:2]
+    tmp2 &lt;- kin0[,3:4]
+    colnames(tmp1) = colnames(tmp2) = c(&quot;FID&quot;, &quot;ID&quot;)
+    lookup &lt;- dplyr::distinct(rbind(tmp1,tmp2))
+    dat &lt;- lookup[which(lookup[,2] %in% result$IID),]
+    # Write output in the exact format of the original script
+    cat(&quot;There are&quot;, nrow(dat), &quot;related individuals using a kinship threshold of ${kinship}\n&quot;)
+    write.table(dat, ${_output:r}, quote=FALSE, row.names=FALSE, col.names=FALSE)
     
 bash: expand= &quot;${ }&quot;, stderr = f&#39;{_output}.stderr&#39;, stdout = f&#39;{_output}.stdout&#39;, container = container, entrypoint=entrypoint
     i=&quot;${_output}&quot;

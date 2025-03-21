@@ -1148,9 +1148,13 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.susie_twas.stdout&qu
                                               scale_residuals = FALSE)
     }, NoSNPsError = function(e) {
         message(&quot;Error: &quot;, paste(e$message, &quot;${_meta_info[2] + &#39;@&#39; + _meta_info[1]}&quot;))
+        data_dir &lt;- paste0(&quot;${cwd:a}&quot;, &quot;/data/&quot;)
+        if (!dir.exists(data_dir)) {
+            dir.create(data_dir, recursive = TRUE)
+        }
         saveRDS(list(${_meta_info[2]} = e$message),
-                      paste0(&quot;${cwd:a}&quot;, &quot;/data/&quot;, &quot;${_output[0]:bnn}.univariate_data.rds&quot;), 
-                      compress=&#39;xz&#39;)
+                paste0(data_dir, &quot;${_output[0]:bnn}.univariate_data.rds&quot;), 
+                compress=&#39;xz&#39;)
         quit(save=&quot;no&quot;)
     })
     # save data-set
@@ -1365,10 +1369,18 @@ if skip_fine_mapping and skip_twas_weights:
 elif not skip_fine_mapping and skip_twas_weights:
     output_files = [f&#39;{cwd:a}/multivariate_fine_mapping/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_bvsr.rds&#39;]
 elif skip_fine_mapping and not skip_twas_weights:
-    output_files = [f&#39;{cwd:a}/multivariate_twas_weights/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_twas_weights.rds&#39;]
+    # Warning that fine-mapping is required for TWAS weights
+    if not ld_reference_meta_file.is_dir():
+        print(&quot;WARNING: Fine-mapping is required to generate TWAS weights. Setting skip_fine_mapping to False. &quot;
+              &quot;Fine-mapping will be performed and saved on variants listed in %s.&quot; % ld_reference_meta_file)
+    else:
+        print(&quot;WARNING: Fine-mapping is required to generate TWAS weights. Setting skip_fine_mapping to False.&quot;)
+    skip_fine_mapping = False
+    output_files = [f&#39;{cwd:a}/multivariate_fine_mapping/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_bvsr.rds&#39;,
+                    f&#39;{cwd:a}/multivariate_twas_weights/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_twas_weights.rds&#39;]
 else:    
     output_files = [f&#39;{cwd:a}/multivariate_fine_mapping/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_bvsr.rds&#39;,
-    f&#39;{cwd:a}/multivariate_twas_weights/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_twas_weights.rds&#39;]    
+                    f&#39;{cwd:a}/multivariate_twas_weights/{name}.{_meta_info[0].split(&quot;:&quot;)[0]}_{_meta_info[2]}.multicontext_twas_weights.rds&#39;]   
 output: output_files
 task: trunk_workers = 1, trunk_size = job_size, walltime = walltime, mem = mem, cores = numThreads, tags = f&#39;{step_name}_{_output[0]:bn}&#39;
 R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, stderr = f&quot;{_output[0]:nn}.mnm.stderr&quot;, container = container, entrypoint = entrypoint
@@ -1407,11 +1419,17 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, st
                                           scale_residuals = FALSE)
         }, NoSNPsError = function(e) {
         message(&quot;Error: &quot;, paste(e$message, &quot;${_meta_info[2] + &#39;@&#39; + _meta_info[1]}&quot;))
-        saveRDS(list(${_meta_info[2]} = e$message), &quot;${_output[0]:ann}.multicontext_data.rds&quot;, compress=&#39;xz&#39;)
+        data_dir &lt;- paste0(&quot;${cwd:a}&quot;, &quot;/data/&quot;)
+        if (!dir.exists(data_dir)) {
+            dir.create(data_dir, recursive = TRUE)
+        }
+        saveRDS(list(${_meta_info[2]} = e$message),
+                paste0(data_dir, &quot;${_output[0]:bnn}.multicontext_data.rds&quot;), 
+                compress=&#39;xz&#39;)            
         quit(save=&quot;no&quot;)
     })
     if (${&quot;TRUE&quot; if save_data else &quot;FALSE&quot;}) {
-        saveRDS(fdat, &quot;${_output[0]:ann}.multicontext_data.rds&quot;, compress=&#39;xz&#39;)
+        saveRDS(fdat, paste0(&quot;${cwd:a}&quot;, &quot;/data/&quot;, &quot;${_output[0]:bnn}.multicontext_data.rds&quot;), compress=&#39;xz&#39;)
     }
     if (${&quot;FALSE&quot; if skip_fine_mapping and skip_twas_weights else &quot;TRUE&quot;}) {
       if (&quot;${_meta_info[2]}&quot; != &quot;${_meta_info[3]}&quot;) {
@@ -1468,12 +1486,10 @@ R: expand = &#39;${ }&#39;, stdout = f&quot;{_output[0]:nn}.mnm.stdout&quot;, st
               if(!(identical(context, context_region_name))) new_context_name = paste(context, context_region_name, sep=&quot;_&quot;) 
               names(result$twas_weights_result) [match(context, names(result$twas_weights_result))] &lt;- new_context_name
           }
-          saveRDS(list(&quot;${_meta_info[2]}&quot; = result$twas_weights_result), &quot;${_output[0]:ann}.multicontext_twas_weights.rds&quot;, compress=&#39;xz&#39;)
+          saveRDS(list(&quot;${_meta_info[2]}&quot; = result$twas_weights_result), paste0(&quot;${cwd:a}&quot;, &quot;/multivariate_twas_weights/&quot;, &quot;${_output[0]:bnn}.multicontext_twas_weights.rds&quot;), compress=&#39;xz&#39;)
           result$twas_weights_result &lt;- NULL
-      } else if (${&quot;TRUE&quot; if not skip_twas_weights else &quot;FALSE&quot;}){
-        saveRDS(list(&quot;${_meta_info[2]}&quot; = NULL), &quot;${_output[0]:ann}.multicontext_twas_weights.rds&quot;, compress=&#39;xz&#39;)
       }
-      saveRDS(list(&quot;${_meta_info[2]}&quot; = result), &quot;${_output[0]:ann}.multicontext_bvsr.rds&quot;, compress=&#39;xz&#39;)
+      saveRDS(list(&quot;${_meta_info[2]}&quot; = result), paste0(&quot;${cwd:a}&quot;, &quot;/multivariate_fine_mapping/&quot;, &quot;${_output[0]:bnn}.multicontext_bvsr.rds&quot;), compress=&#39;xz&#39;)
     }
 </pre></div>
 </div>

@@ -13,24 +13,23 @@ Reference data are standardized and curated by the ADSP FGC Standardization Work
 
 ### Software environment
 
-We have prepared containerized software environment through both Docker and Singularity virtualization systems to facilicate software environment setup and to aid in software reproducibility. For those not familiar with this concept please [check out this wiki page of virtualization](https://en.wikipedia.org/wiki/OS-level_virtualization) and [an explanation on Docker website](https://www.docker.com/resources/what-container/).
+We use a set of packages from the Conda ecosystem to deploy our software.  Most packages are from [conda-forge](https://conda-forge.org) and [bioconda](https://bioconda.github.io), along with a [custom channel](https://anaconda.org/dnachun) for software unavailable from those repositories.
 
 ### Pipeline execution
 
-Pipelines in this repository are written in the [Script of Scripts (SoS) workflow language](https://vatlab.github.io/sos-docs/). Like most other workflow languages, SoS workflows can **distribute and execute computing jobs directly in High Performance Computing cluster**. It can also use **containers (Docker or Singularity)** to help with setting up computational environment and improve reproducibility. Unlike most other workflow languages, SoS workflows are created using SoS Notebooks (based on Ipython Notebook and developed in [Jupyter](https://jupyter.org/)) which allow for both **scientific narrative and pipeline scripts in the same document**. Unlike typical Jupyter Notebooks intended for interactive data analysis, SoS workflows written in Jupyter Notebooks can be executed directly as command line scripts either on a local computer or in a HPC environment. 
+Pipelines in this repository are written in the [Script of Scripts (SoS) workflow language](https://vatlab.github.io/sos-docs/). Like most other workflow languages, SoS workflows can **distribute and execute computing jobs directly in High Performance Computing cluster**. Unlike most other workflow languages, SoS workflows are created using SoS Notebooks (based on Ipython Notebook and developed in [Jupyter](https://jupyter.org/)) which allow for both **scientific narrative and pipeline scripts in the same document**. Unlike typical Jupyter Notebooks intended for interactive data analysis, SoS workflows written in Jupyter Notebooks can be executed directly as command line scripts either on a local computer or in a HPC environment. 
 
-We provide this [toy example for running SoS pipeline on a typical HPC cluster environment](https://github.com/cumc/xqtl-protocol/blob/main/code/misc/Job_Example.ipynb). First time users are encouraged to try it out in order to help setting up the computational environment necessary to run the analysis in this protocol.
+We provide this [toy example for running SoS pipeline on a typical HPC cluster environment](https://github.com/statfungen/xqtl-protocol/blob/main/code/misc/Job_Example.ipynb). First time users are encouraged to try it out in order to help setting up the computational environment necessary to run the analysis in this protocol.
 
 ### Source code
 
-- Source code of pipelines and containers implemented in this repository are available at https://github.com/cumc/xqtl-protocol/tree/main/code. 
-- Container specifications for required software environments are available at https://github.com/cumc/xqtl-protocol/tree/main/container.
+- Source code of pipelines implemented in this repository are available at https://github.com/statfungen/xqtl-protocol/tree/main/code. 
 
 ## How to use the resource
 
 ### Organization of the resource
 
-The website https://cumc.github.io/xqtl-protocol is generated from files under the `code` folder of the source code repository. The `pipeline` folder contains symbolic links automatically generated for pipeline files under `code.` The logic of the entire xQTL analysis workflow is roughly reflected on the **left sidebar**:
+The website https://statfungen.github.io/xqtl-protocol is generated from files under the `code` folder of the source code repository. The `pipeline` folder contains symbolic links automatically generated for pipeline files under `code.` The logic of the entire xQTL analysis workflow is roughly reflected on the **left sidebar**:
 
 - The **GETTING STARTED**  section serves as the main landing page or index of the xQTL protocol, guiding users through the various pipelines implemented in this repository. It's structured to mirror the logic of the xQTL analysis we've crafted. Because this page provides pointers to other sections, users can primarily focus here without having to sift through the rest of the pages pages in this repository.
 - The **COMMAND GENERATOR** section is designed as a one-stop hub for "push button" commands, enabling users to generate the full QTL analysis pipeline workflow scripts from a straightforward configuration file. Notebooks within this section are intended to be **executed as command line software** for data analysis command generation. Users can then execute these generated commands directly to conduct all preset analyses. Alternatively, they can tweak the commands to cater to particular analysis requirements. The configuration file serves a dual purpose: streamlining control and maintaining a record of executed workflows.
@@ -39,20 +38,11 @@ The website https://cumc.github.io/xqtl-protocol is generated from files under t
 
 ### Computing environment setup
 
-- In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please install Script of Scripts (**version >= 0.24.1**) [(see here for a tutorial to set it up with `micromamba`)](https://wanggroup.org/orientation/jupyter-setup#setup-the-script-of-scripts-computing-environment). 
-    - For Linux and Mac desktop users you can either install the container [`Singularity`](https://docs.sylabs.io/guides/3.2/user-guide/installation.html#) or [`Docker`](https://www.docker.com/). In the xQTL project we use `Singularity`. Here are [some tips to set up Singularity on MacOS](https://wanggroup.org/productivity_tips/macos-setup#singularity-on-mac).
-    - For Linux-based HPC users, your system may already have `Singularity` installed. If not please communicate with the IT support for the HPC. Typically Docker is not allowed on HPC.
-    - For Windows users, you will need to install [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (we have tested it on WSL2 and not on WSL1) and then install `Singularity` within WSL as instructed in this [post](https://www.blopig.com/blog/2021/09/using-singularity-on-windows-with-wsl2/).
-- We have provided example data-sets and `Singularity` container images in [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). For guidance on downloading the data programmatically, refer to [this documentation](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html). If you need to set up a Synapse client, consult [this guide](https://help.synapse.org/docs/Installing-Synapse-API-Clients.1985249668.html).
+- In order to run the xQTL protocol on your computer (or a High Performance Computing cluster), please see our pixi setup repository at [https://github.com/StatFunGen/pixi-setup](https://github.com/StatFunGen/pixi-setup) for instructions to install software. Native support is only provided for Linux and macOS (Intel and Apple Silicon) - Windows users will need to install Windows Subsystem For Linux (WSL) to locally install the software.
+- We have provided example data-sets in [this Synapse folder](https://www.synapse.org/#!Synapse:syn36416559/files/). For guidance on downloading the data programmatically, refer to [this documentation](https://help.synapse.org/docs/Upload-and-Download-Data-in-Bulk.2003796248.html). If you need to set up a Synapse client, once you have installed, `pixi`, use `pixi global install -c biconda -c conda-forge synapseclient`.
   - Within the `test_data` folder, datasets prefixed with **MWE** (Minimal Working Example) are provided. These are used for unit testing each module, ensuring the integrity of the code.
-- The `protocol_data` folder houses a comprehensive set of data, illustrating the full extent of our protocol. This is showcased in [this notebook](https://cumc.github.io/xqtl-protocol/code/xqtl_protocol_demo.html), with the [source code](https://github.com/cumc/xqtl-protocol/blob/main/code/xqtl_protocol_demo.ipynb) available for reference.
-- The `container/singularity` folder contains the released Singularity images for the software environment. For Docker users (e.g., on Linux or Mac Desktops), downloading this folder is **not** necessary.
-- Please clone this repository https://github.com/cumc/xqtl-protocol onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing 
-
-```
-sos run pipeline/<pipeline_file>.ipynb
-```
-
+  - The `protocol_data` folder houses a comprehensive set of data, illustrating the full extent of our protocol. This is showcased in [this notebook](https://statfungen.github.io/xqtl-protocol/code/xqtl_protocol_demo.html), with the [source code](https://github.com/statfungen/xqtl-protocol/blob/main/code/xqtl_protocol_demo.ipynb) available for reference.
+- Please clone this repository https://github.com/statfungen/xqtl-protocol onto your computer. This is the source code for this resource. All pipelines are symbolic links in the `pipeline` folder. Users are encouraged to execute from the root of the repository folders by typing `sos run pipeline/<pipeline_file>.ipynb`
 that is, executing the symbolic links directly to perform the analysis.
 
 ### See Also

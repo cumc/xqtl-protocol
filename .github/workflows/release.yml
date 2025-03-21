@@ -1,0 +1,50 @@
+name: Upload new release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Version to use for release tag
+        required: true
+      commit:
+        description: Commit to use for tag
+        required: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      INPUT_COMMIT: ${{ github.event.inputs.commit }}
+
+    steps:
+      - name: Checkout HEAD
+        uses: actions/checkout@v4
+
+      - name: Determine commit
+        id: determine-commit
+        run: |
+          if [[ ${INPUT_COMMIT} != '' ]]; then
+            echo "commit=${{ github.event.inputs.commit }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "commit=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create new tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          default_bump: false
+          default_prerelease_bump: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ github.event.inputs.tag }}
+          commit_sha: ${{ needs.determine-commit.outputs.commit }}
+          tag_prefix: ""
+
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
